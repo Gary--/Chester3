@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Chester3.Common
 {
-    public static class Chess
+    internal static class Chess
     {
-        public enum Pieces : byte { KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN };
+        public enum Piece : byte { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, UNKNOWN};
+        public enum Color : byte { WHITE, BLACK };
     }
 }
