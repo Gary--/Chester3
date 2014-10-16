@@ -10,13 +10,10 @@ namespace Chester3
     {
         static void Main(string[] args)
         {
-            Chester3.Common.BitBoard x = new Common.BitBoard(8);
-
-#if DEBUG
-            Console.WriteLine("asfdasdf");
-#endif
-
-            Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine(Convert.ToInt64(Console.ReadLine()).GetHashCode());
+            }
         }
     }
 }
