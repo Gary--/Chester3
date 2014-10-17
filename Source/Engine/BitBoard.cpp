@@ -80,7 +80,7 @@ bool  BitBoard::contains(Position position) const{
 
 
 // Only use on a singleton board
-Position  BitBoard::ToPosition()
+Position  BitBoard::ToPosition() const
 {
 #pragma warning( disable : 4146)
 	_ASSERTE(value != 0);
@@ -90,4 +90,10 @@ Position  BitBoard::ToPosition()
 	unsigned long index;
 	_BitScanReverse64(&index, value);
 	return Position(index);
+}
+
+
+int BitBoard::count() const
+{
+	return __popcnt64(value);
 }

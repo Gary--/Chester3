@@ -84,5 +84,16 @@ namespace EngineTests
 			}
 		}
 
+		TEST_METHOD(BitBoard_Count){
+			Assert::AreEqual(0,  BitBoard::EMPTY.count());
+			Assert::AreEqual(64, BitBoard::FULL.count());
+
+			BitBoard A(a);
+			BitBoard B(b);
+
+			// Inclusion Exclusion
+			Assert::AreEqual((A | B).count(), A.count() + B.count() - (A&B).count());
+		}
+
 	};
 }

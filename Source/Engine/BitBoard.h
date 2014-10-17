@@ -37,6 +37,7 @@ public:
 	friend bool operator!=(const BitBoard bb1, const BitBoard bb2);
 	std::string  str() const;
 	// Only use on a singleton board
-	Position ToPosition();
+	Position ToPosition() const;
+	int count() const;
 };
 
