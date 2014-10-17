@@ -1,23 +1,42 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include "Position.h"
 
+class Position;
 // Represents a set of up to Positions
-struct BitBoard
+class BitBoard
 {
 
 
 private:
 	uint64_t value;
 	BitBoard();
+
 public:
-	BitBoard(uint64_t value);
+	explicit BitBoard(uint64_t value);
 	~BitBoard();
 
-	BitBoard const operator|(const BitBoard other);
-
+	BitBoard operator|(const BitBoard other) const;
+	BitBoard operator&(const BitBoard other) const;
+	BitBoard operator^(const BitBoard other) const;
+	BitBoard operator~() const;
 	
-	friend bool const operator==(const BitBoard bb1, const BitBoard bb2);
-	const std::string str();
+	BitBoard operator|=(const BitBoard other);
+	BitBoard operator&=(const BitBoard other);
+	BitBoard operator^=(const BitBoard other);
+
+	// Least significant bit
+	BitBoard const LSB();
+	bool  contains(Position position) const;
+
+	const static BitBoard EMPTY;
+	const static BitBoard FULL;
+
+	friend bool operator==(const BitBoard bb1, const BitBoard bb2);
+	friend bool operator!=(const BitBoard bb1, const BitBoard bb2);
+	std::string  str() const;
+	// Only use on a singleton board
+	Position ToPosition();
 };
 
