@@ -33,15 +33,23 @@ public:
 	const static BitBoard EMPTY;
 	const static BitBoard FULL;
 
-	BitBoard verticalFlip() const;
+	
 
 	friend bool operator==(const BitBoard bb1, const BitBoard bb2);
 	friend bool operator!=(const BitBoard bb1, const BitBoard bb2);
+
+
 	std::string  str() const;
-	// Only use on a singleton board
-	Position ToPosition() const;
+	
+
+	BitBoard verticalFlip() const;
+	Position ToPosition() const;// Only use on a singleton board
 	int count() const;
+
+
 	static BitBoard rowBits(int row);
 	static BitBoard colBits(int col);
+
+	static BitBoard random();
 };
 

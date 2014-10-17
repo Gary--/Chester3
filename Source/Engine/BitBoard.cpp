@@ -115,3 +115,15 @@ BitBoard BitBoard::colBits(int col)
 	ChessAssert::Assert_8(col);
 	return BitBoard(0x0101010101010101ULL << col);
 }
+
+
+BitBoard BitBoard::random(){
+	int size = BitBoard(RAND_MAX).count(), n = 0;
+	uint64_t res = 0;
+	while (n<64){
+		res <<= size;
+		res |= rand();
+		n += size;
+	}
+	return BitBoard(res);
+}

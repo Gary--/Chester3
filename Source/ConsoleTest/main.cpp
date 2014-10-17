@@ -1,11 +1,13 @@
 #include <iostream>
 #include "Position.h"
-
+#include "BitBoard.h"
 using namespace std;
 
 int main(){
-	Position x(1);
-	cout << x.str() << endl;
-	system("pause");
+	while (true){
+		cout << BitBoard::random().str() << endl;
+		system("pause");
+	}
+
 	return 0;
 }
