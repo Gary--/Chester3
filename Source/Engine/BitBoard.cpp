@@ -1,6 +1,7 @@
 #include "BitBoard.h"
 #include <stdlib.h>
 #include "chess_macros.h"
+#include "ChessAssert.h"
 
 BitBoard::BitBoard(){}
 BitBoard::BitBoard(uint64_t value) : value(value){}
@@ -99,4 +100,18 @@ BitBoard BitBoard::verticalFlip() const{
 int BitBoard::count() const
 {
 	return (int)__popcnt64(value);
+}
+
+
+BitBoard BitBoard::rowBits(int row)
+{
+	ChessAssert::Assert_8(row);
+	return BitBoard(0xFFULL << (8*row));
+}
+
+
+BitBoard BitBoard::colBits(int col)
+{
+	ChessAssert::Assert_8(col);
+	return BitBoard(0x0101010101010101ULL << col);
 }

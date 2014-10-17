@@ -140,5 +140,25 @@ namespace EngineTests
 			flip_HardCore(BitBoard(b));
 			flip_HardCore(BitBoard(c));
 		}
+
+
+		TEST_METHOD(BitBoard_RowCol_Bits){
+			BitBoard acc1 = BitBoard::EMPTY;
+			BitBoard acc2 = BitBoard::EMPTY;
+
+			FOR_8(r){
+				BitBoard row = BitBoard::rowBits(r);
+				acc1 |= row;
+				FOR_8(c){
+					BitBoard col = BitBoard::colBits(c);
+					acc2 |= col;
+
+					Assert::AreEqual(1, (row&col).count());
+				}
+			}
+
+			Assert::AreEqual(BitBoard::FULL, acc1);
+			Assert::AreEqual(BitBoard::FULL, acc2);//TODO: THIS
+		}
 	};
 }

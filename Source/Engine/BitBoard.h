@@ -41,5 +41,7 @@ public:
 	// Only use on a singleton board
 	Position ToPosition() const;
 	int count() const;
+	static BitBoard rowBits(int row);
+	static BitBoard colBits(int col);
 };
 
