@@ -92,8 +92,11 @@ Position  BitBoard::ToPosition() const
 	return Position(index);
 }
 
+BitBoard BitBoard::verticalFlip() const{
+	return BitBoard(_byteswap_uint64(value));
+}
 
 int BitBoard::count() const
 {
-	return __popcnt64(value);
+	return (int)__popcnt64(value);
 }

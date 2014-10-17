@@ -27,29 +27,37 @@ Position::Position(int row, int column) :value(8*row + column){
 	ChessAssert::Assert_8(column);
 }
 
-int Position::row()
+int Position::row() const
 {
 	return value / 8;
 }
 
 
-int Position::col()
+int Position::col() const
 {
 	return value % 8;
 }
 
 
-BitBoard Position::ToSingletonBoard()
+int Position::index() const
+{
+	return value;
+}
+
+BitBoard Position::ToSingletonBoard() const
 {
 	return BitBoard(((uint64_t) 1)<< value);
 }
 
+Position Position::verticalFlip() const{
+	return Position(value ^ 56);
+}
 
 std::string Position::str() const
 {
 	std::stringstream iss;
 	iss << "Position(" << value << ")";
 	std::string res;
-
+	iss >> res;
 	return res;
 }

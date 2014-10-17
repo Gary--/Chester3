@@ -21,9 +21,12 @@ public:
 	friend bool const operator==(const Position pos1,Position pos2);
 	friend bool const operator!=(const Position pos1, Position pos2);
 	
-	int row();
-	int col();
-	BitBoard ToSingletonBoard();
+	Position verticalFlip() const;
+
+	int index() const;
+	int row() const;
+	int col() const;
+	BitBoard ToSingletonBoard() const;
 	std::string str() const;
 };
 

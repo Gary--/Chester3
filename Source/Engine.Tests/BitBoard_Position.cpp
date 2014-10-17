@@ -15,7 +15,7 @@ namespace EngineTests
 	{
 	public:
 
-		//Some randomly generated 64bit numbers
+		//Some randomly generated 64bit numbers. Assumed to be non symmetric.
 		const int64_t a = 0xab900b5573db768e;
 		const int64_t b = 0xf647ae931f3e323d;
 		const int64_t c = 0x614bac23febd04f1;
@@ -95,5 +95,50 @@ namespace EngineTests
 			Assert::AreEqual((A | B).count(), A.count() + B.count() - (A&B).count());
 		}
 
+
+		TEST_METHOD(Position_Flip){
+			FOR_8(r){
+				FOR_8(c){
+					Position pos(r, c);
+					Assert::AreEqual(c, pos.verticalFlip().col());
+					Assert::AreEqual(7-r, pos.verticalFlip().row());
+				}
+			}
+		}
+
+
+		TEST_METHOD(BitBoard_Flip_Sanity){
+			Assert::AreEqual(BitBoard::FULL, BitBoard::FULL.verticalFlip());
+			Assert::AreEqual(BitBoard::EMPTY, BitBoard::EMPTY.verticalFlip());
+
+			BitBoard A(a);
+			BitBoard B(b);
+			BitBoard C(c);
+
+			Assert::AreEqual(A, A.verticalFlip().verticalFlip());
+			Assert::AreEqual(B, B.verticalFlip().verticalFlip());
+			Assert::AreEqual(C, C.verticalFlip().verticalFlip());
+
+			Assert::AreNotEqual(A, A.verticalFlip());
+			Assert::AreNotEqual(B, B.verticalFlip());
+			Assert::AreNotEqual(C, C.verticalFlip());
+		}
+
+
+		void flip_HardCore(BitBoard bb){
+			int total1 = 0, total2 = 0;
+			FOR_BIT(bit, bb){
+				total1 += bit.ToPosition().index();
+			}
+			FOR_BIT(bit, bb.verticalFlip()){
+				total2 += bit.ToPosition().verticalFlip().index();
+			}
+			Assert::AreEqual(total1, total2);
+		}
+		TEST_METHOD(Flip_HardCore){
+			flip_HardCore(BitBoard(a));
+			flip_HardCore(BitBoard(b));
+			flip_HardCore(BitBoard(c));
+		}
 	};
 }
