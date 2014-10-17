@@ -158,7 +158,30 @@ namespace EngineTests
 			}
 
 			Assert::AreEqual(BitBoard::FULL, acc1);
-			Assert::AreEqual(BitBoard::FULL, acc2);//TODO: THIS
+			Assert::AreEqual(BitBoard::FULL, acc2);
+		}
+
+		//TODO: test that random changes every bit
+		TEST_METHOD(BitBoard_Shifts){
+			for (int i = 0; i < 100; i++)
+			{
+				BitBoard bb = BitBoard::random();
+				Assert::AreEqual(bb &~BitBoard::rowBits(0), bb.shiftUp().shiftDown());
+				Assert::AreEqual(bb &~BitBoard::rowBits(7), bb.shiftDown().shiftUp());
+				Assert::AreEqual(bb &~BitBoard::colBits(0), bb.shiftLeft().shiftRight());
+				Assert::AreEqual(bb &~BitBoard::colBits(7), bb.shiftRight().shiftLeft());
+			}
+
+			for (int i = 0; i < 7; i++)
+			{
+				Assert::AreEqual(BitBoard::colBits(i).shiftRight(), BitBoard::colBits(i + 1));
+				Assert::AreEqual(BitBoard::rowBits(i).shiftDown(), BitBoard::rowBits(i + 1));
+			}
+
+			for (int i = 1; i < 8; ++i){
+				Assert::AreEqual(BitBoard::colBits(i).shiftLeft(), BitBoard::colBits(i - 1));
+				Assert::AreEqual(BitBoard::rowBits(i).shiftUp(), BitBoard::rowBits(i - 1));
+			}
 		}
 	};
 }

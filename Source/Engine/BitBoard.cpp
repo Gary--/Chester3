@@ -97,6 +97,24 @@ BitBoard BitBoard::verticalFlip() const{
 	return BitBoard(_byteswap_uint64(value));
 }
 
+
+BitBoard BitBoard::shiftUp() const{
+	return BitBoard(value >> 8);
+}
+
+BitBoard BitBoard::shiftDown() const{
+	return BitBoard(value << 8);
+}
+
+BitBoard BitBoard::shiftRight() const{
+	return BitBoard( (*this &~colBits(7)).value << 1 );
+}
+
+BitBoard BitBoard::shiftLeft() const{
+	return BitBoard((*this &~colBits(0)).value >> 1);
+}
+
+
 int BitBoard::count() const
 {
 	return (int)__popcnt64(value);

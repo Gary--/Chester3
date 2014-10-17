@@ -26,6 +26,11 @@ public:
 	BitBoard operator&=(const BitBoard other);
 	BitBoard operator^=(const BitBoard other);
 
+	BitBoard shiftUp() const;
+	BitBoard shiftDown() const;
+	BitBoard shiftRight() const;
+	BitBoard shiftLeft() const;
+
 	// Least significant bit
 	BitBoard const LSB();
 	bool  contains(Position position) const;
