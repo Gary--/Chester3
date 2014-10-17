@@ -23,7 +23,7 @@ namespace EngineTests
 
 		TEST_METHOD(BitBoard_Basic_Bitwise)
 		{
-
+			Assert::AreEqual(BitBoard::EMPTY, ~BitBoard::FULL);
 
 			Assert::AreNotEqual(BitBoard(a), BitBoard(b));
 
@@ -59,14 +59,14 @@ namespace EngineTests
 			}
 			Assert::AreEqual(bb, acc);
 		}
-		TEST_METHOD(Iter_Bits_0){
+		TEST_METHOD(BitBoard_Iter_Bits_0){
 			testIter(BitBoard(a));
 			testIter(BitBoard(b));
 			testIter(BitBoard(c));
 		}
 
 
-		TEST_METHOD(Single_Board_Position_Conversion){
+		TEST_METHOD(Position_Singleular_BitBoard_Conversion){
 			FOR_64(i){
 				Assert::AreEqual(Position(i), Position(i).ToSingletonBoard().ToPosition());
 			}
@@ -135,7 +135,7 @@ namespace EngineTests
 			}
 			Assert::AreEqual(total1, total2);
 		}
-		TEST_METHOD(Flip_HardCore){
+		TEST_METHOD(BitBoard_Flip_HardCore){
 			flip_HardCore(BitBoard(a));
 			flip_HardCore(BitBoard(b));
 			flip_HardCore(BitBoard(c));
@@ -161,7 +161,7 @@ namespace EngineTests
 			Assert::AreEqual(BitBoard::FULL, acc2);
 		}
 
-		//TODO: test that random changes every bit
+		
 		TEST_METHOD(BitBoard_Shifts){
 			for (int i = 0; i < 100; i++)
 			{
@@ -182,6 +182,21 @@ namespace EngineTests
 				Assert::AreEqual(BitBoard::colBits(i).shiftLeft(), BitBoard::colBits(i - 1));
 				Assert::AreEqual(BitBoard::rowBits(i).shiftUp(), BitBoard::rowBits(i - 1));
 			}
+		}
+
+
+		// Check that everybit is sometimes on and sometimes off.
+		TEST_METHOD(BitBoard_random){
+			BitBoard ons = BitBoard::EMPTY;
+			BitBoard offs = BitBoard::EMPTY;
+			for (int i = 0; i < 100; ++i){
+				BitBoard bb = BitBoard::random();
+				ons |= bb;
+				offs |= ~bb;
+			}
+
+			Assert::AreEqual(BitBoard::FULL, ons);
+			Assert::AreEqual(BitBoard::FULL, offs);
 		}
 	};
 }
