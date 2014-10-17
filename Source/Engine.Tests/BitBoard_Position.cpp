@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "BitBoard.h"
-#include <random>
 #include "Position.h"
 #include "chess_macros.h"
 

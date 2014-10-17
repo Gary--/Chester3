@@ -4,10 +4,11 @@
 using namespace std;
 
 int main(){
-	while (true){
-		cout << BitBoard::random().str() << endl;
-		system("pause");
-	}
+	int x;
+	cin >> x;
 
+	int y;
+	y = __popcnt64(x);
+	cout << y << endl;
 	return 0;
 }
