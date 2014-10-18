@@ -11,4 +11,6 @@ void AttackFields::init() {
 	inited = true;
 
 	AttackFieldInit::KingKnightPawn();
+	AttackFieldInit::BishopRook();
+
 }

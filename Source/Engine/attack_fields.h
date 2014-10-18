@@ -6,18 +6,16 @@
 //NO FUNCTION AVAILABLE BEFORE MAIN
 namespace AttackFields {
 	void init();
-	//BB shiftForward(Turn player, BB bb);
-	//BB shiftBackward(Turn player, BB bb);
 
-	////BASIC RULES
+
 	BitBoard kingTargs(Position position);
 	BitBoard knightTargs(Position position);
 	BitBoard pawnTargs(Turn turn, Position position);
+	BitBoard bishopTargs(Position position, BitBoard blockers);
+	BitBoard rookTargs(Position position, BitBoard blockers);
+	BitBoard queenTargs(Position position, BitBoard blockers);
 
 	////SLIDERS.
-	//BB attackableByBishop(BB allPieces, int ind);
-	//BB attackableByRook(BB allPieces, int ind);
-	//BB attackableByQueen(BB allPieces, int ind);
 	//BB pinnedTargs(int kingInd, int pinnedPiece);
 	//BB blockingTargs(int kingInd, int attacker);
 	//BB lineThrough(int ind1, int ind2);//Line drawn through these locations. Undefined if not in line

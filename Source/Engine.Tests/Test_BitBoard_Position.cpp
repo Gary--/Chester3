@@ -23,6 +23,12 @@ namespace EngineTests
 		TEST_METHOD(BitBoard_Basic_Bitwise)
 		{
 			Assert::AreEqual(BitBoard::EMPTY, ~BitBoard::FULL);
+			Assert::IsTrue(BitBoard::WHITE_SQUARES.contains(Position(7, 7)));
+
+			Assert::AreEqual(BitBoard::EMPTY, BitBoard::WHITE_SQUARES & BitBoard::BLACK_SQUARES);
+			Assert::AreEqual(BitBoard::FULL, BitBoard::WHITE_SQUARES ^ BitBoard::BLACK_SQUARES);
+			Assert::AreEqual(32, BitBoard::BLACK_SQUARES.count());
+			Assert::AreEqual(32, BitBoard::WHITE_SQUARES.count());
 
 			Assert::AreNotEqual(BitBoard(a), BitBoard(b));
 

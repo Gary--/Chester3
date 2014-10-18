@@ -4,4 +4,5 @@
 
 namespace AttackFieldInit {
 	void KingKnightPawn();
+	void BishopRook();
 }

@@ -17,14 +17,14 @@ public:
 	TEST_METHOD(King_Targs) {
 		// King on e5
 		Assert::AreEqual(
-			Position(4, 3).ToSingletonBoard() |
-			Position(4, 5).ToSingletonBoard() |
-			Position(5, 4).ToSingletonBoard() |
-			Position(3, 4).ToSingletonBoard() |
-			Position(5, 5).ToSingletonBoard() |
-			Position(3, 3).ToSingletonBoard() |
-			Position(3, 5).ToSingletonBoard() |
-			Position(5, 3).ToSingletonBoard() 
+			BitBoard(4, 3) |
+			BitBoard(4, 5) |
+			BitBoard(5, 4) |
+			BitBoard(3, 4) |
+			BitBoard(5, 5) |
+			BitBoard(3, 3) |
+			BitBoard(3, 5) |
+			BitBoard(5, 3)
 			, AttackFields::kingTargs(Position(4, 4)));
 
 		//Kings generally hit 8 squres. 5 on edge. 3 on corner.
@@ -47,14 +47,14 @@ public:
 	TEST_METHOD(Knight_Targs) {
 		// Knight on e5
 		Assert::AreEqual(
-			Position(6, 3).ToSingletonBoard() |
-			Position(2, 3).ToSingletonBoard() |
-			Position(6, 5).ToSingletonBoard() |
-			Position(2, 5).ToSingletonBoard() |
-			Position(3, 2).ToSingletonBoard() |
-			Position(3, 6).ToSingletonBoard() |
-			Position(5, 2).ToSingletonBoard() |
-			Position(5, 6).ToSingletonBoard()
+			BitBoard(6, 3) |
+			BitBoard(2, 3) |
+			BitBoard(6, 5) |
+			BitBoard(2, 5) |
+			BitBoard(3, 2) |
+			BitBoard(3, 6) |
+			BitBoard(5, 2) |
+			BitBoard(5, 6)
 			, AttackFields::knightTargs(Position(4, 4)));
 
 		Assert::AreEqual(8, AttackFields::knightTargs(Position(2, 2)).count());
@@ -73,6 +73,40 @@ public:
 			, AttackFields::pawnTargs(Turn::WHITE, Position(4, 4)));
 	}
 	
+
+	TEST_METHOD(Rook_Targs) {
+		FOR_8(r) {
+			FOR_8(c) {
+				Position pos(r, c);
+				BitBoard unblocked = AttackFields::rookTargs(pos, BitBoard::EMPTY);
+				Assert::AreEqual(BitBoard::colBits(c) ^ BitBoard::rowBits(r),
+								 unblocked);
+			}
+		}
+
+		BitBoard surroundedBlockers =
+			BitBoard(4, 5) | BitBoard(3, 4) | BitBoard(5, 4) | BitBoard(4, 3);
+		Assert::AreEqual(surroundedBlockers,
+						 AttackFields::rookTargs(Position(4, 4),surroundedBlockers));
+	}
+	
+
+	TEST_METHOD(Bishop_Targs) {
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 0), BitBoard::EMPTY).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 7), BitBoard::EMPTY).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 0), BitBoard::EMPTY).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 7), BitBoard::EMPTY).count());
+
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(4, 4), BitBoard::EMPTY).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 3), BitBoard::EMPTY).count());
+
+		BitBoard surroundedBlockers =
+			BitBoard(3 ,3) | BitBoard(3, 5) | BitBoard(5, 3) | BitBoard(5, 5);
+		Assert::AreEqual(surroundedBlockers,
+						 AttackFields::bishopTargs(Position(4, 4), surroundedBlockers));
+	}
 	};
 
 

@@ -4,6 +4,9 @@
 #include "Position.h"
 #include "chess_consts.h"
 
+#define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY; (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY; BITS_COPY^=VAR)
+
+
 class Position;
 // Represents a set of up to Positions
 class BitBoard
@@ -16,8 +19,10 @@ private:
 
 public:
 	explicit BitBoard(uint64_t value);
-	~BitBoard();
+	BitBoard(int r, int c);
 	BitBoard();
+
+	uint64_t AsInt64() const;
 
 	BitBoard operator|(const BitBoard other) const;
 	BitBoard operator&(const BitBoard other) const;
@@ -42,6 +47,8 @@ public:
 
 	const static BitBoard EMPTY;
 	const static BitBoard FULL;
+	const static BitBoard BLACK_SQUARES;
+	const static BitBoard WHITE_SQUARES;
 
 	
 
@@ -54,6 +61,7 @@ public:
 
 	BitBoard verticalFlip() const;
 	Position ToPosition() const;// Only use on a singleton board
+	
 	int count() const;
 
 

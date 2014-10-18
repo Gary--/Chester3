@@ -2,11 +2,18 @@
 #include <stdlib.h>
 #include "chess_macros.h"
 #include "ChessAssert.h"
+#include "Position.h"
 
 BitBoard::BitBoard():value(0){}
 BitBoard::BitBoard(uint64_t value) : value(value){}
+BitBoard::BitBoard(int r, int c)  {
+	*this = Position(r, c).ToSingletonBoard();
+}
+//BitBoard::~BitBoard(){}
 
-BitBoard::~BitBoard(){}
+uint64_t BitBoard::AsInt64() const {
+	return value;
+}
 
 bool  operator==(const BitBoard bb1, const BitBoard bb2){
 	return bb1.value == bb2.value;
@@ -60,7 +67,8 @@ BitBoard const BitBoard::LSB(){
 
 const BitBoard BitBoard::EMPTY = BitBoard(0);
 const BitBoard BitBoard::FULL = BitBoard(~0ULL);
-
+const BitBoard BitBoard::BLACK_SQUARES = BitBoard(0x55AA55AA55AA55AAULL);
+const BitBoard BitBoard::WHITE_SQUARES = BitBoard(0xAA55AA55AA55AA55ULL);
 
 std::string BitBoard::str() const
 {
