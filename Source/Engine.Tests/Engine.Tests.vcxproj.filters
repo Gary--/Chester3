@@ -29,7 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BitBoard_Position.cpp">
+    <ClCompile Include="Test_BitBoard_Position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_Attackfields.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

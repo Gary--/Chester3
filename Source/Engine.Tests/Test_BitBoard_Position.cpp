@@ -10,7 +10,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace EngineTests
 {
-	TEST_CLASS(BitBoard_Position)
+	TEST_CLASS(Test_BitBoard_Position)
 	{
 	public:
 
@@ -37,6 +37,7 @@ namespace EngineTests
 		{
 			FOR_64(i){
 				Position pos(i);
+				Assert::AreEqual(i, pos.index());
 				Assert::AreEqual(i % 8, pos.col());
 				Assert::AreEqual(i / 8, pos.row());
 			}

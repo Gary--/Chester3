@@ -5,13 +5,13 @@
 
 //NO FUNCTION AVAILABLE BEFORE MAIN
 namespace AttackFields {
-
+	void init();
 	//BB shiftForward(Turn player, BB bb);
 	//BB shiftBackward(Turn player, BB bb);
 
 	////BASIC RULES
-	//BB kingTargs(int ind);
-	//BB knightTargs(int ind);
+	BitBoard kingTargs(Position position);
+	BitBoard knightTargs(Position position);
 
 	////SLIDERS.
 	//BB attackableByBishop(BB allPieces, int ind);
@@ -52,15 +52,4 @@ namespace AttackFields {
 	////Where enempy pawns are that would prevent ind from being a passed pawn.
 	//BB passingPawnStoppers(Turn player, int ind);
 }
-
-class AtkFldsIntr {
-private:
-	static void initializeKingKnight();
-	static void initializeBishopRook();
-	static void initializeLOS();
-	static void initializeMisc();
-
-	AtkFldsIntr();
-	static AtkFldsIntr initer;
-};
 

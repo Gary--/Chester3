@@ -3,7 +3,7 @@
 #include "chess_macros.h"
 #include "ChessAssert.h"
 
-BitBoard::BitBoard(){}
+BitBoard::BitBoard():value(0){}
 BitBoard::BitBoard(uint64_t value) : value(value){}
 
 BitBoard::~BitBoard(){}

@@ -27,10 +27,13 @@
     <ClInclude Include="chess_macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttackFields.h">
+    <ClInclude Include="chess_consts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chess_consts.h">
+    <ClInclude Include="attack_fields.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Attack_Fields_init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chess_consts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_fields_king_knight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_fields__init.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

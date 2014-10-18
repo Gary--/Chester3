@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttackFields.h" />
+    <ClInclude Include="attack_fields.h" />
+    <ClInclude Include="Attack_Fields_init.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="chess_consts.h" />
     <ClInclude Include="ChessAssert.h" />
@@ -27,6 +28,8 @@
     <ClInclude Include="Position.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="attack_fields__init.cpp" />
+    <ClCompile Include="attack_fields_king_knight.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="chess_consts.cpp" />

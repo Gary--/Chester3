@@ -12,11 +12,12 @@ class BitBoard
 
 private:
 	uint64_t value;
-	BitBoard();
+	
 
 public:
 	explicit BitBoard(uint64_t value);
 	~BitBoard();
+	BitBoard();
 
 	BitBoard operator|(const BitBoard other) const;
 	BitBoard operator&(const BitBoard other) const;
