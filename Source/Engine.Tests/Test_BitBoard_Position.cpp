@@ -57,6 +57,12 @@ namespace EngineTests
 			}
 		}
 
+		TEST_METHOD(BitBoard_AsInt64) {
+			for (int i = 0; i < 100; ++i) {
+				BitBoard bb = BitBoard::random();
+				Assert::AreEqual(bb, BitBoard(bb.AsInt64()));
+			}
+		}
 
 		void testIter(BitBoard bb){
 			BitBoard acc = BitBoard::EMPTY;

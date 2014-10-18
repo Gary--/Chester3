@@ -107,6 +107,21 @@ public:
 		Assert::AreEqual(surroundedBlockers,
 						 AttackFields::bishopTargs(Position(4, 4), surroundedBlockers));
 	}
+
+	TEST_METHOD(Queen_Targs) {
+
+		for (int j = 0; j < 10; ++j) {
+			BitBoard blockers = BitBoard::random() & BitBoard::random();
+			FOR_64(i) {
+				Position pos(i);
+				Assert::AreEqual(AttackFields::bishopTargs(pos, blockers) |
+								 AttackFields::rookTargs(pos, blockers),
+								 AttackFields::queenTargs(pos, blockers)
+								 );
+			}
+		}
+
+	}
 	};
 
 
