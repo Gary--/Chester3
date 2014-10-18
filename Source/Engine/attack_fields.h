@@ -15,6 +15,11 @@ namespace AttackFields {
 	BitBoard rookTargs(Position position, BitBoard blockers);
 	BitBoard queenTargs(Position position, BitBoard blockers);
 
+	// Given a pinned piece, where could it possibly move to.
+	BitBoard pinnedTargs(Position kingPos, Position pinnedPos);
+
+	// If the kind is in check, where coul we move a piece to block?
+	BitBoard blockingTargs(Position kingPos, Position attackerPos);
 	////SLIDERS.
 	//BB pinnedTargs(int kingInd, int pinnedPiece);
 	//BB blockingTargs(int kingInd, int attacker);

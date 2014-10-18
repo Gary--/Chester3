@@ -2,12 +2,12 @@
 #include "ChessAssert.h"
 #include <crtdbg.h>
 #include <sstream>
-Position::Position()
+Position::Position() : value(0)
 {
 }
 
 
-Position::~Position()
+Position::~Position() 
 {
 }
 

@@ -59,5 +59,8 @@
     <ClCompile Include="attack_fields_bishop_rook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="attack_fields_blocking_pinning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

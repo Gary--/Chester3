@@ -120,8 +120,54 @@ public:
 								 );
 			}
 		}
-
 	}
+
+	TEST_METHOD(Pinned_Targs) {
+		FOR_POSITION_64(kingPos) {
+			FOR_POSITION_64(pinnedPos) {
+				BitBoard targs = AttackFields::pinnedTargs(kingPos, pinnedPos);
+				Assert::AreNotEqual(BitBoard::EMPTY, targs);
+
+				//We are not pinned
+				if (!AttackFields::queenTargs(kingPos, BitBoard::EMPTY).contains(pinnedPos)) {
+					Assert::AreEqual(BitBoard::FULL, targs);
+					continue;
+				}
+
+				Assert::AreEqual(targs& ~kingPos.ToSingletonBoard(), 
+								 AttackFields::queenTargs(kingPos, BitBoard::EMPTY) & targs);
+			}
+		}
+	}
+
+	TEST_METHOD(Blocking_Targs) {
+		FOR_POSITION_64(kingPos) {
+			FOR_POSITION_64(attackerPos) {
+				BitBoard targs = AttackFields::blockingTargs(kingPos, attackerPos);
+				Assert::AreNotEqual(BitBoard::EMPTY, targs);
+				Assert::IsTrue(targs.contains(attackerPos));
+
+				//Does not actually attack
+				if (!AttackFields::queenTargs(attackerPos, BitBoard::EMPTY).contains(kingPos)) {
+					Assert::AreEqual(BitBoard::FULL, targs);
+					continue;
+				}
+
+				
+
+				FOR_BIT(candBit,targs) {
+					Position candPos = candBit.ToPosition();
+					if (candPos == kingPos || candPos == attackerPos) {
+						continue;
+					}
+
+					Assert::IsFalse(AttackFields::queenTargs(attackerPos, candBit).contains(kingPos));
+				}
+			}
+
+		}
+	}
+
 	};
 
 

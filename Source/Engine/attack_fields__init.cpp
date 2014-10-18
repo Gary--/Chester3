@@ -12,5 +12,6 @@ void AttackFields::init() {
 
 	AttackFieldInit::KingKnightPawn();
 	AttackFieldInit::BishopRook();
+	AttackFieldInit::BlockingPinning();
 
 }

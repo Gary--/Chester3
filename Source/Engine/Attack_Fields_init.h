@@ -5,4 +5,5 @@
 namespace AttackFieldInit {
 	void KingKnightPawn();
 	void BishopRook();
+	void BlockingPinning();
 }

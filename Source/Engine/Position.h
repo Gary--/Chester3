@@ -2,16 +2,18 @@
 #include <cstdint>
 #include "BitBoard.h"
 
+#define FOR_POSITION_64(p) for(Position p=Position(0);p.index()<64;p=Position(p.index()+1))
+
 class BitBoard;
 // Represents one of the 64 squares on the board.
 class Position
 {
 
 private:
-	Position();
+	
 	uint8_t value;
 public:
-
+	Position();
 	explicit Position(int value);
 	Position(int row, int column);
 

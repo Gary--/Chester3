@@ -41,11 +41,19 @@ namespace EngineTests
 
 		TEST_METHOD(Position_Get_Row_Col)
 		{
+			Assert::AreEqual(Position(0), Position());
+
 			FOR_64(i){
 				Position pos(i);
 				Assert::AreEqual(i, pos.index());
 				Assert::AreEqual(i % 8, pos.col());
 				Assert::AreEqual(i / 8, pos.row());
+				FOR_64(j) {
+					Position pos2(j);
+					if (i != j) {
+						Assert::AreNotEqual(pos, pos2);
+					}
+				}
 			}
 
 			FOR_8(r){
