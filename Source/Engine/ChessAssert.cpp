@@ -1,22 +1,14 @@
 #include "ChessAssert.h"
 #include <crtdbg.h>
 
-ChessAssert::ChessAssert()
-{
-}
+
+namespace ChessAssert {
+	void Assert_64(int x) {
+		_ASSERTE(0 <= x && x < 64);
+	}
 
 
-ChessAssert::~ChessAssert()
-{
-}
-
-void ChessAssert::Assert_64(int x)
-{
-	_ASSERTE(0 <= x && x<64);
-}
-
-
-void ChessAssert::Assert_8(int x)
-{
-	_ASSERTE(0<=x && x<8);
+	void Assert_8(int x) {
+		_ASSERTE(0 <= x && x < 8);
+	}
 }

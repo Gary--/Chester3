@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include "Position.h"
+#include "chess_consts.h"
 
 class Position;
 // Represents a set of up to Positions
@@ -30,6 +31,9 @@ public:
 	BitBoard shiftDown() const;
 	BitBoard shiftRight() const;
 	BitBoard shiftLeft() const;
+
+	BitBoard shiftForward(Turn turn) const;
+	BitBoard shiftBackward(Turn turn) const;
 
 	// Least significant bit
 	BitBoard const LSB();

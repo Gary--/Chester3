@@ -114,6 +114,18 @@ BitBoard BitBoard::shiftLeft() const{
 	return BitBoard((*this &~colBits(0)).value >> 1);
 }
 
+BitBoard BitBoard::shiftForward(Turn turn) const {
+	if (turn == Turn::WHITE) {
+		return this->shiftUp();
+	} else {
+		return this->shiftDown();
+	}
+}
+
+BitBoard BitBoard::shiftBackward(Turn turn) const {
+	return shiftForward(!turn);
+}
+
 
 int BitBoard::count() const
 {

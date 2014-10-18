@@ -27,6 +27,12 @@
     <ClInclude Include="chess_macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AttackFields.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chess_consts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -36,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChessAssert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chess_consts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

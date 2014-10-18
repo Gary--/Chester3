@@ -1,14 +1,7 @@
 #pragma once
-class ChessAssert
-{
-private:
-	ChessAssert();
-public:
-	
-	~ChessAssert();
+namespace ChessAssert{
 
-
-	static void Assert_8(int x);
-	static void Assert_64(int x);
+	void Assert_8(int x);
+	void Assert_64(int x);
 };
 
