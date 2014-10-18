@@ -12,6 +12,7 @@ namespace AttackFields {
 	////BASIC RULES
 	BitBoard kingTargs(Position position);
 	BitBoard knightTargs(Position position);
+	BitBoard pawnTargs(Turn turn, Position position);
 
 	////SLIDERS.
 	//BB attackableByBishop(BB allPieces, int ind);

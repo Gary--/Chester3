@@ -7,14 +7,21 @@
 namespace {
 	BitBoard kingTargsArr[64];
 	BitBoard knightTargsArr[64];
+	BitBoard pawnTargsArr[2][64];
 }
 
-void AttackFieldInit::KingKnight() {
+void AttackFieldInit::KingKnightPawn() {
 
 	
 	FOR_8(r1) {
 		FOR_8(c1) {
 			Position from(r1, c1);
+			FOR_TURN(turn) {
+				BitBoard forwarded = from.ToSingletonBoard().shiftForward(turn);
+#pragma warning(disable : 4800)
+				pawnTargsArr[(bool)turn][from.index()] = forwarded.shiftLeft() | forwarded.shiftRight();
+#pragma warning(default : 4800)
+			}
 
 			FOR_8(r2) {
 				FOR_8(c2) {
@@ -49,3 +56,8 @@ BitBoard AttackFields::knightTargs(Position position) {
 	return knightTargsArr[position.index()];
 }
 
+BitBoard AttackFields::pawnTargs(Turn turn,Position position) {
+#pragma warning(disable : 4800)
+	return pawnTargsArr[(bool)turn][position.index()];
+#pragma warning(default : 4800)
+}

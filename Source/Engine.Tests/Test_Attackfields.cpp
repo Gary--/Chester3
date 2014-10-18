@@ -63,6 +63,15 @@ public:
 		Assert::AreEqual(4, AttackFields::knightTargs(Position(6, 6)).count());
 	}
 
+
+	TEST_METHOD(Pawn_Targs) {
+		Assert::AreEqual(
+			Position(5, 3).ToSingletonBoard() |Position(5, 5).ToSingletonBoard()
+			, AttackFields::pawnTargs(Turn::BLACK, Position(4, 4)));
+		Assert::AreEqual(
+			Position(3, 3).ToSingletonBoard() | Position(3, 5).ToSingletonBoard()
+			, AttackFields::pawnTargs(Turn::WHITE, Position(4, 4)));
+	}
 	
 	};
 

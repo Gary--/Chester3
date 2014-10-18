@@ -1,14 +1,11 @@
 #include <iostream>
 #include "Position.h"
 #include "BitBoard.h"
+#include "chess_consts.h"
 using namespace std;
 
 int main(){
-	int x;
-	cin >> x;
 
-	int y;
-	y = __popcnt64(x);
-	cout << y << endl;
+	system("pause");
 	return 0;
 }

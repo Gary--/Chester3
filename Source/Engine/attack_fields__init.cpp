@@ -10,5 +10,5 @@ void AttackFields::init() {
 	}
 	inited = true;
 
-	AttackFieldInit::KingKnight();
+	AttackFieldInit::KingKnightPawn();
 }
