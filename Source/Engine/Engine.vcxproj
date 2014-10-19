@@ -25,6 +25,8 @@
     <ClInclude Include="chess_consts.h" />
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="chess_macros.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="Position.h" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +37,8 @@
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="chess_consts.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="Position.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

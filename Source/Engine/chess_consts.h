@@ -15,6 +15,10 @@ enum class Piece : uint8_t {
 	KING,	//6
 };
 
+
+//Used only for castling
+enum class Side : bool {LEFT, RIGHT,};
+
 // Iterates (BLACK, WHITE)
 #define FOR_TURN(x) for(Turn x=Turn::BLACK,temp__##__LINE__;x==Turn::BLACK || temp__##__LINE__ == Turn::BLACK;temp__##__LINE__ = x, x=Turn::WHITE )
 enum class Turn : bool {
