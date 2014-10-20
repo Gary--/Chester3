@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Position::Position() : value(0)
+Position::Position() : value(64)
 {
 }
 
@@ -41,30 +41,38 @@ bool const operator!=(const Position pos1, Position pos2){
 }
 
 
+void Position::AssertValid() const{
+	_ASSERTE(0 <= value && value < 64);
+}
 
 int Position::row() const
 {
+	AssertValid();
 	return value / 8;
 }
 
 
 int Position::col() const
 {
+	AssertValid();
 	return value % 8;
 }
 
 
 int Position::index() const
 {
+	AssertValid();
 	return value;
 }
 
 BitBoard Position::ToSingletonBoard() const
 {
+	AssertValid();
 	return BitBoard(((uint64_t) 1)<< value);
 }
 
 Position Position::verticalFlip() const{
+	AssertValid();
 	return Position(value ^ 56);
 }
 

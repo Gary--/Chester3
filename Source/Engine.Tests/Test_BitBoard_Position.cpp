@@ -53,7 +53,6 @@ namespace EngineTests
 
 		TEST_METHOD(Position_Get_Row_Col)
 		{
-			Assert::AreEqual(Position(0), Position());
 
 			FOR_64(i){
 				Position pos(i);

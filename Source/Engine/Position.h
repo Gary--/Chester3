@@ -13,6 +13,8 @@ class Position
 private:
 	
 	uint8_t value;
+	void AssertValid() const;
+
 public:
 	Position();
 	explicit Position(int value);
