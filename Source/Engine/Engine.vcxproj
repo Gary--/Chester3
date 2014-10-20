@@ -27,6 +27,7 @@
     <ClInclude Include="chess_macros.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Position.h" />
   </ItemGroup>
