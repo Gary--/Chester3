@@ -60,7 +60,104 @@ public:
 		Assert::AreEqual(Piece::PAWN, conf.getPieceAt(pos2));
 	}
 
+	TEST_METHOD(Char_PieceConversions) {
+		int c = 0;
+		FOR_PIECE(piece, Piece::EMPTY, Piece::KING) {
+			c++;
+			FOR_TURN(turn) {
+				char rep = ChessUtils::charFromPieceTurn(turn, piece);
+				Assert::AreEqual(piece, ChessUtils::pieceFromChar(rep));
+
+				if (piece != Piece::EMPTY) {
+					Assert::AreEqual(turn, ChessUtils::turnFromChar(rep));
+				}
+			}
+		}
+
+		Assert::AreEqual(7, c);
+	}
+
+
+
+	TEST_METHOD(FEN_PieceSet) {
+		//Starting configuration
+		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+
+		FOR_BIT(bit, BitBoard::rowBits(1) | BitBoard::rowBits(6)) {
+			Position pos = bit.ToPosition();
+			Assert::AreEqual(Piece::PAWN, conf.getPieceAt(pos));
+		}
+
+		FOR_BIT(bit, BitBoard::rowBits(0) | BitBoard::rowBits(1)) {
+			Position pos = bit.ToPosition();
+			Assert::AreEqual(Turn::BLACK, conf.getOwnerAt(pos));
+		}
+
+		FOR_BIT(bit, BitBoard::rowBits(6) | BitBoard::rowBits(7)) {
+			Position pos = bit.ToPosition();
+			Assert::AreEqual(Turn::WHITE, conf.getOwnerAt(pos));
+		}
+	}
+
+	TEST_METHOD(FEN_TurnSet) {
+		{
+			GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			Assert::AreEqual(Turn::WHITE, conf.getTurn());
+		}
+
+		{
+		    GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1");
+		    Assert::AreEqual(Turn::BLACK, conf.getTurn());
+	    }
+	}
+	
+	TEST_METHOD(FEN_Castling) {
+
+		GameConfiguration conf0("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+		GameConfiguration conf1("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
+		FOR_TURN(turn) {
+			FOR_SIDE(side) {
+				Assert::IsTrue(conf0.getCanCastle(turn, side));
+				Assert::IsFalse(conf1.getCanCastle(turn, side));
+			}
+		}
+	}
+
+	TEST_METHOD(FEN_Enpeasent) {
+		{
+			GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, conf.getEnpeasentColumn());
+		} 
+		{
+		    GameConfiguration conf("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+			Assert::AreEqual(4, conf.getEnpeasentColumn());
+	    }
+	}
+
+	TEST_METHOD(FEN_TurnCounts) {
+		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 42 41");
+		Assert::AreEqual(42, conf.getHalfMoveClock());
+		Assert::AreEqual(41, conf.getMoveNumber());
+	}
+
+
+	void testConvert(std::string FEN) {
+		Assert::AreEqual(FEN, GameConfiguration(FEN).str());
+	}
+	TEST_METHOD(FEN_Generate) {
+		testConvert("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+		testConvert("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+		testConvert("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2");
+		testConvert("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2");
+		testConvert("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
+		testConvert("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
+		testConvert("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1");
+		testConvert("r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1");
+
+	}
+	//TEST CLASS END
 	};
+
 
 
 }

@@ -7,6 +7,10 @@ struct GameConfiguration {
 
 	
 public:
+	GameConfiguration();
+	GameConfiguration(std::string ForsythEdwardsNotation);
+	~GameConfiguration();
+
 	Turn getTurn() const;
 	void setTurn(Turn turn);
 
@@ -30,8 +34,7 @@ public:
 
 	std::string str() const;
 
-	GameConfiguration();
-	~GameConfiguration();
+
 
 	const static int NO_ENPEASENT_COLUMN;
 private:

@@ -1,5 +1,9 @@
 #include "GameConfiguration.h"
+#include "chess_macros.h"
+#include <sstream>
 
+using namespace std;
+using namespace ChessUtils;
 
 GameConfiguration::GameConfiguration() 
 {
@@ -17,6 +21,71 @@ GameConfiguration::GameConfiguration()
 	setHalfMoveClock(0);
 	setMoveNumber(1);
 	setEnpeasentColumn(NO_ENPEASENT_COLUMN);
+}
+
+GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
+:GameConfiguration() {
+	istringstream ss(ForsythEdwardsNotation);
+
+	// Pieces
+	string pieces;
+	ss >> pieces;
+	int r = 0;
+	int c = 0;
+	for (char ch : pieces) {
+		if (ch == '/') {
+			r++;
+			_ASSERTE(c == 8);
+			c = 0;
+			continue;
+		}
+		if ('1' <= ch && ch <= '8') {
+			c += ch - '0';
+			continue;
+		}
+
+		setPieceAt(Position(r, c), turnFromChar(ch), pieceFromChar(ch));
+		c++;
+	}
+	
+	//turn
+	string turn;
+	ss >> turn;
+	setTurn(turn == "w" ? Turn::WHITE : Turn::BLACK);
+	
+
+	//castling
+	string castling;
+	ss >> castling;
+	if (castling != "-") {
+		for (char ch : castling) {
+			if (ch == 'K') {
+				setCanCastle(Turn::WHITE, Side::RIGHT, true);
+			} else if (ch == 'Q') {
+				setCanCastle(Turn::WHITE, Side::LEFT, true);
+			} else 	if (ch == 'k') {
+				setCanCastle(Turn::BLACK, Side::RIGHT, true);
+			} else if (ch == 'q') {
+				setCanCastle(Turn::BLACK, Side::LEFT, true);
+			}
+		}
+	}
+	
+	//enpeasnet
+	string enpeasent;
+	ss >> enpeasent;
+	if (enpeasent != "-") {
+		setEnpeasentColumn(enpeasent[0]-'a');
+	}
+
+	int halfTurns;
+	ss >> halfTurns;
+	setHalfMoveClock(halfTurns);
+
+	int fullTurns;
+	ss >> fullTurns;
+	setMoveNumber(fullTurns);
+
 }
 
 const int GameConfiguration::NO_ENPEASENT_COLUMN = 8;
@@ -78,6 +147,75 @@ void GameConfiguration::setEnpeasentColumn(int value) {
 	enpeasentColumn = value;
 }
 
-std::string GameConfiguration::str() const {
-	return "to be implemented as FEN";
+string GameConfiguration::str() const {
+	string res;
+	
+	//PIECES
+	FOR_8(r) {
+		int empties = 0;
+		for (int c = 0; c < 8;++c) {
+			Position pos(r, c);
+			if (getPieceAt(pos) != Piece::EMPTY) {
+				if (empties > 0) {
+					res += '0' + empties;
+					empties = 0;
+				}
+				res += ChessUtils::charFromPieceTurn(getOwnerAt(pos), getPieceAt(pos));
+			} else {
+				empties++;
+			}
+		}
+		if (empties > 0) {
+			res += '0' + empties;
+			empties = 0;
+		}
+
+		if (r != 7) {
+			res += '/';
+		}
+	}
+	res += ' ';
+
+	//Turn
+	res += getTurn() == Turn::WHITE ? 'w' : 'b';
+	res += ' ';
+
+	//Castling
+	string castleStr;
+	if (getCanCastle(Turn::WHITE, Side::RIGHT)) {
+		castleStr += 'K';
+	}
+	if (getCanCastle(Turn::WHITE, Side::LEFT)) {
+		castleStr += 'Q';
+	}
+	if (getCanCastle(Turn::BLACK, Side::RIGHT)) {
+		castleStr += 'k';
+	}
+	if (getCanCastle(Turn::BLACK, Side::LEFT)) {
+		castleStr += 'q';
+	}
+
+	if (castleStr == "") {
+		castleStr = "-";
+	}
+	res += castleStr;
+	res += ' ';
+
+	//enpeasent
+	if (getEnpeasentColumn() != NO_ENPEASENT_COLUMN) {
+		res += 'a' + getEnpeasentColumn();
+		res += getTurn() == Turn::WHITE ? '6' : '3';
+	} else {
+		res += '-';
+	}
+	res += ' ';
+
+	// counts
+	res += to_string(getHalfMoveClock());
+	res += ' ';
+	res += to_string(getMoveNumber());
+
+
+	return res;
 }
+
