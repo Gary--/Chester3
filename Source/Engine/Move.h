@@ -14,6 +14,8 @@ enum class MoveType : uint8_t{
 	PROMO_ROOK		= 8,
 	PROMO_QUEEN		= 9,
 	INVALID			= 10,
+	RESIGN			= 11,
+	NULL_MOVE		= 12,
 };
 
 struct Move
@@ -21,6 +23,8 @@ struct Move
 
 public:
 	Move(MoveType type,Position from, Position to);
+	static Move RESIGN();
+	static Move NULL_MOVE();
 	Move();
 	~Move();
 

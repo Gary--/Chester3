@@ -16,8 +16,8 @@ private:
 	void AssertValid() const;
 
 public:
-	Position();
-	explicit Position(int value);
+	Position();//generates an invalid default Position
+	explicit Position(int index);
 	explicit Position(const char* value);
 	explicit Position(const std::string& value);
 	Position(int row, int column);
