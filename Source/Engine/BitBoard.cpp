@@ -65,10 +65,21 @@ BitBoard const BitBoard::LSB(){
 #pragma endregion
 
 
-const BitBoard BitBoard::EMPTY = BitBoard(0);
-const BitBoard BitBoard::FULL = BitBoard(~0ULL);
-const BitBoard BitBoard::BLACK_SQUARES = BitBoard(0x55AA55AA55AA55AAULL);
-const BitBoard BitBoard::WHITE_SQUARES = BitBoard(0xAA55AA55AA55AA55ULL);
+
+BitBoard BitBoard::EMPTY() {
+	return BitBoard(0);
+}
+BitBoard BitBoard::FULL() {
+	return BitBoard(~0ULL);
+}
+BitBoard BitBoard::BLACK_SQUARES() {
+	return  BitBoard(0x55AA55AA55AA55AAULL);
+}
+BitBoard BitBoard::WHITE_SQUARES() {
+	return BitBoard(0xAA55AA55AA55AA55ULL);
+}
+
+
 
 std::string BitBoard::str() const
 {
@@ -84,7 +95,7 @@ std::string BitBoard::str() const
 }
 
 bool  BitBoard::contains(Position position) const{
-	return (position.ToSingletonBoard() & (*this)) != BitBoard::EMPTY;
+	return (position.ToSingletonBoard() & (*this)) != BitBoard::EMPTY();
 }
 
 

@@ -4,7 +4,7 @@
 #include "Position.h"
 #include "chess_consts.h"
 
-#define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY; (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY; BITS_COPY^=VAR)
+#define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY(); (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY(); BITS_COPY^=VAR)
 
 
 class Position;
@@ -45,10 +45,12 @@ public:
 	BitBoard const LSB();
 	bool  contains(Position position) const;
 
-	const static BitBoard EMPTY;
-	const static BitBoard FULL;
-	const static BitBoard BLACK_SQUARES;
-	const static BitBoard WHITE_SQUARES;
+	static BitBoard EMPTY();
+	static BitBoard FULL();
+	static BitBoard BLACK_SQUARES();
+	static BitBoard WHITE_SQUARES();
+
+
 
 	
 

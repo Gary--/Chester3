@@ -88,10 +88,11 @@ GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 
 }
 
-const int GameConfiguration::NO_ENPEASENT_COLUMN = 8;
+
 
 GameConfiguration::~GameConfiguration() {}
 
+const int GameConfiguration::NO_ENPEASENT_COLUMN = 8;
 
 Turn GameConfiguration::getTurn() const {
 	return turn;

@@ -1,5 +1,15 @@
 #include "chess_consts.h"
 #include <crtdbg.h>
+#include <iostream>
+
+
+#include "BitBoard.h"
+using namespace std;
+void test1() {
+	BitBoard bb = BitBoard::FULL();
+	cout << bb.AsInt64() << endl;
+}
+
 // === TURN ITERATOR
 Turn operator!(Turn turn) {
 #pragma warning(disable : 4800) //Forcing to bool

@@ -19,16 +19,16 @@ namespace EngineTests
 		const int64_t b = 0xf647ae931f3e323d;
 		const int64_t c = 0x614bac23febd04f1;
 
-
+		
 		TEST_METHOD(BitBoard_Basic_Bitwise)
 		{
-			Assert::AreEqual(BitBoard::EMPTY, ~BitBoard::FULL);
-			Assert::IsTrue(BitBoard::WHITE_SQUARES.contains(Position(7, 7)));
+			Assert::AreEqual(BitBoard::EMPTY(), ~BitBoard::FULL());
+			Assert::IsTrue(BitBoard::WHITE_SQUARES().contains(Position(7, 7)));
 
-			Assert::AreEqual(BitBoard::EMPTY, BitBoard::WHITE_SQUARES & BitBoard::BLACK_SQUARES);
-			Assert::AreEqual(BitBoard::FULL, BitBoard::WHITE_SQUARES ^ BitBoard::BLACK_SQUARES);
-			Assert::AreEqual(32, BitBoard::BLACK_SQUARES.count());
-			Assert::AreEqual(32, BitBoard::WHITE_SQUARES.count());
+			Assert::AreEqual(BitBoard::EMPTY(), BitBoard::WHITE_SQUARES() & BitBoard::BLACK_SQUARES());
+			Assert::AreEqual(BitBoard::FULL(), BitBoard::WHITE_SQUARES() ^ BitBoard::BLACK_SQUARES());
+			Assert::AreEqual(32, BitBoard::BLACK_SQUARES().count());
+			Assert::AreEqual(32, BitBoard::WHITE_SQUARES().count());
 
 			Assert::AreNotEqual(BitBoard(a), BitBoard(b));
 
@@ -38,6 +38,18 @@ namespace EngineTests
 			Assert::AreEqual(BitBoard(~a), ~BitBoard(a));
 		}
 
+		TEST_METHOD(Position_const_char_ctor) {
+			Assert::AreEqual(Position(0, 0), Position("a8"));
+			Assert::AreEqual(Position(0, 7), Position("h8"));
+			Assert::AreEqual(Position(7, 0), Position("a1"));
+			Assert::AreEqual(Position(7, 7), Position("h1"));
+		}
+
+		TEST_METHOD(Position_string_conversions) {
+			FOR_POSITION_64(pos) {
+				Assert::AreEqual(pos, Position(pos.str()));
+			}
+		}
 
 		TEST_METHOD(Position_Get_Row_Col)
 		{
@@ -73,7 +85,7 @@ namespace EngineTests
 		}
 
 		void testIter(BitBoard bb){
-			BitBoard acc = BitBoard::EMPTY;
+			BitBoard acc = BitBoard::EMPTY();
 			FOR_BIT(x, bb){
 				acc ^= x;
 			}
@@ -91,7 +103,7 @@ namespace EngineTests
 				Assert::AreEqual(Position(i), Position(i).ToSingletonBoard().ToPosition());
 			}
 
-			FOR_BIT(bit, BitBoard::FULL){
+			FOR_BIT(bit, BitBoard::FULL()){
 				Assert::AreEqual(bit, bit.ToPosition().ToSingletonBoard());
 			}
 		}
@@ -99,14 +111,14 @@ namespace EngineTests
 
 		TEST_METHOD(BitBoard_Contains){
 			FOR_64(i){
-				Assert::IsTrue(BitBoard::FULL.contains(Position(i)));
-				Assert::IsFalse(BitBoard::EMPTY.contains(Position(i)));
+				Assert::IsTrue(BitBoard::FULL().contains(Position(i)));
+				Assert::IsFalse(BitBoard::EMPTY().contains(Position(i)));
 			}
 		}
 
 		TEST_METHOD(BitBoard_Count){
-			Assert::AreEqual(0,  BitBoard::EMPTY.count());
-			Assert::AreEqual(64, BitBoard::FULL.count());
+			Assert::AreEqual(0,  BitBoard::EMPTY().count());
+			Assert::AreEqual(64, BitBoard::FULL().count());
 
 			BitBoard A(a);
 			BitBoard B(b);
@@ -128,8 +140,8 @@ namespace EngineTests
 
 
 		TEST_METHOD(BitBoard_Flip_Sanity){
-			Assert::AreEqual(BitBoard::FULL, BitBoard::FULL.verticalFlip());
-			Assert::AreEqual(BitBoard::EMPTY, BitBoard::EMPTY.verticalFlip());
+			Assert::AreEqual(BitBoard::FULL(), BitBoard::FULL().verticalFlip());
+			Assert::AreEqual(BitBoard::EMPTY(), BitBoard::EMPTY().verticalFlip());
 
 			BitBoard A(a);
 			BitBoard B(b);
@@ -163,8 +175,8 @@ namespace EngineTests
 
 
 		TEST_METHOD(BitBoard_RowCol_Bits){
-			BitBoard acc1 = BitBoard::EMPTY;
-			BitBoard acc2 = BitBoard::EMPTY;
+			BitBoard acc1 = BitBoard::EMPTY();
+			BitBoard acc2 = BitBoard::EMPTY();
 
 			FOR_8(r){
 				BitBoard row = BitBoard::rowBits(r);
@@ -177,8 +189,8 @@ namespace EngineTests
 				}
 			}
 
-			Assert::AreEqual(BitBoard::FULL, acc1);
-			Assert::AreEqual(BitBoard::FULL, acc2);
+			Assert::AreEqual(BitBoard::FULL(), acc1);
+			Assert::AreEqual(BitBoard::FULL(), acc2);
 		}
 
 		
@@ -207,16 +219,16 @@ namespace EngineTests
 
 		// Check that everybit is sometimes on and sometimes off.
 		TEST_METHOD(BitBoard_random){
-			BitBoard ons = BitBoard::EMPTY;
-			BitBoard offs = BitBoard::EMPTY;
+			BitBoard ons = BitBoard::EMPTY();
+			BitBoard offs = BitBoard::EMPTY();
 			for (int i = 0; i < 100; ++i){
 				BitBoard bb = BitBoard::random();
 				ons |= bb;
 				offs |= ~bb;
 			}
 
-			Assert::AreEqual(BitBoard::FULL, ons);
-			Assert::AreEqual(BitBoard::FULL, offs);
+			Assert::AreEqual(BitBoard::FULL(), ons);
+			Assert::AreEqual(BitBoard::FULL(), offs);
 		}
 
 

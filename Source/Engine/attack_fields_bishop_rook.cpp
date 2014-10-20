@@ -29,7 +29,7 @@ namespace {
 	}
 
 	BitBoard attackableSquares(BitBoard board, int r, int c, Piece piece, bool ignoreLast) {
-		BitBoard res = BitBoard::EMPTY;
+		BitBoard res = BitBoard::EMPTY();
 		for (int dr = -1; dr <= 1; ++dr) {
 			for (int dc = -1; dc <= 1; ++dc) {
 				bool right = (dr || dc) && !(dr*dc);
@@ -43,7 +43,7 @@ namespace {
 						res |= BitBoard(r2, c2);
 					}
 
-					if ((BitBoard(r2,c2) & board)!=BitBoard::EMPTY) {
+					if ((BitBoard(r2,c2) & board)!=BitBoard::EMPTY()) {
 						break;
 					}
 					r2 += dr;
@@ -60,10 +60,10 @@ namespace {
 			for (int c = 0; c < 8; ++c) {
 				
 				int index = Position(r, c).index();
-				rookOccupancy[index] = attackableSquares(BitBoard::EMPTY, r, c, Piece::ROOK, true);
+				rookOccupancy[index] = attackableSquares(BitBoard::EMPTY(), r, c, Piece::ROOK, true);
 				rookShift[index] = 64 - rookOccupancy[index].count();
 
-				bishopOccupancy[index] = attackableSquares(BitBoard::EMPTY, r, c, Piece::BISHOP, true);
+				bishopOccupancy[index] = attackableSquares(BitBoard::EMPTY(), r, c, Piece::BISHOP, true);
 				bishopShift[index] = 64 - bishopOccupancy[index].count();
 			}
 		}
@@ -72,7 +72,7 @@ namespace {
 
 	std::vector<BitBoard> allFieldsUsingTheseBits(BitBoard bits) {
 		std::vector<BitBoard> res;
-		res.push_back(BitBoard::EMPTY);
+		res.push_back(BitBoard::EMPTY());
 
 		FOR_BIT(bit,bits){
 

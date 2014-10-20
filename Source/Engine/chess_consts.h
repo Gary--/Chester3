@@ -18,6 +18,7 @@ enum class Piece : uint8_t {
 #define FOR_PIECE(x,low,high) for(Piece x=low;x<=high;x=(Piece)((uint8_t)x+1))
 //#define FOR_PIECE(x) FOR_PIECE(x,Piece::PAWN,PIECE::KING)
 
+void test1();
 
 //Used only for castling
 #define FOR_SIDE(x) for(Side x=Side::LEFT,temp__##__LINE__;x==Side::LEFT || temp__##__LINE__ == Side::LEFT;temp__##__LINE__ = x, x=Side::RIGHT )

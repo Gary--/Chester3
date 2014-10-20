@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "BitBoard.h"
+#include <string>
 
 #define FOR_POSITION_64(p) for(Position p=Position(0);p.index()<64;p=Position(p.index()+1))
 
@@ -15,6 +16,8 @@ private:
 public:
 	Position();
 	explicit Position(int value);
+	explicit Position(const char* value);
+	explicit Position(const std::string& value);
 	Position(int row, int column);
 
 

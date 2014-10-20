@@ -4,9 +4,8 @@
 #include "chess_consts.h"
 using namespace std;
 
-int main(){
+int main() {
 
-	cout << BitBoard::FULL.AsInt64() << endl;
-	
+	cout << BitBoard::FULL().AsInt64() << endl;
 	return 0;
 }

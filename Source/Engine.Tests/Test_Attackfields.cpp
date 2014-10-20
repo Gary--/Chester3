@@ -78,7 +78,7 @@ public:
 		FOR_8(r) {
 			FOR_8(c) {
 				Position pos(r, c);
-				BitBoard unblocked = AttackFields::rookTargs(pos, BitBoard::EMPTY);
+				BitBoard unblocked = AttackFields::rookTargs(pos, BitBoard::EMPTY());
 				Assert::AreEqual(BitBoard::colBits(c) ^ BitBoard::rowBits(r),
 								 unblocked);
 			}
@@ -92,15 +92,15 @@ public:
 	
 
 	TEST_METHOD(Bishop_Targs) {
-		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 0), BitBoard::EMPTY).count());
-		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 7), BitBoard::EMPTY).count());
-		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 0), BitBoard::EMPTY).count());
-		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 7), BitBoard::EMPTY).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 0), BitBoard::EMPTY()).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(0, 7), BitBoard::EMPTY()).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 0), BitBoard::EMPTY()).count());
+		Assert::AreEqual(7, AttackFields::bishopTargs(Position(7, 7), BitBoard::EMPTY()).count());
 
-		Assert::AreEqual(13, AttackFields::bishopTargs(Position(4, 4), BitBoard::EMPTY).count());
-		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY).count());
-		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY).count());
-		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 3), BitBoard::EMPTY).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(4, 4), BitBoard::EMPTY()).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY()).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 4), BitBoard::EMPTY()).count());
+		Assert::AreEqual(13, AttackFields::bishopTargs(Position(3, 3), BitBoard::EMPTY()).count());
 
 		BitBoard surroundedBlockers =
 			BitBoard(3 ,3) | BitBoard(3, 5) | BitBoard(5, 3) | BitBoard(5, 5);
@@ -126,16 +126,16 @@ public:
 		FOR_POSITION_64(kingPos) {
 			FOR_POSITION_64(pinnedPos) {
 				BitBoard targs = AttackFields::pinnedTargs(kingPos, pinnedPos);
-				Assert::AreNotEqual(BitBoard::EMPTY, targs);
+				Assert::AreNotEqual(BitBoard::EMPTY(), targs);
 
 				//We are not pinned
-				if (!AttackFields::queenTargs(kingPos, BitBoard::EMPTY).contains(pinnedPos)) {
-					Assert::AreEqual(BitBoard::FULL, targs);
+				if (!AttackFields::queenTargs(kingPos, BitBoard::EMPTY()).contains(pinnedPos)) {
+					Assert::AreEqual(BitBoard::FULL(), targs);
 					continue;
 				}
 
 				Assert::AreEqual(targs& ~kingPos.ToSingletonBoard(), 
-								 AttackFields::queenTargs(kingPos, BitBoard::EMPTY) & targs);
+								 AttackFields::queenTargs(kingPos, BitBoard::EMPTY()) & targs);
 			}
 		}
 	}
@@ -144,12 +144,12 @@ public:
 		FOR_POSITION_64(kingPos) {
 			FOR_POSITION_64(attackerPos) {
 				BitBoard targs = AttackFields::blockingTargs(kingPos, attackerPos);
-				Assert::AreNotEqual(BitBoard::EMPTY, targs);
+				Assert::AreNotEqual(BitBoard::EMPTY(), targs);
 				Assert::IsTrue(targs.contains(attackerPos));
 
 				//Does not actually attack
-				if (!AttackFields::queenTargs(attackerPos, BitBoard::EMPTY).contains(kingPos)) {
-					Assert::AreEqual(BitBoard::FULL, targs);
+				if (!AttackFields::queenTargs(attackerPos, BitBoard::EMPTY()).contains(kingPos)) {
+					Assert::AreEqual(BitBoard::FULL(), targs);
 					continue;
 				}
 

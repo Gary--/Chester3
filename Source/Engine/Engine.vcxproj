@@ -39,6 +39,7 @@
     <ClCompile Include="chess_consts.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Position.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
