@@ -27,7 +27,8 @@
     <ClInclude Include="chess_macros.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
-    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameHash.h" />
+    <ClInclude Include="GameResult.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Position.h" />
   </ItemGroup>
@@ -41,6 +42,8 @@
     <ClCompile Include="chess_consts.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
+    <ClCompile Include="GameHash.cpp" />
+    <ClCompile Include="Game_main.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Position.cpp" />

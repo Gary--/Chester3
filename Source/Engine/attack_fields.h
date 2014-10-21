@@ -10,7 +10,7 @@ namespace AttackFields {
 
 	BitBoard kingTargs(Position position);
 	BitBoard knightTargs(Position position);
-	BitBoard pawnTargs(Turn turn, Position position);
+	BitBoard pawnTargs(Position position,Turn turn);
 	BitBoard bishopTargs(Position position, BitBoard blockers);
 	BitBoard rookTargs(Position position, BitBoard blockers);
 	BitBoard queenTargs(Position position, BitBoard blockers);

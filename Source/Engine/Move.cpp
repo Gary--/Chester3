@@ -18,6 +18,6 @@ Move Move::RESIGN(){
 	return Move(MoveType::RESIGN, Position(), Position());
 }
 
-Move Move::RESIGN(){
+Move Move::NULL_MOVE(){
 	return Move(MoveType::NULL_MOVE, Position(), Position());
 }

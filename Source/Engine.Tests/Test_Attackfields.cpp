@@ -67,10 +67,10 @@ public:
 	TEST_METHOD(Pawn_Targs) {
 		Assert::AreEqual(
 			Position(5, 3).ToSingletonBoard() |Position(5, 5).ToSingletonBoard()
-			, AttackFields::pawnTargs(Turn::BLACK, Position(4, 4)));
+			, AttackFields::pawnTargs(Position(4, 4),Turn::BLACK ));
 		Assert::AreEqual(
 			Position(3, 3).ToSingletonBoard() | Position(3, 5).ToSingletonBoard()
-			, AttackFields::pawnTargs(Turn::WHITE, Position(4, 4)));
+			, AttackFields::pawnTargs(Position(4, 4),Turn::WHITE ));
 	}
 	
 

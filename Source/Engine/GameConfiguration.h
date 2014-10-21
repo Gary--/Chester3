@@ -3,6 +3,7 @@
 #include "BitBoard.h"
 #include "chess_consts.h"
 #include <string>
+
 struct GameConfiguration {
 
 	

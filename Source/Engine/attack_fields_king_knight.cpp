@@ -56,7 +56,7 @@ BitBoard AttackFields::knightTargs(Position position) {
 	return knightTargsArr[position.index()];
 }
 
-BitBoard AttackFields::pawnTargs(Turn turn,Position position) {
+BitBoard AttackFields::pawnTargs(Position position,Turn turn ) {
 #pragma warning(disable : 4800)
 	return pawnTargsArr[(bool)turn][position.index()];
 #pragma warning(default : 4800)
