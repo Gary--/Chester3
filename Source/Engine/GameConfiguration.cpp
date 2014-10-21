@@ -78,14 +78,19 @@ GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 		setEnpeasentColumn(enpeasent[0]-'a');
 	}
 
+	//Turn counts
 	int halfTurns;
-	ss >> halfTurns;
-	setHalfMoveClock(halfTurns);
+	if (ss >> halfTurns) { //OPTIONAL turn counts
+		_ASSERTE(halfTurns >= 0);
+		setHalfMoveClock(halfTurns);
 
-	int fullTurns;
-	ss >> fullTurns;
-	setMoveNumber(fullTurns);
-
+		int fullTurns;
+		ss >> fullTurns;
+		_ASSERTE(fullTurns >= 0);
+		if (fullTurns) {
+			setMoveNumber(fullTurns);
+		}
+	}
 }
 
 

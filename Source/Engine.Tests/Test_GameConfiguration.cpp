@@ -32,6 +32,8 @@ public:
 		}
 	}
 
+
+
 	TEST_METHOD(Getters_Setters) {
 		GameConfiguration conf;
 
@@ -99,14 +101,20 @@ public:
 		}
 	}
 
+	TEST_METHOD(FEN_Optional_TurnCounts) {
+		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
+		Assert::AreEqual(0,conf.getHalfMoveClock());
+		Assert::AreEqual(1, conf.getMoveNumber());
+	}
+
 	TEST_METHOD(FEN_TurnSet) {
 		{
-			GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
 			Assert::AreEqual(Turn::WHITE, conf.getTurn());
 		}
 
 		{
-		    GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1");
+		    GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -");
 		    Assert::AreEqual(Turn::BLACK, conf.getTurn());
 	    }
 	}
