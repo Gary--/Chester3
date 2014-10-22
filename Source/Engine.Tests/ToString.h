@@ -4,6 +4,7 @@
 #include "CppUnitTest.h"
 #include "BitBoard.h"
 #include "GameConfiguration.h"
+#include "Game.h"
 
 #define RETURN_WSTRING(x) std::wstring _s; std::string s(x.str()); _s.assign(s.begin(),s.end());  return _s;
 #define define_specialization(type) template<>static std::wstring ToString<type>(const type& x) {RETURN_WSTRING(x);}
@@ -65,6 +66,31 @@ namespace Microsoft
 				std::string value;
 
 				value = side == Side::LEFT ? "Left" : "Right";
+				res.assign(value.begin(), value.end());
+				return res;
+			}
+
+			template<>static std::wstring ToString<GameResult>(const GameResult& result) {
+				std::wstring res;
+				std::string value;
+
+				switch (result) {
+				case GameResult::BLACK_WIN:
+					value = "Black_Win";
+					break;
+				case GameResult::IN_PROGRESS:
+					value = "In_Progress";
+					break;
+				case GameResult::NONE:
+					value = "Knight";
+					break;
+				case GameResult::STALEMATE:
+					value = "Stalemate";
+					break;
+				case GameResult::WHITE_WIN:
+					value = "White_Win";
+					break;
+				}
 				res.assign(value.begin(), value.end());
 				return res;
 			}

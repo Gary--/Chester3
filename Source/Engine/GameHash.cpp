@@ -52,6 +52,7 @@ GameHash::GameHash(const GameConfiguration& conf) {
 	for (int i = 0; i < 2; ++i) {
 		for (int j = 0; j < 2; ++j) {
 			canCastle[i][j] = true;
+			hash ^= castleZorbist[i][j];
 		}
 	}
 	FOR_TURN(turn) {
@@ -72,6 +73,13 @@ GameHash::GameHash(const GameConfiguration& conf) {
 
 }
 
+bool GameHash::getCanCastle(Turn player, Side side) const {
+	return canCastle[(bool)player][bool(side)];
+}
+
+int GameHash::getEnpeasent() const {
+	return enpeasent;
+}
 
 void GameHash::togglePiece(Position position,Turn player, Piece piece ) {
 	hash ^= zorbist[(bool)player][(uint8_t)piece][position.index()];

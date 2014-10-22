@@ -15,6 +15,8 @@ public:
 	void setEnpeasent(int column);
 	void voidCastle(Turn player, Side side);
 
+	bool getCanCastle(Turn player, Side side) const;
+	int getEnpeasent() const;
 	//===== gets
 	uint64_t toInt64() const;
 

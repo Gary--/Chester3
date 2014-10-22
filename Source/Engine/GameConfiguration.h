@@ -11,6 +11,7 @@ public:
 	GameConfiguration();
 	GameConfiguration(std::string ForsythEdwardsNotation);
 	~GameConfiguration();
+	static GameConfiguration extractFromGame();
 
 	Turn getTurn() const;
 	void setTurn(Turn turn);

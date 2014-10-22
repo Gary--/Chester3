@@ -1,6 +1,7 @@
 #include "GameConfiguration.h"
 #include "chess_macros.h"
 #include <sstream>
+#include "Game.h"
 
 using namespace std;
 using namespace ChessUtils;
@@ -22,6 +23,27 @@ GameConfiguration::GameConfiguration()
 	setMoveNumber(1);
 	setEnpeasentColumn(NO_ENPEASENT_COLUMN);
 }
+
+GameConfiguration GameConfiguration::extractFromGame() {
+	GameConfiguration conf;
+	conf.setTurn(Game::getTurn());
+	conf.setEnpeasentColumn(Game::getEnpeasentColumn());
+	conf.setHalfMoveClock(Game::getHalfMoveClock());
+	conf.setMoveNumber(Game::getMoveNumber());
+
+	FOR_TURN(turn) {
+		FOR_SIDE(side) {
+			conf.setCanCastle(turn,side,Game::getCanCastle(turn, side));
+		}
+	}
+
+	FOR_POSITION_64(pos) {
+		conf.setPieceAt(pos, Game::getOwnerAt(pos), Game::getPieceAt(pos));
+	}
+	
+	return conf;
+}
+
 
 GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 :GameConfiguration() {

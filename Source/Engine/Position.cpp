@@ -5,13 +5,13 @@
 using namespace std;
 
 
-Position::Position() : value(64)
+Position::Position() : Position(64)
 {
 }
 
 
 Position::Position(int value) : value(value) {
-	ChessAssert::Assert_64(value);
+	_ASSERTE(0 <= value && value <= 64);//allow one more for invalid position
 }
 Position::Position(int row, int column) : value(8 * row + column) {
 	ChessAssert::Assert_8(row);
@@ -61,7 +61,6 @@ int Position::col() const
 
 int Position::index() const
 {
-	AssertValid();
 	return value;
 }
 

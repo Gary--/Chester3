@@ -237,6 +237,7 @@
     <ClCompile Include="Test_Attackfields.cpp" />
     <ClCompile Include="Test_BitBoard_Position.cpp" />
     <ClCompile Include="Test_GameConfiguration.cpp" />
+    <ClCompile Include="Test_Game_Setup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

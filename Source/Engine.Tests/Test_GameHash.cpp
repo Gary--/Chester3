@@ -14,6 +14,10 @@ public:
 		GameHash::init();
 	}
 
+	TEST_METHOD(Hash_Is_Default_Zero) {
+		Assert::AreEqual((uint64_t)0, GameHash(GameConfiguration()).toInt64());
+	}
+
 	TEST_METHOD(Hash_Seems_To_Change) {
 		GameHash hash(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
@@ -83,10 +87,12 @@ public:
 		uint64_t prev = hash.toInt64();
 		FOR_TURN(turn) {
 			FOR_SIDE(side) {
+				Assert::IsTrue(hash.getCanCastle(turn, side));
 				hash.voidCastle(turn, side);
 				Assert::AreNotEqual(prev, hash.toInt64());
 				prev = hash.toInt64();
 
+				Assert::IsFalse(hash.getCanCastle(turn, side));
 				hash.voidCastle(turn, side);
 				Assert::AreEqual(prev, hash.toInt64());
 			}

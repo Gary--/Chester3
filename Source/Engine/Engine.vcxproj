@@ -43,7 +43,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="GameHash.cpp" />
+    <ClCompile Include="Game_configure.cpp" />
     <ClCompile Include="Game_main.cpp" />
+    <ClCompile Include="Game_private_convenience.cpp" />
+    <ClCompile Include="Game_query.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Position.cpp" />
