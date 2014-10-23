@@ -42,8 +42,8 @@ public:
 	//static int numValidMoves();
 	//static Move getMove(int n);//0<= n <numValidMoves()
 
-	//static void makeMove(Move move);
-	//static void undoMove();
+	static void makeMove(Move move);
+	static void undoMove();
 private:
 	// === FIELDS
 	static Turn curTurn;
@@ -68,6 +68,9 @@ private:
 
 	// === Private setters
 
+
+	// === Make move helpers
+	static void resign();
 
 	Game();
 	~Game();
