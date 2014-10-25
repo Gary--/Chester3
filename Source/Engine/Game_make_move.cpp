@@ -62,11 +62,36 @@ void Game::makeMove(Move move) {
 	hash.setEnpeasent(GameConfiguration::NO_ENPEASENT_COLUMN);
 #pragma endregion
 
+
+#pragma region Pawn Special
+	if (type == MoveType::PAWN_JUMP) {
+		BitBoard enpeasentFrom = toBit.shiftLeft() | toBit.shiftRight();
+		if ((*s(!curTurn, Piece::PAWN) & enpeasentFrom) != BitBoard::EMPTY()) {
+			hash.setEnpeasent(toPos.col());
+		}
+	}
+
+	if (type == MoveType::ENPEASENT) {
+		BitBoard capturedBit = toBit.shiftBackward(curTurn);
+		Position capturedPos = capturedBit.ToPosition();
+
+		toggleBit(!curTurn, capturedPos, Piece::PAWN);
+		setPieceAt(capturedPos, Piece::EMPTY);
+		hash.togglePiece(capturedPos, !curTurn, Piece::PAWN);
+
+	}
+
+#pragma endregion
+
 	// =====
 	if (curTurn == Turn::BLACK) {
 		moveCount++;
 	}
+
 	curTurn = !curTurn;
+	hash.toggleTurn();
+
+	integrityCheck();
 	
 }
 
@@ -92,21 +117,7 @@ void Game::undoMove() {
 
 
 
-
-	//bbAllPieces ^= fromBB;
-	//bbPlayerAllPieces[(bool)turn] ^= fromBB | toBB;
-	//bbPlayerPieces[(bool)turn][(int)piece] ^= fromBB | toBB;
-
-	//pieceTypeAt[fromInd] = piece;
-	//pieceTypeAt[toInd] = targ;
-
-	//if (targ != EMPTY) {//was a capture
-	//	bbPlayerAllPieces[(bool)other] ^= toBB;
-	//	bbPlayerPieces[(bool)other][(int)targ] ^= toBB;
-	//	playerPieceCounts[(bool)other][(int)targ] ++;
-	//} else {
-	//	bbAllPieces ^= toBB;
-	//}
+#pragma region Regular Move
 
 	ALL ^= fromBit;
 	*sp(curTurn) ^= fromBit | toBit;
@@ -121,8 +132,18 @@ void Game::undoMove() {
 	} else {
 		ALL ^= toBit;
 	}
+#pragma endregion
 
+#pragma region Pawn Special
+	if (type == MoveType::ENPEASENT) {
+		BitBoard capturedBit = toBit.shiftBackward(curTurn);
+		Position capturedPos = capturedBit.ToPosition();
 
+		setPieceAt(capturedPos, Piece::PAWN);
+		toggleBit(!curTurn, capturedPos, Piece::PAWN);
+	}
+
+#pragma endregion
 
 	integrityCheck();
 }

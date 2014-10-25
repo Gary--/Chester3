@@ -54,7 +54,7 @@ void Game::toggleBit(Turn turn, Position position, Piece piece) {
 	*sp(turn) ^= position.ToSingletonBoard();
 	ALL ^= position.ToSingletonBoard();
 
-	hash.togglePiece(position, turn, piece);
+	//hash.togglePiece(position, turn, piece);
 }
 
 

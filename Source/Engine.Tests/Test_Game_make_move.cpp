@@ -47,7 +47,7 @@ public:
 
 	void Test_Regular_Move0(const char* from, const char* to) {
 		//http://www.chessvideos.tv/bimg/1nf6dm4t1nhqo.png
-		GameConfiguration conf("r1b1kbnr/Npp1p1pp/8/2P5/2qp1p2/3P2PN/P1P1PP1P/R1BQKBnR w 0 1");
+		GameConfiguration conf("r1b1kbnr/Npp1p1pp/8/2P5/2qp1p2/3P2PN/P1P1PP1P/R1BQKBnR w - - 0 1");
 		Game::configure(conf);
 
 		Move move = regular(from, to);
@@ -71,8 +71,39 @@ public:
 	}
 	TEST_METHOD(Regular_Move) {
 		Test_Regular_Move0("a1", "b1");
-		Test_Regular_Move0("b1", "g1");
+		Test_Regular_Move0("h1", "g1");
 		Test_Regular_Move0("d3", "c4");
+	}
+
+
+	TEST_METHOD(Enpeasent_0) {
+		GameConfiguration conf("rnbqkbnr/ppp1p1pp/8/8/3p1p2/8/PPPPPPPP/RNBQKBNR w - -");
+		Game::configure(conf);
+
+		Game::makeMove(Move(MoveType::PAWN_JUMP, Position("e2"), Position("e4"), Piece::PAWN, Piece::EMPTY));
+		Assert::AreEqual(4, Game::getEnpeasentColumn());
+
+		Game::makeMove(Move(MoveType::ENPEASENT, Position("d4"), Position("e3"), Piece::PAWN, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("e4")));
+		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
+
+		Game::undoMove();
+		Game::undoMove();
+	}
+
+	TEST_METHOD(Enpeasent_1) {
+		GameConfiguration conf("rnbqkbnr/pppppppp/8/2P1P3/8/8/PP1P1PPP/RNBQKBNR b - -");
+		Game::configure(conf);
+
+		Game::makeMove(Move(MoveType::PAWN_JUMP, Position("d7"), Position("d5"), Piece::PAWN, Piece::EMPTY));
+		Assert::AreEqual(3, Game::getEnpeasentColumn());
+
+		Game::makeMove(Move(MoveType::ENPEASENT, Position("e5"), Position("d6"), Piece::PAWN, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("d5")));
+		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
+
+		Game::undoMove();
+		Game::undoMove();
 	}
 
 	};
