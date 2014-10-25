@@ -175,13 +175,13 @@ void GameConfiguration::setEnpeasentColumn(int value) {
 	enpeasentColumn = value;
 }
 
-string GameConfiguration::str() const {
+string GameConfiguration::str_min() const {
 	string res;
-	
+
 	//PIECES
 	FOR_8(r) {
 		int empties = 0;
-		for (int c = 0; c < 8;++c) {
+		for (int c = 0; c < 8; ++c) {
 			Position pos(r, c);
 			if (getPieceAt(pos) != Piece::EMPTY) {
 				if (empties > 0) {
@@ -236,6 +236,12 @@ string GameConfiguration::str() const {
 	} else {
 		res += '-';
 	}
+
+	return res;
+}
+
+string GameConfiguration::str() const {
+	string res = str_min();
 	res += ' ';
 
 	// counts

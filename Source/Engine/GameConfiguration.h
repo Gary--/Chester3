@@ -35,6 +35,7 @@ public:
 	void setEnpeasentColumn(int value);
 
 	std::string str() const;
+	std::string str_min() const;//without turn counts
 
 
 
