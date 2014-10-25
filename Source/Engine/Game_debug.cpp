@@ -1,9 +1,11 @@
 #include "Game.h"
 #include <crtdbg.h>
+#include <iostream>
 
+using namespace std;
 void Game::integrityCheck() {
+
 #ifdef _DEBUG
-	_ASSERTE(hash.toInt64() == GameHash(GameConfiguration::extractFromGame()).toInt64());
 
 	_ASSERTE(ALL == (WA ^ BA));
 	_ASSERTE((WA & BA) == BitBoard::EMPTY());
@@ -15,18 +17,30 @@ void Game::integrityCheck() {
 		}
 	}
 
-	
-
 	FOR_PIECE_ALL(piece) {
 		BitBoard pieceAll = BitBoard::EMPTY();
 		FOR_POSITION_64(pos) {
 			if (getPieceAt(pos) == piece) {
 				pieceAll ^= pos.ToSingletonBoard();
 			}
+
 		}
 
 		_ASSERTE((*s(Turn::WHITE, piece) ^ *s(Turn::BLACK, piece)) == pieceAll);
+
+		FOR_TURN(turn) {
+			BitBoard turnPieces = BitBoard::EMPTY();
+			FOR_POSITION_64(pos) {
+				if (getPieceAt(pos) == piece && getOwnerAt(pos)==turn) {
+					turnPieces ^= pos.ToSingletonBoard();
+				}
+			}
+			_ASSERTE(*s(turn, piece) == turnPieces);
+		}
 	}
+
+	
+	_ASSERTE(hash.toInt64() == GameHash(GameConfiguration::extractFromGame()).toInt64());
 
 #endif
 }
