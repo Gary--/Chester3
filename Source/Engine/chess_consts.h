@@ -16,7 +16,7 @@ enum class Piece : uint8_t {
 	UNKNOWN,
 };
 #define FOR_PIECE(x,low,high) for(Piece x=low;x<=high;x=(Piece)((uint8_t)x+1))
-//#define FOR_PIECE(x) FOR_PIECE(x,Piece::PAWN,PIECE::KING)
+#define FOR_PIECE_ALL(x) FOR_PIECE(x,Piece::PAWN,Piece::KING)
 
 void test1();
 

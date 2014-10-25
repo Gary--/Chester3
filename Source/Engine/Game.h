@@ -8,6 +8,8 @@
 #include <cstdint>
 #include "Move.h"
 #include "GameHash.h"
+#include <vector>
+#include "UndoData.h"
 
 class Game {
 public:
@@ -58,6 +60,7 @@ private:
 	static int halfMoveCount;
 	static int moveCount;
 
+	static std::vector<UndoData> undoDatas;
 
 	// === Private getters
 	
@@ -65,12 +68,17 @@ private:
 	static BitBoard* sp(Turn turn);
 	static void setPieceAt(Position position, Piece piece);
 	static void toggleBit(Turn turn, Position position, Piece piece);
+	static void clearPieceAt(Position position);
+	static void addPieceAt(Turn turn, Position position, Piece piece);
 
 	// === Private setters
 
 
 	// === Make move helpers
 	static void resign();
+
+	// === Debug
+	static void integrityCheck();
 
 	Game();
 	~Game();

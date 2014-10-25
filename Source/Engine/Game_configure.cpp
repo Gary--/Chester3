@@ -4,7 +4,7 @@ void Game::configure(const GameConfiguration& config) {
 	reset();
 	result = GameResult::IN_PROGRESS;//TODO: draw tests etc
 
-	hash = GameHash(config);
+	
 
 	curTurn = config.getTurn();
 	halfMoveCount = config.getHalfMoveClock();
@@ -17,5 +17,7 @@ void Game::configure(const GameConfiguration& config) {
 		}
 	}
 
+	hash = GameHash(config);
 
+	integrityCheck();
 }

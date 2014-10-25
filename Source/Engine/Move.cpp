@@ -21,3 +21,32 @@ Move Move::RESIGN(){
 Move Move::NULL_MOVE(){
 	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY, Piece::EMPTY);
 }
+
+
+MoveType Move::getType() const {
+	return type;
+}
+Position Move::getFrom() const {
+	return from;
+}
+Position Move::getTo() const {
+	return to;
+}
+Piece Move::getPiece() const {
+	return piece;
+}
+Piece Move::getTarg() const {
+	return targ;
+}
+
+bool Move::isCapture() const {
+	return targ != Piece::EMPTY || type == MoveType::ENPEASENT;
+}
+
+bool Move::isPromotion() const {
+	return type >= MoveType:: PROMO_KNIGHT;
+}
+
+Piece Move::promotionPiece() const {
+	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)type - (uint8_t)MoveType::PROMO_KNIGHT);
+}

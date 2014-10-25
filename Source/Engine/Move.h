@@ -27,14 +27,19 @@ public:
 	static Move NULL_MOVE();
 	bool isPromotion() const;
 	Piece promotionPiece() const;
+	bool isCapture() const;
 	Move();
 	~Move();
 
 
+	MoveType getType() const;
+	Position getFrom() const;
+	Position getTo() const;
+	Piece getPiece() const;
+	Piece getTarg() const;
+private:
 	const MoveType type;
 	const Position from, to;
 	const Piece piece, targ;
-private:
-
 };
 

@@ -10,6 +10,7 @@ GameResult Game::result;
 GameHash Game::hash = GameHash(GameConfiguration());
 int Game::halfMoveCount;
 int Game::moveCount;
+std::vector<UndoData> Game::undoDatas;
 
 namespace {
 	bool inited = false;
@@ -42,5 +43,7 @@ void Game::reset() {
 
 	result = GameResult::NONE;
 	hash = GameHash(GameConfiguration());
+
+	undoDatas.clear();
 
 }

@@ -53,7 +53,35 @@ void Game::toggleBit(Turn turn, Position position, Piece piece) {
 	*s(turn, piece) ^= position.ToSingletonBoard();
 	*sp(turn) ^= position.ToSingletonBoard();
 	ALL ^= position.ToSingletonBoard();
+
+	hash.togglePiece(position, turn, piece);
 }
+
+
+void Game::clearPieceAt(Position position) {
+	Piece piece = getPieceAt(position);
+	if (piece == Piece::EMPTY) {
+		return;
+	}
+
+	Turn turn = getOwnerAt(position);
+	
+	*s(turn, piece) &= ~position.ToSingletonBoard();
+	*sp(turn) &= ~position.ToSingletonBoard();
+	ALL &= ~position.ToSingletonBoard();
+
+	setPieceAt(position, Piece::EMPTY);
+
+	hash.togglePiece(position, turn, piece);
+}
+void Game::addPieceAt(Turn turn, Position position, Piece piece) {
+	*s(turn, piece) |= position.ToSingletonBoard();
+	*sp(turn) |= position.ToSingletonBoard();
+	ALL |= position.ToSingletonBoard();
+	setPieceAt(position, piece);
+	hash.togglePiece(position, turn, piece);
+}
+
 
 void Game::setPieceAt(Position position, Piece piece) {
 	pieces[position.index()] = piece;
