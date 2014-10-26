@@ -50,3 +50,10 @@ bool Move::isPromotion() const {
 Piece Move::promotionPiece() const {
 	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)type - (uint8_t)MoveType::PROMO_KNIGHT);
 }
+
+MoveType promoType(Piece piece) {
+	_ASSERTE(Piece::KNIGHT <= piece && piece <= Piece::QUEEN);
+	return MoveType((uint8_t)MoveType::PROMO_KNIGHT
+					+ (uint8_t)piece - (uint8_t)Piece::KNIGHT);
+
+}

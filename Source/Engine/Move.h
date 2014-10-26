@@ -18,6 +18,8 @@ enum class MoveType : uint8_t{
 	
 };
 
+MoveType promoType(Piece piece);
+
 struct Move
 {
 
