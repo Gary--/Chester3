@@ -31,6 +31,12 @@ public:
 		Assert::AreEqual(Piece::ROOK, move.promotionPiece());
 	}
 
+	TEST_METHOD(Promo_Type) {
+		FOR_PIECE(promo, Piece::KNIGHT, Piece::QUEEN) {
+			Move move(promoType(promo), Position("a7"), Position("a8"), Piece::PAWN, Piece::EMPTY);
+		}
+	}
+
 	};
 
 

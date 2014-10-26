@@ -29,7 +29,7 @@ public:
 		Assert::AreEqual(GameResult::WHITE_WIN, Game::getState());
 	}
 
-	TEST_METHOD(Knight_c3) {
+	TEST_METHOD(Resign) {
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 		Game::configure(conf);
 		Game::makeMove(Move::RESIGN());
@@ -104,6 +104,149 @@ public:
 
 		Game::undoMove();
 		Game::undoMove();
+	}
+
+
+	Move promotion(Piece piece,const char* from, const char* to) {
+		Position fromPos(from);
+		Position toPos(to);
+		return Move(promoType(piece), fromPos, toPos, Piece::PAWN, Game::getPieceAt(toPos));
+	}
+	TEST_METHOD(Promotion_0) {
+		GameConfiguration conf("rn1qkbnr/ppPpp1pp/8/8/8/3K3B/PP1PpPPP/RNBQ2NR w - -");
+		Game::configure(conf);
+
+		Game::makeMove(promotion(Piece::ROOK, "c7", "c8"));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("c8")));
+
+		Game::makeMove(promotion(Piece::QUEEN, "e2", "e1"));
+		Assert::AreEqual(Piece::QUEEN, Game::getPieceAt(Position("e1")));
+
+		Game::undoMove();
+		Game::undoMove();
+
+
+		Game::makeMove(promotion(Piece::ROOK, "c7", "b8"));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("b8")));
+
+		Game::makeMove(promotion(Piece::QUEEN, "e2", "d1"));
+		Assert::AreEqual(Piece::QUEEN, Game::getPieceAt(Position("d1")));
+
+		Game::undoMove();
+		Game::undoMove();
+
+	}
+
+	TEST_METHOD(Moving_King_Voids_Castle) {
+		GameConfiguration conf("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+		Game::configure(conf);
+
+		Game::makeMove(regular("e1", "d1"));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("e8", "d8"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::undoMove();
+		Game::undoMove();
+	}
+
+	TEST_METHOD(Moving_Rook_Voids_Castle) {
+		GameConfiguration conf("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+		Game::configure(conf);
+		
+		Game::makeMove(regular("a1", "b1"));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("a8", "b8"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("h1", "g1"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("h8", "g8"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::undoMove();
+		Game::undoMove();
+		Game::undoMove();
+		Game::undoMove();
+	}
+
+	TEST_METHOD(Rook_Getting_Captured_Voids_Castle){
+		GameConfiguration conf("r3k2r/pBppppBp/8/8/8/8/PbPPPPbP/R3K2R b KQkq - 0 1");
+		Game::configure(conf);
+
+		Game::makeMove(regular("b2", "a1"));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("b7", "a8"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("g2", "h1"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::makeMove(regular("g7", "h8"));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+
+		Game::undoMove();
+		Game::undoMove();
+		Game::undoMove();
+		Game::undoMove();
+	}
+
+	TEST_METHOD(Caslting_0) {
+		GameConfiguration conf("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+		Game::configure(conf);
+
+		Game::makeMove(Move(MoveType::CASTLE_LEFT, Position("e1"), Position("c1"), Piece::KING, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("a1")));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("d1")));
+
+		Game::makeMove(Move(MoveType::CASTLE_LEFT, Position("e8"), Position("c8"), Piece::KING, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("a8")));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("d8")));
+
+		Game::undoMove();
+		Game::undoMove();
+
+		Game::makeMove(Move(MoveType::CASTLE_RIGHT, Position("e1"), Position("g1"), Piece::KING, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("h1")));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("f1")));
+
+		Game::makeMove(Move(MoveType::CASTLE_RIGHT, Position("e8"), Position("g8"), Piece::KING, Piece::EMPTY));
+		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("h8")));
+		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("f8")));
 	}
 
 	};
