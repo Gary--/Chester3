@@ -151,6 +151,7 @@ public:
 
 	void testConvert(std::string FEN) {
 		Assert::AreEqual(FEN, GameConfiguration(FEN).str());
+		Assert::AreEqual(FEN, GameConfiguration(FEN).mirror().mirror().str());
 	}
 	TEST_METHOD(FEN_Generate) {
 		testConvert("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -161,6 +162,16 @@ public:
 		testConvert("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
 		testConvert("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1");
 		testConvert("r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1");
+	}
+
+
+	TEST_METHOD(GameConfiguration_mirror) {
+		Assert::AreEqual(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ -"),
+						 GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b kq -").mirror().str_min());
+
+		Assert::AreEqual(std::string("rnbqkbnr/ppp1pppp/8/8/3pP3/8/PPPP1PPP/RNBQKBNR b KQkq e3"),
+						 GameConfiguration("rnbqkbnr/pppp1ppp/8/3Pp3/8/8/PPP1PPPP/RNBQKBNR w KQkq e6").mirror().str_min());
+
 
 	}
 	//TEST CLASS END

@@ -18,12 +18,12 @@ enum class Piece : uint8_t {
 #define FOR_PIECE(x,low,high) for(Piece x=low;x<=high;x=(Piece)((uint8_t)x+1))
 #define FOR_PIECE_ALL(x) FOR_PIECE(x,Piece::PAWN,Piece::KING)
 
-void test1();
-
 //Used only for castling
 #define FOR_SIDE(x) for(Side x=Side::LEFT,temp__##__LINE__;x==Side::LEFT || temp__##__LINE__ == Side::LEFT;temp__##__LINE__ = x, x=Side::RIGHT )
 
 enum class Side : bool {LEFT, RIGHT,};// queen and king side respecively
+Side operator!(Side side);
+
 
 // Iterates (BLACK, WHITE)
 #define FOR_TURN(x) for(Turn x=Turn::BLACK,temp__##__LINE__;x==Turn::BLACK || temp__##__LINE__ == Turn::BLACK;temp__##__LINE__ = x, x=Turn::WHITE )

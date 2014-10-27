@@ -13,6 +13,8 @@ public:
 	~GameConfiguration();
 	static GameConfiguration extractFromGame();
 
+	GameConfiguration mirror() const;
+
 	Turn getTurn() const;
 	void setTurn(Turn turn);
 

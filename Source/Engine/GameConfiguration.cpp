@@ -24,6 +24,27 @@ GameConfiguration::GameConfiguration()
 	setEnpeasentColumn(NO_ENPEASENT_COLUMN);
 }
 
+GameConfiguration GameConfiguration::mirror() const {
+	GameConfiguration result;
+
+	result.setTurn(!getTurn());
+	result.setEnpeasentColumn(getEnpeasentColumn());
+	result.setHalfMoveClock(getHalfMoveClock());
+	result.setMoveNumber(getMoveNumber());
+
+	FOR_POSITION_64(pos) {
+		result.setPieceAt(pos.verticalFlip(), !getOwnerAt(pos), getPieceAt(pos));
+	}
+
+	FOR_TURN(turn) {
+		FOR_SIDE(side) {
+			result.setCanCastle(!turn, !side, getCanCastle(turn,side));
+		}
+	}
+
+	return result;
+}
+
 GameConfiguration GameConfiguration::extractFromGame() {
 	GameConfiguration conf;
 	conf.setTurn(Game::getTurn());

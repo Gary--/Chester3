@@ -5,12 +5,14 @@
 
 #include "BitBoard.h"
 using namespace std;
-void test1() {
-	BitBoard bb = BitBoard::FULL();
-	cout << bb.AsInt64() << endl;
+
+
+Side operator!(Side side) {
+#pragma warning(disable : 4800) //Forcing to bool
+	return (Side)(!(bool)side);
+#pragma warning(default : 4800)
 }
 
-// === TURN ITERATOR
 Turn operator!(Turn turn) {
 #pragma warning(disable : 4800) //Forcing to bool
 	return (Turn)(!(bool)turn);
