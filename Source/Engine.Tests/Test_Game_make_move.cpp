@@ -247,6 +247,9 @@ public:
 		Game::makeMove(Move(MoveType::CASTLE_RIGHT, Position("e8"), Position("g8"), Piece::KING, Piece::EMPTY));
 		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(Position("h8")));
 		Assert::AreEqual(Piece::ROOK, Game::getPieceAt(Position("f8")));
+
+		Game::undoMove();
+		Game::undoMove();
 	}
 
 	};

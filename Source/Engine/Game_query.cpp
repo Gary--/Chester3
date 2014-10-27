@@ -80,3 +80,7 @@ int Game::getHalfMoveClock() {
 int Game::getMoveNumber() {
 	return moveCount;
 }
+
+bool Game::getCheck() {
+	return posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
+}

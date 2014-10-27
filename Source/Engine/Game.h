@@ -30,7 +30,7 @@ public:
 	static bool getCanCastle(Turn turn, Side side);
 	static int getEnpeasentColumn();
 
-	//static bool getCheck();
+	static bool getCheck();
 	static GameResult getState();
 
 	static uint64_t getHash();
@@ -79,6 +79,12 @@ private:
 
 	// === Debug
 	static void integrityCheck();
+
+
+	// ===
+	static bool posAttackedBy(Position position, Turn turn);//Does turn attack the given position?
+	static bool posAttackedByJump(Position position, Turn turn);
+	static bool posAttackedByLOS(Position position, Turn turn);
 
 	Game();
 	~Game();

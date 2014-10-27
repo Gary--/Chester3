@@ -50,6 +50,7 @@
     <ClCompile Include="Game_make_move.cpp" />
     <ClCompile Include="Game_private_convenience.cpp" />
     <ClCompile Include="Game_query.cpp" />
+    <ClCompile Include="Game_threat.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Position.cpp" />
