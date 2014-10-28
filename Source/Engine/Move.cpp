@@ -57,3 +57,12 @@ MoveType promoType(Piece piece) {
 					+ (uint8_t)piece - (uint8_t)Piece::KNIGHT);
 
 }
+
+Move Move::operator=(const Move& other) {
+	type = other.type;
+	from = other.from;
+	to = other.to;
+	piece = other.piece;
+	targ = other.targ;
+	return *this;
+}

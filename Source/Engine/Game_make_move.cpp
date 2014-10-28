@@ -11,7 +11,10 @@ void Game::makeMove(Move move) {
 	}
 
 #pragma region Pack Undo data
-	UndoData undoData(move, hash);
+	UndoData undoData(move, hash,numMovesAvail,check);
+	movePtr += numMovesAvail;
+	numMovesAvail = 0;
+
 	undoDatas.push_back(undoData);
 #pragma endregion
 
@@ -111,7 +114,11 @@ void Game::makeMove(Move move) {
 		moveCount++;
 	}
 
+	
+	_ASSERTE(!posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn));
+
 	curTurn = !curTurn;
+	check = posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
 	hash.toggleTurn();
 
 	integrityCheck();
@@ -123,11 +130,24 @@ void Game::undoMove() {
 	if (curTurn == Turn::BLACK) {
 		moveCount--;
 	}
+
+	
+
 	//====
 #pragma region Unpack Undo Data
 	UndoData undoData = undoDatas.back();
 	undoDatas.pop_back();
+	if (numMovesAvail > 0) {
+		moves.erase(moves.begin() + movePtr, moves.end());
+	}
+	numMovesAvail = undoData.numMovesAvailable;
+	if (numMovesAvail > 0) {
+		movePtr -= numMovesAvail;
+	}
+
+	check  = undoData.check;
 	hash = undoData.hash;
+
 	Move move = undoData.move;
 	const MoveType type = move.getType();
 	const Position fromPos = move.getFrom();

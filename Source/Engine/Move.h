@@ -39,9 +39,11 @@ public:
 	Position getTo() const;
 	Piece getPiece() const;
 	Piece getTarg() const;
+
+	Move operator=(const Move& other);
 private:
-	const MoveType type;
-	const Position from, to;
-	const Piece piece, targ;
+	MoveType type;
+	Position from, to;
+	Piece piece, targ;
 };
 

@@ -82,5 +82,5 @@ int Game::getMoveNumber() {
 }
 
 bool Game::getCheck() {
-	return posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
+	return check;
 }

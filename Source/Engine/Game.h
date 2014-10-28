@@ -41,14 +41,15 @@ public:
 	////Move making
 	//static void computeMoves();
 	//static void computeOnlyMaterialChangeMoves();
-	//static int numValidMoves();
-	//static Move getMove(int n);//0<= n <numValidMoves()
+	static int getNumValidMoves();
+	static Move getMove(int n);//0<= n <numValidMoves()
 
 	static void makeMove(Move move);
 	static void undoMove();
 private:
 	// === FIELDS
 	static Turn curTurn;
+	static bool check;
 	static BitBoard WK, WQ, WR, WB, WN, WP;
 	static BitBoard BK, BQ, BR, BB, BN, BP;
 	static BitBoard WA, BA;
@@ -61,6 +62,12 @@ private:
 	static int moveCount;
 
 	static std::vector<UndoData> undoDatas;
+	static std::vector<Move> moves;
+	static int movePtr;
+	static int numMovesAvail;
+	static void addMove(Move move);
+	static void popMoves();//all moves generated
+	static void generateMoves();
 
 	// === Private getters
 	
@@ -85,6 +92,10 @@ private:
 	static bool posAttackedBy(Position position, Turn turn);//Does turn attack the given position?
 	static bool posAttackedByJump(Position position, Turn turn);
 	static bool posAttackedByLOS(Position position, Turn turn);
+
+	//For move generation only
+	static BitBoard attackedByJump(Turn turn);
+	static BitBoard attackedByLOS(Turn turn);//Assumes opponent king is transparent
 
 	Game();
 	~Game();

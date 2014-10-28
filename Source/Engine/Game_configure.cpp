@@ -17,7 +17,7 @@ void Game::configure(const GameConfiguration& config) {
 		}
 	}
 
+	check = posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
 	hash = GameHash(config);
-
 	integrityCheck();
 }

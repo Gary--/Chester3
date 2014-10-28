@@ -119,5 +119,11 @@
     <ClCompile Include="Game_threat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_move_store.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game_genrate_moves.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
