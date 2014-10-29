@@ -95,7 +95,6 @@ private:
 
 	//For move generation only
 	static BitBoard attackedByJump(Turn turn);
-	static BitBoard attackedByLOS(Turn turn);//Assumes opponent king is transparent
 
 	Game();
 	~Game();

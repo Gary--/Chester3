@@ -54,6 +54,9 @@
     <ClInclude Include="UndoData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="perft.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game_genrate_moves.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="perft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

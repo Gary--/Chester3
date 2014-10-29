@@ -31,6 +31,3 @@ BitBoard Game::attackedByJump(Turn turn) {
 	return res;
 }
 
-BitBoard Game::attackedByLOS(Turn turn) {//Assumes opponent king is transparent
-	return BitBoard::EMPTY();
-}

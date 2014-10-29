@@ -13,7 +13,7 @@ void Game::makeMove(Move move) {
 #pragma region Pack Undo data
 	UndoData undoData(move, hash,numMovesAvail,check);
 	movePtr += numMovesAvail;
-	numMovesAvail = 0;
+	numMovesAvail = -1;
 
 	undoDatas.push_back(undoData);
 #pragma endregion
