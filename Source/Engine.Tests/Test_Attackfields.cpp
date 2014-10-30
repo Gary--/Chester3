@@ -168,6 +168,10 @@ public:
 		}
 	}
 
+	TEST_METHOD(AttackFields_Castling){
+
+	}
+
 	};
 
 
