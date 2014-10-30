@@ -44,3 +44,21 @@ void Game::integrityCheck() {
 
 #endif
 }
+
+void Game::assertMovesAreUnique() {
+#ifdef _DEBUG
+	generateMoves();
+	for (int i = 0; i < getNumValidMoves(); ++i) {
+		Move m1 = getMove(i);
+		for (int j = 0; j < getNumValidMoves(); ++j) {
+			if (j == i) {
+				continue;
+			}
+			Move m2 = getMove(i);
+
+			_ASSERTE(!(m1.getFrom() == m2.getFrom() && m1.getTo() == m2.getTo()));
+		}
+	}
+
+#endif
+}

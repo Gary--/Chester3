@@ -5,11 +5,15 @@ void Game::addMove(Move move) {
 	numMovesAvail++;
 }
 
-int Game::getNumValidMoves() {
+void Game::generateMoves() {
 	if (numMovesAvail == -1) {
 		numMovesAvail = 0;
-		generateMoves();
+		generateMovesImpl();
 	}
+}
+
+int Game::getNumValidMoves() {
+	Game::generateMoves();
 	return numMovesAvail;
 }
 Move Game::getMove(int n) {

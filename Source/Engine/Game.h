@@ -67,6 +67,7 @@ private:
 	static int numMovesAvail;
 	static void addMove(Move move);
 	static void popMoves();//all moves generated
+	static void generateMovesImpl();
 	static void generateMoves();
 
 	// === Private getters
@@ -86,6 +87,7 @@ private:
 
 	// === Debug
 	static void integrityCheck();
+	static void assertMovesAreUnique();
 
 
 	// ===

@@ -28,6 +28,12 @@ namespace {
 	}
 }
 
+int Perft::perftLazy(const char* FEN, int depth) {
+	GameConfiguration conf(FEN);
+	Game::configure(conf);
+	return perft(depth-1, false);
+}
+
 int Perft::perftFull(const char* FEN, int depth) {
 	GameConfiguration conf(FEN);
 	Game::configure(conf);

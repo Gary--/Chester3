@@ -5,7 +5,7 @@ using namespace AttackFields;
 
 //If I can capture a threatening pawn via EP
 //HINT: put promo logic into add move
-void Game::generateMoves() {
+void Game::generateMovesImpl() {
 	const BitBoard M = getPlayerPieces(curTurn);
 	const BitBoard MK = getPieces(curTurn, Piece::KING);
 	const BitBoard MP = getPieces(curTurn, Piece::PAWN);
@@ -37,7 +37,7 @@ void Game::generateMoves() {
 	FOR_BIT(bit, TB) {
 		diagLosDanger |= bishopTargs(bit.ToPosition(), (ALL&~MK));
 	}
-	_ASSERTE((rightLosDanger&diagLosDanger) == BitBoard::EMPTY());
+	
 	const BitBoard danger = jumpDanger | rightLosDanger | diagLosDanger;
 #pragma endregion
 
@@ -52,13 +52,6 @@ void Game::generateMoves() {
 
 		_ASSERTE((rightLosThreats & diagLosThreats) == BitBoard::EMPTY());
 		_ASSERTE(((rightLosThreats | diagLosThreats)&jumpThreats) == BitBoard::EMPTY());
-
-		// In your face LOS same as jump
-		jumpThreats |= (rightLosThreats&kingRing) | (diagLosThreats&kingRing);
-		rightLosThreats &= ~kingRing;
-		diagLosThreats &= ~kingRing;
-
-		
 	}
 	const BitBoard threats = jumpThreats | rightLosThreats | diagLosThreats;
 	_ASSERTE(threats.count() <= 2);
@@ -95,6 +88,11 @@ void Game::generateMoves() {
 	const BitBoard allPinned = rightPinned | diagPinned;
 	_ASSERTE((rightPinned & diagPinned) == BitBoard::EMPTY());
 	_ASSERTE(allPinned == (allPinned & M));//is a subset of my pieces
+
+	// In your face LOS same as jump. Do this after pinning!
+	jumpThreats |= (rightLosThreats&kingRing) | (diagLosThreats&kingRing);
+	rightLosThreats &= ~kingRing;
+	diagLosThreats &= ~kingRing;
 #pragma endregion
 
 
@@ -122,7 +120,7 @@ void Game::generateMoves() {
 			addMove(Move(MoveType::REGULAR, rook.ToPosition(), threatPos, Piece::ROOK, threatPiece));
 		}
 
-		FOR_BIT(bishop, posHeroBishopLocations & MR) {
+		FOR_BIT(bishop, posHeroBishopLocations & MB) {
 			addMove(Move(MoveType::REGULAR, bishop.ToPosition(), threatPos, Piece::BISHOP, threatPiece));
 		}
 
@@ -148,6 +146,39 @@ void Game::generateMoves() {
 		FOR_BIT(toBit, knightTargs(from) & posTargs) {
 			Position to = toBit.ToPosition();
 			addMove(Move(MoveType::REGULAR, from, to, Piece::KNIGHT, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(rook, MR & posPieces &~allPinned) {
+		Position from = rook.ToPosition();
+		FOR_BIT(toBit, rookTargs(from,ALL) & posTargs) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(rook, MR & posPieces & rightPinned) {
+		Position from = rook.ToPosition();
+		FOR_BIT(toBit, rookTargs(from, ALL) & posTargs & pinnedTargs(kingPos,from)) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(bishop, MB & posPieces & ~allPinned) {
+		Position from = bishop.ToPosition();
+		BitBoard tos = bishopTargs(from, ALL) & posTargs;
+		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(bishop, MB & posPieces & diagPinned) {
+		Position from = bishop.ToPosition();
+		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs & pinnedTargs(kingPos, from)) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
 		}
 	}
 
@@ -178,4 +209,6 @@ void Game::generateMoves() {
 
 
 	*/
+
+	assertMovesAreUnique();
 }
