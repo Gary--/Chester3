@@ -27,7 +27,9 @@ public:
 	}
 
 	TEST_METHOD(Rooks_Knights) {
+#ifdef NDEBUG
 		Assert::AreEqual(1285292, mirrorLazyPerft("3R4/3N4/2r3r1/8/4N3/rn2RK1R/7R/3k4 w - - ", 4));
+#endif
 	}
 
 	TEST_METHOD(Rook_Knight_Bishop_0) {

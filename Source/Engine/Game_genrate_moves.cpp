@@ -198,6 +198,17 @@ void Game::generateMovesImpl() {
 		}
 	}
 
+	FOR_SIDE(side) {
+		if (getCanCastle(curTurn,side) &&
+			(ALL & castleEmptySquares(curTurn,side)) == BitBoard::EMPTY() &&
+			(threats & castleSafeSquares(curTurn,side)) == BitBoard::EMPTY()) {
+			MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
+			Position to(curTurn == Turn::WHITE ? 7 : 0,  4 + (side==Side::LEFT ? (-2) : 2) );
+
+			addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+		}
+	}
+
 	/*
 	
 	BitBoard diagPinned, horiPinned
