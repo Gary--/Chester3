@@ -8,7 +8,11 @@ void Game::addMove(Move move) {
 void Game::generateMoves() {
 	if (numMovesAvail == -1) {
 		numMovesAvail = 0;
-		generateMovesImpl();
+		//if (curTurn == Turn::WHITE) {
+			generateMovesImpl();
+		//} else {
+		//	generateMovesImpl_BLACK();
+		//}
 	}
 }
 

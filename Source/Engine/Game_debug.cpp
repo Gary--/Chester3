@@ -54,9 +54,11 @@ void Game::assertMovesAreUnique() {
 			if (j == i) {
 				continue;
 			}
-			Move m2 = getMove(i);
+			Move m2 = getMove(j);
 
-			_ASSERTE(!(m1.getFrom() == m2.getFrom() && m1.getTo() == m2.getTo()));
+			if (!m1.isPromotion()) {
+				_ASSERTE(!(m1.getFrom() == m2.getFrom() && m1.getTo() == m2.getTo()));
+			}
 		}
 	}
 

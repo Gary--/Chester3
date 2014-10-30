@@ -6,6 +6,7 @@ using namespace AttackFields;
 //If I can capture a threatening pawn via EP
 //HINT: put promo logic into add move
 void Game::generateMovesImpl() {
+	//const Turn curTurn = Turn::WHITE;
 	const BitBoard M = getPlayerPieces(curTurn);
 	const BitBoard MK = getPieces(curTurn, Piece::KING);
 	const BitBoard MP = getPieces(curTurn, Piece::PAWN);
@@ -167,7 +168,6 @@ void Game::generateMovesImpl() {
 
 	FOR_BIT(bishop, MB & posPieces & ~allPinned) {
 		Position from = bishop.ToPosition();
-		BitBoard tos = bishopTargs(from, ALL) & posTargs;
 		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs) {
 			Position to = toBit.ToPosition();
 			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
@@ -179,6 +179,22 @@ void Game::generateMovesImpl() {
 		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs & pinnedTargs(kingPos, from)) {
 			Position to = toBit.ToPosition();
 			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(queen, MQ & posPieces & ~allPinned) {
+		Position from = queen.ToPosition();
+		FOR_BIT(toBit, queenTargs(from, ALL) & posTargs) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN, getPieceAt(to)));
+		}
+	}
+
+	FOR_BIT(queen, MQ & posPieces & allPinned) {
+		Position from = queen.ToPosition();
+		FOR_BIT(toBit, queenTargs(from, ALL) & posTargs & pinnedTargs(kingPos, from)) {
+			Position to = toBit.ToPosition();
+			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN, getPieceAt(to)));
 		}
 	}
 
@@ -212,3 +228,4 @@ void Game::generateMovesImpl() {
 
 	assertMovesAreUnique();
 }
+

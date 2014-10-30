@@ -68,6 +68,7 @@ private:
 	static void addMove(Move move);
 	static void popMoves();//all moves generated
 	static void generateMovesImpl();
+	//static void generateMovesImpl_BLACK();
 	static void generateMoves();
 
 	// === Private getters
