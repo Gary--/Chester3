@@ -18,8 +18,9 @@ public:
 	}
 
 	TEST_METHOD(King_Move_No_Threats) {
-		Assert::AreEqual(8, Perft::perftFull("8/6K1/8/8/8/8/1k6/8 w - - ", 1));
-		Assert::AreEqual(64, Perft::perftFull("8/6K1/8/8/8/8/1k6/8 w - - ", 2));
+		const char* FEN = "8/6K1/8/8/8/8/1k6/8 w - - ";
+		Assert::AreEqual(8, Perft::perftFull(FEN, 1));
+		Assert::AreEqual(64, Perft::perftFull(FEN, 2));
 	}
 
 	TEST_METHOD(Knights) {
@@ -33,127 +34,123 @@ public:
 	}
 
 	TEST_METHOD(Rook_Knight_Bishop_0) {
-		Assert::AreEqual(53, mirrorLazyPerft("3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -", 1));
-		Assert::AreEqual(1265, mirrorLazyPerft("3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -", 2));
-		Assert::AreEqual(56902, mirrorLazyPerft("3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -", 3));
+		const char* FEN = "3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -";
+		Assert::AreEqual(53, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1265, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(56902, mirrorLazyPerft(FEN, 3));
 
 #ifdef NDEBUG
-		Assert::AreEqual(1537094, mirrorLazyPerft("3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -", 4));
-		Assert::AreEqual(70484047, mirrorLazyPerft("3k2B1/8/R4b2/R6b/3B3r/3R4/3K1b1r/5R2 w - -", 5));
+		Assert::AreEqual(1537094, mirrorLazyPerft(FEN, 4));
+		Assert::AreEqual(70484047, mirrorLazyPerft(FEN, 5));
 #endif
 	}
 
 	TEST_METHOD(Rook_Knight_Bishop_1) {
-		Assert::AreEqual(52, mirrorLazyPerft("3kN1B1/3r4/R1n2b2/4N3/3B3r/n2R4/3K1b1r/5R2 w - -", 1));
-		Assert::AreEqual(2160, mirrorLazyPerft("3kN1B1/3r4/R1n2b2/4N3/3B3r/n2R4/3K1b1r/5R2 w - -", 2));
-		Assert::AreEqual(91714, mirrorLazyPerft("3kN1B1/3r4/R1n2b2/4N3/3B3r/n2R4/3K1b1r/5R2 w - -", 3));
+		const char* FEN = "3kN1B1/3r4/R1n2b2/4N3/3B3r/n2R4/3K1b1r/5R2 w - -";
+		Assert::AreEqual(52, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(2160, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(91714, mirrorLazyPerft(FEN, 3));
 
 #ifdef NDEBUG
-		Assert::AreEqual(3732768, mirrorLazyPerft("3kN1B1/3r4/R1n2b2/4N3/3B3r/n2R4/3K1b1r/5R2 w - -", 4));
+		Assert::AreEqual(3732768, mirrorLazyPerft(FEN, 4));
 #endif
 	}
 
 
 	TEST_METHOD(Rook_Knight_Bishop_2) {
-		Assert::AreEqual(49, mirrorLazyPerft("3k2B1/3r4/R4b2/5N2/3B4/3R4/3K2nr/8 w - -", 1));
-		Assert::AreEqual(1354, mirrorLazyPerft("3k2B1/3r4/R4b2/5N2/3B4/3R4/3K2nr/8 w - -", 2));
-		Assert::AreEqual(52112, mirrorLazyPerft("3k2B1/3r4/R4b2/5N2/3B4/3R4/3K2nr/8 w - -", 3));
+		const char* FEN = "3k2B1/3r4/R4b2/5N2/3B4/3R4/3K2nr/8 w - -";
+		Assert::AreEqual(49, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1354, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(52112, mirrorLazyPerft(FEN, 3));
 		
 	}
 
 	TEST_METHOD(All_Normal_Pieces_0) {
-		Assert::AreEqual(42, mirrorLazyPerft("8/8/3k1N2/3r3n/r7/4BK2/Q6R/5bq1 w - -", 1));
-		Assert::AreEqual(1759, mirrorLazyPerft("8/8/3k1N2/3r3n/r7/4BK2/Q6R/5bq1 w - -", 2));
-		Assert::AreEqual(56875, mirrorLazyPerft("8/8/3k1N2/3r3n/r7/4BK2/Q6R/5bq1 w - -", 3));
+		const char* FEN = "8/8/3k1N2/3r3n/r7/4BK2/Q6R/5bq1 w - -";
+
+		Assert::AreEqual(42, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1759, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(56875, mirrorLazyPerft(FEN, 3));
 #ifdef NDEBUG
-		Assert::AreEqual(2276681, mirrorLazyPerft("8/8/3k1N2/3r3n/r7/4BK2/Q6R/5bq1 w - -", 4));
+		Assert::AreEqual(2276681, mirrorLazyPerft(FEN, 4));
 #endif
 	}
 
 
 	TEST_METHOD(All_Normal_Pieces_1) {
-		Assert::AreEqual(31, mirrorLazyPerft("8/2N1k3/K3N1Q1/BR5n/rq2r3/6N1/2n5/5b2 w - -", 1));
-		Assert::AreEqual(1001, mirrorLazyPerft("8/2N1k3/K3N1Q1/BR5n/rq2r3/6N1/2n5/5b2 w - -", 2));
-		Assert::AreEqual(31678, mirrorLazyPerft("8/2N1k3/K3N1Q1/BR5n/rq2r3/6N1/2n5/5b2 w - -", 3));
+		const char* FEN = "8/2N1k3/K3N1Q1/BR5n/rq2r3/6N1/2n5/5b2 w - -";
+
+		Assert::AreEqual(31, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1001, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(31678, mirrorLazyPerft(FEN, 3));
 #ifdef NDEBUG
-		Assert::AreEqual(1077778, mirrorLazyPerft("8/2N1k3/K3N1Q1/BR5n/rq2r3/6N1/2n5/5b2 w - -", 4));
+		Assert::AreEqual(1077778, mirrorLazyPerft(FEN, 4));
 #endif
 	}
 
 	TEST_METHOD(Castling_0) {
-		Assert::AreEqual(37, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 1));
-		Assert::AreEqual(1214, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 2));
-		Assert::AreEqual(43544, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 3));
+		const char* FEN = "r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -";
+
+		Assert::AreEqual(37, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1214, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(43544, mirrorLazyPerft(FEN, 3));
 
 #ifdef NDEBUG
-		Assert::AreEqual(1552652, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 4));
+		Assert::AreEqual(1552652, mirrorLazyPerft(FEN, 4));
 #endif
 	}
 
 	TEST_METHOD(Castling_1) {
-		Assert::AreEqual(21, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 1));
-		Assert::AreEqual(741, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 2));
-		Assert::AreEqual(15743, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 3));
+		const char* FEN = "2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -";
+		Assert::AreEqual(21, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(741, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(15743, mirrorLazyPerft(FEN, 3));
 
 #ifdef NDEBUG
-		Assert::AreEqual(542414, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 4));
+		Assert::AreEqual(542414, mirrorLazyPerft(FEN, 4));
 #endif
 	}
 
-	//TEST_METHOD(Pawns_0) {
-	//	Assert::AreEqual(13, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 1));
-	//	Assert::AreEqual(491, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 2));
-	//	Assert::AreEqual(5925, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 3));
-
-	//}
-
-	TEST_METHOD(Pawns_1) {
-		Assert::AreEqual(8, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 1));
-		Assert::AreEqual(129, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 2));
-		Assert::AreEqual(1048, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 3));
-	}
-
-
-	TEST_METHOD(Pawns_2) {
-		Assert::AreEqual(8, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 1));
-		Assert::AreEqual(174, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 2));
-		Assert::AreEqual(1452, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 3));
-	}
-
-
-	TEST_METHOD(Pawns_4) {
-
-		Assert::AreEqual(506, mirrorLazyPerft("4k3/3b4/2P1P3/3K4/8/8/8/8 w - -", 3));
-	}
-
-	TEST_METHOD(Pawns_5) {
-		
-		Assert::AreEqual(858, mirrorLazyPerft("8/4k3/3b4/2P1P3/3K4/8/8/8 w - -", 3));
-		Assert::AreEqual(9013, mirrorLazyPerft("8/4k3/3b4/2P1P3/3K4/8/8/8 w - -", 4));
-	}
 	
+	TEST_METHOD(Pawns_1) {
+		const char* FEN = "4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -";
+		Assert::AreEqual(8, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(129, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(1048, mirrorLazyPerft(FEN, 3));
+	}
+
 
 	TEST_METHOD(Massive_Promotions) {
-		Assert::AreEqual(24, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 1));
-		Assert::AreEqual(496, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 2));
-		Assert::AreEqual(9483, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 3));
-		
+		const char* FEN = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -";
+		Assert::AreEqual(24, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(496, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(9483, mirrorLazyPerft(FEN, 3));
 #ifdef NDEBUG
-		Assert::AreEqual(182838, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 4));
-		Assert::AreEqual(3605103, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 5));
+		Assert::AreEqual(182838, mirrorLazyPerft(FEN, 4));
+		Assert::AreEqual(3605103, mirrorLazyPerft(FEN, 5));
 #endif
 	}
 
 	TEST_METHOD(Big_0) {
-		Assert::AreEqual(1418, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 2));
-		Assert::AreEqual(35005, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 3));
-
+		const char* FEN = "n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -";
+		Assert::AreEqual(1418, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(35005, mirrorLazyPerft(FEN, 3));
 #ifdef NDEBUG
-		Assert::AreEqual(2020530, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 4));
-		Assert::AreEqual(53162401, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 5));
+		Assert::AreEqual(2020530, mirrorLazyPerft(FEN, 4));
+		Assert::AreEqual(53162401, mirrorLazyPerft(FEN, 5));
 #endif 
 	}
 
+	TEST_METHOD(Big_1) {
+		const char* FEN = "2q2q2/2P2P2/p1K2RBB/1P1n2bb/b2kN3/7p/5r1p/8 w - -";
+		Assert::AreEqual(21968, mirrorLazyPerft(FEN, 3));
+#ifdef NDEBUG
+		Assert::AreEqual(1185806, mirrorLazyPerft(FEN, 4));
+		Assert::AreEqual(24482460, mirrorLazyPerft(FEN, 5));
+#endif 
+	}
+
+	
 	};
 
 
