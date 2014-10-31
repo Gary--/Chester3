@@ -27,5 +27,11 @@ namespace AttackFields {
 
 	// These squares must not be threatened for the castle to happen.
 	BitBoard castleSafeSquares(Turn turn, Side side);
+
+	// If a pawn moves from here, it will be promoted
+	BitBoard pawnPromoZone(Turn turn);
+
+	// If a pawn is here, it can move forward 2 squares.
+	BitBoard pawnJumpZone(Turn turn);
 }
 

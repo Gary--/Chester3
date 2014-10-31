@@ -1,8 +1,19 @@
 #include "Game.h"
+#include "attack_fields.h"
 
 void Game::addMove(Move move) {
 	moves.push_back(move);
 	numMovesAvail++;
+}
+
+void Game::addPawnMove(Move move) {
+	if (AttackFields::pawnPromoZone(curTurn).contains(move.getFrom())) {
+		FOR_PIECE(promo, Piece::KNIGHT, Piece::QUEEN) {
+			addMove(Move(promoType(promo), move.getFrom(), move.getTo(), Piece::PAWN, move.getTarg()));
+		}
+	} else {
+		addMove(move);
+	}
 }
 
 void Game::generateMoves() {

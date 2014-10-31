@@ -30,3 +30,13 @@ BitBoard AttackFields::castleSafeSquares(Turn turn, Side side){
 			Position(r, 6).ToSingletonBoard();
 	}
 }
+
+// If a pawn moves from here, it will be promoted
+BitBoard AttackFields::pawnPromoZone(Turn turn) {
+	return BitBoard::rowBits(turn == Turn::WHITE ? 1 : 6);
+}
+
+// If a pawn is here, it can move forward 2 squares.
+BitBoard AttackFields::pawnJumpZone(Turn turn) {
+	return pawnPromoZone(!turn);
+}

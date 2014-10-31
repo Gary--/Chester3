@@ -131,7 +131,7 @@
     <ClCompile Include="perft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="attack_fields_castling.cpp">
+    <ClCompile Include="attack_fields_castling_pawns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

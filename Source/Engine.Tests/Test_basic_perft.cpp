@@ -80,6 +80,80 @@ public:
 #endif
 	}
 
+	TEST_METHOD(Castling_0) {
+		Assert::AreEqual(37, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 1));
+		Assert::AreEqual(1214, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 2));
+		Assert::AreEqual(43544, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 3));
+
+#ifdef NDEBUG
+		Assert::AreEqual(1552652, mirrorLazyPerft("r3k2r/8/8/3nq3/4QN2/8/8/R3K2R w KQkq -", 4));
+#endif
+	}
+
+	TEST_METHOD(Castling_1) {
+		Assert::AreEqual(21, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 1));
+		Assert::AreEqual(741, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 2));
+		Assert::AreEqual(15743, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 3));
+
+#ifdef NDEBUG
+		Assert::AreEqual(542414, mirrorLazyPerft("2k5/2q5/8/8/8/2n1n3/8/R3K2R w KQ -", 4));
+#endif
+	}
+
+	//TEST_METHOD(Pawns_0) {
+	//	Assert::AreEqual(13, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 1));
+	//	Assert::AreEqual(491, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 2));
+	//	Assert::AreEqual(5925, mirrorLazyPerft("4k1q1/R2b4/2P1P2r/3K4/n5n1/1P3P2/q7/7b w - -", 3));
+
+	//}
+
+	TEST_METHOD(Pawns_1) {
+		Assert::AreEqual(8, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 1));
+		Assert::AreEqual(129, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 2));
+		Assert::AreEqual(1048, mirrorLazyPerft("4k1q1/3b4/2P1P3/3K4/8/8/8/8 w - -", 3));
+	}
+
+
+	TEST_METHOD(Pawns_2) {
+		Assert::AreEqual(8, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 1));
+		Assert::AreEqual(174, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 2));
+		Assert::AreEqual(1452, mirrorLazyPerft("8/4k1q1/3b4/2P1P3/3K4/8/8/8 w - -", 3));
+	}
+
+
+	TEST_METHOD(Pawns_4) {
+
+		Assert::AreEqual(506, mirrorLazyPerft("4k3/3b4/2P1P3/3K4/8/8/8/8 w - -", 3));
+	}
+
+	TEST_METHOD(Pawns_5) {
+		
+		Assert::AreEqual(858, mirrorLazyPerft("8/4k3/3b4/2P1P3/3K4/8/8/8 w - -", 3));
+		Assert::AreEqual(9013, mirrorLazyPerft("8/4k3/3b4/2P1P3/3K4/8/8/8 w - -", 4));
+	}
+	
+
+	TEST_METHOD(Massive_Promotions) {
+		Assert::AreEqual(24, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 1));
+		Assert::AreEqual(496, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 2));
+		Assert::AreEqual(9483, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 3));
+		
+#ifdef NDEBUG
+		Assert::AreEqual(182838, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 4));
+		Assert::AreEqual(3605103, mirrorLazyPerft("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - -", 5));
+#endif
+	}
+
+	TEST_METHOD(Big_0) {
+		Assert::AreEqual(1418, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 2));
+		Assert::AreEqual(35005, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 3));
+
+#ifdef NDEBUG
+		Assert::AreEqual(2020530, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 4));
+		Assert::AreEqual(53162401, mirrorLazyPerft("n3q3/P3P3/2q2nk1/1P2p2q/1K1pPBN1/4r1QP/3N3p/r7 w - -", 5));
+#endif 
+	}
+
 	};
 
 

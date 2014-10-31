@@ -65,7 +65,10 @@ private:
 	static std::vector<Move> moves;
 	static int movePtr;
 	static int numMovesAvail;
+
 	static void addMove(Move move);
+	static void addPawnMove(Move move);//accounts for promotions
+
 	static void popMoves();//all moves generated
 	static void generateMovesImpl();
 	//static void generateMovesImpl_BLACK();

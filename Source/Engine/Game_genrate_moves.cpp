@@ -16,6 +16,7 @@ void Game::generateMovesImpl() {
 	const BitBoard MQ = getPieces(curTurn, Piece::QUEEN);
 
 	const Position kingPos = MK.ToPosition();
+	const BitBoard T = getPlayerPieces(!curTurn);
 	const BitBoard TR = getPieces(!curTurn, Piece::ROOK) | getPieces(!curTurn, Piece::QUEEN);
 	const BitBoard TB = getPieces(!curTurn, Piece::BISHOP) | getPieces(!curTurn, Piece::QUEEN);
 	const BitBoard TN = getPieces(!curTurn, Piece::KNIGHT);
@@ -105,10 +106,12 @@ void Game::generateMovesImpl() {
 
 		const Position threatPos = threats.ToPosition();
 		const Piece threatPiece = getPieceAt(threatPos);
-		//// Capture the threat with a pawn
-		//FOR_BIT(pawn, pawnTargs(threatPos, !curTurn) & MP &~allPinned) {
-		//	addMove(Move(MoveType::REGULAR, pawn.ToPosition(), threatPos, Piece::PAWN, threatPiece));
-		//}
+
+		// Capture the threat with a pawn
+		FOR_BIT(pawn, pawnTargs(threatPos, !curTurn) & MP & posPieces) {
+			addPawnMove(Move(MoveType::REGULAR, pawn.ToPosition(), threatPos, Piece::PAWN, threatPiece));
+		}
+		
 
 		FOR_BIT(knight, knightTargs(threatPos) & MN & posPieces) {
 			addMove(Move(MoveType::REGULAR, knight.ToPosition(), threatPos, Piece::KNIGHT, threatPiece));
@@ -198,10 +201,35 @@ void Game::generateMovesImpl() {
 		}
 	}
 
+	
+	BitBoard pawnsThatCanMoveForward = ~allPinned | (rightPinned & BitBoard::colBits(kingPos.col()));
+	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanMoveForward).shiftForward(curTurn) & ~ALL & posTargs) {
+		Position to = toBit.ToPosition();
+		Position from = to.shiftBackward(curTurn);
+		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, Piece::EMPTY));
+	}
+	
+
+	// TODO: dun need pos targs here
+	BitBoard kingX = bishopTargs(kingPos, BitBoard::EMPTY());
+	BitBoard pawnsThatCanCapture = ~allPinned | diagPinned ;
+	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft() & posTargs & T &
+			(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft())) {
+		Position to = toBit.ToPosition();
+		Position from = to.shiftBackward(curTurn).shiftRight();
+		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+	}
+	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight() & posTargs & T  &
+			(kingX | ~diagPinned.shiftForward(curTurn).shiftRight())) {
+		Position to = toBit.ToPosition();
+		Position from = to.shiftBackward(curTurn).shiftLeft();
+		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+	}
+
 	FOR_SIDE(side) {
 		if (getCanCastle(curTurn,side) &&
 			(ALL & castleEmptySquares(curTurn,side)) == BitBoard::EMPTY() &&
-			(threats & castleSafeSquares(curTurn,side)) == BitBoard::EMPTY()) {
+			(danger & castleSafeSquares(curTurn,side)) == BitBoard::EMPTY()) {
 			MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
 			Position to(curTurn == Turn::WHITE ? 7 : 0,  4 + (side==Side::LEFT ? (-2) : 2) );
 
