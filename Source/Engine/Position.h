@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "BitBoard.h"
 #include <string>
-
+#include "chess_consts.h"
 #define FOR_POSITION_64(p) for(Position p=Position(0);p.index()<64;p=Position(p.index()+1))
 
 class BitBoard;
@@ -33,6 +33,14 @@ public:
 	int index() const;
 	int row() const;
 	int col() const;
+
+	Position shiftUp() const;
+	Position shiftDown() const;
+	Position shiftLeft() const;
+	Position shiftRight() const;
+	Position shiftForward(Turn turn) const;
+	Position shiftBackward(Turn turn) const;
+
 	BitBoard ToSingletonBoard() const;
 	std::string str() const;
 };

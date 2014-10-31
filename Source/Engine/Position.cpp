@@ -64,6 +64,25 @@ int Position::index() const
 	return value;
 }
 
+Position Position::shiftUp() const {
+	return Position(row() - 1, col());
+}
+Position Position::shiftDown() const {
+	return Position(row() + 1, col());
+}
+Position Position::shiftLeft() const {
+	return Position(row(), col()-1);
+}
+Position Position::shiftRight() const {
+	return Position(row(), col() + 1);
+}
+Position Position::shiftForward(Turn turn) const {
+	return turn == Turn::WHITE ? shiftUp() : shiftDown();
+}
+Position Position::shiftBackward(Turn turn) const {
+	return shiftForward(!turn);
+}
+
 BitBoard Position::ToSingletonBoard() const
 {
 	AssertValid();

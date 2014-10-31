@@ -239,5 +239,22 @@ namespace EngineTests
 			Assert::AreEqual(BitBoard::rowBits(3), row.shiftBackward(Turn::BLACK));
 			Assert::AreEqual(BitBoard::rowBits(5), row.shiftBackward(Turn::WHITE));
 		}
+
+		TEST_METHOD(Position_Shifts) {
+			FOR_BIT(bit, ~(BitBoard::rowBits(0) | BitBoard::rowBits(7) |
+				BitBoard::colBits(0) | BitBoard::colBits(7))){
+				Position pos = bit.ToPosition();
+				Assert::AreEqual(bit.shiftDown() , pos.shiftDown().ToSingletonBoard());
+				Assert::AreEqual(bit.shiftUp() , pos.shiftUp().ToSingletonBoard());
+				Assert::AreEqual(bit.shiftLeft() ,pos.shiftLeft().ToSingletonBoard());
+				Assert::AreEqual(bit.shiftRight() , pos.shiftRight().ToSingletonBoard());
+
+				FOR_TURN(turn) {
+					Assert::AreEqual(bit.shiftForward(turn), pos.shiftForward(turn).ToSingletonBoard());
+					Assert::AreEqual(bit.shiftBackward(turn), pos.shiftBackward(turn).ToSingletonBoard());
+				}
+
+			}
+		}
 	};
 }
