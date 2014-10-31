@@ -10,6 +10,8 @@ namespace AttackFields {
 
 	BitBoard kingTargs(Position position);
 	BitBoard knightTargs(Position position);
+	BitBoard knightTargs(BitBoard knights);
+
 	BitBoard pawnTargs(Position position,Turn turn);
 	BitBoard bishopTargs(Position position, BitBoard blockers);
 	BitBoard rookTargs(Position position, BitBoard blockers);
@@ -33,5 +35,7 @@ namespace AttackFields {
 
 	// If a pawn is here, it can move forward 2 squares.
 	BitBoard pawnJumpZone(Turn turn);
+
+	
 }
 

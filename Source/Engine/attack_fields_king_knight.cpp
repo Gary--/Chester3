@@ -61,3 +61,11 @@ BitBoard AttackFields::pawnTargs(Position position,Turn turn ) {
 	return pawnTargsArr[(bool)turn][position.index()];
 #pragma warning(default : 4800)
 }
+
+BitBoard AttackFields::knightTargs(BitBoard knights) {
+	BitBoard beside = knights.shiftLeft() | knights.shiftRight();
+	BitBoard beside2 = knights.shiftLeft().shiftLeft() | knights.shiftRight().shiftRight();
+
+	return beside.shiftUp().shiftUp() | beside.shiftDown().shiftDown() |
+		beside2.shiftUp() | beside2.shiftDown();
+}
