@@ -18,6 +18,8 @@ bool Game::posAttackedBy(Position position, Turn turn) {
 	return posAttackedByJump(position, turn) || posAttackedByLOS(position, turn);
 }
 
+
+
 BitBoard Game::attackedByJump(Turn turn) {
 	BitBoard res = BitBoard::EMPTY();
 	res |= kingTargs(getPieces(turn, Piece::KING).ToPosition());
@@ -25,9 +27,10 @@ BitBoard Game::attackedByJump(Turn turn) {
 	BitBoard pawnsForward = getPieces(turn, Piece::PAWN).shiftForward(turn);
 	res |= pawnsForward.shiftLeft() | pawnsForward.shiftRight();
 
-	FOR_BIT(bit, getPieces(turn, Piece::KNIGHT)) {
-		res |= knightTargs(bit.ToPosition());
-	}
+	res |= knightTargs(getPieces(turn, Piece::KNIGHT));
+	//FOR_BIT(bit, ) {
+	//	res |= knightTargs(bit.ToPosition());
+	//}
 	return res;
 }
 

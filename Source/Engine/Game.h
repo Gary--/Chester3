@@ -62,9 +62,11 @@ private:
 	static int moveCount;
 
 	static std::vector<UndoData> undoDatas;
-	static std::vector<Move> moves;
+	static const int MAX_MOVES = 1000;
+	static Move moves[MAX_MOVES];
 	static int movePtr;
 	static int numMovesAvail;
+	static int totalMoves;
 
 	static void addMove(Move move);
 	static void addPawnMove(Move move);//accounts for promotions

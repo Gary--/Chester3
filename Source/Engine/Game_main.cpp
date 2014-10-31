@@ -13,9 +13,11 @@ GameHash Game::hash = GameHash(GameConfiguration());
 int Game::halfMoveCount;
 int Game::moveCount;
 std::vector<UndoData> Game::undoDatas;
-std::vector<Move> Game::moves;
+
+Move Game::moves[Game::MAX_MOVES];
 int Game::movePtr = 0;
 int Game::numMovesAvail = -1;
+int Game::totalMoves = 0;
 
 namespace {
 	bool inited = false;
@@ -53,7 +55,7 @@ void Game::reset() {
 	undoDatas.clear();
 
 	movePtr = 0;
-	moves.clear();
+	totalMoves = 0;
 	numMovesAvail = -1;
 
 }

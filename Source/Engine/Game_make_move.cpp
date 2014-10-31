@@ -138,7 +138,8 @@ void Game::undoMove() {
 	UndoData undoData = undoDatas.back();
 	undoDatas.pop_back();
 	if (numMovesAvail > 0) {
-		moves.erase(moves.begin() + movePtr, moves.end());
+		totalMoves -= numMovesAvail;
+		//moves.erase(moves.begin() + movePtr, moves.end());
 	}
 	numMovesAvail = undoData.numMovesAvailable;
 	if (numMovesAvail > 0) {
