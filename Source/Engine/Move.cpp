@@ -11,8 +11,22 @@ Move::~Move()
 {
 }
 
-Move::Move(MoveType type, Position from, Position to,Piece piece, Piece targ) :
-type(type), from(from), to(to), piece(piece),targ(targ){}
+//  Least to most significant
+//  4 bits for type
+//  7 bits for from
+//  7 bits for to
+//  3 bits for piece
+//  3 bits for targ
+Move::Move(MoveType type, Position from, Position to, Piece piece, Piece targ) :
+value(
+(uint32_t)type |
+(uint32_t)from.index() << 4 |
+(uint32_t)to.index() << 11 |
+(uint32_t)piece << 18 |
+(uint32_t)targ << 21
+)
+
+{}
 
 Move Move::RESIGN(){
 	return Move(MoveType::RESIGN, Position(), Position(),Piece::EMPTY,Piece::EMPTY);
@@ -24,31 +38,31 @@ Move Move::NULL_MOVE(){
 
 
 MoveType Move::getType() const {
-	return type;
+	return (MoveType)(0xF & value);
 }
 Position Move::getFrom() const {
-	return from;
+	return Position((value >> 4) & 0x3F);
 }
 Position Move::getTo() const {
-	return to;
+	return Position((value >> 11) & 0x3F);
 }
 Piece Move::getPiece() const {
-	return piece;
+	return (Piece)((value >> 18) & 0x7);
 }
 Piece Move::getTarg() const {
-	return targ;
+	return (Piece)((value >> 21) & 0x7);
 }
 
 bool Move::isCapture() const {
-	return targ != Piece::EMPTY || type == MoveType::ENPEASENT;
+	return getTarg() != Piece::EMPTY || getType() == MoveType::ENPEASENT;
 }
 
 bool Move::isPromotion() const {
-	return type >= MoveType:: PROMO_KNIGHT;
+	return getType() >= MoveType::PROMO_KNIGHT;
 }
 
 Piece Move::promotionPiece() const {
-	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)type - (uint8_t)MoveType::PROMO_KNIGHT);
+	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)getType() - (uint8_t)MoveType::PROMO_KNIGHT);
 }
 
 MoveType promoType(Piece piece) {
@@ -59,10 +73,6 @@ MoveType promoType(Piece piece) {
 }
 
 Move Move::operator=(const Move& other) {
-	type = other.type;
-	from = other.from;
-	to = other.to;
-	piece = other.piece;
-	targ = other.targ;
+	value = other.value;
 	return *this;
 }

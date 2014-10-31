@@ -42,8 +42,9 @@ public:
 
 	Move operator=(const Move& other);
 private:
-	MoveType type;
+	/*MoveType type;
 	Position from, to;
-	Piece piece, targ;
+	Piece piece, targ;*/
+	uint32_t value;
 };
 
