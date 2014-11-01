@@ -13,37 +13,7 @@ public:
 		Game::init();
 	}
 
-	TEST_METHOD(Resigning) {
-		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		Game::configure(conf);
-		Game::makeMove(Move::RESIGN());
 
-		Assert::AreEqual(conf.str(), GameConfiguration::extractFromGame().str());
-		Assert::AreEqual(GameResult::BLACK_WIN, Game::getState());
-
-		conf.setTurn(Turn::BLACK);
-		Game::configure(conf);
-		Game::makeMove(Move::RESIGN());
-
-		Assert::AreEqual(conf.str(), GameConfiguration::extractFromGame().str());
-		Assert::AreEqual(GameResult::WHITE_WIN, Game::getState());
-	}
-
-	TEST_METHOD(Resign) {
-		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		Game::configure(conf);
-		Game::makeMove(Move::RESIGN());
-
-		Assert::AreEqual(conf.str(), GameConfiguration::extractFromGame().str());
-		Assert::AreEqual(GameResult::BLACK_WIN, Game::getState());
-
-		conf.setTurn(Turn::BLACK);
-		Game::configure(conf);
-		Game::makeMove(Move::RESIGN());
-
-		Assert::AreEqual(conf.str(), GameConfiguration::extractFromGame().str());
-		Assert::AreEqual(GameResult::WHITE_WIN, Game::getState());
-	}
 
 	void Test_Regular_Move0(const char* from, const char* to) {
 		//http://www.chessvideos.tv/bimg/1nf6dm4t1nhqo.png

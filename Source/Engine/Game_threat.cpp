@@ -25,9 +25,7 @@ BitBoard Game::attackedByJump(Turn turn) {
 	BitBoard pawnsForward = getPieces(turn, Piece::PAWN).shiftForward(turn);
 	res |= pawnsForward.shiftLeft() | pawnsForward.shiftRight();
 
-	FOR_BIT(bit, getPieces(turn, Piece::KNIGHT)) {
-		res |= knightTargs(bit.ToPosition());
-	}
+	res |= AttackFields::knightTargs(getPieces(turn, Piece::KNIGHT));
 	return res;
 }
 

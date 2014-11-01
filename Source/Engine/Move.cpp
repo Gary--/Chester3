@@ -28,9 +28,6 @@ value(
 
 {}
 
-Move Move::RESIGN(){
-	return Move(MoveType::RESIGN, Position(), Position(),Piece::EMPTY,Piece::EMPTY);
-}
 
 Move Move::NULL_MOVE(){
 	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY, Piece::EMPTY);

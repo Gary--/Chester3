@@ -86,9 +86,6 @@ private:
 	// === Private setters
 
 
-	// === Make move helpers
-	static void resign();
-
 	// === Debug
 	static void integrityCheck();
 	static void assertMovesAreUnique();

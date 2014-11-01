@@ -1,14 +1,7 @@
 #include "Game.h"
 
-void Game::resign() {
-	result = getTurn() == Turn::WHITE ? GameResult::BLACK_WIN : GameResult::WHITE_WIN;
-}
 
 void Game::makeMove(Move move) {
-
-	if (move.getType() == MoveType::RESIGN) {
-		return resign();
-	}
 
 #pragma region Pack Undo data
 	UndoData undoData(move, hash,numMovesAvail,check);

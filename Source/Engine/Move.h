@@ -25,7 +25,7 @@ struct Move
 
 public:
 	Move(MoveType type,Position from, Position to, Piece piece, Piece targ);
-	static Move RESIGN();
+
 	static Move NULL_MOVE();
 	bool isPromotion() const;
 	Piece promotionPiece() const;
