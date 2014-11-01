@@ -102,6 +102,7 @@ public:
 	}
 
 	TEST_METHOD(Staring_Pos_Unique_Positions) {
+		//http://wismuth.com/chess/statistics-games.html
 		const char* FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
 		Assert::AreEqual(20, Perft::perftUniquePositions(FEN, 1));
 		Assert::AreEqual(400, Perft::perftUniquePositions(FEN, 2));

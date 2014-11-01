@@ -121,8 +121,22 @@ void Game::makeMove(Move move) {
 	
 	_ASSERTE(!posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn));
 
+	
+	BitBoard theirKingBit = getPieces(!curTurn, Piece::KING);
+
+	check = false;
+	if ((piece == Piece::PAWN && (AttackFields::pawnTargs(toPos,curTurn)&theirKingBit) != BitBoard::EMPTY()) ||
+		((piece == Piece::KNIGHT || (move.isPromotion() && move.promotionPiece()==Piece::KNIGHT)) &&
+		(AttackFields::knightTargs(toPos)&theirKingBit) != BitBoard::EMPTY())) {
+		check = true;
+	}
+	if (check == false &&posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {
+		check = true;
+	}
+
+	
 	curTurn = !curTurn;
-	check = posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
+	
 	hash.toggleTurn();
 
 	integrityCheck();
