@@ -18,6 +18,7 @@ public:
 	static void reset();//Invalidates the position.
 	static void configure(const GameConfiguration& conf);
 	static GameConfiguration getGameConfiguration();
+	static std::string getFEN();
 
 	//Game state query
 	static Turn getTurn();
@@ -36,9 +37,8 @@ public:
 	static uint64_t getHash();
 	static int getHalfMoveClock();
 	static int getMoveNumber();
-	//static int getRepeatCount(uint64_t hash);
 
-	////Move making
+
 	//static void computeMoves();
 	//static void computeOnlyMaterialChangeMoves();
 	static int getNumValidMoves();
@@ -89,7 +89,7 @@ private:
 	// === Debug
 	static void integrityCheck();
 	static void assertMovesAreUnique();
-	static std::string boardRepr();
+	
 
 	// ===
 	static bool posAttackedBy(Position position, Turn turn);//Does turn attack the given position?

@@ -217,6 +217,13 @@ public:
 		Assert::AreEqual(53392, mirrorLazyPerft(FEN, 3));
 	}
 
+	TEST_METHOD(Bug_Catcher_1) {
+		const char* FEN = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
+#ifdef NDEBUG
+		Assert::AreEqual(674624, mirrorLazyPerft(FEN, 5));
+#endif
+	}
+
 	TEST_METHOD(StevenEdwards_Perft) {
 		const char* FEN = "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10";
 		Assert::AreEqual(46, mirrorLazyPerft(FEN, 1));
@@ -228,6 +235,8 @@ public:
 		//Assert::AreEqual(164075551, mirrorLazyPerft(FEN, 5));
 #endif
 	}
+
+
 
 	};
 

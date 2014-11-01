@@ -53,7 +53,7 @@
     <ClCompile Include="Test_configure_check_detection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Test_basic_perft.cpp">
+    <ClCompile Include="Test_Move_Generation_perft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

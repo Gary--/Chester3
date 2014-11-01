@@ -65,6 +65,6 @@ void Game::assertMovesAreUnique() {
 #endif
 }
 
-std::string Game::boardRepr() {
+std::string Game::getFEN() {
 	return GameConfiguration::extractFromGame().str();
 }
