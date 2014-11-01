@@ -2,7 +2,7 @@
 #include "attack_fields.h"
 
 void Game::addMove(Move move) {
-	moves[totalMoves++] = move;
+	moves.push_back(move);
 	numMovesAvail++;
 }
 
