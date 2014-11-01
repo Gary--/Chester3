@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include "attack_fields.h"
 
 void Game::makeMove(Move move) {
 
@@ -46,10 +46,21 @@ void Game::makeMove(Move move) {
 
 
 
-	if (type == MoveType::PAWN_JUMP) {
+	if (type == MoveType::PAWN_JUMP) { // Make sure the move enpeasent is actually legal
 		BitBoard enpeasentFrom = toBit.shiftLeft() | toBit.shiftRight();
-		if ((*s(!curTurn, Piece::PAWN) & enpeasentFrom) != BitBoard::EMPTY()) {
-			hash.setEnpeasent(toPos.col());
+		FOR_BIT(pawn, getPieces(!curTurn, Piece::PAWN) & enpeasentFrom) {
+			Position theirKingPos = getPieces(!curTurn, Piece::KING).ToPosition();
+			BitBoard newBlockers = getAllPieces() ^ pawn^toBit^
+				AttackFields::enpeasentTo(!curTurn, toPos.col()).ToSingletonBoard();
+			BitBoard diagProblems = (getPieces(curTurn, Piece::QUEEN) | getPieces(curTurn, Piece::BISHOP))&
+				AttackFields::bishopTargs(theirKingPos, newBlockers);
+			BitBoard rightProblems = (getPieces(curTurn, Piece::QUEEN) | getPieces(curTurn, Piece::ROOK))&
+				AttackFields::rookTargs(theirKingPos, newBlockers);
+			
+			if ((diagProblems | rightProblems) == BitBoard::EMPTY()) {
+				hash.setEnpeasent(toPos.col());
+				break;
+			}
 		}
 	} else if (type == MoveType::ENPEASENT) {
 		BitBoard capturedBit = toBit.shiftBackward(curTurn);
