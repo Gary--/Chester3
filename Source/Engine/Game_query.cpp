@@ -84,3 +84,7 @@ int Game::getMoveNumber() {
 bool Game::getCheck() {
 	return check;
 }
+
+uint64_t Game::getHash() {
+	return hash.toInt64();
+}
