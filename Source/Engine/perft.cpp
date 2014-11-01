@@ -1,10 +1,15 @@
 #include "perft.h"
 #include "Game.h"
+#include <set>
 using namespace std;
 namespace {
-	int perft(int depth, bool full) {
+	set<uint64_t> hashes;
+	int perft(int depth, bool full, bool storeHashes=false) {
 		if (depth == 0) {
 			if (full) {
+				if (storeHashes) {
+					hashes.insert(Game::getHash());
+				}
 				return 1;
 			} else {
 				return Game::getNumValidMoves();
@@ -38,4 +43,17 @@ int Perft::perftFull(const char* FEN, int depth) {
 	GameConfiguration conf(FEN);
 	Game::configure(conf);
 	return perft(depth, true);
+}
+
+
+
+int Perft::perftUniquePositions(const char* FEN, int depth) {
+	GameConfiguration conf(FEN);
+	Game::configure(conf);
+
+	return perft(depth, true, true);
+
+	int result = hashes.size();
+	hashes.clear();
+	return result;
 }

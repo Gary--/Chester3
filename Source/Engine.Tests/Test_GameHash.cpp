@@ -2,6 +2,8 @@
 #include "CppUnitTest.h"
 #include "chess_macros.h"
 #include "GameHash.h"
+#include "Game.h"
+#include "perft.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -97,6 +99,18 @@ public:
 				Assert::AreEqual(prev, hash.toInt64());
 			}
 		}
+	}
+
+	TEST_METHOD(Staring_Pos_Unique_Positions) {
+		const char* FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
+		Assert::AreEqual(20, Perft::perftUniquePositions(FEN, 1));
+		Assert::AreEqual(400, Perft::perftUniquePositions(FEN, 2));
+		Assert::AreEqual(8902, Perft::perftUniquePositions(FEN, 3));
+#ifdef NDEBUG
+		Assert::AreEqual(197281, Perft::perftUniquePositions(FEN, 4));
+		Assert::AreEqual(4865609, Perft::perftUniquePositions(FEN, 5));
+		//Assert::AreEqual(119060324, Perft::perftUniquePositions(FEN, 6));
+#endif
 	}
 
 	//TEST CLASS END
