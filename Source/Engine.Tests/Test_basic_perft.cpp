@@ -150,7 +150,85 @@ public:
 #endif 
 	}
 
-	
+	TEST_METHOD(Big_2_All_Features) {
+		const char* FEN = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ -";
+		Assert::AreEqual(6, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(264, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(9467, mirrorLazyPerft(FEN, 3));
+		Assert::AreEqual(422333, mirrorLazyPerft(FEN, 4));
+		
+#ifdef NDEBUG
+		Assert::AreEqual(15833292, mirrorLazyPerft(FEN, 5));
+		//Assert::AreEqual(706045033, mirrorLazyPerft(FEN, 6));
+#endif 
+	}
+
+	TEST_METHOD(PawnJump_0) {
+		const char* FEN = "8/8/3q4/6bk/5q2/1Nn5/PPPP4/2K5 w - -";
+
+		Assert::AreEqual(3190, mirrorLazyPerft(FEN, 3));
+		Assert::AreEqual(172587, mirrorLazyPerft(FEN, 4));
+#ifdef NDEBUG
+		Assert::AreEqual(1601636, mirrorLazyPerft(FEN, 5));
+#endif
+	}
+
+	TEST_METHOD(Starting_Position) {
+		const char* FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
+		Assert::AreEqual(20, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(400, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(8902, mirrorLazyPerft(FEN, 3));
+		Assert::AreEqual(197281, mirrorLazyPerft(FEN, 4));
+
+#ifdef NDEBUG
+		Assert::AreEqual(4865609, mirrorLazyPerft(FEN, 5));
+#endif
+	}
+
+	TEST_METHOD(Kiwipete) {
+		const char* FEN = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+		Assert::AreEqual(48, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(2039, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(97862, mirrorLazyPerft(FEN, 3));
+
+#ifdef NDEBUG
+		Assert::AreEqual(4085603, mirrorLazyPerft(FEN, 4));
+		//Assert::AreEqual(193690690, mirrorLazyPerft(FEN, 5));
+#endif
+	}
+
+	TEST_METHOD(Enpeasent_While_In_Check) {
+		const char* FEN = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
+		Assert::AreEqual(14, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(191, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(2812, mirrorLazyPerft(FEN, 3));
+		Assert::AreEqual(43238, mirrorLazyPerft(FEN, 4));
+
+#ifdef NDEBUG
+		Assert::AreEqual(674624, mirrorLazyPerft(FEN, 5));
+		Assert::AreEqual(11030083, mirrorLazyPerft(FEN, 6));
+#endif
+	}
+
+	TEST_METHOD(Bug_Catcher_0) {
+		const char* FEN = "rnbqkb1r/pp1p1ppp/2p5/4P3/2B5/8/PPP1NnPP/RNBQK2R w KQkq - 0 6";
+		Assert::AreEqual(42, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(1352, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(53392, mirrorLazyPerft(FEN, 3));
+	}
+
+	TEST_METHOD(StevenEdwards_Perft) {
+		const char* FEN = "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10";
+		Assert::AreEqual(46, mirrorLazyPerft(FEN, 1));
+		Assert::AreEqual(2079, mirrorLazyPerft(FEN, 2));
+		Assert::AreEqual(89890, mirrorLazyPerft(FEN, 3));
+
+#ifdef NDEBUG
+		Assert::AreEqual(3894594, mirrorLazyPerft(FEN, 4));
+		//Assert::AreEqual(164075551, mirrorLazyPerft(FEN, 5));
+#endif
+	}
+
 	};
 
 

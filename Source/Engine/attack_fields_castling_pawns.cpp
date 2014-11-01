@@ -40,3 +40,10 @@ BitBoard AttackFields::pawnPromoZone(Turn turn) {
 BitBoard AttackFields::pawnJumpZone(Turn turn) {
 	return pawnPromoZone(!turn);
 }
+
+Position AttackFields::enpeasentTo(Turn turn, int enpeasentColumn) {
+	return Position(turn == Turn::WHITE ? 2 : 5, enpeasentColumn);
+}
+Position AttackFields::enpeasentCaptured(Turn turn, int enpeasentColumn) {
+	return Position(turn == Turn::WHITE ? 3 : 4, enpeasentColumn);
+}

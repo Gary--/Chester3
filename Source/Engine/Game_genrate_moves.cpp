@@ -7,6 +7,7 @@ using namespace AttackFields;
 //HINT: put promo logic into add move
 void Game::generateMovesImpl() {
 	//const Turn curTurn = Turn::WHITE;
+	const bool check = getCheck();
 	const BitBoard M = getPlayerPieces(curTurn);
 	const BitBoard MK = getPieces(curTurn, Piece::KING);
 	const BitBoard MP = getPieces(curTurn, Piece::PAWN);
@@ -45,9 +46,9 @@ void Game::generateMovesImpl() {
 
 #pragma region Threats: Opponents pieces which attack our king
 	
-
+	
 	BitBoard jumpThreats, rightLosThreats, diagLosThreats;
-	if (getCheck()) {
+	if (check) {
 		jumpThreats = (TP & pawnTargs(kingPos, curTurn)) | (TN & knightTargs(kingPos));
 		rightLosThreats = TR & rookTargs(kingPos, ALL);
 		diagLosThreats = TB & bishopTargs(kingPos, ALL);
@@ -110,6 +111,12 @@ void Game::generateMovesImpl() {
 		// Capture the threat with a pawn
 		FOR_BIT(pawn, pawnTargs(threatPos, !curTurn) & MP & posPieces) {
 			addPawnMove(Move(MoveType::REGULAR, pawn.ToPosition(), threatPos, Piece::PAWN, threatPiece));
+		}
+		if (threatPiece == Piece::PAWN && getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
+			Position to = enpeasentTo(curTurn, getEnpeasentColumn());
+			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP & posPieces) {
+				addMove(Move(MoveType::ENPEASENT, pawn.ToPosition(), to, Piece::PAWN, Piece::EMPTY));
+			}
 		}
 		
 
@@ -202,68 +209,66 @@ void Game::generateMovesImpl() {
 	}
 
 	
-	BitBoard pawnsThatCanMoveForward = ~allPinned | (rightPinned & BitBoard::colBits(kingPos.col()));
-	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanMoveForward).shiftForward(curTurn) & ~ALL & posTargs) {
+	BitBoard pawnsThatCanMoveForward = (~allPinned | (rightPinned & BitBoard::colBits(kingPos.col()))) &
+		 MP & posPieces;
+	BitBoard inEmptyFrontOfPawns = pawnsThatCanMoveForward.shiftForward(curTurn) & ~ALL;
+	FOR_BIT(toBit, inEmptyFrontOfPawns & posTargs) {
 		Position to = toBit.ToPosition();
 		Position from = to.shiftBackward(curTurn);
 		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, Piece::EMPTY));
 	}
+
+	inEmptyFrontOfPawns &= pawnJumpZone(curTurn).shiftForward(curTurn);
+	FOR_BIT(toBit, inEmptyFrontOfPawns.shiftForward(curTurn) & ~ALL & posTargs) {
+		Position to = toBit.ToPosition();
+		Position from = to.shiftBackward(curTurn).shiftBackward(curTurn);
+		addPawnMove(Move(MoveType::PAWN_JUMP, from, to, Piece::PAWN, Piece::EMPTY));
+	}
 	
 
-	// TODO: dun need pos targs here
-	BitBoard kingX = bishopTargs(kingPos, BitBoard::EMPTY());
-	BitBoard pawnsThatCanCapture = ~allPinned | diagPinned ;
-	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft() & posTargs & T &
-			(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft())) {
-		Position to = toBit.ToPosition();
-		Position from = to.shiftBackward(curTurn).shiftRight();
-		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
-	}
-	FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight() & posTargs & T  &
-			(kingX | ~diagPinned.shiftForward(curTurn).shiftRight())) {
-		Position to = toBit.ToPosition();
-		Position from = to.shiftBackward(curTurn).shiftLeft();
-		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
-	}
+	if (!check) {
+		// TODO: dun need pos targs here
+		BitBoard kingX = bishopTargs(kingPos, BitBoard::EMPTY());
+		BitBoard pawnsThatCanCapture = ~allPinned | diagPinned;
+		FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft()  & T &
+				(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft())) {
+			Position to = toBit.ToPosition();
+			Position from = to.shiftBackward(curTurn).shiftRight();
+			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+		}
+		FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
+				(kingX | ~diagPinned.shiftForward(curTurn).shiftRight())) {
+			Position to = toBit.ToPosition();
+			Position from = to.shiftBackward(curTurn).shiftLeft();
+			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+		}
 
-	FOR_SIDE(side) {
-		if (getCanCastle(curTurn,side) &&
-			(ALL & castleEmptySquares(curTurn,side)) == BitBoard::EMPTY() &&
-			(danger & castleSafeSquares(curTurn,side)) == BitBoard::EMPTY()) {
-			MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
-			Position to(curTurn == Turn::WHITE ? 7 : 0,  4 + (side==Side::LEFT ? (-2) : 2) );
+		if (getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
+			Position to = enpeasentTo(curTurn, getEnpeasentColumn());
+			BitBoard capturedBit = enpeasentCaptured(curTurn, getEnpeasentColumn()).ToSingletonBoard();
+			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP & posPieces & ~rightPinned) {
+				Position from = pawn.ToPosition();
+				BitBoard newBlockers = ALL ^ to.ToSingletonBoard() ^ pawn ^ capturedBit;
+				if ((rookTargs(kingPos, newBlockers) & TR) == BitBoard::EMPTY() &&
+					(bishopTargs(kingPos, newBlockers) & TB) == BitBoard::EMPTY()) {
+					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN, Piece::EMPTY));
+				}
+			}
+		}
 
-			addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+		FOR_SIDE(side) {
+			if (getCanCastle(curTurn, side) &&
+				(ALL & castleEmptySquares(curTurn, side)) == BitBoard::EMPTY() &&
+				(danger & castleSafeSquares(curTurn, side)) == BitBoard::EMPTY()) {
+				MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
+				Position to(curTurn == Turn::WHITE ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
+
+				addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+			}
 		}
 	}
 
-	/*
-	
-	BitBoard diagPinned, horiPinned
-	BitBoard pinned;
 
-	Classify in your face LOS as jump
-
-	DO: king moves
-	if in doubleCheck:
-	    return
-
-
-	if in check:
-	    posPieces &= ~ pinned
-
-	    DO: kill checker
-		   enpeasent kill it
-		   the piece killed will never reveal, except the hori double disappear reveal
-		
-		if LOS check:
-		    posTargs &= blocking moves
-	else:
-	    DO: castle
-	    DO: enpeasent
-
-
-	*/
 
 	assertMovesAreUnique();
 }

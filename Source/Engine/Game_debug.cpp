@@ -64,3 +64,7 @@ void Game::assertMovesAreUnique() {
 
 #endif
 }
+
+std::string Game::boardRepr() {
+	return GameConfiguration::extractFromGame().str();
+}

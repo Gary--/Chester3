@@ -94,7 +94,7 @@ private:
 	// === Debug
 	static void integrityCheck();
 	static void assertMovesAreUnique();
-
+	static std::string boardRepr();
 
 	// ===
 	static bool posAttackedBy(Position position, Turn turn);//Does turn attack the given position?
