@@ -25,7 +25,7 @@ namespace {
 			Move move = Game::getMove(i);
 
 			Game::makeMove(move);
-			res += perft(depth - 1, full);
+			res += perft(depth - 1, full, storeHashes);
 
 			Game::undoMove();
 		}
@@ -51,9 +51,13 @@ int Perft::perftUniquePositions(const char* FEN, int depth) {
 	GameConfiguration conf(FEN);
 	Game::configure(conf);
 
-	return perft(depth, true, true);
+	hashes.clear();
 
+	perft(depth, true, true);
+
+#pragma warning (disable:4267)
 	int result = hashes.size();
+#pragma warning (default:4267)
 	hashes.clear();
 	return result;
 }
