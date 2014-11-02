@@ -8,14 +8,20 @@
 
 using namespace std;
 
+
+namespace {
+	BitBoard diag7() {
+		return BitBoard(0x102040810204080);
+	}
+	BitBoard diag8to14() {
+		return BitBoard(0xfefcf8f0e0c08000);
+	}
+	BitBoard diag0to7() {
+		return BitBoard(~(diag7() | diag8to14()));
+	}
+}
 int main() {
-	//Game::init();
-	clock_t start = clock();
-	int count = Perft::perftLazy("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -", 5);
-	time_t end = clock();
-	cout << "# of leaves: " << count << endl;
-	cout << "Time: " << (float(end - start) / CLOCKS_PER_SEC) << endl;
-	system("pause");
-	//cout << AttackFields::castleEmptySquares(Turn::WHITE, Side::LEFT).AsInt64() << endl;
+
+ 
 	return 0;
 }

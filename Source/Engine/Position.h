@@ -33,6 +33,8 @@ public:
 	int index() const;
 	int row() const;
 	int col() const;
+	int diag() const;
+	int antiDiag() const;
 
 	Position shiftUp() const;
 	Position shiftDown() const;

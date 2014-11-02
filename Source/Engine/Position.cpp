@@ -58,6 +58,14 @@ int Position::col() const
 	return value % 8;
 }
 
+int Position::antiDiag() const {
+	return (7 - row()) + col();
+}
+
+int Position::diag() const {
+	return col() + row();
+}
+
 
 int Position::index() const
 {

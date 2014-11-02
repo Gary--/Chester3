@@ -133,4 +133,3 @@ void AttackFieldInit::BishopRook() {
 		initializeBishopRookAttackFields(Piece::ROOK);
 }
 
-

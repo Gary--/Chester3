@@ -49,6 +49,7 @@ public:
 	static BitBoard FULL();
 	static BitBoard BLACK_SQUARES();
 	static BitBoard WHITE_SQUARES();
+	static BitBoard EDGE_SQUARES();
 
 
 
@@ -69,6 +70,32 @@ public:
 
 	static BitBoard rowBits(int row);
 	static BitBoard colBits(int col);
+
+	//rank + file
+	//	\f  0  1  2  3  4  5  6  7
+	//	r_________________________
+	//	7 | 0  1  2  3  4  5  6  7   h8
+	//	6 | 1  2  3  4  5  6  7  8
+	//	5 | 2  3  4  5  6  7  8  9
+	//	4 | 3  4  5  6  7  8  9 10
+	//	3 | 4  5  6  7  8  9 10 11
+	//	2 | 5  6  7  8  9 10 11 12
+	//	1 | 6  7  8  9 10 11 12 13
+	//	0 | 7  8  9 10 11 12 13 14
+	static BitBoard diagonalBits(int i);
+
+	//rank + file
+	//	\f  0  1  2  3  4  5  6  7
+	//	r_________________________
+	//	7 | 7  8  9 10 11 12 13 14   h8
+	//	6 | 6  7  8  9 10 11 12 13
+	//	5 | 5  6  7  8  9 10 11 12
+	//	4 | 4  5  6  7  8  9 10 11
+	//	3 | 3  4  5  6  7  8  9 10
+	//	2 | 2  3  4  5  6  7  8  9
+	//	1 | 1  2  3  4  5  6  7  8
+	//	0 | 0  1  2  3  4  5  6  7
+	static BitBoard antiDiagonalBits(int i);
 
 	static BitBoard random();
 };

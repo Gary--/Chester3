@@ -36,8 +36,12 @@ namespace AttackFields {
 	// If a pawn is here, it can move forward 2 squares.
 	BitBoard pawnJumpZone(Turn turn);
 
+	// Where are pawn moves to when making an EP
 	Position enpeasentTo(Turn turn, int enpeasentColumn);
+
+	// The position of the pawn that gets captured by EP
 	Position enpeasentCaptured(Turn turn, int enpeasentColumn);
+
 	
 }
 

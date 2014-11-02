@@ -78,6 +78,9 @@ BitBoard BitBoard::BLACK_SQUARES() {
 BitBoard BitBoard::WHITE_SQUARES() {
 	return BitBoard(0xAA55AA55AA55AA55ULL);
 }
+BitBoard BitBoard::EDGE_SQUARES() {
+	return rowBits(0) | rowBits(7) | colBits(0) | colBits(7);
+}
 
 
 
@@ -164,6 +167,45 @@ BitBoard BitBoard::colBits(int col)
 	ChessAssert::Assert_8(col);
 	return BitBoard(0x0101010101010101ULL << col);
 }
+
+namespace {
+	BitBoard antiDiag7() {
+		return BitBoard(0x8040201008040201ULL);
+	}
+	BitBoard antiDiag8to14() {
+		return BitBoard(0X80C0E0F0F8FCFEULL);
+	}
+	BitBoard antiDiag0to7() {
+		return ~(antiDiag7() | antiDiag8to14());
+	}
+
+	BitBoard diag7() {
+		return BitBoard(0x102040810204080);
+	}
+	BitBoard diag8to14() {
+		return BitBoard(0xfefcf8f0e0c08000);
+	}
+	BitBoard diag0to7() {
+		return BitBoard(~(diag7() | diag8to14()));
+	}
+
+}
+
+BitBoard BitBoard::diagonalBits(int i) {
+	_ASSERTE(0 <= i && i < 15);
+	return i==7 ? diag7() :
+		( i < 7 ?
+		BitBoard(diag7().value >> (7 - i)) &~(diag8to14()|diag7()) :
+		BitBoard(diag7().value << (i - 7)) &~(diag0to7() | diag7()) );
+}
+
+BitBoard BitBoard::antiDiagonalBits(int i) {
+	_ASSERTE(0 <= i && i < 15);
+	return i < 7 ?
+		BitBoard(antiDiag7().value >> (7-i)) &~antiDiag8to14() :
+		BitBoard(antiDiag7().value << (i-7)) &~antiDiag0to7();
+}
+
 
 
 BitBoard BitBoard::random(){

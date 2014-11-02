@@ -192,6 +192,23 @@ namespace EngineTests
 			Assert::AreEqual(BitBoard::FULL(), acc2);
 		}
 
+		TEST_METHOD(BitBoard_Position_Diagonal_Antidiagonal) {
+			BitBoard acc1 = BitBoard::EMPTY();
+			BitBoard acc2 = BitBoard::EMPTY();
+			for (int i = 0; i < 15; ++i) {
+				acc1 ^= BitBoard::diagonalBits(i);
+				acc2 ^= BitBoard::antiDiagonalBits(i);
+
+				FOR_BIT(bit, BitBoard::diagonalBits(i)) {
+					Assert::AreEqual(i, bit.ToPosition().diag());
+				}
+				FOR_BIT(bit, BitBoard::antiDiagonalBits(i)) {
+					Assert::AreEqual(i, bit.ToPosition().antiDiag());
+				}
+			}
+			Assert::AreEqual(BitBoard::FULL(), acc1);
+			Assert::AreEqual(BitBoard::FULL(), acc2);
+		}
 		
 		TEST_METHOD(BitBoard_Shifts){
 			for (int i = 0; i < 100; i++)
