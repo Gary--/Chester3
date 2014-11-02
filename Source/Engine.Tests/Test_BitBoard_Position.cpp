@@ -208,6 +208,11 @@ namespace EngineTests
 			}
 			Assert::AreEqual(BitBoard::FULL(), acc1);
 			Assert::AreEqual(BitBoard::FULL(), acc2);
+
+			FOR_POSITION_64(pos) {
+				Assert::IsTrue(BitBoard::diagonalBits(pos.diag()).contains(pos));
+				Assert::IsTrue(BitBoard::antiDiagonalBits(pos.antiDiag()).contains(pos));
+			}
 		}
 		
 		TEST_METHOD(BitBoard_Shifts){
