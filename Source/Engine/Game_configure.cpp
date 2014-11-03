@@ -7,8 +7,7 @@ void Game::configure(const GameConfiguration& config) {
 	
 
 	curTurn = config.getTurn();
-	halfMoveCount = config.getHalfMoveClock();
-	moveCount = config.getMoveNumber();
+
 
 	FOR_POSITION_64(pos) {
 		setPieceAt(pos, config.getPieceAt(pos));
