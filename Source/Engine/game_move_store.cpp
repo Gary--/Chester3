@@ -32,11 +32,18 @@ void Game::generateMoves() {
 	if (cur.numMovesStored == 0) {
 		generateMovesImpl();
 		cur.numMovesAvailable = cur.numMovesStored;
+
+		_ASSERTE(cur.numMovesAvailable == numMovesAvailableImpl());
 	}
+}
+
+int Game::getNumValidMoves2() {
+	return numMovesAvailableImpl();
 }
 
 int Game::getNumValidMoves() {
 	Game::generateMoves();
+	
 	return cur.numMovesAvailable;
 }
 Move Game::getMove(int n) {

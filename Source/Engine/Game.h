@@ -33,13 +33,18 @@ public:
 
 	//static void computeMoves();
 	//static void computeOnlyMaterialChangeMoves();
+	static int getNumValidMoves2();
 	static int getNumValidMoves();
 	static Move getMove(int n);//0<= n <numValidMoves()
 
+
+
+	static void generateMoves();
+
 	/*
 	Goal: Support...:
-	void computeAllMoves();
-	void computeTacticalMoves(); //might not have any effect, is their for completeness
+	void generateAllMoves();
+	void generateTacticalMoves(); //might not have any effect, is their for completeness
 	int getNumberOfAvailableMoves(); // Always all the moves
 	for (Move move : Game::movesAvailable()){...}
 	for (Move move : Game::tacticalMovesAvailable()){...}
@@ -72,7 +77,9 @@ private:
 
 	static void generateMovesImpl();
 	//static void generateMovesImpl_BLACK();
-	static void generateMoves();
+
+	static int numMovesAvailableImpl();
+	
 #pragma endregion
 	// === Private getters
 	

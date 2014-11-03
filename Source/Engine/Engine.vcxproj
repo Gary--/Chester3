@@ -51,6 +51,7 @@
     <ClCompile Include="Game_genrate_moves.cpp" />
     <ClCompile Include="Game_main.cpp" />
     <ClCompile Include="Game_make_move.cpp" />
+    <ClCompile Include="Game_move_count.cpp" />
     <ClCompile Include="game_move_store.cpp" />
     <ClCompile Include="Game_private_convenience.cpp" />
     <ClCompile Include="Game_query.cpp" />
