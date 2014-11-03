@@ -28,7 +28,6 @@ public:
 		Assert::AreEqual(move.getPiece(), Game::getPieceAt(move.getTo()));
 		
 		Assert::IsFalse(Game::getPlayerPieces(Turn::BLACK).contains(move.getTo()));
-		Assert::AreEqual(1, Game::getMoveNumber());
 
 
 		Game::undoMove();

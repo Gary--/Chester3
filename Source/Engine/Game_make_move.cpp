@@ -113,11 +113,6 @@ void Game::makeMove(Move move) {
 		hash.voidCastle(Turn::BLACK, Side::RIGHT);
 	}
 
-	// =====
-	if (curTurn == Turn::BLACK) {
-		moveCount++;
-	}
-
 	
 	_ASSERTE(!posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn));
 
@@ -145,9 +140,6 @@ void Game::makeMove(Move move) {
 
 void Game::undoMove() {
 	curTurn = !curTurn;
-	if (curTurn == Turn::BLACK) {
-		moveCount--;
-	}
 
 	
 

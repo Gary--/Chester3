@@ -10,8 +10,7 @@ BitBoard Game::WA, Game::BA;
 BitBoard Game::ALL;
 GameResult Game::result;
 GameHash Game::hash = GameHash(GameConfiguration());
-int Game::halfMoveCount;
-int Game::moveCount;
+
 std::vector<UndoData> Game::undoDatas;
 std::vector<Move> Game::moves;
 int Game::movePtr = 0;

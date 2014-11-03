@@ -74,12 +74,6 @@ int Game::getEnpeasentColumn() {
 	return hash.getEnpeasent();
 }
 
-int Game::getHalfMoveClock() {
-	return halfMoveCount;
-}
-int Game::getMoveNumber() {
-	return moveCount;
-}
 
 bool Game::getCheck() {
 	return check;

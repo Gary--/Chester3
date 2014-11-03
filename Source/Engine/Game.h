@@ -35,9 +35,6 @@ public:
 	static GameResult getState();
 
 	static uint64_t getHash();
-	static int getHalfMoveClock();
-	static int getMoveNumber();
-
 
 	//static void computeMoves();
 	//static void computeOnlyMaterialChangeMoves();
@@ -58,8 +55,7 @@ private:
 
 	static GameResult result;
 	static GameHash hash;
-	static int halfMoveCount;
-	static int moveCount;
+
 
 	static std::vector<UndoData> undoDatas;
 	static std::vector<Move> moves;
