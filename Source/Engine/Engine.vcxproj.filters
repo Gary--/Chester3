@@ -48,13 +48,13 @@
     <ClInclude Include="GameHash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UndoData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="perft.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMoveManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

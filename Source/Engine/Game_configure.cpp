@@ -2,9 +2,7 @@
 
 void Game::configure(const GameConfiguration& config) {
 	reset();
-	result = GameResult::IN_PROGRESS;//TODO: draw tests etc
 
-	
 
 	curTurn = config.getTurn();
 
@@ -16,7 +14,8 @@ void Game::configure(const GameConfiguration& config) {
 		}
 	}
 
-	check = posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
-	hash = GameHash(config);
+	cur = UndoData();
+	cur.check = posAttackedBy(getPieces(curTurn, Piece::KING).ToPosition(), !curTurn);
+	cur.hash = GameHash(config);
 	integrityCheck();
 }

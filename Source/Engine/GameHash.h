@@ -8,6 +8,7 @@ class GameHash {
 
 public:
 	explicit GameHash(const GameConfiguration& conf);
+	GameHash();//undefined
 	static void init();
 
 	void toggleTurn();
@@ -20,9 +21,9 @@ public:
 	//===== gets
 	uint64_t toInt64() const;
 
-	//================ LOOK AWAY!
+
 private:
-	GameHash();
+	
 	uint64_t hash;
 	int enpeasent;
 	bool canCastle[2][2];

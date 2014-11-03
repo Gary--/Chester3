@@ -3,13 +3,7 @@
 
 void Game::makeMove(Move move) {
 
-#pragma region Pack Undo data
-	UndoData undoData(move, hash,numMovesAvail,check);
-	movePtr += numMovesAvail;
-	numMovesAvail = -1;
-
-	undoDatas.push_back(undoData);
-#pragma endregion
+	pushMove(move);
 
 #pragma region Unpack move
 	const MoveType type = move.getType();
@@ -35,13 +29,13 @@ void Game::makeMove(Move move) {
 	*sp(!curTurn) &= ~toBit;
 
 	*s(curTurn, piece) ^= fromBit | toBit;
-	hash.togglePiece(fromPos,curTurn,piece);
-	hash.togglePiece(toPos, curTurn, piece);
+	cur.hash.togglePiece(fromPos,curTurn,piece);
+	cur.hash.togglePiece(toPos, curTurn, piece);
 
 	*s(!curTurn, targ) ^= toBit;
-	hash.togglePiece(toPos, !curTurn, targ);
+	cur.hash.togglePiece(toPos, !curTurn, targ);
 
-	hash.setEnpeasent(GameConfiguration::NO_ENPEASENT_COLUMN);
+	cur.hash.setEnpeasent(GameConfiguration::NO_ENPEASENT_COLUMN);
 #pragma endregion
 
 
@@ -58,7 +52,7 @@ void Game::makeMove(Move move) {
 				AttackFields::rookTargs(theirKingPos, newBlockers);
 			
 			if ((diagProblems | rightProblems) == BitBoard::EMPTY()) {
-				hash.setEnpeasent(toPos.col());
+				cur.hash.setEnpeasent(toPos.col());
 				break;
 			}
 		}
@@ -68,20 +62,20 @@ void Game::makeMove(Move move) {
 
 		toggleBit(!curTurn, capturedPos, Piece::PAWN);
 		setPieceAt(capturedPos, Piece::EMPTY);
-		hash.togglePiece(capturedPos, !curTurn, Piece::PAWN);
+		cur.hash.togglePiece(capturedPos, !curTurn, Piece::PAWN);
 
 	} else if (move.isPromotion()) {
 		Piece promo = move.promotionPiece();
 
 		*s(curTurn, Piece::PAWN) ^= toBit;
-		hash.togglePiece(toPos, curTurn, Piece::PAWN);
+		cur.hash.togglePiece(toPos, curTurn, Piece::PAWN);
 
 		*s(curTurn, promo) ^= toBit;
-		hash.togglePiece(toPos, curTurn, promo);
+		cur.hash.togglePiece(toPos, curTurn, promo);
 		setPieceAt(toPos, promo);
 	} else if (piece == Piece::KING) {
-		hash.voidCastle(curTurn, Side::LEFT);
-		hash.voidCastle(curTurn, Side::RIGHT);
+		cur.hash.voidCastle(curTurn, Side::LEFT);
+		cur.hash.voidCastle(curTurn, Side::RIGHT);
 
 		if (type == MoveType::CASTLE_LEFT || type== MoveType::CASTLE_RIGHT) {
 			int baseRow = curTurn == Turn::WHITE ? 7 : 0;
@@ -95,22 +89,22 @@ void Game::makeMove(Move move) {
 			setPieceAt(rookFrom, Piece::EMPTY);
 			setPieceAt(rookTo, Piece::ROOK);
 
-			hash.togglePiece(rookFrom, curTurn, Piece::ROOK);
-			hash.togglePiece(rookTo, curTurn, Piece::ROOK);
+			cur.hash.togglePiece(rookFrom, curTurn, Piece::ROOK);
+			cur.hash.togglePiece(rookTo, curTurn, Piece::ROOK);
 		}
 	}
 
 	if (toPos == Position("a1") || fromPos == Position("a1")) {
-		hash.voidCastle(Turn::WHITE, Side::LEFT);
+		cur.hash.voidCastle(Turn::WHITE, Side::LEFT);
 	}
 	if (toPos == Position("h1") || fromPos == Position("h1")) {
-		hash.voidCastle(Turn::WHITE, Side::RIGHT);
+		cur.hash.voidCastle(Turn::WHITE, Side::RIGHT);
 	}
 	if (toPos == Position("a8") || fromPos == Position("a8")) {
-		hash.voidCastle(Turn::BLACK, Side::LEFT);
+		cur.hash.voidCastle(Turn::BLACK, Side::LEFT);
 	}
 	if (toPos == Position("h8") || fromPos == Position("h8")) {
-		hash.voidCastle(Turn::BLACK, Side::RIGHT);
+		cur.hash.voidCastle(Turn::BLACK, Side::RIGHT);
 	}
 
 	
@@ -119,20 +113,20 @@ void Game::makeMove(Move move) {
 	
 	BitBoard theirKingBit = getPieces(!curTurn, Piece::KING);
 
-	check = false;
+	cur.check = false;
 	if ((piece == Piece::PAWN && (AttackFields::pawnTargs(toPos,curTurn)&theirKingBit) != BitBoard::EMPTY()) ||
 		((piece == Piece::KNIGHT || (move.isPromotion() && move.promotionPiece()==Piece::KNIGHT)) &&
 		(AttackFields::knightTargs(toPos)&theirKingBit) != BitBoard::EMPTY())) {
-		check = true;
+		cur.check = true;
 	}
-	if (check == false &&posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {
-		check = true;
+	if (cur.check == false && posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {
+		cur.check = true;
 	}
 
 	
 	curTurn = !curTurn;
 	
-	hash.toggleTurn();
+	cur.hash.toggleTurn();
 
 	integrityCheck();
 	
@@ -145,20 +139,11 @@ void Game::undoMove() {
 
 	//====
 #pragma region Unpack Undo Data
-	UndoData undoData = undoDatas.back();
-	undoDatas.pop_back();
-	if (numMovesAvail > 0) {
-		moves.erase(moves.begin() + movePtr, moves.end());
-	}
-	numMovesAvail = undoData.numMovesAvailable;
-	if (numMovesAvail > 0) {
-		movePtr -= numMovesAvail;
-	}
+	popMove();
 
-	check  = undoData.check;
-	hash = undoData.hash;
 
-	Move move = undoData.move;
+
+	Move move = cur.move;
 	const MoveType type = move.getType();
 	const Position fromPos = move.getFrom();
 	const BitBoard fromBit = fromPos.ToSingletonBoard();

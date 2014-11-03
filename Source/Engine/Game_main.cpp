@@ -3,18 +3,13 @@
 
 Piece Game::pieces[64];
 Turn Game::curTurn;
-bool Game::check;
 BitBoard Game::WK, Game::WQ, Game::WR, Game::WB, Game::WN, Game::WP;
 BitBoard Game::BK, Game::BQ, Game::BR, Game::BB, Game::BN, Game::BP;
 BitBoard Game::WA, Game::BA;
 BitBoard Game::ALL;
-GameResult Game::result;
-GameHash Game::hash = GameHash(GameConfiguration());
 
-std::vector<UndoData> Game::undoDatas;
-std::vector<Move> Game::moves;
 int Game::movePtr = 0;
-int Game::numMovesAvail = -1;
+UndoData Game::cur;
 
 namespace {
 	bool inited = false;
@@ -46,13 +41,12 @@ void Game::reset() {
 		pieces[pos.index()] = Piece::EMPTY;
 	}
 
-	result = GameResult::NONE;
-	hash = GameHash(GameConfiguration());
 
-	undoDatas.clear();
+	resetMoveManager();
 
 	movePtr = 0;
-	moves.clear();
-	numMovesAvail = -1;
+
+	cur = UndoData();
+	cur.numMovesAvailable = -1;
 
 }

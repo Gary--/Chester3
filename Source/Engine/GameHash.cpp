@@ -3,6 +3,8 @@
 
 #pragma warning (disable: 4800)
 
+GameHash::GameHash() {}
+
 namespace {
 	uint64_t zorbist[2][7][64] = { 0 };
 	uint64_t enpeasentZorbist[9] = { 0 };
@@ -14,6 +16,8 @@ namespace {
 
 	bool inited = false;
 }
+
+
 
 void GameHash::init() {
 	if (inited) {

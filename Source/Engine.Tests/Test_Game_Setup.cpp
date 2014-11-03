@@ -17,17 +17,6 @@ public:
 		Game::reset();
 	}
 
-	TEST_METHOD(Game_Result) {
-		Assert::AreEqual(GameResult::NONE, Game::getState());
-
-		Game::configure(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
-		Assert::AreEqual(Turn::WHITE, Game::getOwnerAt(Position("a1")));
-		Assert::AreEqual(GameResult::IN_PROGRESS, Game::getState());
-
-		Assert::AreEqual(Turn::WHITE, GameConfiguration::extractFromGame().getOwnerAt(Position("a1")));
-	}
-
-
 	void testConvert(std::string FEN) {
 		GameConfiguration conf(FEN);
 		Game::configure(conf);

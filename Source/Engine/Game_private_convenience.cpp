@@ -72,14 +72,14 @@ void Game::clearPieceAt(Position position) {
 
 	setPieceAt(position, Piece::EMPTY);
 
-	hash.togglePiece(position, turn, piece);
+	cur.hash.togglePiece(position, turn, piece);
 }
 void Game::addPieceAt(Turn turn, Position position, Piece piece) {
 	*s(turn, piece) |= position.ToSingletonBoard();
 	*sp(turn) |= position.ToSingletonBoard();
 	ALL |= position.ToSingletonBoard();
 	setPieceAt(position, piece);
-	hash.togglePiece(position, turn, piece);
+	cur.hash.togglePiece(position, turn, piece);
 }
 
 

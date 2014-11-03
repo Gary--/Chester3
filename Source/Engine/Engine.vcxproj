@@ -28,7 +28,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameHash.h" />
-    <ClInclude Include="GameResult.h" />
+    <ClInclude Include="GameMoveManager.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="perft.h" />
     <ClInclude Include="Position.h" />

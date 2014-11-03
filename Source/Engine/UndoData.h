@@ -2,7 +2,7 @@
 #include "GameHash.h"
 
 struct UndoData {
-	UndoData(Move move, GameHash hash, int numMovesAvail,bool check);
+	UndoData();
 
 	Move move;
 	int numMovesAvailable;

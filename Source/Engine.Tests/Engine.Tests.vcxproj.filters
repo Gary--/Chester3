@@ -56,5 +56,8 @@
     <ClCompile Include="Test_Move_Generation_perft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_1000_Perft_Cases.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -63,22 +63,19 @@ Turn Game::getOwnerAt(Position pos) {
 }
 
 bool Game::getCanCastle(Turn turn, Side side) {
-	return hash.getCanCastle(turn, side);
+	return cur.hash.getCanCastle(turn, side);
 }
 
-GameResult Game::getState() {
-	return result;
-}
 
 int Game::getEnpeasentColumn() {
-	return hash.getEnpeasent();
+	return cur.hash.getEnpeasent();
 }
 
 
 bool Game::getCheck() {
-	return check;
+	return cur.check;
 }
 
 uint64_t Game::getHash() {
-	return hash.toInt64();
+	return cur.hash.toInt64();
 }
