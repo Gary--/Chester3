@@ -3,4 +3,5 @@
 UndoData::UndoData() {
 	numMovesAvailable = -1;
 	check = false;
+	numMovesStored = 0;
 }

@@ -1,11 +1,14 @@
 #include "Move.h"
 #include "GameHash.h"
 
+
+
 struct UndoData {
 	UndoData();
 
+	GameHash hash;
 	Move move;
 	int numMovesAvailable;
-	GameHash hash;
+	int numMovesStored;
 	bool check;
 };

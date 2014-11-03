@@ -14,7 +14,7 @@ void Game::resetMoveManager() {
 
 void Game::addMove(Move move) {
 	moves.push_back(move);
-	cur.numMovesAvailable++;
+	cur.numMovesStored++;
 }
 
 void Game::addPawnMove(Move move) {
@@ -29,9 +29,9 @@ void Game::addPawnMove(Move move) {
 
 
 void Game::generateMoves() {
-	if (cur.numMovesAvailable == -1) {
-		cur.numMovesAvailable = 0;
+	if (cur.numMovesStored == 0) {
 		generateMovesImpl();
+		cur.numMovesAvailable = cur.numMovesStored;
 	}
 }
 
@@ -46,23 +46,23 @@ Move Game::getMove(int n) {
 
 void Game::pushMove(Move move) {
 	cur.move = move;
-	movePtr += cur.numMovesAvailable;
+	movePtr += cur.numMovesStored;
 
 	undoDatas.push_back(cur);
 	
+	cur.numMovesStored = 0;
 	cur.numMovesAvailable = -1;
 	
 }
 
 void Game::popMove() {
-	if (cur.numMovesAvailable > 0) {
-		moves.erase(moves.begin() + movePtr, moves.end());
-	}
+	moves.erase(moves.begin() + movePtr, moves.end());
+	
 
 	cur = undoDatas.back();
 	undoDatas.pop_back();
 
-	if (cur.numMovesAvailable > 0) {
-		movePtr -= cur.numMovesAvailable;
-	}
+
+	movePtr -= cur.numMovesStored;
+
 }
