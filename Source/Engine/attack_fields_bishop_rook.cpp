@@ -1,135 +1,263 @@
-#include "Attack_Fields_init.h"
 #include "attack_fields.h"
 #include <cstdint>
 #include <vector>
+#include "BitBoard.h"
+#include "Attack_Fields_init.h"
 
-
-
-
-
-
+using namespace std;
 namespace {
-	const uint64_t rookMagic[64] = { 36029347045851136ULL, 4629700485660811264ULL, 36037730559332353ULL, 36037593380553856ULL, 612511539689170560ULL, 72061992755659008ULL, 36030996050608384ULL, 36029076191846528ULL, 140739640033824ULL, 9640521442009088ULL, 576742364735881232ULL, 703721809907712ULL, 563018807386624ULL, 140746078552192ULL, 2306124488485634560ULL, 4611967495555907840ULL, 35734136307712ULL, 9408019896456970944ULL, 36451559508287496ULL, 36284034715648ULL, 142386823043072ULL, 288371663966307328ULL, 4611690418656514053ULL, 9223374235945173057ULL, 9241386995857506336ULL, 9007337768485440ULL, 4755836393023865472ULL, 571748194975872ULL, 10378545377790919680ULL, 2326568751988864ULL, 281547992334340ULL, 2537681426858113ULL, 144185567565841504ULL, 864832140863348752ULL, 4503737074716800ULL, 36609341314308096ULL, 4613379268490037248ULL, 422229653324288ULL, 2305933173529251848ULL, 554084335684ULL, 425236132823040ULL, 85568530363203584ULL, 9223653787246329872ULL, 9439553683798163488ULL, 9224498005615378688ULL, 4398147207296ULL, 3602916054533406728ULL, 18044086405693476ULL, 9223407770986872960ULL, 72235168387105024ULL, 9007474401607744ULL, 17594334052480ULL, 2260596175470848ULL, 7061784961796538496ULL, 72341440641958912ULL, 828995834368ULL, 18693845173537ULL, 281544237253249ULL, 70446062018570ULL, 2533309687271425ULL, 2918895577746114562ULL, 281483709513729ULL, 9223653520421520389ULL, 154891518082ULL };
-	const uint64_t bishopMagic[64] = { 9009484194128384ULL, 10385306289822664768ULL, 2252366757757504ULL, 1154051821887553536ULL, 1130435392307200ULL, 82754760381300736ULL, 7319737206833152ULL, 1143775829434406ULL, 334268732015108ULL, 288247972666311172ULL, 2269409183809792ULL, 4415234769408ULL, 3368328103936ULL, 283682858598400ULL, 144040337089024ULL, 288373316967075840ULL, 2252079120843808ULL, 844562503434368ULL, 2254016021266442ULL, 2251817564512264ULL, 14636700980477952ULL, 281475783590916ULL, 1688852144130048ULL, 1407383490330944ULL, 2314859279507538944ULL, 4630265570477998594ULL, 1143492260694032ULL, 563499843485699ULL, 281543713013768ULL, 4616190855022151688ULL, 285874667422720ULL, 325388440350789120ULL, 11529813266294517760ULL, 37299970573076480ULL, 70677991260194ULL, 2201171263616ULL, 5913190714573840ULL, 45037684195886144ULL, 290501970395957248ULL, 1129207302209616ULL, 5067992861786124ULL, 36314674882429952ULL, 18085042676830217ULL, 4611686301904668672ULL, 8800392217600ULL, 4508032168886304ULL, 288810926914666624ULL, 2310347712698008609ULL, 282033595088960ULL, 282608869326848ULL, 1513210576465072193ULL, 594486146474967040ULL, 68753162248ULL, 144185574134153216ULL, 1134799400210432ULL, 1153502085569347584ULL, 36592039103629312ULL, 288444783075270656ULL, 9196148736ULL, 8592066560ULL, 69793382912ULL, 28185854464ULL, 1196303145058368ULL, 1127016732590336ULL };
+#pragma region magic
+	BitBoard lookup_table[97264];
 
+	struct Magic {
+		uint64_t factor;
+		BitBoard occupancy;
+		uint32_t position;
+		
+	};
 
-	BitBoard rookOccupancy[64];
-	int rookShift[64] = { 0 };
+	Magic bishop_magics[64] =
+	{
+		{ 0x007bfeffbfeffbffull, BitBoard(), 16530 },
+		{ 0x003effbfeffbfe08ull, BitBoard(), 9162 },
+		{ 0x0000401020200000ull, BitBoard(), 9674 },
+		{ 0x0000200810000000ull, BitBoard(), 18532 },
+		{ 0x0000110080000000ull, BitBoard(), 19172 },
+		{ 0x0000080100800000ull, BitBoard(), 17700 },
+		{ 0x0007efe0bfff8000ull, BitBoard(), 5730 },
+		{ 0x00000fb0203fff80ull, BitBoard(), 19661 },
+		{ 0x00007dff7fdff7fdull, BitBoard(), 17065 },
+		{ 0x0000011fdff7efffull, BitBoard(), 12921 },
+		{ 0x0000004010202000ull, BitBoard(), 15683 },
+		{ 0x0000002008100000ull, BitBoard(), 17764 },
+		{ 0x0000001100800000ull, BitBoard(), 19684 },
+		{ 0x0000000801008000ull, BitBoard(), 18724 },
+		{ 0x000007efe0bfff80ull, BitBoard(), 4108 },
+		{ 0x000000080f9fffc0ull, BitBoard(), 12936 },
+		{ 0x0000400080808080ull, BitBoard(), 15747 },
+		{ 0x0000200040404040ull, BitBoard(), 4066 },
+		{ 0x0000400080808080ull, BitBoard(), 14359 },
+		{ 0x0000200200801000ull, BitBoard(), 36039 },
+		{ 0x0000240080840000ull, BitBoard(), 20457 },
+		{ 0x0000080080840080ull, BitBoard(), 43291 },
+		{ 0x0000040010410040ull, BitBoard(), 5606 },
+		{ 0x0000020008208020ull, BitBoard(), 9497 },
+		{ 0x0000804000810100ull, BitBoard(), 15715 },
+		{ 0x0000402000408080ull, BitBoard(), 13388 },
+		{ 0x0000804000810100ull, BitBoard(), 5986 },
+		{ 0x0000404004010200ull, BitBoard(), 11814 },
+		{ 0x0000404004010040ull, BitBoard(), 92656 },
+		{ 0x0000101000804400ull, BitBoard(), 9529 },
+		{ 0x0000080800104100ull, BitBoard(), 18118 },
+		{ 0x0000040400082080ull, BitBoard(), 5826 },
+		{ 0x0000410040008200ull, BitBoard(), 4620 },
+		{ 0x0000208020004100ull, BitBoard(), 12958 },
+		{ 0x0000110080040008ull, BitBoard(), 55229 },
+		{ 0x0000020080080080ull, BitBoard(), 9892 },
+		{ 0x0000404040040100ull, BitBoard(), 33767 },
+		{ 0x0000202040008040ull, BitBoard(), 20023 },
+		{ 0x0000101010002080ull, BitBoard(), 6515 },
+		{ 0x0000080808001040ull, BitBoard(), 6483 },
+		{ 0x0000208200400080ull, BitBoard(), 19622 },
+		{ 0x0000104100200040ull, BitBoard(), 6274 },
+		{ 0x0000208200400080ull, BitBoard(), 18404 },
+		{ 0x0000008840200040ull, BitBoard(), 14226 },
+		{ 0x0000020040100100ull, BitBoard(), 17990 },
+		{ 0x007fff80c0280050ull, BitBoard(), 18920 },
+		{ 0x0000202020200040ull, BitBoard(), 13862 },
+		{ 0x0000101010100020ull, BitBoard(), 19590 },
+		{ 0x0007ffdfc17f8000ull, BitBoard(), 5884 },
+		{ 0x0003ffefe0bfc000ull, BitBoard(), 12946 },
+		{ 0x0000000820806000ull, BitBoard(), 5570 },
+		{ 0x00000003ff004000ull, BitBoard(), 18740 },
+		{ 0x0000000100202000ull, BitBoard(), 6242 },
+		{ 0x0000004040802000ull, BitBoard(), 12326 },
+		{ 0x007ffeffbfeff820ull, BitBoard(), 4156 },
+		{ 0x003fff7fdff7fc10ull, BitBoard(), 12876 },
+		{ 0x0003ffdfdfc27f80ull, BitBoard(), 17047 },
+		{ 0x000003ffefe0bfc0ull, BitBoard(), 17780 },
+		{ 0x0000000008208060ull, BitBoard(), 2494 },
+		{ 0x0000000003ff0040ull, BitBoard(), 17716 },
+		{ 0x0000000001002020ull, BitBoard(), 17067 },
+		{ 0x0000000040408020ull, BitBoard(), 9465 },
+		{ 0x00007ffeffbfeff9ull, BitBoard(), 16196 },
+		{ 0x007ffdff7fdff7fdull, BitBoard(), 6166 }
+	};
 
-	const int numRookOccupancyPatterns = 1 << 12;
-	BitBoard rookAttackField[64][numRookOccupancyPatterns];
+	Magic rook_magics[64] =
+		{
+			{ 0x00a801f7fbfeffffull, BitBoard(), 85487 },
+			{ 0x00180012000bffffull, BitBoard(), 43101 },
+			{ 0x0040080010004004ull, BitBoard(), 0 },
+			{ 0x0040040008004002ull, BitBoard(), 49085 },
+			{ 0x0040020004004001ull, BitBoard(), 93168 },
+			{ 0x0020008020010202ull, BitBoard(), 78956 },
+			{ 0x0040004000800100ull, BitBoard(), 60703 },
+			{ 0x0810020990202010ull, BitBoard(), 64799 },
+			{ 0x000028020a13fffeull, BitBoard(), 30640 },
+			{ 0x003fec008104ffffull, BitBoard(), 9256 },
+			{ 0x00001800043fffe8ull, BitBoard(), 28647 },
+			{ 0x00001800217fffe8ull, BitBoard(), 10404 },
+			{ 0x0000200100020020ull, BitBoard(), 63775 },
+			{ 0x0000200080010020ull, BitBoard(), 14500 },
+			{ 0x0000300043ffff40ull, BitBoard(), 52819 },
+			{ 0x000038010843fffdull, BitBoard(), 2048 },
+			{ 0x00d00018010bfff8ull, BitBoard(), 52037 },
+			{ 0x0009000c000efffcull, BitBoard(), 16435 },
+			{ 0x0004000801020008ull, BitBoard(), 29104 },
+			{ 0x0002002004002002ull, BitBoard(), 83439 },
+			{ 0x0001002002002001ull, BitBoard(), 86842 },
+			{ 0x0001001000801040ull, BitBoard(), 27623 },
+			{ 0x0000004040008001ull, BitBoard(), 26599 },
+			{ 0x0000802000200040ull, BitBoard(), 89583 },
+			{ 0x0040200010080010ull, BitBoard(), 7042 },
+			{ 0x0000080010040010ull, BitBoard(), 84463 },
+			{ 0x0004010008020008ull, BitBoard(), 82415 },
+			{ 0x0000020020040020ull, BitBoard(), 95216 },
+			{ 0x0000010020020020ull, BitBoard(), 35015 },
+			{ 0x0000008020010020ull, BitBoard(), 10790 },
+			{ 0x0000008020200040ull, BitBoard(), 53279 },
+			{ 0x0000200020004081ull, BitBoard(), 70684 },
+			{ 0x0040001000200020ull, BitBoard(), 38640 },
+			{ 0x0000080400100010ull, BitBoard(), 32743 },
+			{ 0x0004010200080008ull, BitBoard(), 68894 },
+			{ 0x0000200200200400ull, BitBoard(), 62751 },
+			{ 0x0000200100200200ull, BitBoard(), 41670 },
+			{ 0x0000200080200100ull, BitBoard(), 25575 },
+			{ 0x0000008000404001ull, BitBoard(), 3042 },
+			{ 0x0000802000200040ull, BitBoard(), 36591 },
+			{ 0x00ffffb50c001800ull, BitBoard(), 69918 },
+			{ 0x007fff98ff7fec00ull, BitBoard(), 9092 },
+			{ 0x003ffff919400800ull, BitBoard(), 17401 },
+			{ 0x001ffff01fc03000ull, BitBoard(), 40688 },
+			{ 0x0000010002002020ull, BitBoard(), 96240 },
+			{ 0x0000008001002020ull, BitBoard(), 91632 },
+			{ 0x0003fff673ffa802ull, BitBoard(), 32495 },
+			{ 0x0001fffe6fff9001ull, BitBoard(), 51133 },
+			{ 0x00ffffd800140028ull, BitBoard(), 78319 },
+			{ 0x007fffe87ff7ffecull, BitBoard(), 12595 },
+			{ 0x003fffd800408028ull, BitBoard(), 5152 },
+			{ 0x001ffff111018010ull, BitBoard(), 32110 },
+			{ 0x000ffff810280028ull, BitBoard(), 13894 },
+			{ 0x0007fffeb7ff7fd8ull, BitBoard(), 2546 },
+			{ 0x0003fffc0c480048ull, BitBoard(), 41052 },
+			{ 0x0001ffffa2280028ull, BitBoard(), 77676 },
+			{ 0x00ffffe4ffdfa3baull, BitBoard(), 73580 },
+			{ 0x007ffb7fbfdfeff6ull, BitBoard(), 44947 },
+			{ 0x003fffbfdfeff7faull, BitBoard(), 73565 },
+			{ 0x001fffeff7fbfc22ull, BitBoard(), 17682 },
+			{ 0x000ffffbf7fc2ffeull, BitBoard(), 56607 },
+			{ 0x0007fffdfa03ffffull, BitBoard(), 56135 },
+			{ 0x0003ffdeff7fbdecull, BitBoard(), 44989 },
+			{ 0x0001ffff99ffab2full, BitBoard(), 21479 }
+		};
+#pragma endregion
 
-	BitBoard bishopOccupancy[64];
-	int bishopShift[64] = { 0 };
-	const int numBishopOccupancyPatterns = 1 << 10;
-	BitBoard bishopAttackField[64][numBishopOccupancyPatterns];
-
-	bool coordIsOnGrid(int r, int c) {
-		return 0 <= r && r < 8 && 0 <= c && c < 8;
-	}
-
-	BitBoard attackableSquares(BitBoard board, int r, int c, Piece piece, bool ignoreLast) {
-		BitBoard res = BitBoard::EMPTY();
-		for (int dr = -1; dr <= 1; ++dr) {
-			for (int dc = -1; dc <= 1; ++dc) {
-				bool right = (dr || dc) && !(dr*dc);
-				bool diag = dr&&dc;
-				if (!((diag&&piece == Piece::BISHOP) || (right&&piece == Piece::ROOK))) {
-					continue;
-				}
-				int r2 = r + dr, c2 = c + dc;
-				while (coordIsOnGrid(r2, c2)) {
-					if (!ignoreLast || coordIsOnGrid(r2 + dr, c2 + dc)) {
-						res |= BitBoard(r2, c2);
+		bool coordIsOnGrid(int r, int c) {
+			return 0 <= r && r < 8 && 0 <= c && c < 8;
+		}
+		const int ROOK_SHIFT = 64 - 12;
+		const int BISHOP_SHIFT = 64 - 9;
+		BitBoard attackableSquares(BitBoard board, int r, int c, Piece piece, bool ignoreLast) {
+			BitBoard res = BitBoard::EMPTY();
+			for (int dr = -1; dr <= 1; ++dr) {
+				for (int dc = -1; dc <= 1; ++dc) {
+					bool right = (dr || dc) && !(dr*dc);
+					bool diag = dr&&dc;
+					if (!((diag&&piece == Piece::BISHOP) || (right&&piece == Piece::ROOK))) {
+						continue;
 					}
+					int r2 = r + dr, c2 = c + dc;
+					while (coordIsOnGrid(r2, c2)) {
+						if (!ignoreLast || coordIsOnGrid(r2 + dr, c2 + dc)) {
+							res |= BitBoard(r2, c2);
+						}
 
-					if ((BitBoard(r2,c2) & board)!=BitBoard::EMPTY()) {
-						break;
+						if ((BitBoard(r2, c2) & board) != BitBoard::EMPTY()) {
+							break;
+						}
+						r2 += dr;
+						c2 += dc;
 					}
-					r2 += dr;
-					c2 += dc;
+				}
+			}
+			return res;
+		}
+
+
+		void initializeBishopRookOccupancy() {
+			for (int r = 0; r < 8; ++r) {
+				for (int c = 0; c < 8; ++c) {
+					int index = Position(r, c).index();
+					rook_magics[index].occupancy = attackableSquares(BitBoard::EMPTY(), r, c, Piece::ROOK, true);
+					bishop_magics[index].occupancy = attackableSquares(BitBoard::EMPTY(), r, c, Piece::BISHOP, true);
 				}
 			}
 		}
-		return res;
-	}
 
 
-	void initializeBishopRookOccupancy() {
-		for (int r = 0; r < 8; ++r) {
-			for (int c = 0; c < 8; ++c) {
-				
-				int index = Position(r, c).index();
-				rookOccupancy[index] = attackableSquares(BitBoard::EMPTY(), r, c, Piece::ROOK, true);
-				rookShift[index] = 64 - rookOccupancy[index].count();
+		std::vector<BitBoard> allFieldsUsingTheseBits(BitBoard bits) {
+			std::vector<BitBoard> res;
+			res.push_back(BitBoard::EMPTY());
 
-				bishopOccupancy[index] = attackableSquares(BitBoard::EMPTY(), r, c, Piece::BISHOP, true);
-				bishopShift[index] = 64 - bishopOccupancy[index].count();
+			FOR_BIT(bit, bits) {
+
+				size_t cursize = res.size();
+				for (size_t i = 0; i<cursize; ++i) {
+					res.push_back(res[i] | bit);
+				}
 			}
+			return res;
 		}
-	}
+
+		void initializeBishopRookAttackFields(Piece piece) {
+			/*const uint64_t*  magics = (piece == Piece::ROOK) ? rookMagic : bishopMagic;
+			BitBoard** indexes = (piece == Piece::ROOK) ? rookIndexes : bishopIndexes;
+			*/
+			for (int loc = 0; loc < 64; ++loc) {
+				BitBoard occupancy = (piece == Piece::ROOK ? rook_magics : bishop_magics)[loc].occupancy;
+				std::vector<BitBoard> occPats = allFieldsUsingTheseBits(occupancy);
 
 
-	std::vector<BitBoard> allFieldsUsingTheseBits(BitBoard bits) {
-		std::vector<BitBoard> res;
-		res.push_back(BitBoard::EMPTY());
+				for (unsigned i = 0; i < occPats.size(); ++i) {
 
-		FOR_BIT(bit,bits){
-
-			size_t cursize = res.size();
-			for (size_t i = 0; i<cursize; ++i) {
-				res.push_back(res[i] | bit);
-			}
-		}
-		return res;
-	}
-
-	void initializeBishopRookAttackFields(Piece piece) {
-		int* shifts = (piece == Piece::ROOK) ? rookShift : bishopShift;
-		BitBoard* occupancies = (piece == Piece::ROOK) ? rookOccupancy : bishopOccupancy;
-		const uint64_t*  magics = (piece == Piece::ROOK) ? rookMagic : bishopMagic;
+					BitBoard res = attackableSquares(occPats[i], loc / 8, loc % 8, piece, false);
 
 
-		for (int loc = 0; loc < 64; ++loc) {
-			std::vector<BitBoard> occPats = allFieldsUsingTheseBits(occupancies[loc]);
+					uint64_t magic = ((piece == Piece::ROOK) ? rook_magics : bishop_magics)[loc].factor;
+					int position = ((piece == Piece::ROOK) ? rook_magics : bishop_magics)[loc].position;
+					int SHIFT = (piece == Piece::ROOK) ? ROOK_SHIFT : BISHOP_SHIFT;
+					uint64_t ind = position + ((magic*occPats[i].AsInt64()) >> SHIFT);
 
-			for (unsigned i = 0; i < occPats.size(); ++i) {
-				BitBoard res = attackableSquares(occPats[i], loc / 8, loc % 8, piece, false);
-				uint64_t ind = (magics[loc] * occPats[i].AsInt64()) >> shifts[loc];
-				if (piece == Piece::ROOK) {
-					rookAttackField[loc][ind] = res;
-				} else {
-					bishopAttackField[loc][ind] = res;
+					lookup_table[ind] = res;
+
 				}
 			}
 		}
-	}
-}
 
-BitBoard AttackFields::bishopTargs(Position position, BitBoard blockers) {
-	int index = position.index();
-	return bishopAttackField[index]
-		[((bishopOccupancy[index] & blockers).AsInt64()*bishopMagic[index])
-		>> bishopShift[index]];
+
 }
 
 BitBoard AttackFields::rookTargs(Position position, BitBoard blockers) {
-	int index = position.index();
-	return rookAttackField[index]
-		[((rookOccupancy[index] & blockers).AsInt64()*rookMagic[index])
-		>> rookShift[index]];
+	
+	Magic magic = rook_magics[position.index()];
+	return lookup_table[magic.position +
+		(((magic.occupancy&blockers).AsInt64() * magic.factor) >> ROOK_SHIFT)];
+
+}
+
+BitBoard AttackFields::bishopTargs(Position position, BitBoard blockers) {
+	Magic magic = bishop_magics[position.index()];
+	return lookup_table[magic.position +
+		(((magic.occupancy&blockers).AsInt64() * magic.factor) >> BISHOP_SHIFT)];
 }
 
 BitBoard AttackFields::queenTargs(Position position, BitBoard blockers) {
-	return bishopTargs(position, blockers) | rookTargs(position, blockers);
+	return rookTargs(position, blockers) | bishopTargs(position, blockers);
 }
-
-
 
 void AttackFieldInit::BishopRook() {
-		initializeBishopRookOccupancy();
-	
-		initializeBishopRookAttackFields(Piece::BISHOP);
-		initializeBishopRookAttackFields(Piece::ROOK);
+	initializeBishopRookOccupancy();
+	initializeBishopRookAttackFields(Piece::BISHOP);
+	initializeBishopRookAttackFields(Piece::ROOK);
 }
-
