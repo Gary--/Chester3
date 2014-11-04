@@ -76,8 +76,6 @@ private:
 
 	static void generateMovesImpl();
 	//static void generateMovesImpl_BLACK();
-
-	static int numMovesAvailableImpl();
 	
 #pragma endregion
 	// === Private getters

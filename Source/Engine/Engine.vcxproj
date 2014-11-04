@@ -52,7 +52,6 @@
     <ClCompile Include="Game_genrate_moves.cpp" />
     <ClCompile Include="Game_main.cpp" />
     <ClCompile Include="Game_make_move.cpp" />
-    <ClCompile Include="Game_move_count.cpp" />
     <ClCompile Include="Game_move_iteration.cpp" />
     <ClCompile Include="game_move_store.cpp" />
     <ClCompile Include="Game_private_convenience.cpp" />
@@ -89,7 +88,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>

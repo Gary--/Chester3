@@ -137,9 +137,6 @@
     <ClCompile Include="attack_fields_castling_pawns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game_move_count.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game_move_iteration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

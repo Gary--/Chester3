@@ -41,9 +41,7 @@ void Game::generateMoves() {
 }
 
 int Game::getNumValidMoves() {
-	if (cur.numMovesAvailable == -1) {
-		cur.numMovesAvailable = numMovesAvailableImpl();
-	}
+	generateMoves();
 	return cur.numMovesAvailable;
 }
 
