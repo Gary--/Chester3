@@ -7,7 +7,9 @@
 #include <cstdint>
 #include "Move.h"
 #include "UndoData.h"
+#include "Game_move_iteration.h"
 
+class AllMoveIteratorGenerator;
 class Game {
 public:
 	//Initing / Configure
@@ -33,12 +35,9 @@ public:
 
 	//static void computeMoves();
 	//static void computeOnlyMaterialChangeMoves();
-	static int getNumValidMoves2();
+
+	static AllMoveIteratorGenerator getAllMoves();
 	static int getNumValidMoves();
-	static Move getMove(int n);//0<= n <numValidMoves()
-
-
-
 	static void generateMoves();
 
 	/*

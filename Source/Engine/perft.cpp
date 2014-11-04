@@ -19,10 +19,8 @@ namespace {
 #ifdef _DEBUG
 		string FEN = GameConfiguration::extractFromGame().str();
 #endif
-		int numMoves = Game::getNumValidMoves();
 		int res = 0;
-		for (int i = 0; i < numMoves; ++i) {
-			Move move = Game::getMove(i);
+		for (Move move: Game::getAllMoves()){
 
 			Game::makeMove(move);
 			res += perft(depth - 1, full, storeHashes);

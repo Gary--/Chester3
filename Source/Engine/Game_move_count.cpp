@@ -179,8 +179,8 @@ int Game::numMovesAvailableImpl() {
 		MP & posPieces;
 	BitBoard inEmptyFrontOfPawns = pawnsThatCanMoveForward.shiftForward(curTurn) & ~ALL;
 
-	result += ((inEmptyFrontOfPawns & posTargs)&~pawnPromoZone(curTurn)).count();
-	result += 4 * ((inEmptyFrontOfPawns & posTargs)&pawnPromoZone(curTurn)).count();
+	result += ((inEmptyFrontOfPawns & posTargs).shiftBackward(curTurn)&~pawnPromoZone(curTurn)).count();
+	result += 4 * ((inEmptyFrontOfPawns & posTargs).shiftBackward(curTurn)&pawnPromoZone(curTurn)).count();
 
 
 	inEmptyFrontOfPawns &= pawnJumpZone(curTurn).shiftForward(curTurn);
@@ -194,15 +194,17 @@ int Game::numMovesAvailableImpl() {
 		BitBoard pawnsThatCanCapture = ~allPinned | diagPinned;
 
 		{
-			BitBoard leftCapturingPawns = (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft()  & T &
+			BitBoard leftCapturingTargs = (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft()  & T &
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft());
+			BitBoard leftCapturingPawns = leftCapturingTargs.shiftBackward(curTurn);
 			result += (leftCapturingPawns&~pawnPromoZone(curTurn)).count();
 			result += 4 * (leftCapturingPawns&pawnPromoZone(curTurn)).count();
 		}
 		
 		{
-			BitBoard rightCapturingPawns = (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
+			BitBoard rightCapturingTargs = (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftRight());
+			BitBoard rightCapturingPawns = rightCapturingTargs.shiftBackward(curTurn);
 			result += (rightCapturingPawns&~pawnPromoZone(curTurn)).count();
 			result += 4 * (rightCapturingPawns&pawnPromoZone(curTurn)).count();
 		}

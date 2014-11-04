@@ -10,6 +10,8 @@ namespace {
 void Game::resetMoveManager() {
 	undoDatas.clear();
 	moves.clear();
+	movePtr = 0;
+	cur = UndoData();
 }
 
 void Game::addMove(Move move) {
@@ -28,36 +30,40 @@ void Game::addPawnMove(Move move) {
 }
 
 
+
 void Game::generateMoves() {
-	if (cur.numMovesStored == 0) {
+	if (cur.numMovesStored == -1) {
+		cur.numMovesStored = 0;
 		generateMovesImpl();
 		cur.numMovesAvailable = cur.numMovesStored;
 
-		_ASSERTE(cur.numMovesAvailable == numMovesAvailableImpl());
 	}
 }
 
-int Game::getNumValidMoves2() {
-	return numMovesAvailableImpl();
-}
-
 int Game::getNumValidMoves() {
-	Game::generateMoves();
-	
+	if (cur.numMovesAvailable == -1) {
+		cur.numMovesAvailable = numMovesAvailableImpl();
+	}
 	return cur.numMovesAvailable;
 }
-Move Game::getMove(int n) {
-	_ASSERTE(0 <= n && n < getNumValidMoves());
-	return moves[movePtr + n];
+
+AllMoveIteratorGenerator Game::getAllMoves() {
+	generateMoves();
+
+	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesAvailable, false);
 }
+
 
 void Game::pushMove(Move move) {
 	cur.move = move;
-	movePtr += cur.numMovesStored;
+
+	if (cur.numMovesStored > 0) {
+		movePtr += cur.numMovesStored;
+	}
 
 	undoDatas.push_back(cur);
 	
-	cur.numMovesStored = 0;
+	cur.numMovesStored = -1;
 	cur.numMovesAvailable = -1;
 	
 }

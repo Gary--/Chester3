@@ -44,9 +44,4 @@ void Game::reset() {
 
 	resetMoveManager();
 
-	movePtr = 0;
-
-	cur = UndoData();
-	cur.numMovesAvailable = -1;
-
 }
