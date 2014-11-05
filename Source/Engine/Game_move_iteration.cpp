@@ -1,15 +1,24 @@
 #include "Game_move_iteration.h"
 
 
-AllMoveIterator::AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, bool tacticalOnly) :
-moves(moves), cur(cur), tacticalOnly(tacticalOnly){}
+AllMoveIterator::AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, uint8_t left, bool tacticalOnly) :
+moves(moves), cur(cur), left(left), tacticalOnly(tacticalOnly){
+	if (left && tacticalOnly && !(**this).isTactical()) {
+		++(*this);
+	}
+}
 
 Move AllMoveIterator::operator*()const {
 	return moves->at(cur);
 }
 
 void AllMoveIterator::operator++() {
-	cur++;
+
+	do {
+		cur++;
+		left--;
+	} while (tacticalOnly && left && !(**this).isTactical());
+
 }
 
 bool AllMoveIterator::operator!=(const AllMoveIterator& other) const {
@@ -25,9 +34,9 @@ moves(moves), start(start), finish(finish), tacticalOnly(tacticalOnly){
 }
 
 AllMoveIterator AllMoveIteratorGenerator::begin() {
-	return AllMoveIterator(moves, start, tacticalOnly);
+	return AllMoveIterator(moves, start, finish-start, tacticalOnly);
 }
 
 AllMoveIterator AllMoveIteratorGenerator::end() {
-	return AllMoveIterator(moves, finish, tacticalOnly);
+	return AllMoveIterator(moves, finish, 0, tacticalOnly);
 }

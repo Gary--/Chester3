@@ -12,14 +12,14 @@
 class AllMoveIteratorGenerator;
 class Game {
 public:
-	//Initing / Configure
+	// Initing / Configure
 	static void init();
 	static void reset();//Invalidates the position.
 	static void configure(const GameConfiguration& conf);
 	static GameConfiguration getGameConfiguration();
 	static std::string getFEN();
 
-	//Game state query
+	// Game state query
 	static Turn getTurn();
 	static BitBoard getPieces(Turn turn, Piece piece);
 	static BitBoard getAllPieces();
@@ -33,24 +33,13 @@ public:
 	static uint64_t getHash();
 
 
-	//static void computeMoves();
-	//static void computeOnlyMaterialChangeMoves();
-
+	// Querying moves
 	static AllMoveIteratorGenerator getAllMoves();
+	static AllMoveIteratorGenerator getTacticalMoves();
 	static int getNumValidMoves();
 	static bool areMovesAvailable();
 
-	/*
-	Goal: Support...:
-	void generateAllMoves();
-	void generateTacticalMoves(); //might not have any effect, is their for completeness
-	int getNumberOfAvailableMoves(); // Always all the moves
-	for (Move move : Game::movesAvailable()){...}
-	for (Move move : Game::tacticalMovesAvailable()){...}
-
-	
-	*/
-
+	// Making moves
 	static void makeMove(Move move);
 	static void undoMove();
 private:
@@ -75,7 +64,8 @@ private:
 	static void popMove();//  Called by undoMove to restore this layer's info
 	static bool isDefinitelyAMoveAvailable();//Tries to find a move
 
-	static void generateMoves();
+	static void generateAllMoves();
+	static void generateTacticalMoves();
 	static void generateMovesImpl(bool tacticalOnly);
 	//static void generateMovesImpl_BLACK();
 	

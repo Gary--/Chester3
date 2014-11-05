@@ -9,9 +9,10 @@ public:
 	bool operator!=(const AllMoveIterator& other) const;
 
 private:
-	AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, bool tacticalOnly);
+	AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, uint8_t left, bool tacticalOnly);
 	const std::vector<Move>* const moves;
-	uint16_t cur;
+	uint16_t cur;//current index into the vector
+	uint8_t left;//how many moves left. Only useful for tactical only
 	const bool tacticalOnly;
 
 	

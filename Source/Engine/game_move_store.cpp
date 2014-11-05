@@ -30,7 +30,7 @@ void Game::addPawnMove(Move move) {
 }
 
 bool Game::areMovesAvailable() {
-	if (cur.numMovesAvailable > 0 || cur.numMovesStored >0) {
+	if (cur.numMovesStored >0) {
 		return true;
 	}
 
@@ -38,56 +38,74 @@ bool Game::areMovesAvailable() {
 		return true;
 	}
 
-	generateMoves();
+	generateAllMoves();
 
-	return cur.numMovesAvailable > 0;
+	return cur.numMovesStored > 0;
 
 }
 
-void Game::generateMoves() {
-	if (cur.numMovesStored == -1) {
-		cur.numMovesStored = 0;
-		generateMovesImpl(false);
-		cur.numMovesAvailable = cur.numMovesStored;
-
+void Game::generateAllMoves() {
+	if (cur.movesStored == UndoData::MovesStored::ALL) {
+		return;
 	}
+
+	if (cur.movesStored == UndoData::MovesStored::TACTICAL) {
+		moves.erase(moves.begin() + movePtr, moves.end());
+		cur.numMovesStored = 0;
+	} else {
+		_ASSERTE(cur.numMovesStored == 0);
+	}
+
+	generateMovesImpl(false);
+	
+	cur.movesStored = UndoData::MovesStored::ALL;
+}
+
+void Game::generateTacticalMoves() {
+	if (cur.movesStored == UndoData::MovesStored::ALL ||
+		cur.movesStored == UndoData::MovesStored::TACTICAL) {
+		return;
+	}
+
+	_ASSERTE(cur.numMovesStored == 0);
+
+	generateMovesImpl(true);
 }
 
 int Game::getNumValidMoves() {
-	generateMoves();
-	return cur.numMovesAvailable;
+	generateAllMoves();
+	return cur.numMovesStored;
 }
 
 AllMoveIteratorGenerator Game::getAllMoves() {
-	generateMoves();
-	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesAvailable, false);
+	generateAllMoves();
+	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesStored, false);
+}
+
+AllMoveIteratorGenerator Game::getTacticalMoves() {
+	generateTacticalMoves();
+	return AllMoveIteratorGenerator(&moves, movePtr, movePtr + cur.numMovesStored, true);
 }
 
 
 void Game::pushMove(Move move) {
 	cur.move = move;
 
-	if (cur.numMovesStored > 0) {
-		movePtr += cur.numMovesStored;
-	}
+	movePtr += cur.numMovesStored;
 
 	undoDatas.push_back(cur);
-	
-	cur.numMovesStored = -1;
-	cur.numMovesAvailable = -1;
-	
+	cur.numMovesStored = 0;
+	cur.deadPositionState = UndoData::DeadPositionState::UNKNOWN;
+	cur.movesStored = UndoData::MovesStored::NONE;
+
 }
 
 void Game::popMove() {
-	if (cur.numMovesStored > 0) {
-		moves.erase(moves.begin() + movePtr, moves.end());//<----
-	}
 
+	moves.erase(moves.begin() + movePtr, moves.end());
+	
 	cur = undoDatas.back();
 	undoDatas.pop_back();
 
-	if (cur.numMovesStored > 0) {
-		movePtr -= cur.numMovesStored;
-	}
-
+	movePtr -= cur.numMovesStored;
 }

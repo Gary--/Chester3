@@ -1,7 +1,8 @@
 #include "UndoData.h"
 
 UndoData::UndoData() {
-	numMovesAvailable = -1;
 	check = false;
-	numMovesStored = -1;
+	numMovesStored = 0;
+	movesStored = MovesStored::NONE;
+	deadPositionState = DeadPositionState::UNKNOWN;
 }
