@@ -9,9 +9,9 @@ public:
 	bool operator!=(const AllMoveIterator& other) const;
 
 private:
-	AllMoveIterator(const std::vector<Move>* const moves, uint8_t cur, bool tacticalOnly);
+	AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, bool tacticalOnly);
 	const std::vector<Move>* const moves;
-	uint8_t cur;
+	uint16_t cur;
 	const bool tacticalOnly;
 
 	
@@ -28,11 +28,11 @@ public:
 
 private:
 	friend class Game;
-	AllMoveIteratorGenerator(const std::vector<Move>* const moves, uint8_t start, uint8_t finish, bool tacticalOnly);
+	AllMoveIteratorGenerator(const std::vector<Move>* const moves, uint16_t start, uint16_t finish, bool tacticalOnly);
 	
 	const std::vector<Move>* const moves;
-	const uint8_t start;
-	const uint8_t finish;
+	const uint16_t start;
+	const uint16_t finish;
 	bool tacticalOnly;
 
 	

@@ -1,7 +1,7 @@
 #include "Game_move_iteration.h"
 
 
-AllMoveIterator::AllMoveIterator(const std::vector<Move>* const moves, uint8_t cur, bool tacticalOnly) :
+AllMoveIterator::AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, bool tacticalOnly) :
 moves(moves), cur(cur), tacticalOnly(tacticalOnly){}
 
 Move AllMoveIterator::operator*()const {
@@ -19,8 +19,10 @@ bool AllMoveIterator::operator!=(const AllMoveIterator& other) const {
 
 
 
-AllMoveIteratorGenerator::AllMoveIteratorGenerator(const std::vector<Move>* const moves, uint8_t start, uint8_t finish, bool tacticalOnly):
-moves(moves), start(start), finish(finish), tacticalOnly(tacticalOnly){}
+AllMoveIteratorGenerator::AllMoveIteratorGenerator(const std::vector<Move>* const moves, uint16_t start, uint16_t finish, bool tacticalOnly) :
+moves(moves), start(start), finish(finish), tacticalOnly(tacticalOnly){
+	_ASSERTE(start <= finish);
+}
 
 AllMoveIterator AllMoveIteratorGenerator::begin() {
 	return AllMoveIterator(moves, start, tacticalOnly);
