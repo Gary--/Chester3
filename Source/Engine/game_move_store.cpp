@@ -47,7 +47,7 @@ bool Game::areMovesAvailable() {
 void Game::generateMoves() {
 	if (cur.numMovesStored == -1) {
 		cur.numMovesStored = 0;
-		generateMovesImpl();
+		generateMovesImpl(false);
 		cur.numMovesAvailable = cur.numMovesStored;
 
 	}
@@ -60,9 +60,6 @@ int Game::getNumValidMoves() {
 
 AllMoveIteratorGenerator Game::getAllMoves() {
 	generateMoves();
-	if (movePtr + cur.numMovesAvailable > moves.size()) {
-		system("pause");
-	}
 	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesAvailable, false);
 }
 

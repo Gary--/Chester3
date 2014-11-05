@@ -76,7 +76,7 @@ private:
 	static bool isDefinitelyAMoveAvailable();//Tries to find a move
 
 	static void generateMoves();
-	static void generateMovesImpl();
+	static void generateMovesImpl(bool tacticalOnly);
 	//static void generateMovesImpl_BLACK();
 	
 #pragma endregion

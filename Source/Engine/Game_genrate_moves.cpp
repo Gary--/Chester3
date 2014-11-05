@@ -5,8 +5,10 @@ using namespace AttackFields;
 
 //If I can capture a threatening pawn via EP
 //HINT: put promo logic into add move
-void Game::generateMovesImpl() {
+void Game::generateMovesImpl(bool tacticalOnly) {
 	//const Turn curTurn = Turn::WHITE;
+
+#pragma region Unpack variables
 	const bool check = getCheck();
 	const BitBoard M = getPlayerPieces(curTurn);
 	const BitBoard MK = getPieces(curTurn, Piece::KING);
@@ -25,10 +27,18 @@ void Game::generateMovesImpl() {
 	const Position theirKingPos = getPieces(!curTurn, Piece::KING).ToPosition();
 
 	const BitBoard kingRing = AttackFields::kingTargs(kingPos);
+#pragma endregion
 
+#pragma region Declare from to restrictions
 	BitBoard posTargs = ~M;
+	if (check) {
+		tacticalOnly = false;
+	}
+	if (tacticalOnly) {
+		posTargs &= T;
+	}
 	BitBoard posPieces = M;
-
+#pragma endregion
 
 
 #pragma region Dangers: Squares attacked by opponent
@@ -60,14 +70,15 @@ void Game::generateMovesImpl() {
 	_ASSERTE(threats.count() <= 2);
 
 #pragma endregion
-	// KING
-	FOR_BIT(bit, kingRing &~(danger | M)) {
+	
+#pragma region KingMoves
+	FOR_BIT(bit, kingRing &~danger & posTargs) {
 		Position to=bit.ToPosition();
 		addMove(Move(MoveType::REGULAR, kingPos, to, Piece::KING, getPieceAt(to)));
 	}
+#pragma endregion
 
 	// We are in double check. We can only move our king.
-	
 	if (threats.count() > 1) {
 		return;
 	}
@@ -100,9 +111,9 @@ void Game::generateMovesImpl() {
 
 
 	
-
+#pragma region Check Response
 	// Try to capture the threat.
-	if (threats!=BitBoard::EMPTY()) {
+	if (check) {
 		posPieces ^= allPinned;
 
 		const Position threatPos = threats.ToPosition();
@@ -143,15 +154,14 @@ void Game::generateMovesImpl() {
 		if (jumpThreats != BitBoard::EMPTY()) {
 			return;
 		} else { // If it was an LOS threat, we can block also.
-			posTargs = blockingTargs(kingPos, threatPos) &~ALL;
-			
+			BitBoard blocking = blockingTargs(kingPos, threatPos) &~ALL;;
+			posTargs &= blocking;
 		}
 	}
+#pragma endregion
 
 
-
-
-	// Knights cannot move while pinned
+#pragma region Regular Piece moves
 	FOR_BIT(knight, MN & posPieces &~allPinned) {
 		Position from = knight.ToPosition();
 		FOR_BIT(toBit, knightTargs(from) & posTargs) {
@@ -207,11 +217,15 @@ void Game::generateMovesImpl() {
 			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN, getPieceAt(to)));
 		}
 	}
-
+#pragma endregion
 	
+#pragma region Pawn Forward Move
 	BitBoard pawnsThatCanMoveForward = (~allPinned | (rightPinned & BitBoard::colBits(kingPos.col()))) &
 		 MP & posPieces;
 	BitBoard inEmptyFrontOfPawns = pawnsThatCanMoveForward.shiftForward(curTurn) & ~ALL;
+	if (tacticalOnly) {
+		inEmptyFrontOfPawns &= pawnPromoZone(curTurn).shiftForward(curTurn);
+	}
 	FOR_BIT(toBit, inEmptyFrontOfPawns & posTargs) {
 		Position to = toBit.ToPosition();
 		Position from = to.shiftBackward(curTurn);
@@ -224,29 +238,32 @@ void Game::generateMovesImpl() {
 		Position from = to.shiftBackward(curTurn).shiftBackward(curTurn);
 		addPawnMove(Move(MoveType::PAWN_JUMP, from, to, Piece::PAWN, Piece::EMPTY));
 	}
-	
+#pragma endregion
 
 	if (!check) {
-		// TODO: dun need pos targs here
+		
+#pragma region Pawn Captures
 		BitBoard kingX = bishopTargs(kingPos, BitBoard::EMPTY());
 		BitBoard pawnsThatCanCapture = ~allPinned | diagPinned;
-		FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft()  & T &
+		FOR_BIT(toBit, (MP & pawnsThatCanCapture).shiftForward(curTurn).shiftLeft()  & T &
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft())) {
 			Position to = toBit.ToPosition();
 			Position from = to.shiftBackward(curTurn).shiftRight();
 			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
 		}
-		FOR_BIT(toBit, (MP & posPieces & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
+		FOR_BIT(toBit, (MP & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftRight())) {
 			Position to = toBit.ToPosition();
 			Position from = to.shiftBackward(curTurn).shiftLeft();
 			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
 		}
+#pragma endregion
 
+#pragma region Enpeasent
 		if (getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
 			Position to = enpeasentTo(curTurn, getEnpeasentColumn());
 			BitBoard capturedBit = enpeasentCaptured(curTurn, getEnpeasentColumn()).ToSingletonBoard();
-			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP & posPieces & ~rightPinned) {
+			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP  & ~rightPinned) {
 				Position from = pawn.ToPosition();
 				BitBoard newBlockers = ALL ^ to.ToSingletonBoard() ^ pawn ^ capturedBit;
 				if ((rookTargs(kingPos, newBlockers) & TR) == BitBoard::EMPTY() &&
@@ -255,17 +272,22 @@ void Game::generateMovesImpl() {
 				}
 			}
 		}
+#pragma endregion
 
-		FOR_SIDE(side) {
-			if (getCanCastle(curTurn, side) &&
-				(ALL & castleEmptySquares(curTurn, side)) == BitBoard::EMPTY() &&
-				(danger & castleSafeSquares(curTurn, side)) == BitBoard::EMPTY()) {
-				MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
-				Position to(curTurn == Turn::WHITE ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
+#pragma region Castling
+		if (!tacticalOnly) {
+			FOR_SIDE(side) {
+				if (getCanCastle(curTurn, side) &&
+					(ALL & castleEmptySquares(curTurn, side)) == BitBoard::EMPTY() &&
+					(danger & castleSafeSquares(curTurn, side)) == BitBoard::EMPTY()) {
+					MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
+					Position to(curTurn == Turn::WHITE ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
 
-				addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+					addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+				}
 			}
 		}
+#pragma endregion
 	}
 
 
