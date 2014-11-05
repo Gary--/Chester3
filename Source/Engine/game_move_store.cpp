@@ -29,7 +29,20 @@ void Game::addPawnMove(Move move) {
 	}
 }
 
+bool Game::areMovesAvailable() {
+	if (cur.numMovesAvailable > 0 || cur.numMovesStored >0) {
+		return true;
+	}
 
+	if (isDefinitelyAMoveAvailable()) {
+		return true;
+	}
+
+	generateMoves();
+
+	return cur.numMovesAvailable > 0;
+
+}
 
 void Game::generateMoves() {
 	if (cur.numMovesStored == -1) {
@@ -47,7 +60,9 @@ int Game::getNumValidMoves() {
 
 AllMoveIteratorGenerator Game::getAllMoves() {
 	generateMoves();
-
+	if (movePtr + cur.numMovesAvailable > moves.size()) {
+		system("pause");
+	}
 	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesAvailable, false);
 }
 
@@ -67,13 +82,15 @@ void Game::pushMove(Move move) {
 }
 
 void Game::popMove() {
-	moves.erase(moves.begin() + movePtr, moves.end());
-	
+	if (cur.numMovesStored > 0) {
+		moves.erase(moves.begin() + movePtr, moves.end());//<----
+	}
 
 	cur = undoDatas.back();
 	undoDatas.pop_back();
 
-
-	movePtr -= cur.numMovesStored;
+	if (cur.numMovesStored > 0) {
+		movePtr -= cur.numMovesStored;
+	}
 
 }

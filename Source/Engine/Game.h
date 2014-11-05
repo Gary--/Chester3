@@ -38,7 +38,7 @@ public:
 
 	static AllMoveIteratorGenerator getAllMoves();
 	static int getNumValidMoves();
-	static void generateMoves();
+	static bool areMovesAvailable();
 
 	/*
 	Goal: Support...:
@@ -73,7 +73,9 @@ private:
 	static void addPawnMove(Move move);//accounts for promotions
 	static void pushMove(Move move);// Called by makeMove to store this layer's info
 	static void popMove();//  Called by undoMove to restore this layer's info
+	static bool isDefinitelyAMoveAvailable();//Tries to find a move
 
+	static void generateMoves();
 	static void generateMovesImpl();
 	//static void generateMovesImpl_BLACK();
 	
