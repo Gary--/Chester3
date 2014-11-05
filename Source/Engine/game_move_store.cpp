@@ -70,6 +70,7 @@ void Game::generateTacticalMoves() {
 	_ASSERTE(cur.numMovesStored == 0);
 
 	generateMovesImpl(true);
+	cur.movesStored = UndoData::MovesStored::TACTICAL;
 }
 
 int Game::getNumValidMoves() {

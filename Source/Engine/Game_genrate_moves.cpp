@@ -31,11 +31,13 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 
 #pragma region Declare from to restrictions
 	BitBoard posTargs = ~M;
+	BitBoard posPawnTargs = posTargs;
 	if (check) {
 		tacticalOnly = false;
 	}
 	if (tacticalOnly) {
 		posTargs &= T;
+		posPawnTargs &= T | pawnPromoZone(curTurn).shiftForward(curTurn);
 	}
 	BitBoard posPieces = M;
 #pragma endregion
@@ -156,6 +158,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		} else { // If it was an LOS threat, we can block also.
 			BitBoard blocking = blockingTargs(kingPos, threatPos) &~ALL;;
 			posTargs &= blocking;
+			posPawnTargs &= blocking;
 		}
 	}
 #pragma endregion
@@ -223,10 +226,8 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 	BitBoard pawnsThatCanMoveForward = (~allPinned | (rightPinned & BitBoard::colBits(kingPos.col()))) &
 		 MP & posPieces;
 	BitBoard inEmptyFrontOfPawns = pawnsThatCanMoveForward.shiftForward(curTurn) & ~ALL;
-	if (tacticalOnly) {
-		inEmptyFrontOfPawns &= pawnPromoZone(curTurn).shiftForward(curTurn);
-	}
-	FOR_BIT(toBit, inEmptyFrontOfPawns & posTargs) {
+	
+	FOR_BIT(toBit, inEmptyFrontOfPawns & posPawnTargs) {
 		Position to = toBit.ToPosition();
 		Position from = to.shiftBackward(curTurn);
 		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, Piece::EMPTY));
