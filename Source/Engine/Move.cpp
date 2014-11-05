@@ -58,6 +58,10 @@ bool Move::isPromotion() const {
 	return getType() >= MoveType::PROMO_KNIGHT;
 }
 
+bool Move::isTactical() const {
+	return isCapture() || isPromotion();
+}
+
 Piece Move::promotionPiece() const {
 	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)getType() - (uint8_t)MoveType::PROMO_KNIGHT);
 }

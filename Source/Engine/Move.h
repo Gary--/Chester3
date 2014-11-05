@@ -30,6 +30,8 @@ public:
 	bool isPromotion() const;
 	Piece promotionPiece() const;
 	bool isCapture() const;
+	bool isTactical() const;
+
 	Move();
 	~Move();
 
