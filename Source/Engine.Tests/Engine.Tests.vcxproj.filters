@@ -62,5 +62,8 @@
     <ClCompile Include="Test_100_Perft_Cases.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_Game_Stalemate_Detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -227,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test_100_Perft_Cases.cpp" />
+    <ClCompile Include="Test_Game_Stalemate_Detection.cpp" />
     <ClCompile Include="Test_Move_generation.cpp" />
     <ClCompile Include="Test_Move_Generation_perft.cpp" />
     <ClCompile Include="Test_configure_check_detection.cpp" />
