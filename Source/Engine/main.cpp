@@ -13,7 +13,7 @@ using namespace std;
 int main() {
 	//Game::init();
 	clock_t start = clock();
-	int count = Perft::perftLazy("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -", 6);
+	int count = Perft::perftFull("r3k2r/p1ppqpb1/bn2P1p1/4N3/Np2n3/5Q1p/PPPBB1PP/R3K2R b KQkq -", 5);
 	time_t end = clock();
 	cout << "# of leaves: " << count << endl;
 	cout << "Time: " << (float(end - start) / CLOCKS_PER_SEC) << endl;
