@@ -105,5 +105,14 @@ public:
 			Assert::AreEqual(n, m);
 		}
 	}
+
+	TEST_METHOD(NB_Incremented_Before_P) {
+		AtkPat pat;
+		pat.add(Piece::BISHOP);
+		pat.add(Piece::KNIGHT);
+		pat.add(Piece::PAWN);
+
+		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT));
+	}
 	};
 }
