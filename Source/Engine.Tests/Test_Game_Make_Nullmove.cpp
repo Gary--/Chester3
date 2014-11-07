@@ -49,11 +49,8 @@ public:
 	TEST_METHOD(Move_Generation_Works_After_Nullmove) {
 		Game::configure(GameConfiguration("k7/8/8/8/8/8/8/K7 w - -"));
 		Game::makeMove(Move::NULL_MOVE());
-		int n = 0;
-		for (Move move : Game::getAllMoves()) {
-			n++;
-		}
-		Assert::AreEqual(3, n);
+
+		Assert::AreEqual(3, Game::getNumValidMoves());
 	}
 
 	};
