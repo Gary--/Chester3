@@ -146,5 +146,8 @@
     <ClCompile Include="Game_stalemate_detection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AttackDefend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

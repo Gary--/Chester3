@@ -68,5 +68,8 @@
     <ClCompile Include="Test_Game_Make_Nullmove.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_AttackDefendByte.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

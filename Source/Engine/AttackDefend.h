@@ -1,13 +1,14 @@
 #pragma once
 #include <cstdint>
 #include "chess_consts.h"
+#include <string>
 
 
 //+------+------+------+------+------+------+------+------+
-//| BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7 |
+//| BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0 |
 //+------+------+------+------+------+------+------+------+
-//|      Number of     | PAWN |KNIGHT| ROOK | QUEEN| KING |
-//|      ATTACKERS     |      |BISHOP|      |      |      |
+//| KING | QUEEN| ROOK |KNIGHT| PAWN |      Number of     |
+//|      |      |      |BISHOP|      |      ATTACKERS     |
 //+------+------+------+------+------+------+------+------+
 
 // === Resolving Ambiguity
@@ -31,14 +32,18 @@
 class AtkPat {
 public:
 	AtkPat();
-	AtkPat add(Piece piece) const;
+	void add(Piece piece);
 	bool contains(Piece piece) const;
 	bool isEmpty() const;
 	int getCount() const;
 
 	// How much would you lose by moving a piece there?
-	int enemyAttackCost(Piece piece);
-	int friendlyAttackCost(Piece piece);
+	int enemyAttackCost(Piece piece) const;
+	int friendlyAttackCost(Piece piece) const;
+
+	bool operator==(const AtkPat other) const;
+	bool operator!=(const AtkPat other) const;
+	std::string str() const;// Example: "3:NQ"
 private:
 	uint8_t value;
 };
