@@ -11,16 +11,16 @@
 //|      |      |      |BISHOP|      |      ATTACKERS     |
 //+------+------+------+------+------+------+------+------+
 
+
+// Piece | Limit  | Likliness | Value
+//   P       2         2          1
+//  N/B      3         1          3
+//   R       2         3          5
+//   Q       1         4          9
+//   K       1         5         50
+
 // === Resolving Ambiguity
-// Piece   Limit    Likliness
-//   P       2         2
-//  N/B      3         1
-//   R       2         3
-//   Q       1         4
-//   K       1         5
-
 // 1. Set the count of every piece that appears to 1.
-
 // 2. Increment count of the piece that comes first when sorted by
 //    the following but is not at or past its limit.
 //        (curCount, likliness)
