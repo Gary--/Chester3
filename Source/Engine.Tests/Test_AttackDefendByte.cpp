@@ -13,7 +13,7 @@ public:
 		int val = rand() % 6;
 		return Piece(1 + val);
 	}
-
+#pragma region Basic Contains/Total
 	TEST_METHOD(Initializes_To_Empty) {
 		AtkPat pat;
 		Assert::IsTrue(pat.isEmpty());
@@ -80,6 +80,30 @@ public:
 		pat0.add(Piece::BISHOP);
 		Assert::AreEqual("3:NQ", pat0.str().c_str());
 	}
+#pragma endregion
 
+	TEST_METHOD(Piece_Count_One) {
+		FOR_PIECE_ALL(piece) {
+			AtkPat pat;
+			pat.add(piece);
+			Assert::AreEqual(1, pat.getPieceCount(piece));
+		}
+	}
+
+	TEST_METHOD(Piece_Count_Total_Matches) {
+		for (int trial = 0; trial < 1000; ++trial) {
+			AtkPat pat;
+			int n = rand() % 7;
+			for (int i = 1; i <= n; ++i) {
+				pat.add(randomPiece());
+			}
+
+			int m = 0;
+			FOR_PIECE_NOT_BISHOP(piece) {
+				m += pat.getPieceCount(piece);
+			}
+			Assert::AreEqual(n, m);
+		}
+	}
 	};
 }

@@ -29,6 +29,8 @@
 //
 // 3. If not everything accounted for, goto 2.
 
+#define FOR_PIECE_NOT_BISHOP(x) for (Piece x = Piece::PAWN; x <= Piece::KING; x = (Piece)((uint8_t)x + (x == Piece::KNIGHT ? 2 : 1)))
+
 class AtkPat {
 public:
 	AtkPat();
@@ -44,6 +46,10 @@ public:
 	bool operator==(const AtkPat other) const;
 	bool operator!=(const AtkPat other) const;
 	std::string str() const;// Example: "3:NQ"
+
+	// DEBUGGING, don't call this
+	int getPieceCount(Piece piece) const;
+
 private:
 	uint8_t value;
 };
