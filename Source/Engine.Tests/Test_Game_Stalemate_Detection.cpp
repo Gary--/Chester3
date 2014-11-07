@@ -51,7 +51,7 @@ public:
 	}
 
 	TEST_METHOD(Stalemate_5) {
-		no("2r1r3/8/8/r7/3KB2r/r7/8/6k1 w - -")
+		no("2r1r3/8/8/r7/3KB2r/r7/8/6k1 w - -");
 	}
 
 	};
