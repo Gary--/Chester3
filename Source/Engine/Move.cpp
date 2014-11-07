@@ -77,3 +77,10 @@ Move Move::operator=(const Move& other) {
 	value = other.value;
 	return *this;
 }
+
+bool Move::operator==(const Move other) {
+	return value == other.value;
+}
+bool Move::operator!=(const Move other) {
+	return !(*this == other);
+}
