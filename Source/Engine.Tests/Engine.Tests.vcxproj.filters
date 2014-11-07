@@ -65,5 +65,8 @@
     <ClCompile Include="Test_Game_Stalemate_Detection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_Game_Make_Nullmove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
