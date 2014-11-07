@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackDefend.h" />
     <ClInclude Include="attack_fields.h" />
     <ClInclude Include="Attack_Fields_init.h" />
     <ClInclude Include="BitBoard.h" />

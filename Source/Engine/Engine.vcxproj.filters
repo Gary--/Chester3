@@ -60,6 +60,9 @@
     <ClInclude Include="Game_move_iteration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AttackDefend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
