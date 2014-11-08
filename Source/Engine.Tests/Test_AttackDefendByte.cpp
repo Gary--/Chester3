@@ -114,5 +114,39 @@ public:
 
 		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT));
 	}
+
+	TEST_METHOD(Full_Up_0) {
+		AtkPat pat;
+
+		pat.add(Piece::PAWN);
+		pat.add(Piece::PAWN);
+		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN));
+
+		pat.add(Piece::ROOK);
+		Assert::AreEqual(1, pat.getPieceCount(Piece::ROOK));
+
+		pat.add(Piece::KNIGHT);
+		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT));
+		Assert::AreEqual(1, pat.getPieceCount(Piece::PAWN));
+
+		pat.add(Piece::KNIGHT);
+		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN));
+
+		pat.add(Piece::ROOK);
+		Assert::AreEqual(2, pat.getPieceCount(Piece::ROOK));
+
+		pat.add(Piece::KING);
+		Assert::AreEqual(1, pat.getPieceCount(Piece::KING));
+	}
+
+	TEST_METHOD(Full_Up_1) {
+		AtkPat pat;
+		pat.add(Piece::QUEEN);
+		pat.add(Piece::QUEEN);
+
+		Assert::AreEqual(1, pat.getPieceCount(Piece::QUEEN));
+		Assert::AreEqual(1, pat.getPieceCount(Piece::KNIGHT));
+	}
+
 	};
 }
