@@ -82,6 +82,8 @@ namespace {
 	int8_t SEE_min[256][256] = { 0 };
 
 	bool inited = false;
+
+	
 }
 
 #pragma region AtkPat
@@ -204,23 +206,43 @@ void SEE::init() {
 	}
 	inited = true;
 
-	FOR_PIECE_ALL(piece) {
+	FOR_PIECE_ALL(attacker) {
 		for (int i = 0; i < 256; ++i) {
 			for (int j = 0; j < 256; j++) {
-				initSEE(piece, AtkPat(i), AtkPat(j));
+				AtkPat attackers(i);
+				AtkPat defenders(j);
+				SEE_full[(uint8_t)attacker][attackers.value][defenders.value] = 
+					attackCostImpl(attacker, attackers, defenders);
+			}
+		}
+	}
+	for (int i = 0; i < 256; ++i) {
+		for (int j = 0; j < 256; j++) {
+			AtkPat attackers(i);
+			AtkPat defenders(j);
+			if (!attackers.isValid() || !defenders.isValid() ||
+				attackers.getCount() == 0) {
+				continue;
+			}
+			FOR_PIECE_NOT_BISHOP(minPiece) {
+				if (attackers.contains(minPiece)) {
+					SEE_min[attackers.value][defenders.value] =
+						attackCost(minPiece, attackers, defenders);
+					break;
+				}
 			}
 		}
 	}
 }
 
-void SEE::initSEE(Piece attacker, AtkPat attackers, AtkPat defenders) {
+int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
 	if (attacker == Piece::BISHOP) {
 		attacker = Piece::KNIGHT;
 	}
-	
+
 	if (!attackers.isValid() || !defenders.isValid() ||
 		defenders.getCount() == 0 || !attackers.contains(attacker)) {
-		return;
+		return 0;
 	}
 
 	if (attackers.getCount() == 1 && defenders.getCount() == 1) {
@@ -241,7 +263,7 @@ void SEE::initSEE(Piece attacker, AtkPat attackers, AtkPat defenders) {
 	}
 
 	int nAtk = atkPtr, nDef = defPtr;
-	int values[17] = { 0};
+	int values[17] = { 0 };
 	int valuePtr = 0;
 
 	atkPtr = defPtr = 0;
@@ -254,21 +276,25 @@ void SEE::initSEE(Piece attacker, AtkPat attackers, AtkPat defenders) {
 		if (atkPtr == nAtk) {
 			break;
 		}
-		values[valuePtr++] = pieceValue(defendingPieces[atkPtr++]);
+		values[valuePtr++] = pieceValue(attackingPieces[atkPtr++]);
 	}
 
 	// cost for the piece here to make a capture
 	int costs[17] = { 0 };
 	costs[valuePtr] = 100;//can't take when we have nothing there
-	for (int i = valuePtr - 1; i >= 1; --i) {
+	for (int i = valuePtr - 1; i >= 0; --i) {
 		costs[i] = std::max(0, values[i] - costs[i + 1]);
 	}
-
-	SEE_full[(uint8_t)attacker][attackers.value][defenders.value] = std::max(0, pieceValue(attacker) - costs[0]);
+	return std::max(0, pieceValue(attacker) - costs[0]);
+	
 }
 
 int SEE::attackCost(Piece attacker, AtkPat attackers, AtkPat defenders) {
 	return SEE_full[(uint8_t)attacker][attackers.value][defenders.value];
+}
+
+int SEE::attackCostMin(AtkPat attackers, AtkPat defenders) {
+	return SEE_min[attackers.value][defenders.value];
 }
 
 #pragma endregion

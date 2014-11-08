@@ -13,5 +13,5 @@ public:
 	static int attackCostMin(AtkPat attackers, AtkPat defenders);
 
 private:
-	static void initSEE(Piece attacker, AtkPat attackers, AtkPat defenders);
+	static int attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders);
 };
