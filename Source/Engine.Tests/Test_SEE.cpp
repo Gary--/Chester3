@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "static_exchange.h"
-
+#include <algorithm>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -91,7 +91,7 @@ public:
 	}
 
 	TEST_METHOD(SEE_B_Brk) {
-		
+		Assert::AreEqual(1, exchangeValue('B', "Brk"));
 	}
 
 	TEST_METHOD(SEE_Even_Fight_Over_Pawn) {
@@ -104,6 +104,25 @@ public:
 
 	TEST_METHOD(SEE_Losing_Fight_Over_Pawn) {
 		Assert::AreEqual(1, exchangeValue('P', "NRKnrqk"));
+	}
+
+	TEST_METHOD(SEE_AttackCostMin_Matches_AttackCost) {
+		for (int trials = 0; trials < 1000; ++trials) {
+			AtkPat attackers, defenders;
+			int nAtk = 1+ rand() % 6, nDef = rand() % 7;
+			Piece smallestPiece = Piece::UNKNOWN;
+			for (int i = 0; i < nAtk; i++) {
+				Piece piece = randPiece();
+				smallestPiece = std::min(smallestPiece, piece);
+				attackers.add(piece);
+			}
+			for (int i = 0; i < nDef; i++) {
+				defenders.add(randPiece());
+			}
+
+			Assert::AreEqual(SEE::attackCost(smallestPiece, attackers, defenders),
+							 SEE::attackCostMin(attackers, defenders));
+		}
 	}
 
 	};
