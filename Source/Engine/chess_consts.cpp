@@ -7,6 +7,10 @@
 using namespace std;
 
 
+Piece randPiece() {
+	return (Piece)(1 + rand() % 6);
+}
+
 Side operator!(Side side) {
 #pragma warning(disable : 4800) //Forcing to bool
 	return (Side)(!(bool)side);
