@@ -38,15 +38,11 @@ public:
 	bool isEmpty() const;
 	int getCount() const;
 
-	// How much would you lose by moving a piece there?
-	int enemyAttackCost(Piece piece) const;
-	int friendlyAttackCost(Piece piece) const;
-
 	bool operator==(const AtkPat other) const;
 	bool operator!=(const AtkPat other) const;
 	std::string str() const;// Example: "3:NQ"
 
-	// DEBUGGING, don't call this
+	// ONLY CALLED BY INIT
 	int getPieceCount(Piece piece) const;
 
 private:

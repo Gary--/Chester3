@@ -63,6 +63,9 @@
     <ClInclude Include="AttackDefend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="static_exchange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -147,6 +150,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AttackDefend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="static_exchange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

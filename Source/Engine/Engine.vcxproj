@@ -34,6 +34,7 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="perft.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="static_exchange.h" />
     <ClInclude Include="UndoData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +65,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="static_exchange.cpp" />
     <ClCompile Include="UndoData.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
