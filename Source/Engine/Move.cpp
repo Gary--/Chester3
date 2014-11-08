@@ -73,14 +73,26 @@ MoveType promoType(Piece piece) {
 
 }
 
-Move Move::operator=(const Move& other) {
+Move Move::operator=(const Move& other){
 	value = other.value;
 	return *this;
 }
 
-bool Move::operator==(const Move other) {
+bool Move::operator==(const Move other) const{
 	return value == other.value;
 }
-bool Move::operator!=(const Move other) {
+bool Move::operator!=(const Move other) const{
 	return !(*this == other);
+}
+
+std::string Move::str() const {
+	if (*this == NULL_MOVE()) {
+		return "0000";
+	}
+
+	std::string result = getFrom().str() + getTo().str();
+	if (isPromotion()) {
+		result += ChessUtils::charFromPieceTurn(Turn::BLACK,promotionPiece());
+	}
+	return result;
 }

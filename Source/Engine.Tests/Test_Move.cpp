@@ -37,6 +37,11 @@ public:
 		}
 	}
 
+	TEST_METHOD(ToString) {
+		Assert::AreEqual("e4e5", Move(MoveType::REGULAR, Position("e4"), Position("e5"), Piece::PAWN, Piece::EMPTY).str().c_str());
+		Assert::AreEqual("a7a8r", Move(MoveType::PROMO_ROOK, Position("a7"), Position("a8"), Piece::PAWN, Piece::EMPTY).str().c_str());
+	}
+
 	};
 
 

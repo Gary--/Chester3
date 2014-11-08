@@ -43,8 +43,10 @@ public:
 	Piece getTarg() const;
 
 	Move operator=(const Move& other);
-	bool operator==(const Move other);
-	bool operator!=(const Move other);
+	bool operator==(const Move other) const;
+	bool operator!=(const Move other) const;
+
+	std::string str() const;
 private:
 	/*MoveType type;
 	Position from, to;
