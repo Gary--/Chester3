@@ -46,6 +46,9 @@ public:
 	int getPieceCount(Piece piece) const;
 
 private:
+	bool isValid() const;
+	AtkPat(uint8_t value);
 	uint8_t value;
+	friend class SEE;
 };
 

@@ -71,5 +71,8 @@
     <ClCompile Include="Test_AttackDefendByte.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_SEE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

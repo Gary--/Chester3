@@ -38,7 +38,7 @@
     <ClInclude Include="UndoData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AttackDefend.cpp" />
+    <ClCompile Include="AttackDefend_SEE.cpp" />
     <ClCompile Include="attack_fields_bishop_rook.cpp" />
     <ClCompile Include="attack_fields_blocking_pinning.cpp" />
     <ClCompile Include="attack_fields_castling_pawns.cpp" />
@@ -65,7 +65,6 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="Position.cpp" />
-    <ClCompile Include="static_exchange.cpp" />
     <ClCompile Include="UndoData.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
