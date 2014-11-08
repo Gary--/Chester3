@@ -66,6 +66,9 @@
     <ClInclude Include="static_exchange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="display.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -96,9 +99,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameConfiguration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Move.cpp">

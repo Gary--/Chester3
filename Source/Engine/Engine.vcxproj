@@ -26,6 +26,7 @@
     <ClInclude Include="chess_consts.h" />
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="chess_macros.h" />
+    <ClInclude Include="display.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameHash.h" />
@@ -61,7 +62,6 @@
     <ClCompile Include="Game_query.cpp" />
     <ClCompile Include="Game_stalemate_detection.cpp" />
     <ClCompile Include="Game_threat.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="Position.cpp" />
