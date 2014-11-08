@@ -118,15 +118,16 @@ int AtkPat::getPieceCount(Piece piece) const {
 			tot++;
 		}
 	}
-	_ASSERTE(tot <= getCount());
 
-	while (tot < getCount()) {
+	for (int i = tot; tot < getCount(); ++tot){
 		bool updated = false;
 		
 
-		int minCount = 0;
+		int minCount = 8;
 		FOR_PIECE_NOT_BISHOP(p) {
-			minCount = std::max(minCount, counts[ind(p)]);
+			if (contains(p)) {
+				minCount = std::min(minCount, counts[ind(p)]);
+			}
 		}
 		
 		Piece pieceToInc = Piece::UNKNOWN;
@@ -142,8 +143,6 @@ int AtkPat::getPieceCount(Piece piece) const {
 		}
 
 		counts[ind(pieceToInc==Piece::UNKNOWN ? Piece::KNIGHT : pieceToInc)]++;
-		
-		tot++;
 	}
 	
 

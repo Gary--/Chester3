@@ -24,8 +24,7 @@
 // 2. Increment count of the piece that comes first when sorted by
 //    the following but is not at or past its limit.
 //        (curCount, likliness)
-//    If everything was at limit, increase count of valid piece
-//    with lowest likliness.
+//    If everything was at limit, increase count of N.
 //
 // 3. If not everything accounted for, goto 2.
 
