@@ -102,6 +102,10 @@ Position Position::mirror() const{
 	return Position(value ^ 56);
 }
 
+Position Position::perspective(Turn turn) const {
+	return turn == Turn::WHITE() ? *this : mirror();
+}
+
 std::string Position::str() const
 {
 	std::string res;

@@ -119,6 +119,10 @@ BitBoard BitBoard::mirror() const{
 	return BitBoard(_byteswap_uint64(value));
 }
 
+BitBoard BitBoard::perspective(Turn turn) const {
+	return turn == Turn::WHITE() ? *this : mirror();
+}
+
 
 BitBoard BitBoard::shiftUp() const{
 	return BitBoard(value >> 8);

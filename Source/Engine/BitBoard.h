@@ -61,8 +61,9 @@ public:
 
 	std::string  str() const;
 	
-
 	BitBoard mirror() const;
+	BitBoard perspective(Turn turn) const;//If black, returns mirror, else self.
+
 	Position ToPosition() const;// Only use on a singleton board
 	
 	int count() const;

@@ -172,6 +172,11 @@ namespace EngineTests
 			flip_HardCore(BitBoard(c));
 		}
 
+		TEST_METHOD(BitBoard_perspective) {
+			BitBoard A(a);
+			Assert::AreEqual(A, A.perspective(Turn::WHITE()));
+			Assert::AreEqual(A.mirror(), A.perspective(Turn::BLACK()));
+		}
 
 		TEST_METHOD(BitBoard_RowCol_Bits){
 			BitBoard acc1 = BitBoard::EMPTY();
@@ -276,6 +281,13 @@ namespace EngineTests
 					Assert::AreEqual(bit.shiftBackward(turn), pos.shiftBackward(turn).asSingletonBitboard());
 				}
 
+			}
+		}
+
+		TEST_METHOD(Position_perspective) {
+			FOR_POSITION_64(pos) {
+				Assert::AreEqual(pos, pos.perspective(Turn::WHITE()));
+				Assert::AreEqual(pos.mirror(), pos.perspective(Turn::BLACK()));
 			}
 		}
 	};

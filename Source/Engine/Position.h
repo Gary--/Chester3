@@ -29,6 +29,7 @@ public:
 	friend bool const operator!=(const Position pos1, Position pos2);
 	
 	Position mirror() const;
+	Position perspective(Turn turn) const;//return turn==Turn::WHITE() ? *this : mirror()
 
 	int index() const;
 	int row() const;
