@@ -48,6 +48,7 @@
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="chess_consts.cpp" />
+    <ClCompile Include="display.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="GameHash.cpp" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Game_query.cpp" />
     <ClCompile Include="Game_stalemate_detection.cpp" />
     <ClCompile Include="Game_threat.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="Position.cpp" />
@@ -92,7 +94,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
