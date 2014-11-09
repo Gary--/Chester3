@@ -48,6 +48,10 @@ Piece Piece::UNKNOWN() {
 	return Piece(7);
 }
 
+Piece Piece::random() {
+	return Piece(1 + rand() % 6);
+}
+
 uint8_t Piece::asIndex() const {
 	return value;
 }

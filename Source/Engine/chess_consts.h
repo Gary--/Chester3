@@ -37,7 +37,7 @@ public:
 	static Piece KING();
 	static Piece UNKNOWN();
 	
-	//static Piece random();//  [PAWN,KING]
+	static Piece random();//  [PAWN,KING]
 
 	uint8_t asIndex() const;
 	PieceEnum asEnum() const;
@@ -56,7 +56,6 @@ private:
 	uint8_t value;
 };
 
-Piece randPiece();
 
 //Used only for castling
 #define FOR_SIDE(x) for(Side x=Side::LEFT,temp__##__LINE__;x==Side::LEFT || temp__##__LINE__ == Side::LEFT;temp__##__LINE__ = x, x=Side::RIGHT )
