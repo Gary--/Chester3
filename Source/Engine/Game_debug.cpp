@@ -40,7 +40,7 @@ void Game::integrityCheck() {
 	}
 
 	
-	_ASSERTE(cur.hash.toInt64() == GameHash(GameConfiguration::extractFromGame()).toInt64());
+	_ASSERTE(cur.hash.toInt64() == GameHash(Game::getGameConfiguration()).toInt64());
 
 #endif
 }

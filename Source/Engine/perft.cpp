@@ -17,7 +17,7 @@ namespace {
 		}
 
 #ifdef _DEBUG
-		string FEN = GameConfiguration::extractFromGame().str();
+		string FEN = Game::getFEN();
 #endif
 		int res = 0;
 		for (Move move: Game::getAllMoves()){
