@@ -78,6 +78,9 @@
     <ClInclude Include="AI_search_configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Evaluate_simple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">

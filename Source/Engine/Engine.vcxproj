@@ -30,6 +30,7 @@
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="chess_macros.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="Evaluate_simple.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameHash.h" />
