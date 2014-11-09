@@ -57,18 +57,18 @@ Piece ChessUtils::pieceFromChar(char c) {
 	}
 
 	switch (c) {
-	case 'K': return Piece::KING;
-	case 'Q': return Piece::QUEEN;
-	case 'R': return Piece::ROOK;
-	case 'B': return Piece::BISHOP;
-	case 'N': return Piece::KNIGHT;
-	case 'P': return Piece::PAWN;
-	case '.': return Piece::EMPTY;
+	case 'K': return Piece::KING();
+	case 'Q': return Piece::QUEEN();
+	case 'R': return Piece::ROOK();
+	case 'B': return Piece::BISHOP();
+	case 'N': return Piece::KNIGHT();
+	case 'P': return Piece::PAWN();
+	case '.': return Piece::EMPTY();
 
 
 	default:
 		_ASSERT(false);
-		return Piece::UNKNOWN;
+		return Piece::UNKNOWN();
 		break;
 
 	}
@@ -80,13 +80,13 @@ char ChessUtils::charFromPieceTurn(Turn turn, Piece piece) {
 	char res='?';
 
 	switch (piece) {
-	case Piece::KING: res = 'K'; break;
-	case Piece::QUEEN: res = 'Q'; break;
-	case Piece::ROOK: res = 'R'; break;
-	case Piece::BISHOP: res = 'B'; break;
-	case Piece::KNIGHT: res = 'N'; break;
-	case Piece::PAWN: res = 'P'; break;
-	case Piece::EMPTY: return '.'; break;
+	case Piece::KING(): res = 'K'; break;
+	case Piece::QUEEN(): res = 'Q'; break;
+	case Piece::ROOK(): res = 'R'; break;
+	case Piece::BISHOP(): res = 'B'; break;
+	case Piece::KNIGHT(): res = 'N'; break;
+	case Piece::PAWN(): res = 'P'; break;
+	case Piece::EMPTY(): return '.'; break;
 
 	default:
 		_ASSERT(false);
