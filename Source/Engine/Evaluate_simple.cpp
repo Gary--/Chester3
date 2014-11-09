@@ -96,6 +96,17 @@ int pieceValue(Piece piece) {
 
 }
 
+
+int evaluateFull(Turn turn) {
+	return evaluateMaterial(turn) + evaluatePosition(turn);
+}
+int evaluateMaterial(Turn turn) {
+	return matScores[turn.asIndex()];
+}
+int evaluatePosition(Turn turn) {
+	return posScores[turn.asIndex()];
+}
+
 void SimpleEvaluation::synchronize() {
 	FOR_TURN(turn) {
 		FOR_PIECE_ALL(piece) {
