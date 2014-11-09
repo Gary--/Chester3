@@ -20,7 +20,7 @@ public:
 	void testConvert(std::string FEN) {
 		GameConfiguration conf(FEN);
 		Game::configure(conf);
-		Assert::AreEqual(conf.str_min(), GameConfiguration::extractFromGame().str_min());
+		Assert::AreEqual(conf.str_min(), Game::getGameConfiguration().str_min());
 	}
 	TEST_METHOD(Game_Configure_and_Extract_Configuration) {
 		testConvert("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

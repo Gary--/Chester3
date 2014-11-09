@@ -31,7 +31,7 @@ public:
 
 
 		Game::undoMove();
-		Assert::AreEqual(conf.str(), GameConfiguration::extractFromGame().str());
+		Assert::AreEqual(conf.str(), Game::getGameConfiguration().str());
 	}
 	Move regular(const char* from, const char* to) {
 		Position fromPos(from);

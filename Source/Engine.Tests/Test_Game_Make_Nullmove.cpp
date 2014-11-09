@@ -43,7 +43,7 @@ public:
 		
 		Game::undoMove();
 
-		Assert::AreEqual(FEN, GameConfiguration::extractFromGame().str_min());
+		Assert::AreEqual(FEN, Game::getGameConfiguration().str_min());
 	}
 
 	TEST_METHOD(Move_Generation_Works_After_Nullmove) {

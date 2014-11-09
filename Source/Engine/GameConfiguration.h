@@ -11,7 +11,6 @@ public:
 	GameConfiguration();
 	GameConfiguration(std::string ForsythEdwardsNotation);
 	~GameConfiguration();
-	static GameConfiguration extractFromGame();
 
 	GameConfiguration mirror() const;
 

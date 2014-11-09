@@ -79,3 +79,22 @@ bool Game::getCheck() {
 uint64_t Game::getHash() {
 	return cur.hash.toInt64();
 }
+
+GameConfiguration Game::getGameConfiguration() {
+	GameConfiguration conf;
+	conf.setTurn(Game::getTurn());
+	conf.setEnpeasentColumn(Game::getEnpeasentColumn());
+
+
+	FOR_TURN(turn) {
+		FOR_SIDE(side) {
+			conf.setCanCastle(turn, side, Game::getCanCastle(turn, side));
+		}
+	}
+
+	FOR_POSITION_64(pos) {
+		conf.setPieceAt(pos, Game::getOwnerAt(pos), Game::getPieceAt(pos));
+	}
+
+	return conf;
+}
