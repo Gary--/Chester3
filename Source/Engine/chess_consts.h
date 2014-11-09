@@ -23,6 +23,8 @@ public:
 	bool operator==(const Turn other) const;
 	bool operator!=(const Turn other) const;
 
+	std::string str() const;
+
 	static Turn WHITE();
 	static Turn BLACK();
 	static Turn fromChar(char c);// Uppercase = WHITE, else BLACK

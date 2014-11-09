@@ -162,6 +162,10 @@ std::string Piece::str() const {
 Turn::Turn() : value(false) {}
 Turn::Turn(bool value) : value(value) {}
 
+std::string Turn::str() const {
+	return *this == WHITE() ? "WHITE" : "BLACK";
+}
+
 Turn Turn::operator!() const {
 	return Turn(!value);
 }

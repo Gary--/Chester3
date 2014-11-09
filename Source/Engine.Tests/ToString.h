@@ -21,17 +21,9 @@ namespace Microsoft
 			define_specialization(Position);
 			define_specialization(GameConfiguration);
 			define_specialization(Piece);
+			define_specialization(Turn);
+
 			
-
-			template<>static std::wstring ToString<Turn>(const Turn& turn) { 
-				std::wstring res;
-				std::string value;
-
-				value = turn == Turn::WHITE()? "WHITE" : "BLACK";
-				res.assign(value.begin(), value.end());
-				return res;
-			}
-
 			
 
 			template<>static std::wstring ToString<Side>(const Side& side) {
