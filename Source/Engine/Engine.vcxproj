@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
+    <ClInclude Include="AI_search_configuration.h" />
+    <ClInclude Include="AI_search_result.h" />
     <ClInclude Include="AttackDefend.h" />
     <ClInclude Include="attack_fields.h" />
     <ClInclude Include="Attack_Fields_init.h" />
