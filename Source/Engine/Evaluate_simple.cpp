@@ -112,6 +112,6 @@ void SimpleEvaluation::notifyMove(Move move, Turn turn) {
 	synchronize();
 }
 
-void SimpleEvaluation::notifyMove(Move move, Turn turn) {
+void SimpleEvaluation::notifyUndoMove(Move move, Turn turn) {
 	synchronize();
 }
