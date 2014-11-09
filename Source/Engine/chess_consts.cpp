@@ -46,6 +46,31 @@ Piece Piece::fromChar(char c) {
 	}
 }
 
+char Piece::asChar(Turn turn) const {
+	char res = '?';
+
+	switch (asEnum()) {
+	case PieceEnum::KING: res = 'K'; break;
+	case PieceEnum::QUEEN: res = 'Q'; break;
+	case PieceEnum::ROOK: res = 'R'; break;
+	case PieceEnum::BISHOP: res = 'B'; break;
+	case PieceEnum::KNIGHT: res = 'N'; break;
+	case PieceEnum::PAWN: res = 'P'; break;
+	case PieceEnum::EMPTY: return '.'; break;
+
+	default:
+		_ASSERT(false);
+		break;
+	}
+
+	if (turn == Turn::BLACK()) {
+		res += 'a' - 'A';
+	}
+
+	return res;
+
+}
+
 Piece Piece::EMPTY() {
 	return Piece(0);
 }
@@ -168,26 +193,3 @@ bool Turn::operator!=(const Turn other) const {
 
 
 
-char ChessUtils::charFromPieceTurn(Turn turn, Piece piece) {
-	char res='?';
-
-	switch (piece.asEnum()) {
-	case PieceEnum::KING: res = 'K'; break;
-	case PieceEnum::QUEEN: res = 'Q'; break;
-	case PieceEnum::ROOK: res = 'R'; break;
-	case PieceEnum::BISHOP: res = 'B'; break;
-	case PieceEnum::KNIGHT: res = 'N'; break;
-	case PieceEnum::PAWN: res = 'P'; break;
-	case PieceEnum::EMPTY: return '.'; break;
-
-	default:
-		_ASSERT(false);
-		break;
-	}
-
-	if (turn == Turn::BLACK()) {
-		res += 'a' - 'A';
-	}
-	
-	return res;
-}

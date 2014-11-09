@@ -92,7 +92,7 @@ std::string Move::str() const {
 
 	std::string result = getFrom().str() + getTo().str();
 	if (isPromotion()) {
-		result += ChessUtils::charFromPieceTurn(Turn::BLACK(),promotionPiece());
+		result += promotionPiece().asChar(Turn::BLACK());
 	}
 	return result;
 }

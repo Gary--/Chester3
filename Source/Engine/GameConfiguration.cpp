@@ -4,7 +4,6 @@
 #include "Game.h"
 
 using namespace std;
-using namespace ChessUtils;
 
 GameConfiguration::GameConfiguration() 
 {
@@ -190,7 +189,7 @@ string GameConfiguration::str_min() const {
 					res += '0' + empties;
 					empties = 0;
 				}
-				res += ChessUtils::charFromPieceTurn(getOwnerAt(pos), getPieceAt(pos));
+				res += getPieceAt(pos).asChar(getOwnerAt(pos));
 			} else {
 				empties++;
 			}

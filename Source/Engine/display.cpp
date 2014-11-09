@@ -17,7 +17,7 @@ void Display::display() {
 		cout << char('8' - r) << " ";
 		for (int c = 0; c < 8; c++) {
 			Position pos(r, c);
-			cout << ChessUtils::charFromPieceTurn(Game::getOwnerAt(pos), Game::getPieceAt(pos));
+			cout << Game::getPieceAt(pos).asChar(Game::getOwnerAt(pos)) << endl;
 		}
 		cout << endl;
 	}

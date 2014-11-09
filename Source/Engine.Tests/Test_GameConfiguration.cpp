@@ -67,7 +67,7 @@ public:
 		FOR_PIECE(piece, Piece::EMPTY(), Piece::KING()) {
 			c++;
 			FOR_TURN(turn) {
-				char rep = ChessUtils::charFromPieceTurn(turn, piece);
+				char rep = piece.asChar(turn);
 				Assert::AreEqual(piece, Piece::fromChar(rep));
 
 				if (piece != Piece::EMPTY()) {
