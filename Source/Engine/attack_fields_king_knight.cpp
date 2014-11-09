@@ -19,7 +19,7 @@ void AttackFieldInit::KingKnightPawn() {
 			FOR_TURN(turn) {
 				BitBoard forwarded = from.ToSingletonBoard().shiftForward(turn);
 #pragma warning(disable : 4800)
-				pawnTargsArr[(bool)turn][from.index()] = forwarded.shiftLeft() | forwarded.shiftRight();
+				pawnTargsArr[turn.asIndex()][from.index()] = forwarded.shiftLeft() | forwarded.shiftRight();
 #pragma warning(default : 4800)
 			}
 
@@ -58,7 +58,7 @@ BitBoard AttackFields::knightTargs(Position position) {
 
 BitBoard AttackFields::pawnTargs(Position position,Turn turn ) {
 #pragma warning(disable : 4800)
-	return pawnTargsArr[(bool)turn][position.index()];
+	return pawnTargsArr[turn.asIndex()][position.index()];
 #pragma warning(default : 4800)
 }
 

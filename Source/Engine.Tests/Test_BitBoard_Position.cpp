@@ -256,10 +256,10 @@ namespace EngineTests
 		TEST_METHOD(BitBoard_Shift_ForwardBackward) {
 			BitBoard row = BitBoard::rowBits(4);
 
-			Assert::AreEqual(BitBoard::rowBits(5), row.shiftForward(Turn::BLACK));
-			Assert::AreEqual(BitBoard::rowBits(3), row.shiftForward(Turn::WHITE));
-			Assert::AreEqual(BitBoard::rowBits(3), row.shiftBackward(Turn::BLACK));
-			Assert::AreEqual(BitBoard::rowBits(5), row.shiftBackward(Turn::WHITE));
+			Assert::AreEqual(BitBoard::rowBits(5), row.shiftForward(Turn::BLACK()));
+			Assert::AreEqual(BitBoard::rowBits(3), row.shiftForward(Turn::WHITE()));
+			Assert::AreEqual(BitBoard::rowBits(3), row.shiftBackward(Turn::BLACK()));
+			Assert::AreEqual(BitBoard::rowBits(5), row.shiftBackward(Turn::WHITE()));
 		}
 
 		TEST_METHOD(Position_Shifts) {

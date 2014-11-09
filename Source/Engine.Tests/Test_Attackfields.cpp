@@ -67,10 +67,10 @@ public:
 	TEST_METHOD(Pawn_Targs) {
 		Assert::AreEqual(
 			Position(5, 3).ToSingletonBoard() |Position(5, 5).ToSingletonBoard()
-			, AttackFields::pawnTargs(Position(4, 4),Turn::BLACK ));
+			, AttackFields::pawnTargs(Position(4, 4),Turn::BLACK()));
 		Assert::AreEqual(
 			Position(3, 3).ToSingletonBoard() | Position(3, 5).ToSingletonBoard()
-			, AttackFields::pawnTargs(Position(4, 4),Turn::WHITE ));
+			, AttackFields::pawnTargs(Position(4, 4),Turn::WHITE()));
 	}
 	
 
@@ -172,12 +172,12 @@ public:
 			Position("b1").ToSingletonBoard() | 
 			Position("c1").ToSingletonBoard() | 
 			Position("d1").ToSingletonBoard()
-			, AttackFields::castleEmptySquares(Turn::WHITE, Side::LEFT));
+			, AttackFields::castleEmptySquares(Turn::WHITE(), Side::LEFT));
 
 		Assert::AreEqual(
 			Position("f1").ToSingletonBoard() |
 			Position("g1").ToSingletonBoard() 
-			, AttackFields::castleEmptySquares(Turn::WHITE, Side::RIGHT));
+			, AttackFields::castleEmptySquares(Turn::WHITE(), Side::RIGHT));
 	}
 
 	TEST_METHOD(AttackFields_Castling_Safe){
@@ -185,21 +185,21 @@ public:
 			Position("c1").ToSingletonBoard() |
 			Position("d1").ToSingletonBoard() |
 			Position("e1").ToSingletonBoard()
-			, AttackFields::castleSafeSquares(Turn::WHITE, Side::LEFT));
+			, AttackFields::castleSafeSquares(Turn::WHITE(), Side::LEFT));
 
 		Assert::AreEqual(
 			Position("e1").ToSingletonBoard() |
 			Position("f1").ToSingletonBoard() |
 			Position("g1").ToSingletonBoard()
-			, AttackFields::castleSafeSquares(Turn::WHITE, Side::RIGHT));
+			, AttackFields::castleSafeSquares(Turn::WHITE(), Side::RIGHT));
 	}
 
 	TEST_METHOD(Castle_Symmetry){
 		FOR_SIDE(side){
-			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE, side) ==
-				AttackFields::castleEmptySquares(Turn::BLACK, side).verticalFlip());
-			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE, side) ==
-				AttackFields::castleEmptySquares(Turn::BLACK, side).verticalFlip());
+			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE(), side) ==
+				AttackFields::castleEmptySquares(Turn::BLACK(), side).verticalFlip());
+			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE(), side) ==
+				AttackFields::castleEmptySquares(Turn::BLACK(), side).verticalFlip());
 		}
 	}
 

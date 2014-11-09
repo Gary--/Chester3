@@ -11,7 +11,7 @@ void Display::display() {
 	if (Game::getCheck()) {
 		cout << "CHECK. ";
 	}
-	cout << (Game::getTurn() == Turn::WHITE ? "White" : "Black") << "'s turn." << endl;
+	cout << (Game::getTurn() == Turn::WHITE() ? "White" : "Black") << "'s turn." << endl;
 	cout << endl;
 	for (int r = 0; r < 8; r++) {
 		cout << char('8' - r) << " ";

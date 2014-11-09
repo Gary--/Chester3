@@ -85,7 +85,7 @@ Position Position::shiftRight() const {
 	return Position(row(), col() + 1);
 }
 Position Position::shiftForward(Turn turn) const {
-	return turn == Turn::WHITE ? shiftUp() : shiftDown();
+	return turn == Turn::WHITE() ? shiftUp() : shiftDown();
 }
 Position Position::shiftBackward(Turn turn) const {
 	return shiftForward(!turn);

@@ -30,7 +30,7 @@ void Game::init() {
 
 void Game::reset() {
 	init();
-	curTurn = Turn::WHITE;
+	curTurn = Turn::WHITE();
 
 	Game::WK = Game::WQ = Game::WR = Game::WB = Game::WN = Game::WP =
 		Game::BK = Game::BQ = Game::BR = Game::BB = Game::BN = Game::BP =

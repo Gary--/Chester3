@@ -137,7 +137,7 @@ BitBoard BitBoard::shiftLeft() const{
 }
 
 BitBoard BitBoard::shiftForward(Turn turn) const {
-	if (turn == Turn::WHITE) {
+	if (turn == Turn::WHITE()) {
 		return this->shiftUp();
 	} else {
 		return this->shiftDown();

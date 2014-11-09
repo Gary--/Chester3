@@ -48,7 +48,7 @@ GameHash::GameHash(const GameConfiguration& conf) {
 	enpeasent = GameConfiguration::NO_ENPEASENT_COLUMN;
 
 	// turn
-	if (conf.getTurn() == Turn::BLACK) {
+	if (conf.getTurn() == Turn::BLACK()) {
 		toggleTurn();
 	}
 
@@ -78,7 +78,7 @@ GameHash::GameHash(const GameConfiguration& conf) {
 }
 
 bool GameHash::getCanCastle(Turn player, Side side) const {
-	return canCastle[(bool)player][bool(side)];
+	return canCastle[player.asIndex()][bool(side)];
 }
 
 int GameHash::getEnpeasent() const {
@@ -86,7 +86,7 @@ int GameHash::getEnpeasent() const {
 }
 
 void GameHash::togglePiece(Position position,Turn player, Piece piece ) {
-	hash ^= zorbist[(bool)player][(uint8_t)piece][position.index()];
+	hash ^= zorbist[player.asIndex()][(uint8_t)piece][position.index()];
 }
 
 void GameHash::setEnpeasent(int value) {
@@ -96,9 +96,9 @@ void GameHash::setEnpeasent(int value) {
 }
 
 void GameHash::voidCastle(Turn player, Side side) {
-	if (canCastle[(bool)player][bool(side)]) {
-		canCastle[(bool)player][bool(side)] = false;
-		hash ^= castleZorbist[(bool)player][bool(side)];
+	if (canCastle[player.asIndex()][bool(side)]) {
+		canCastle[player.asIndex()][bool(side)] = false;
+		hash ^= castleZorbist[player.asIndex()][bool(side)];
 	}
 }
 

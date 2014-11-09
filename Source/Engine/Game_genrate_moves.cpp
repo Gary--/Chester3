@@ -6,7 +6,7 @@ using namespace AttackFields;
 //If I can capture a threatening pawn via EP
 //HINT: put promo logic into add move
 void Game::generateMovesImpl(bool tacticalOnly) {
-	//const Turn curTurn = Turn::WHITE;
+	//const Turn curTurn = Turn::WHITE()
 
 #pragma region Unpack variables
 	const bool check = getCheck();
@@ -282,7 +282,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 					(ALL & castleEmptySquares(curTurn, side)) == BitBoard::EMPTY() &&
 					(danger & castleSafeSquares(curTurn, side)) == BitBoard::EMPTY()) {
 					MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
-					Position to(curTurn == Turn::WHITE ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
+					Position to(curTurn == Turn::WHITE()? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
 
 					addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
 				}

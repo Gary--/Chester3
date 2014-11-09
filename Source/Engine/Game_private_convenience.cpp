@@ -6,7 +6,7 @@ namespace {
 
 BitBoard* Game::s(Turn turn, Piece piece) {
 	
-	if (turn == Turn::WHITE) {
+	if (turn == Turn::WHITE()) {
 		switch (piece) {
 		case Piece::EMPTY:
 			return &scratch;
@@ -46,7 +46,7 @@ BitBoard* Game::s(Turn turn, Piece piece) {
 }
 
 BitBoard* Game::sp(Turn turn) {
-	return turn == Turn::WHITE ? &WA : &BA;
+	return turn == Turn::WHITE()? &WA : &BA;
 }
 
 void Game::toggleBit(Turn turn, Position position, Piece piece) {

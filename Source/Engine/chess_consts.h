@@ -28,15 +28,27 @@ Side operator!(Side side);
 
 
 // Iterates (BLACK, WHITE)
-#define FOR_TURN(x) for(Turn x=Turn::BLACK,temp__##__LINE__;x==Turn::BLACK || temp__##__LINE__ == Turn::BLACK;temp__##__LINE__ = x, x=Turn::WHITE )
-enum class Turn : bool {
-	BLACK,
-	WHITE
+#define FOR_TURN(x) for(Turn x=Turn::BLACK(),temp__##__LINE__;x==Turn::BLACK() || temp__##__LINE__ == Turn::BLACK();temp__##__LINE__ = x, x=Turn::WHITE() )
+struct Turn {
+public:
+	Turn();
+
+	Turn operator!() const;
+	bool asIndex() const;
+
+	bool operator==(const Turn other) const;
+	bool operator!=(const Turn other) const;
+
+	static Turn WHITE();
+	static Turn BLACK();
+	static Turn fromChar(char c);// Uppercase = WHITE, else BLACK
+private:
+	explicit Turn(bool value);
+	bool value;
 };
-Turn operator!(Turn turn);
+
 
 namespace ChessUtils {
 	Piece pieceFromChar(char c);// . used for empty
-	Turn turnFromChar(char c);// Uppercase = WHITE, else BLACK
 	char charFromPieceTurn(Turn turn, Piece piece);
 }

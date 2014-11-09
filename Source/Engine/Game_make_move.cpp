@@ -83,7 +83,7 @@ void Game::makeMove(Move move) {
 			cur.hash.voidCastle(curTurn, Side::RIGHT);
 
 			if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
-				int baseRow = curTurn == Turn::WHITE ? 7 : 0;
+				int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
 				Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 				Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
 				BitBoard rookChange = rookFrom.ToSingletonBoard() | rookTo.ToSingletonBoard();
@@ -100,16 +100,16 @@ void Game::makeMove(Move move) {
 		}
 
 		if (toPos == Position("a1") || fromPos == Position("a1")) {
-			cur.hash.voidCastle(Turn::WHITE, Side::LEFT);
+			cur.hash.voidCastle(Turn::WHITE(), Side::LEFT);
 		}
 		if (toPos == Position("h1") || fromPos == Position("h1")) {
-			cur.hash.voidCastle(Turn::WHITE, Side::RIGHT);
+			cur.hash.voidCastle(Turn::WHITE(), Side::RIGHT);
 		}
 		if (toPos == Position("a8") || fromPos == Position("a8")) {
-			cur.hash.voidCastle(Turn::BLACK, Side::LEFT);
+			cur.hash.voidCastle(Turn::BLACK(), Side::LEFT);
 		}
 		if (toPos == Position("h8") || fromPos == Position("h8")) {
-			cur.hash.voidCastle(Turn::BLACK, Side::RIGHT);
+			cur.hash.voidCastle(Turn::BLACK(), Side::RIGHT);
 		}
 
 
@@ -175,7 +175,7 @@ void Game::undoMove() {
 		*s(curTurn, Piece::PAWN) ^= toBit;
 		*s(curTurn, promo) ^= toBit;
 	} else if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
-		int baseRow = curTurn == Turn::WHITE ? 7 : 0;
+		int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
 		Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 		Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
 		BitBoard rookChange = rookFrom.ToSingletonBoard() | rookTo.ToSingletonBoard();

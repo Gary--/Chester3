@@ -130,7 +130,7 @@ std::string AtkPat::str() const {
 
 	FOR_PIECE_ALL(piece) {
 		if (piece != Piece::BISHOP && this->contains(piece)) {
-			res += ChessUtils::charFromPieceTurn(Turn::WHITE, piece);
+			res += ChessUtils::charFromPieceTurn(Turn::WHITE(), piece);
 		}
 	}
 

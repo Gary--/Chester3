@@ -12,12 +12,12 @@ GameConfiguration::GameConfiguration()
 		clearPieceAt(pos);
 	}
 
-	turn = Turn::WHITE;
+	turn = Turn::WHITE();
 
-	setCanCastle(Turn::WHITE, Side::LEFT, false);
-	setCanCastle(Turn::WHITE, Side::RIGHT, false);
-	setCanCastle(Turn::BLACK, Side::LEFT, false);
-	setCanCastle(Turn::BLACK, Side::RIGHT, false);
+	setCanCastle(Turn::WHITE(), Side::LEFT, false);
+	setCanCastle(Turn::WHITE(), Side::RIGHT, false);
+	setCanCastle(Turn::BLACK(), Side::LEFT, false);
+	setCanCastle(Turn::BLACK(), Side::RIGHT, false);
 
 	setHalfMoveClock(0);
 	setMoveNumber(1);
@@ -68,14 +68,14 @@ GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 			continue;
 		}
 
-		setPieceAt(Position(r, c), turnFromChar(ch), pieceFromChar(ch));
+		setPieceAt(Position(r, c), Turn::fromChar(ch), pieceFromChar(ch));
 		c++;
 	}
 	
 	//turn
 	string turn;
 	ss >> turn;
-	setTurn(turn == "w" ? Turn::WHITE : Turn::BLACK);
+	setTurn(turn == "w" ? Turn::WHITE(): Turn::BLACK());
 	
 
 	//castling
@@ -84,13 +84,13 @@ GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 	if (castling != "-") {
 		for (char ch : castling) {
 			if (ch == 'K') {
-				setCanCastle(Turn::WHITE, Side::RIGHT, true);
+				setCanCastle(Turn::WHITE(), Side::RIGHT, true);
 			} else if (ch == 'Q') {
-				setCanCastle(Turn::WHITE, Side::LEFT, true);
+				setCanCastle(Turn::WHITE(), Side::LEFT, true);
 			} else 	if (ch == 'k') {
-				setCanCastle(Turn::BLACK, Side::RIGHT, true);
+				setCanCastle(Turn::BLACK(), Side::RIGHT, true);
 			} else if (ch == 'q') {
-				setCanCastle(Turn::BLACK, Side::LEFT, true);
+				setCanCastle(Turn::BLACK(), Side::LEFT, true);
 			}
 		}
 	}
@@ -139,7 +139,7 @@ void GameConfiguration::setPieceAt(Position position, Turn turn, Piece piece) {
 }
 
 void GameConfiguration::clearPieceAt(Position position) {
-	setPieceAt(position, Turn::BLACK, Piece::EMPTY);
+	setPieceAt(position, Turn::BLACK(), Piece::EMPTY);
 }
 
 
@@ -149,10 +149,10 @@ Turn GameConfiguration::getOwnerAt(Position position) const {
 
 #pragma warning(disable:4800)//force to bool
 bool GameConfiguration::getCanCastle(Turn turn, Side side) const {
-	return canCastle[(bool)turn][(bool)side];
+	return canCastle[turn.asIndex()][(bool)side];
 }
 void GameConfiguration::setCanCastle(Turn turn, Side side, bool value) {
-	canCastle[(bool)turn][(bool)side] = value;
+	canCastle[turn.asIndex()][(bool)side] = value;
 }
 #pragma warning(default:4800)
 
@@ -207,21 +207,21 @@ string GameConfiguration::str_min() const {
 	res += ' ';
 
 	//Turn
-	res += getTurn() == Turn::WHITE ? 'w' : 'b';
+	res += getTurn() == Turn::WHITE()? 'w' : 'b';
 	res += ' ';
 
 	//Castling
 	string castleStr;
-	if (getCanCastle(Turn::WHITE, Side::RIGHT)) {
+	if (getCanCastle(Turn::WHITE(), Side::RIGHT)) {
 		castleStr += 'K';
 	}
-	if (getCanCastle(Turn::WHITE, Side::LEFT)) {
+	if (getCanCastle(Turn::WHITE(), Side::LEFT)) {
 		castleStr += 'Q';
 	}
-	if (getCanCastle(Turn::BLACK, Side::RIGHT)) {
+	if (getCanCastle(Turn::BLACK(), Side::RIGHT)) {
 		castleStr += 'k';
 	}
-	if (getCanCastle(Turn::BLACK, Side::LEFT)) {
+	if (getCanCastle(Turn::BLACK(), Side::LEFT)) {
 		castleStr += 'q';
 	}
 
@@ -234,7 +234,7 @@ string GameConfiguration::str_min() const {
 	//enpeasent
 	if (getEnpeasentColumn() != NO_ENPEASENT_COLUMN) {
 		res += 'a' + getEnpeasentColumn();
-		res += getTurn() == Turn::WHITE ? '6' : '3';
+		res += getTurn() == Turn::WHITE()? '6' : '3';
 	} else {
 		res += '-';
 	}

@@ -17,11 +17,39 @@ Side operator!(Side side) {
 #pragma warning(default : 4800)
 }
 
-Turn operator!(Turn turn) {
-#pragma warning(disable : 4800) //Forcing to bool
-	return (Turn)(!(bool)turn);
-#pragma warning(default : 4800)
+#pragma region Turn
+Turn::Turn() : value(false) {}
+Turn::Turn(bool value) : value(value) {}
+
+Turn Turn::operator!() const {
+	return Turn(!value);
 }
+
+bool Turn::asIndex() const {
+	return value;
+}
+
+Turn Turn::fromChar(char c) {
+	return ('a' <= c && c < 'z') ? Turn::BLACK() : Turn::WHITE();
+}
+
+Turn Turn::BLACK() {
+	return Turn(false);
+}
+
+Turn Turn::WHITE() {
+	return Turn(true);
+}
+
+bool Turn::operator==(const Turn other) const {
+	return value == other.value;
+}
+bool Turn::operator!=(const Turn other) const {
+	return !(*this == other);
+}
+
+#pragma endregion
+
 
 Piece ChessUtils::pieceFromChar(char c) {
 	if ('a' <= c && c < 'z') {
@@ -47,9 +75,6 @@ Piece ChessUtils::pieceFromChar(char c) {
 }
 
 
-Turn ChessUtils::turnFromChar(char c) {
-	return ('a' <= c && c < 'z') ? Turn::BLACK : Turn::WHITE;
-}
 
 char ChessUtils::charFromPieceTurn(Turn turn, Piece piece) {
 	char res='?';
@@ -68,7 +93,7 @@ char ChessUtils::charFromPieceTurn(Turn turn, Piece piece) {
 		break;
 	}
 
-	if (turn == Turn::BLACK) {
+	if (turn == Turn::BLACK()) {
 		res += 'a' - 'A';
 	}
 	

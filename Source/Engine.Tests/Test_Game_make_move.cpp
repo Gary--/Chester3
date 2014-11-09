@@ -23,11 +23,11 @@ public:
 		Move move = regular(from, to);
 
 		Game::makeMove(move);
-		Assert::AreEqual(Turn::BLACK, Game::getTurn());
+		Assert::AreEqual(Turn::BLACK(), Game::getTurn());
 		Assert::AreEqual(Piece::EMPTY, Game::getPieceAt(move.getFrom()));
 		Assert::AreEqual(move.getPiece(), Game::getPieceAt(move.getTo()));
 		
-		Assert::IsFalse(Game::getPlayerPieces(Turn::BLACK).contains(move.getTo()));
+		Assert::IsFalse(Game::getPlayerPieces(Turn::BLACK()).contains(move.getTo()));
 
 
 		Game::undoMove();
@@ -111,16 +111,16 @@ public:
 		Game::configure(conf);
 
 		Game::makeMove(regular("e1", "d1"));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("e8", "d8"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::undoMove();
 		Game::undoMove();
@@ -131,28 +131,28 @@ public:
 		Game::configure(conf);
 		
 		Game::makeMove(regular("a1", "b1"));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("a8", "b8"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("h1", "g1"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("h8", "g8"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::undoMove();
 		Game::undoMove();
@@ -165,28 +165,28 @@ public:
 		Game::configure(conf);
 
 		Game::makeMove(regular("b2", "a1"));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("b7", "a8"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("g2", "h1"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsTrue(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsTrue(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::makeMove(regular("g7", "h8"));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::BLACK, Side::RIGHT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(Game::getCanCastle(Turn::WHITE, Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::BLACK(), Side::RIGHT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(Game::getCanCastle(Turn::WHITE(), Side::RIGHT));
 
 		Game::undoMove();
 		Game::undoMove();

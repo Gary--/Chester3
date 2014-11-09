@@ -60,8 +60,8 @@ public:
 
 		for (char c : pat) {
 			Piece piece = ChessUtils::pieceFromChar(c);
-			Turn turn = ChessUtils::turnFromChar(c);
-			(turn == Turn::WHITE ? attackers : defenders).add(piece);
+			Turn turn = Turn::fromChar(c);
+			(turn == Turn::WHITE()? attackers : defenders).add(piece);
 		}
 		return SEE::attackCost(attacker, attackers, defenders);
 	}

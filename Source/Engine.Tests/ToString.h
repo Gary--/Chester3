@@ -25,7 +25,7 @@ namespace Microsoft
 				std::wstring res;
 				std::string value;
 
-				value = turn == Turn::WHITE ? "WHITE" : "BLACK";
+				value = turn == Turn::WHITE()? "WHITE" : "BLACK";
 				res.assign(value.begin(), value.end());
 				return res;
 			}

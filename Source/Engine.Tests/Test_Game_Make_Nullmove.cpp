@@ -13,13 +13,13 @@ public:
 	TEST_METHOD(Nullmove_Flips_Turn) {
 		Game::configure(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - "));
 		Game::makeMove(Move::NULL_MOVE());
-		Assert::AreEqual(Turn::BLACK, Game::getTurn());
+		Assert::AreEqual(Turn::BLACK(), Game::getTurn());
 		Game::makeMove(Move::NULL_MOVE());
-		Assert::AreEqual(Turn::WHITE, Game::getTurn());
+		Assert::AreEqual(Turn::WHITE(), Game::getTurn());
 		Game::undoMove();
-		Assert::AreEqual(Turn::BLACK, Game::getTurn());
+		Assert::AreEqual(Turn::BLACK(), Game::getTurn());
 		Game::undoMove();
-		Assert::AreEqual(Turn::WHITE, Game::getTurn());
+		Assert::AreEqual(Turn::WHITE(), Game::getTurn());
 	}
 
 	TEST_METHOD(Nullmove_Flips_Hash) {

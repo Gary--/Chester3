@@ -26,7 +26,7 @@ void Game::integrityCheck() {
 
 		}
 
-		_ASSERTE((*s(Turn::WHITE, piece) ^ *s(Turn::BLACK, piece)) == pieceAll);
+		_ASSERTE((*s(Turn::WHITE(), piece) ^ *s(Turn::BLACK(), piece)) == pieceAll);
 
 		FOR_TURN(turn) {
 			BitBoard turnPieces = BitBoard::EMPTY();

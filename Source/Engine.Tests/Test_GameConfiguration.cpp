@@ -16,14 +16,14 @@ public:
 
 	TEST_METHOD(Defaults) {
 		GameConfiguration conf;
-		Assert::AreEqual(Turn::WHITE, conf.getTurn());
+		Assert::AreEqual(Turn::WHITE(), conf.getTurn());
 		Assert::AreEqual(0, conf.getHalfMoveClock());
 		Assert::AreEqual(1, conf.getMoveNumber());
 
-		Assert::IsFalse(conf.getCanCastle(Turn::WHITE, Side::LEFT));
-		Assert::IsFalse(conf.getCanCastle(Turn::WHITE, Side::RIGHT));
-		Assert::IsFalse(conf.getCanCastle(Turn::BLACK, Side::LEFT));
-		Assert::IsFalse(conf.getCanCastle(Turn::BLACK, Side::RIGHT));
+		Assert::IsFalse(conf.getCanCastle(Turn::WHITE(), Side::LEFT));
+		Assert::IsFalse(conf.getCanCastle(Turn::WHITE(), Side::RIGHT));
+		Assert::IsFalse(conf.getCanCastle(Turn::BLACK(), Side::LEFT));
+		Assert::IsFalse(conf.getCanCastle(Turn::BLACK(), Side::RIGHT));
 
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, conf.getEnpeasentColumn());
 
@@ -37,10 +37,10 @@ public:
 	TEST_METHOD(Getters_Setters) {
 		GameConfiguration conf;
 
-		conf.setTurn(Turn::BLACK);
-		Assert::AreEqual(Turn::BLACK, conf.getTurn());
-		conf.setTurn(Turn::WHITE);
-		Assert::AreEqual(Turn::WHITE, conf.getTurn());
+		conf.setTurn(Turn::BLACK());
+		Assert::AreEqual(Turn::BLACK(), conf.getTurn());
+		conf.setTurn(Turn::WHITE());
+		Assert::AreEqual(Turn::WHITE(), conf.getTurn());
 
 		conf.setHalfMoveClock(42);
 		Assert::AreEqual(42, conf.getHalfMoveClock());
@@ -52,13 +52,13 @@ public:
 		Assert::AreEqual(3, conf.getEnpeasentColumn());
 
 		Position pos1(10);
-		conf.setPieceAt(pos1, Turn::WHITE, Piece::KING);
-		Assert::AreEqual(Turn::WHITE, conf.getOwnerAt(pos1));
+		conf.setPieceAt(pos1, Turn::WHITE(), Piece::KING);
+		Assert::AreEqual(Turn::WHITE(), conf.getOwnerAt(pos1));
 		Assert::AreEqual(Piece::KING, conf.getPieceAt(pos1));
 
 		Position pos2(10);
-		conf.setPieceAt(pos2, Turn::BLACK, Piece::PAWN);
-		Assert::AreEqual(Turn::BLACK, conf.getOwnerAt(pos2));
+		conf.setPieceAt(pos2, Turn::BLACK(), Piece::PAWN);
+		Assert::AreEqual(Turn::BLACK(), conf.getOwnerAt(pos2));
 		Assert::AreEqual(Piece::PAWN, conf.getPieceAt(pos2));
 	}
 
@@ -71,7 +71,7 @@ public:
 				Assert::AreEqual(piece, ChessUtils::pieceFromChar(rep));
 
 				if (piece != Piece::EMPTY) {
-					Assert::AreEqual(turn, ChessUtils::turnFromChar(rep));
+					Assert::AreEqual(turn, Turn::fromChar(rep));
 				}
 			}
 		}
@@ -92,12 +92,12 @@ public:
 
 		FOR_BIT(bit, BitBoard::rowBits(0) | BitBoard::rowBits(1)) {
 			Position pos = bit.ToPosition();
-			Assert::AreEqual(Turn::BLACK, conf.getOwnerAt(pos));
+			Assert::AreEqual(Turn::BLACK(), conf.getOwnerAt(pos));
 		}
 
 		FOR_BIT(bit, BitBoard::rowBits(6) | BitBoard::rowBits(7)) {
 			Position pos = bit.ToPosition();
-			Assert::AreEqual(Turn::WHITE, conf.getOwnerAt(pos));
+			Assert::AreEqual(Turn::WHITE(), conf.getOwnerAt(pos));
 		}
 	}
 
@@ -110,12 +110,12 @@ public:
 	TEST_METHOD(FEN_TurnSet) {
 		{
 			GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
-			Assert::AreEqual(Turn::WHITE, conf.getTurn());
+			Assert::AreEqual(Turn::WHITE(), conf.getTurn());
 		}
 
 		{
 		    GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -");
-		    Assert::AreEqual(Turn::BLACK, conf.getTurn());
+		    Assert::AreEqual(Turn::BLACK(), conf.getTurn());
 	    }
 	}
 	

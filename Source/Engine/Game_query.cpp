@@ -5,7 +5,7 @@ Turn Game::getTurn() {
 }
 
 BitBoard Game::getPieces(Turn turn, Piece piece) {
-	if (turn == Turn::WHITE) {
+	if (turn == Turn::WHITE()) {
 		switch (piece) {
 		case Piece::PAWN:
 			return WP;
@@ -47,7 +47,7 @@ BitBoard Game::getAllPieces() {
 }
 
 BitBoard Game::getPlayerPieces(Turn turn) {
-	if (turn == Turn::WHITE) {
+	if (turn == Turn::WHITE()) {
 		return WA;
 	} else {
 		return BA;
@@ -59,7 +59,7 @@ Piece Game::getPieceAt(Position pos) {
 }
 
 Turn Game::getOwnerAt(Position pos) {
-	return (pos.ToSingletonBoard() & WA) == BitBoard::EMPTY() ? Turn::BLACK : Turn::WHITE;
+	return (pos.ToSingletonBoard() & WA) == BitBoard::EMPTY() ? Turn::BLACK() : Turn::WHITE();
 }
 
 bool Game::getCanCastle(Turn turn, Side side) {
