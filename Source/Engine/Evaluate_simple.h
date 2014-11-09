@@ -7,7 +7,9 @@ public:
 	int evaluatePosition(Turn turn);
 
 	static void synchronize();
-	void notifyMove(Move move);
-	void notifyUndoMove(Move move);
+
+	//Turn is always who made the move.           Order won't matter later
+	void notifyMove(Move move, Turn turn);     //Call before Game::makeMove
+	void notifyUndoMove(Move move, Turn turn); //Call after Game::undoMove
 private:
 };

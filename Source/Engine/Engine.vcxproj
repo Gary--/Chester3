@@ -53,6 +53,7 @@
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="chess_consts.cpp" />
     <ClCompile Include="display.cpp" />
+    <ClCompile Include="Evaluate_simple.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="GameHash.cpp" />
