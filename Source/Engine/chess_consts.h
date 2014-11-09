@@ -27,6 +27,7 @@ struct Piece {
 public:
 	explicit Piece(uint8_t value);
 	Piece();
+	static Piece fromChar(char c);//PNBRQKpnbrqk
 
 	static Piece EMPTY();
 	static Piece PAWN();
@@ -86,6 +87,5 @@ private:
 
 
 namespace ChessUtils {
-	Piece pieceFromChar(char c);// . used for empty
 	char charFromPieceTurn(Turn turn, Piece piece);
 }

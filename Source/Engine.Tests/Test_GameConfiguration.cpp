@@ -68,7 +68,7 @@ public:
 			c++;
 			FOR_TURN(turn) {
 				char rep = ChessUtils::charFromPieceTurn(turn, piece);
-				Assert::AreEqual(piece, ChessUtils::pieceFromChar(rep));
+				Assert::AreEqual(piece, Piece::fromChar(rep));
 
 				if (piece != Piece::EMPTY()) {
 					Assert::AreEqual(turn, Turn::fromChar(rep));

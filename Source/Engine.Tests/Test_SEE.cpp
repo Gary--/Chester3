@@ -53,13 +53,13 @@ public:
 
 	// attacker will be added to the pattern
 	int exchangeValue(char attacker0, std::string pat) {
-		Piece attacker = ChessUtils::pieceFromChar(attacker0);
+		Piece attacker = Piece::fromChar(attacker0);
 
 		AtkPat attackers, defenders;
 		attackers.add(attacker);
 
 		for (char c : pat) {
-			Piece piece = ChessUtils::pieceFromChar(c);
+			Piece piece = Piece::fromChar(c);
 			Turn turn = Turn::fromChar(c);
 			(turn == Turn::WHITE()? attackers : defenders).add(piece);
 		}

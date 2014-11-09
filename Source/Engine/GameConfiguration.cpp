@@ -68,7 +68,7 @@ GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
 			continue;
 		}
 
-		setPieceAt(Position(r, c), Turn::fromChar(ch), pieceFromChar(ch));
+		setPieceAt(Position(r, c), Turn::fromChar(ch), Piece::fromChar(ch));
 		c++;
 	}
 	

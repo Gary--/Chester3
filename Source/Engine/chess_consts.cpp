@@ -23,6 +23,29 @@ Side operator!(Side side) {
 Piece::Piece(uint8_t value) : value(value) {}
 Piece::Piece() : Piece(0) {}
 
+Piece Piece::fromChar(char c) {
+	if ('a' <= c && c < 'z') {
+		c -= 'a' - 'A';
+	}
+
+	switch (c) {
+	case 'K': return Piece::KING();
+	case 'Q': return Piece::QUEEN();
+	case 'R': return Piece::ROOK();
+	case 'B': return Piece::BISHOP();
+	case 'N': return Piece::KNIGHT();
+	case 'P': return Piece::PAWN();
+	case '.': return Piece::EMPTY();
+
+
+	default:
+		_ASSERT(false);
+		return Piece::UNKNOWN();
+		break;
+
+	}
+}
+
 Piece Piece::EMPTY() {
 	return Piece(0);
 }
@@ -142,30 +165,6 @@ bool Turn::operator!=(const Turn other) const {
 }
 
 #pragma endregion
-
-
-Piece ChessUtils::pieceFromChar(char c) {
-	if ('a' <= c && c < 'z') {
-		c -= 'a' - 'A';
-	}
-
-	switch (c) {
-	case 'K': return Piece::KING();
-	case 'Q': return Piece::QUEEN();
-	case 'R': return Piece::ROOK();
-	case 'B': return Piece::BISHOP();
-	case 'N': return Piece::KNIGHT();
-	case 'P': return Piece::PAWN();
-	case '.': return Piece::EMPTY();
-
-
-	default:
-		_ASSERT(false);
-		return Piece::UNKNOWN();
-		break;
-
-	}
-}
 
 
 
