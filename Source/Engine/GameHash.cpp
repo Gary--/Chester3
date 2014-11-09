@@ -11,7 +11,7 @@ namespace {
 	uint64_t castleZorbist[2][2] = { 0 };
 
 	uint64_t random() {
-		return BitBoard::random().AsInt64();
+		return BitBoard::random().asInt64();
 	}
 
 	bool inited = false;

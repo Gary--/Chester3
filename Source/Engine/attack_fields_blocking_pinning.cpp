@@ -23,12 +23,12 @@ BitBoard AttackFields::blockingTargs(Position kingPos, Position attacker) {
 
 void AttackFieldInit::BlockingPinning() {
 	for (int i = 0; i < 64; i++) {//king
-		BitBoard king = Position(i).ToSingletonBoard();
+		BitBoard king = Position(i).asSingletonBitboard();
 
 
 		for (int j = 0; j < 64; j++) {//pinnedpiece
-			BitBoard pinned = Position(j).ToSingletonBoard();
-			BitBoard attacker = Position(j).ToSingletonBoard();
+			BitBoard pinned = Position(j).asSingletonBitboard();
+			BitBoard attacker = Position(j).asSingletonBitboard();
 
 			blockingMoves[i][j] |= attacker | king;
 
@@ -38,7 +38,7 @@ void AttackFieldInit::BlockingPinning() {
 
 			pinnedMoves[i][j] |= pinned | king;
 			for (int k = 0; k < 64; k++) {//new place to move to
-				BitBoard targ = Position(k).ToSingletonBoard();
+				BitBoard targ = Position(k).asSingletonBitboard();
 
 				if (((AttackFields::queenTargs(Position(j), targ) & king) == BitBoard::EMPTY())) {
 					blockingMoves[i][j] |= targ;

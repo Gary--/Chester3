@@ -21,7 +21,7 @@ void Game::integrityCheck() {
 		BitBoard pieceAll = BitBoard::EMPTY();
 		FOR_POSITION_64(pos) {
 			if (getPieceAt(pos) == piece) {
-				pieceAll ^= pos.ToSingletonBoard();
+				pieceAll ^= pos.asSingletonBitboard();
 			}
 
 		}
@@ -32,7 +32,7 @@ void Game::integrityCheck() {
 			BitBoard turnPieces = BitBoard::EMPTY();
 			FOR_POSITION_64(pos) {
 				if (getPieceAt(pos) == piece && getOwnerAt(pos)==turn) {
-					turnPieces ^= pos.ToSingletonBoard();
+					turnPieces ^= pos.asSingletonBitboard();
 				}
 			}
 			_ASSERTE(*s(turn, piece) == turnPieces);

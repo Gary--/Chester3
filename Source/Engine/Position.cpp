@@ -91,13 +91,13 @@ Position Position::shiftBackward(Turn turn) const {
 	return shiftForward(!turn);
 }
 
-BitBoard Position::ToSingletonBoard() const
+BitBoard Position::asSingletonBitboard() const
 {
 	AssertValid();
 	return BitBoard(((uint64_t) 1)<< value);
 }
 
-Position Position::verticalFlip() const{
+Position Position::mirror() const{
 	AssertValid();
 	return Position(value ^ 56);
 }

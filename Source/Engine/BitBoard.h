@@ -22,7 +22,7 @@ public:
 	BitBoard(int r, int c);
 	BitBoard();
 
-	uint64_t AsInt64() const;
+	uint64_t asInt64() const;
 
 	BitBoard operator|(const BitBoard other) const;
 	BitBoard operator&(const BitBoard other) const;
@@ -62,7 +62,7 @@ public:
 	std::string  str() const;
 	
 
-	BitBoard verticalFlip() const;
+	BitBoard mirror() const;
 	Position ToPosition() const;// Only use on a singleton board
 	
 	int count() const;

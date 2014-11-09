@@ -28,7 +28,7 @@ public:
 	friend bool const operator==(const Position pos1,Position pos2);
 	friend bool const operator!=(const Position pos1, Position pos2);
 	
-	Position verticalFlip() const;
+	Position mirror() const;
 
 	int index() const;
 	int row() const;
@@ -43,7 +43,7 @@ public:
 	Position shiftForward(Turn turn) const;
 	Position shiftBackward(Turn turn) const;
 
-	BitBoard ToSingletonBoard() const;
+	BitBoard asSingletonBitboard() const;
 	std::string str() const;
 };
 

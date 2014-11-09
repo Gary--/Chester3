@@ -7,11 +7,11 @@
 BitBoard::BitBoard():value(0){}
 BitBoard::BitBoard(uint64_t value) : value(value){}
 BitBoard::BitBoard(int r, int c)  {
-	*this = Position(r, c).ToSingletonBoard();
+	*this = Position(r, c).asSingletonBitboard();
 }
 //BitBoard::~BitBoard(){}
 
-uint64_t BitBoard::AsInt64() const {
+uint64_t BitBoard::asInt64() const {
 	return value;
 }
 
@@ -98,7 +98,7 @@ std::string BitBoard::str() const
 }
 
 bool  BitBoard::contains(Position position) const{
-	return (position.ToSingletonBoard() & (*this)) != BitBoard::EMPTY();
+	return (position.asSingletonBitboard() & (*this)) != BitBoard::EMPTY();
 }
 
 
@@ -115,7 +115,7 @@ Position  BitBoard::ToPosition() const
 	return Position(index);
 }
 
-BitBoard BitBoard::verticalFlip() const{
+BitBoard BitBoard::mirror() const{
 	return BitBoard(_byteswap_uint64(value));
 }
 

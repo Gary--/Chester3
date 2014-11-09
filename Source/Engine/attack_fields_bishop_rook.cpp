@@ -227,7 +227,7 @@ namespace {
 					uint64_t magic = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].factor;
 					int position = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].position;
 					int SHIFT = (piece == Piece::ROOK()) ? ROOK_SHIFT : BISHOP_SHIFT;
-					uint64_t ind = position + ((magic*occPats[i].AsInt64()) >> SHIFT);
+					uint64_t ind = position + ((magic*occPats[i].asInt64()) >> SHIFT);
 
 					lookup_table[ind] = res;
 
@@ -242,14 +242,14 @@ BitBoard AttackFields::rookTargs(Position position, BitBoard blockers) {
 	
 	Magic magic = rook_magics[position.index()];
 	return lookup_table[magic.position +
-		(((magic.occupancy&blockers).AsInt64() * magic.factor) >> ROOK_SHIFT)];
+		(((magic.occupancy&blockers).asInt64() * magic.factor) >> ROOK_SHIFT)];
 
 }
 
 BitBoard AttackFields::bishopTargs(Position position, BitBoard blockers) {
 	Magic magic = bishop_magics[position.index()];
 	return lookup_table[magic.position +
-		(((magic.occupancy&blockers).AsInt64() * magic.factor) >> BISHOP_SHIFT)];
+		(((magic.occupancy&blockers).asInt64() * magic.factor) >> BISHOP_SHIFT)];
 }
 
 BitBoard AttackFields::queenTargs(Position position, BitBoard blockers) {

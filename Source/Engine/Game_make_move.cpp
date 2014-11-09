@@ -13,9 +13,9 @@ void Game::makeMove(Move move) {
 #pragma region Unpack move
 		const MoveType type = move.getType();
 		const Position fromPos = move.getFrom();
-		const BitBoard fromBit = fromPos.ToSingletonBoard();
+		const BitBoard fromBit = fromPos.asSingletonBitboard();
 		const Position toPos = move.getTo();
-		const BitBoard toBit = toPos.ToSingletonBoard();
+		const BitBoard toBit = toPos.asSingletonBitboard();
 		const Piece piece = move.getPiece();
 		const Piece targ = move.getTarg();
 #pragma endregion
@@ -50,7 +50,7 @@ void Game::makeMove(Move move) {
 			FOR_BIT(pawn, getPieces(!curTurn, Piece::PAWN()) & enpeasentFrom) {
 				Position theirKingPos = getPieces(!curTurn, Piece::KING()).ToPosition();
 				BitBoard newBlockers = getAllPieces() ^ pawn^toBit^
-					AttackFields::enpeasentTo(!curTurn, toPos.col()).ToSingletonBoard();
+					AttackFields::enpeasentTo(!curTurn, toPos.col()).asSingletonBitboard();
 				BitBoard diagProblems = (getPieces(curTurn, Piece::QUEEN()) | getPieces(curTurn, Piece::BISHOP()))&
 					AttackFields::bishopTargs(theirKingPos, newBlockers);
 				BitBoard rightProblems = (getPieces(curTurn, Piece::QUEEN()) | getPieces(curTurn, Piece::ROOK()))&
@@ -86,7 +86,7 @@ void Game::makeMove(Move move) {
 				int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
 				Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 				Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
-				BitBoard rookChange = rookFrom.ToSingletonBoard() | rookTo.ToSingletonBoard();
+				BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();
 
 				ALL ^= rookChange;
 				*sp(curTurn) ^= rookChange;
@@ -151,9 +151,9 @@ void Game::undoMove() {
 
 	const MoveType type = move.getType();
 	const Position fromPos = move.getFrom();
-	const BitBoard fromBit = fromPos.ToSingletonBoard();
+	const BitBoard fromBit = fromPos.asSingletonBitboard();
 	const Position toPos = move.getTo();
-	const BitBoard toBit = toPos.ToSingletonBoard();
+	const BitBoard toBit = toPos.asSingletonBitboard();
 	const Piece piece = move.getPiece();
 	const Piece targ = move.getTarg();
 #pragma endregion
@@ -178,7 +178,7 @@ void Game::undoMove() {
 		int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
 		Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 		Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
-		BitBoard rookChange = rookFrom.ToSingletonBoard() | rookTo.ToSingletonBoard();
+		BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();
 
 		ALL ^= rookChange;
 		*sp(curTurn) ^= rookChange;

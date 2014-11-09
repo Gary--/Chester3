@@ -32,7 +32,7 @@ GameConfiguration GameConfiguration::mirror() const {
 	result.setMoveNumber(getMoveNumber());
 
 	FOR_POSITION_64(pos) {
-		result.setPieceAt(pos.verticalFlip(), !getOwnerAt(pos), getPieceAt(pos));
+		result.setPieceAt(pos.mirror(), !getOwnerAt(pos), getPieceAt(pos));
 	}
 
 	FOR_TURN(turn) {

@@ -79,7 +79,7 @@ namespace EngineTests
 		TEST_METHOD(BitBoard_AsInt64) {
 			for (int i = 0; i < 100; ++i) {
 				BitBoard bb = BitBoard::random();
-				Assert::AreEqual(bb, BitBoard(bb.AsInt64()));
+				Assert::AreEqual(bb, BitBoard(bb.asInt64()));
 			}
 		}
 
@@ -99,11 +99,11 @@ namespace EngineTests
 
 		TEST_METHOD(Position_Singleular_BitBoard_Conversion){
 			FOR_64(i){
-				Assert::AreEqual(Position(i), Position(i).ToSingletonBoard().ToPosition());
+				Assert::AreEqual(Position(i), Position(i).asSingletonBitboard().ToPosition());
 			}
 
 			FOR_BIT(bit, BitBoard::FULL()){
-				Assert::AreEqual(bit, bit.ToPosition().ToSingletonBoard());
+				Assert::AreEqual(bit, bit.ToPosition().asSingletonBitboard());
 			}
 		}
 
@@ -131,28 +131,28 @@ namespace EngineTests
 			FOR_8(r){
 				FOR_8(c){
 					Position pos(r, c);
-					Assert::AreEqual(c, pos.verticalFlip().col());
-					Assert::AreEqual(7-r, pos.verticalFlip().row());
+					Assert::AreEqual(c, pos.mirror().col());
+					Assert::AreEqual(7-r, pos.mirror().row());
 				}
 			}
 		}
 
 
 		TEST_METHOD(BitBoard_Flip_Sanity){
-			Assert::AreEqual(BitBoard::FULL(), BitBoard::FULL().verticalFlip());
-			Assert::AreEqual(BitBoard::EMPTY(), BitBoard::EMPTY().verticalFlip());
+			Assert::AreEqual(BitBoard::FULL(), BitBoard::FULL().mirror());
+			Assert::AreEqual(BitBoard::EMPTY(), BitBoard::EMPTY().mirror());
 
 			BitBoard A(a);
 			BitBoard B(b);
 			BitBoard C(c);
 
-			Assert::AreEqual(A, A.verticalFlip().verticalFlip());
-			Assert::AreEqual(B, B.verticalFlip().verticalFlip());
-			Assert::AreEqual(C, C.verticalFlip().verticalFlip());
+			Assert::AreEqual(A, A.mirror().mirror());
+			Assert::AreEqual(B, B.mirror().mirror());
+			Assert::AreEqual(C, C.mirror().mirror());
 
-			Assert::AreNotEqual(A, A.verticalFlip());
-			Assert::AreNotEqual(B, B.verticalFlip());
-			Assert::AreNotEqual(C, C.verticalFlip());
+			Assert::AreNotEqual(A, A.mirror());
+			Assert::AreNotEqual(B, B.mirror());
+			Assert::AreNotEqual(C, C.mirror());
 		}
 
 
@@ -161,8 +161,8 @@ namespace EngineTests
 			FOR_BIT(bit, bb){
 				total1 += bit.ToPosition().index();
 			}
-			FOR_BIT(bit, bb.verticalFlip()){
-				total2 += bit.ToPosition().verticalFlip().index();
+			FOR_BIT(bit, bb.mirror()){
+				total2 += bit.ToPosition().mirror().index();
 			}
 			Assert::AreEqual(total1, total2);
 		}
@@ -266,14 +266,14 @@ namespace EngineTests
 			FOR_BIT(bit, ~(BitBoard::rowBits(0) | BitBoard::rowBits(7) |
 				BitBoard::colBits(0) | BitBoard::colBits(7))){
 				Position pos = bit.ToPosition();
-				Assert::AreEqual(bit.shiftDown() , pos.shiftDown().ToSingletonBoard());
-				Assert::AreEqual(bit.shiftUp() , pos.shiftUp().ToSingletonBoard());
-				Assert::AreEqual(bit.shiftLeft() ,pos.shiftLeft().ToSingletonBoard());
-				Assert::AreEqual(bit.shiftRight() , pos.shiftRight().ToSingletonBoard());
+				Assert::AreEqual(bit.shiftDown() , pos.shiftDown().asSingletonBitboard());
+				Assert::AreEqual(bit.shiftUp() , pos.shiftUp().asSingletonBitboard());
+				Assert::AreEqual(bit.shiftLeft() ,pos.shiftLeft().asSingletonBitboard());
+				Assert::AreEqual(bit.shiftRight() , pos.shiftRight().asSingletonBitboard());
 
 				FOR_TURN(turn) {
-					Assert::AreEqual(bit.shiftForward(turn), pos.shiftForward(turn).ToSingletonBoard());
-					Assert::AreEqual(bit.shiftBackward(turn), pos.shiftBackward(turn).ToSingletonBoard());
+					Assert::AreEqual(bit.shiftForward(turn), pos.shiftForward(turn).asSingletonBitboard());
+					Assert::AreEqual(bit.shiftBackward(turn), pos.shiftBackward(turn).asSingletonBitboard());
 				}
 
 			}

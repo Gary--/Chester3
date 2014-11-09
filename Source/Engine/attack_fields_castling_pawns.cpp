@@ -4,13 +4,13 @@
 BitBoard AttackFields::castleEmptySquares(Turn turn, Side side){
 	int r = turn == Turn::WHITE() ? 7 : 0;
 	if (side==Side::LEFT){
-		return Position(r, 1).ToSingletonBoard() |
-			Position(r, 2).ToSingletonBoard() |
-			Position(r, 3).ToSingletonBoard();
+		return Position(r, 1).asSingletonBitboard() |
+			Position(r, 2).asSingletonBitboard() |
+			Position(r, 3).asSingletonBitboard();
 	}
 	else {
-		return Position(r, 5).ToSingletonBoard() |
-			Position(r, 6).ToSingletonBoard();
+		return Position(r, 5).asSingletonBitboard() |
+			Position(r, 6).asSingletonBitboard();
 	}
 }
 
@@ -19,15 +19,15 @@ BitBoard AttackFields::castleSafeSquares(Turn turn, Side side){
 	int r = turn == Turn::WHITE() ? 7 : 0;
 	if (side == Side::LEFT){
 		return
-			Position(r, 2).ToSingletonBoard() |
-			Position(r, 3).ToSingletonBoard() |
-			Position(r, 4).ToSingletonBoard();
+			Position(r, 2).asSingletonBitboard() |
+			Position(r, 3).asSingletonBitboard() |
+			Position(r, 4).asSingletonBitboard();
 	}
 	else {
 		return 
-			Position(r, 4).ToSingletonBoard() |
-			Position(r, 5).ToSingletonBoard() |
-			Position(r, 6).ToSingletonBoard();
+			Position(r, 4).asSingletonBitboard() |
+			Position(r, 5).asSingletonBitboard() |
+			Position(r, 6).asSingletonBitboard();
 	}
 }
 

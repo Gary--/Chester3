@@ -263,10 +263,10 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 #pragma region Enpeasent
 		if (getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
 			Position to = enpeasentTo(curTurn, getEnpeasentColumn());
-			BitBoard capturedBit = enpeasentCaptured(curTurn, getEnpeasentColumn()).ToSingletonBoard();
+			BitBoard capturedBit = enpeasentCaptured(curTurn, getEnpeasentColumn()).asSingletonBitboard();
 			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP  & ~rightPinned) {
 				Position from = pawn.ToPosition();
-				BitBoard newBlockers = ALL ^ to.ToSingletonBoard() ^ pawn ^ capturedBit;
+				BitBoard newBlockers = ALL ^ to.asSingletonBitboard() ^ pawn ^ capturedBit;
 				if ((rookTargs(kingPos, newBlockers) & TR) == BitBoard::EMPTY() &&
 					(bishopTargs(kingPos, newBlockers) & TB) == BitBoard::EMPTY()) {
 					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN(), Piece::EMPTY()));

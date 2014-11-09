@@ -66,10 +66,10 @@ public:
 
 	TEST_METHOD(Pawn_Targs) {
 		Assert::AreEqual(
-			Position(5, 3).ToSingletonBoard() |Position(5, 5).ToSingletonBoard()
+			Position(5, 3).asSingletonBitboard() |Position(5, 5).asSingletonBitboard()
 			, AttackFields::pawnTargs(Position(4, 4),Turn::BLACK()));
 		Assert::AreEqual(
-			Position(3, 3).ToSingletonBoard() | Position(3, 5).ToSingletonBoard()
+			Position(3, 3).asSingletonBitboard() | Position(3, 5).asSingletonBitboard()
 			, AttackFields::pawnTargs(Position(4, 4),Turn::WHITE()));
 	}
 	
@@ -134,7 +134,7 @@ public:
 					continue;
 				}
 
-				Assert::AreEqual(targs& ~kingPos.ToSingletonBoard(), 
+				Assert::AreEqual(targs& ~kingPos.asSingletonBitboard(), 
 								 AttackFields::queenTargs(kingPos, BitBoard::EMPTY()) & targs);
 			}
 		}
@@ -169,37 +169,37 @@ public:
 
 	TEST_METHOD(AttackFields_Castling_Empty){
 		Assert::AreEqual(
-			Position("b1").ToSingletonBoard() | 
-			Position("c1").ToSingletonBoard() | 
-			Position("d1").ToSingletonBoard()
+			Position("b1").asSingletonBitboard() | 
+			Position("c1").asSingletonBitboard() | 
+			Position("d1").asSingletonBitboard()
 			, AttackFields::castleEmptySquares(Turn::WHITE(), Side::LEFT));
 
 		Assert::AreEqual(
-			Position("f1").ToSingletonBoard() |
-			Position("g1").ToSingletonBoard() 
+			Position("f1").asSingletonBitboard() |
+			Position("g1").asSingletonBitboard() 
 			, AttackFields::castleEmptySquares(Turn::WHITE(), Side::RIGHT));
 	}
 
 	TEST_METHOD(AttackFields_Castling_Safe){
 		Assert::AreEqual(
-			Position("c1").ToSingletonBoard() |
-			Position("d1").ToSingletonBoard() |
-			Position("e1").ToSingletonBoard()
+			Position("c1").asSingletonBitboard() |
+			Position("d1").asSingletonBitboard() |
+			Position("e1").asSingletonBitboard()
 			, AttackFields::castleSafeSquares(Turn::WHITE(), Side::LEFT));
 
 		Assert::AreEqual(
-			Position("e1").ToSingletonBoard() |
-			Position("f1").ToSingletonBoard() |
-			Position("g1").ToSingletonBoard()
+			Position("e1").asSingletonBitboard() |
+			Position("f1").asSingletonBitboard() |
+			Position("g1").asSingletonBitboard()
 			, AttackFields::castleSafeSquares(Turn::WHITE(), Side::RIGHT));
 	}
 
 	TEST_METHOD(Castle_Symmetry){
 		FOR_SIDE(side){
 			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE(), side) ==
-				AttackFields::castleEmptySquares(Turn::BLACK(), side).verticalFlip());
+				AttackFields::castleEmptySquares(Turn::BLACK(), side).mirror());
 			Assert::IsTrue(AttackFields::castleEmptySquares(Turn::WHITE(), side) ==
-				AttackFields::castleEmptySquares(Turn::BLACK(), side).verticalFlip());
+				AttackFields::castleEmptySquares(Turn::BLACK(), side).mirror());
 		}
 	}
 

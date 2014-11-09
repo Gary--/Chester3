@@ -50,9 +50,9 @@ BitBoard* Game::sp(Turn turn) {
 }
 
 void Game::toggleBit(Turn turn, Position position, Piece piece) {
-	*s(turn, piece) ^= position.ToSingletonBoard();
-	*sp(turn) ^= position.ToSingletonBoard();
-	ALL ^= position.ToSingletonBoard();
+	*s(turn, piece) ^= position.asSingletonBitboard();
+	*sp(turn) ^= position.asSingletonBitboard();
+	ALL ^= position.asSingletonBitboard();
 
 	//hash.togglePiece(position, turn, piece);
 }
@@ -66,18 +66,18 @@ void Game::clearPieceAt(Position position) {
 
 	Turn turn = getOwnerAt(position);
 	
-	*s(turn, piece) &= ~position.ToSingletonBoard();
-	*sp(turn) &= ~position.ToSingletonBoard();
-	ALL &= ~position.ToSingletonBoard();
+	*s(turn, piece) &= ~position.asSingletonBitboard();
+	*sp(turn) &= ~position.asSingletonBitboard();
+	ALL &= ~position.asSingletonBitboard();
 
 	setPieceAt(position, Piece::EMPTY());
 
 	cur.hash.togglePiece(position, turn, piece);
 }
 void Game::addPieceAt(Turn turn, Position position, Piece piece) {
-	*s(turn, piece) |= position.ToSingletonBoard();
-	*sp(turn) |= position.ToSingletonBoard();
-	ALL |= position.ToSingletonBoard();
+	*s(turn, piece) |= position.asSingletonBitboard();
+	*sp(turn) |= position.asSingletonBitboard();
+	ALL |= position.asSingletonBitboard();
 	setPieceAt(position, piece);
 	cur.hash.togglePiece(position, turn, piece);
 }
