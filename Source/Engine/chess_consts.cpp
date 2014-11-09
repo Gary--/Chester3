@@ -17,6 +17,95 @@ Side operator!(Side side) {
 #pragma warning(default : 4800)
 }
 
+
+#pragma region Piece
+
+Piece::Piece(uint8_t value) : value(value) {}
+Piece::Piece() : Piece(0) {}
+
+Piece Piece::EMPTY() {
+	return Piece(0);
+}
+Piece Piece::PAWN() {
+	return Piece(1);
+}
+Piece Piece::KNIGHT() {
+	return Piece(2);
+}
+Piece Piece::BISHOP() {
+	return Piece(3);
+}
+Piece Piece::ROOK() {
+	return Piece(4);
+}
+Piece Piece::QUEEN() {
+	return Piece(5);
+}
+Piece Piece::KING() {
+	return Piece(6);
+}
+Piece Piece::UNKNOWN() {
+	return Piece(7);
+}
+
+uint8_t Piece::asIndex() const {
+	return value;
+}
+
+PieceEnum Piece::asEnum() const {
+	return (PieceEnum)value;
+}
+
+bool Piece::operator!=(const Piece other) const {
+	return value != other.value;
+}
+bool Piece::operator==(const Piece other) const {
+	return value == other.value;
+}
+bool Piece::operator<=(const Piece other) const {
+	return value <= other.value;
+}
+bool Piece::operator<(const Piece other) const {
+	return value < other.value;
+}
+bool Piece::operator>=(const Piece other) const {
+	return value >= other.value;
+}
+bool Piece::operator>(const Piece other) const {
+	return value > other.value;
+}
+
+Piece Piece::operator=(const Piece other) {
+	value = other.value;
+	return *this;
+}
+
+std::string Piece::str() const {
+	switch (asEnum()) {
+	case PieceEnum::EMPTY:
+		return "EMPTY";
+	case PieceEnum::PAWN:
+		return "PAWN";
+	case PieceEnum::KNIGHT:
+		return "KNIGHT";
+	case PieceEnum::BISHOP:
+		return "BISHOP";
+	case PieceEnum::ROOK:
+		return "ROOK";
+	case PieceEnum::QUEEN:
+		return "QUEEN";
+	case PieceEnum::KING:
+		return "KING";
+	case PieceEnum::UNKNOWN:
+		return "UNKNOWN";
+	default:
+		_ASSERTE(false);
+		return "ERROR";
+	}
+}
+
+#pragma endregion
+
 #pragma region Turn
 Turn::Turn() : value(false) {}
 Turn::Turn(bool value) : value(value) {}
@@ -79,14 +168,14 @@ Piece ChessUtils::pieceFromChar(char c) {
 char ChessUtils::charFromPieceTurn(Turn turn, Piece piece) {
 	char res='?';
 
-	switch (piece) {
-	case Piece::KING(): res = 'K'; break;
-	case Piece::QUEEN(): res = 'Q'; break;
-	case Piece::ROOK(): res = 'R'; break;
-	case Piece::BISHOP(): res = 'B'; break;
-	case Piece::KNIGHT(): res = 'N'; break;
-	case Piece::PAWN(): res = 'P'; break;
-	case Piece::EMPTY(): return '.'; break;
+	switch (piece.asEnum()) {
+	case PieceEnum::KING: res = 'K'; break;
+	case PieceEnum::QUEEN: res = 'Q'; break;
+	case PieceEnum::ROOK: res = 'R'; break;
+	case PieceEnum::BISHOP: res = 'B'; break;
+	case PieceEnum::KNIGHT: res = 'N'; break;
+	case PieceEnum::PAWN: res = 'P'; break;
+	case PieceEnum::EMPTY: return '.'; break;
 
 	default:
 		_ASSERT(false);

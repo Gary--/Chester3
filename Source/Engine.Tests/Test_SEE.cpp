@@ -42,12 +42,12 @@ public:
 			attackers.add(piece);
 			defenders.add(piece);
 
-			attackers.add(Piece::PAWN);
-			if (SEE::attackCost(Piece::PAWN, attackers, defenders)) {
-				Assert::AreEqual(0, SEE::attackCost(Piece::PAWN, attackers, defenders));
+			attackers.add(Piece::PAWN());
+			if (SEE::attackCost(Piece::PAWN(), attackers, defenders)) {
+				Assert::AreEqual(0, SEE::attackCost(Piece::PAWN(), attackers, defenders));
 			}
 
-			Assert::AreEqual(0, SEE::attackCost(Piece::PAWN, attackers, defenders));
+			Assert::AreEqual(0, SEE::attackCost(Piece::PAWN(), attackers, defenders));
 		}
 	}
 
@@ -110,7 +110,7 @@ public:
 		for (int trials = 0; trials < 1000; ++trials) {
 			AtkPat attackers, defenders;
 			int nAtk = 1+ rand() % 6, nDef = rand() % 7;
-			Piece smallestPiece = Piece::UNKNOWN;
+			Piece smallestPiece = Piece::UNKNOWN();
 			for (int i = 0; i < nAtk; i++) {
 				Piece piece = randPiece();
 				smallestPiece = std::min(smallestPiece, piece);

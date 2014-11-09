@@ -20,6 +20,8 @@ namespace Microsoft
 			define_specialization(BitBoard);
 			define_specialization(Position);
 			define_specialization(GameConfiguration);
+			define_specialization(Piece);
+			
 
 			template<>static std::wstring ToString<Turn>(const Turn& turn) { 
 				std::wstring res;
@@ -30,36 +32,7 @@ namespace Microsoft
 				return res;
 			}
 
-			template<>static std::wstring ToString<Piece>(const Piece& piece) {
-				std::wstring res;
-				std::string value;
-
-				switch (piece) {
-				case Piece::EMPTY:
-					value = "Empty";
-					break;
-				case Piece::PAWN:
-					value = "Pawn";
-					break;
-				case Piece::KNIGHT:
-					value = "Knight";
-					break;
-				case Piece::BISHOP:
-					value = "Bishop";
-					break;
-				case Piece::ROOK:
-					value = "Rook";
-					break;
-				case Piece::QUEEN:
-					value = "Queen";
-					break;
-				case Piece::KING:
-					value = "King";
-					break;
-				}
-				res.assign(value.begin(), value.end());
-				return res;
-			}
+			
 
 			template<>static std::wstring ToString<Side>(const Side& side) {
 				std::wstring res;

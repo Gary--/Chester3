@@ -7,7 +7,7 @@
 //+------+------+------+------+------+------+------+------+
 //| BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0 |
 //+------+------+------+------+------+------+------+------+
-//| KING | QUEEN| ROOK |KNIGHT| PAWN |      Number of     |
+//| KING | QUEEN| Piece::ROOK() |KNIGHT| PAWN |      Number of     |
 //|      |      |      |BISHOP|      |      ATTACKERS     |
 //+------+------+------+------+------+------+------+------+
 
@@ -28,7 +28,7 @@
 //
 // 3. If not everything accounted for, goto 2.
 
-#define FOR_PIECE_NOT_BISHOP(x) for (Piece x = Piece::PAWN; x <= Piece::KING; x = (Piece)((uint8_t)x + (x == Piece::KNIGHT ? 2 : 1)))
+#define FOR_PIECE_NOT_BISHOP(x) for (Piece x = Piece::PAWN(); x <= Piece::KING(); x = Piece(x.asIndex()  + (x == Piece::KNIGHT() ? 2 : 1)))
 
 class AtkPat {
 public:

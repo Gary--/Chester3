@@ -26,7 +26,7 @@ public:
 		uint64_t value = hash.toInt64();
 		Assert::AreNotEqual((uint64_t)0, value);
 
-		hash.togglePiece(Position(5),Turn::BLACK(), Piece::KING );
+		hash.togglePiece(Position(5),Turn::BLACK(), Piece::KING() );
 		Assert::AreNotEqual(value, hash.toInt64());
 	}
 
@@ -42,8 +42,8 @@ public:
 		uint64_t value0 = hash.toInt64();
 
 		Position pos1(20);
-		conf.setPieceAt(pos1, Turn::WHITE(), Piece::QUEEN);
-		hash.togglePiece(pos1, Turn::WHITE(), Piece::QUEEN);
+		conf.setPieceAt(pos1, Turn::WHITE(), Piece::QUEEN());
+		hash.togglePiece(pos1, Turn::WHITE(), Piece::QUEEN());
 		Assert::AreNotEqual(value0, hash.toInt64());
 		Assert::AreEqual(hash.toInt64(), GameHash(conf).toInt64());
 	}
@@ -54,9 +54,9 @@ public:
 		uint64_t value0 = hash.toInt64();
 
 		Position pos("a8");
-		conf.setPieceAt(pos, Turn::WHITE(), Piece::QUEEN);
-		hash.togglePiece(pos, Turn::BLACK(), Piece::ROOK);
-		hash.togglePiece(pos, Turn::WHITE(), Piece::QUEEN);
+		conf.setPieceAt(pos, Turn::WHITE(), Piece::QUEEN());
+		hash.togglePiece(pos, Turn::BLACK(), Piece::ROOK());
+		hash.togglePiece(pos, Turn::WHITE(), Piece::QUEEN());
 		Assert::AreNotEqual(value0, hash.toInt64());
 		Assert::AreEqual(hash.toInt64(), GameHash(conf).toInt64());
 	}
@@ -75,8 +75,8 @@ public:
 		
 		GameConfiguration conf2("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 		GameHash hash(conf2);
-		hash.togglePiece(Position("e2"), Turn::WHITE(), Piece::PAWN);
-		hash.togglePiece(Position("e4"), Turn::WHITE(), Piece::PAWN);
+		hash.togglePiece(Position("e2"), Turn::WHITE(), Piece::PAWN());
+		hash.togglePiece(Position("e4"), Turn::WHITE(), Piece::PAWN());
 		hash.setEnpeasent(4);
 		hash.toggleTurn();
 

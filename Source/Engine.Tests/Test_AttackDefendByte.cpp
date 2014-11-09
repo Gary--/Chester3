@@ -24,25 +24,25 @@ public:
 	
 	TEST_METHOD(Knights_and_Bishops_Share) {
 		AtkPat pat;
-		pat.add(Piece::KNIGHT);
-		pat.add(Piece::BISHOP);
+		pat.add(Piece::KNIGHT());
+		pat.add(Piece::BISHOP());
 		Assert::AreEqual(2, pat.getCount());
-		Assert::IsTrue(pat.contains(Piece::KNIGHT));
-		Assert::IsTrue(pat.contains(Piece::BISHOP));
+		Assert::IsTrue(pat.contains(Piece::KNIGHT()));
+		Assert::IsTrue(pat.contains(Piece::BISHOP()));
 
 		pat = AtkPat();
-		pat.add(Piece::KNIGHT);
-		pat.add(Piece::KNIGHT);
+		pat.add(Piece::KNIGHT());
+		pat.add(Piece::KNIGHT());
 		Assert::AreEqual(2, pat.getCount());
-		Assert::IsTrue(pat.contains(Piece::KNIGHT));
-		Assert::IsTrue(pat.contains(Piece::BISHOP));
+		Assert::IsTrue(pat.contains(Piece::KNIGHT()));
+		Assert::IsTrue(pat.contains(Piece::BISHOP()));
 
 		pat = AtkPat();
-		pat.add(Piece::BISHOP);
-		pat.add(Piece::BISHOP);
+		pat.add(Piece::BISHOP());
+		pat.add(Piece::BISHOP());
 		Assert::AreEqual(2, pat.getCount());
-		Assert::IsTrue(pat.contains(Piece::KNIGHT));
-		Assert::IsTrue(pat.contains(Piece::BISHOP));
+		Assert::IsTrue(pat.contains(Piece::KNIGHT()));
+		Assert::IsTrue(pat.contains(Piece::BISHOP()));
 	}
 
 	TEST_METHOD(Adding_Single_Piece_Works) {
@@ -53,8 +53,8 @@ public:
 			Assert::AreEqual(1, pat.getCount());
 			FOR_PIECE_ALL(piece2) {
 				bool shouldEqual = piece == piece2 ||
-					(piece == Piece::KNIGHT && piece2 == Piece::BISHOP) ||
-					(piece == Piece::BISHOP && piece2 == Piece::KNIGHT);
+					(piece == Piece::KNIGHT() && piece2 == Piece::BISHOP()) ||
+					(piece == Piece::BISHOP() && piece2 == Piece::KNIGHT());
 				Assert::AreEqual(shouldEqual, pat.contains(piece2));
 			}
 		}
@@ -75,9 +75,9 @@ public:
 
 	TEST_METHOD(String_Representation) {
 		AtkPat pat0;
-		pat0.add(Piece::KNIGHT);
-		pat0.add(Piece::QUEEN);
-		pat0.add(Piece::BISHOP);
+		pat0.add(Piece::KNIGHT());
+		pat0.add(Piece::QUEEN());
+		pat0.add(Piece::BISHOP());
 		Assert::AreEqual("3:NQ", pat0.str().c_str());
 	}
 #pragma endregion
@@ -108,44 +108,44 @@ public:
 
 	TEST_METHOD(NB_Incremented_Before_P) {
 		AtkPat pat;
-		pat.add(Piece::BISHOP);
-		pat.add(Piece::KNIGHT);
-		pat.add(Piece::PAWN);
+		pat.add(Piece::BISHOP());
+		pat.add(Piece::KNIGHT());
+		pat.add(Piece::PAWN());
 
-		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT));
+		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT()));
 	}
 
 	TEST_METHOD(Full_Up_0) {
 		AtkPat pat;
 
-		pat.add(Piece::PAWN);
-		pat.add(Piece::PAWN);
-		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN));
+		pat.add(Piece::PAWN());
+		pat.add(Piece::PAWN());
+		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN()));
 
-		pat.add(Piece::ROOK);
-		Assert::AreEqual(1, pat.getPieceCount(Piece::ROOK));
+		pat.add(Piece::ROOK());
+		Assert::AreEqual(1, pat.getPieceCount(Piece::ROOK()));
 
-		pat.add(Piece::KNIGHT);
-		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT));
-		Assert::AreEqual(1, pat.getPieceCount(Piece::PAWN));
+		pat.add(Piece::KNIGHT());
+		Assert::AreEqual(2, pat.getPieceCount(Piece::KNIGHT()));
+		Assert::AreEqual(1, pat.getPieceCount(Piece::PAWN()));
 
-		pat.add(Piece::KNIGHT);
-		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN));
+		pat.add(Piece::KNIGHT());
+		Assert::AreEqual(2, pat.getPieceCount(Piece::PAWN()));
 
-		pat.add(Piece::ROOK);
-		Assert::AreEqual(2, pat.getPieceCount(Piece::ROOK));
+		pat.add(Piece::ROOK());
+		Assert::AreEqual(2, pat.getPieceCount(Piece::ROOK()));
 
-		pat.add(Piece::KING);
-		Assert::AreEqual(1, pat.getPieceCount(Piece::KING));
+		pat.add(Piece::KING());
+		Assert::AreEqual(1, pat.getPieceCount(Piece::KING()));
 	}
 
 	TEST_METHOD(Full_Up_1) {
 		AtkPat pat;
-		pat.add(Piece::QUEEN);
-		pat.add(Piece::QUEEN);
+		pat.add(Piece::QUEEN());
+		pat.add(Piece::QUEEN());
 
-		Assert::AreEqual(1, pat.getPieceCount(Piece::QUEEN));
-		Assert::AreEqual(1, pat.getPieceCount(Piece::KNIGHT));
+		Assert::AreEqual(1, pat.getPieceCount(Piece::QUEEN()));
+		Assert::AreEqual(1, pat.getPieceCount(Piece::KNIGHT()));
 	}
 
 	};

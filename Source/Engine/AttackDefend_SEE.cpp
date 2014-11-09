@@ -8,29 +8,29 @@ namespace {
 
 	// Knights and Bishops share the same type.
 	int ind(Piece piece) {
-		return (uint8_t)piece - (piece >= Piece::BISHOP);
+		return piece.asIndex() - (piece >= Piece::BISHOP());
 	}
 
 	uint8_t pieceBit(Piece piece) {
-		_ASSERTE(Piece::PAWN <= piece && piece <= Piece::KING);
+		_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 
 		// 5 highest bits are for the piece types.
 		return (uint8_t)4 << ind(piece);
 	}
 
 	int limit(Piece piece) {
-		switch (piece) {
-		case Piece::PAWN:
+		switch (piece.asEnum()) {
+		case PieceEnum::PAWN:
 			return 2;
-		case Piece::KNIGHT:
+		case PieceEnum::KNIGHT:
 			return 3;
-		case Piece::BISHOP:
+		case PieceEnum::BISHOP:
 			return 3;
-		case Piece::ROOK:
+		case PieceEnum::ROOK:
 			return 2;
-		case Piece::QUEEN:
+		case PieceEnum::QUEEN:
 			return 1;
-		case Piece::KING:
+		case PieceEnum::KING:
 			return 1;
 		default:
 			_ASSERTE(false);
@@ -39,18 +39,18 @@ namespace {
 	}
 
 	int likliness(Piece piece) {
-		switch (piece) {
-		case Piece::PAWN:
+		switch (piece.asEnum()) {
+		case PieceEnum::PAWN:
 			return 2;
-		case Piece::KNIGHT:
+		case PieceEnum::KNIGHT:
 			return 1;
-		case Piece::BISHOP:
+		case PieceEnum::BISHOP:
 			return 1;
-		case Piece::ROOK:
+		case PieceEnum::ROOK:
 			return 3;
-		case Piece::QUEEN:
+		case PieceEnum::QUEEN:
 			return 4;
-		case Piece::KING:
+		case PieceEnum::KING:
 			return 5;
 		default:
 			return 99;
@@ -58,18 +58,18 @@ namespace {
 	}
 
 	int pieceValue(Piece piece) {
-		switch (piece) {
-		case Piece::PAWN:
+		switch (piece.asEnum()) {
+		case PieceEnum::PAWN:
 			return 1;
-		case Piece::KNIGHT:
+		case PieceEnum::KNIGHT:
 			return 3;
-		case Piece::BISHOP:
+		case PieceEnum::BISHOP:
 			return 3;
-		case Piece::ROOK:
+		case PieceEnum::ROOK:
 			return 5;
-		case Piece::QUEEN:
+		case PieceEnum::QUEEN:
 			return 9;
-		case Piece::KING:
+		case PieceEnum::KING:
 			return 50;
 		default:
 			_ASSERTE(false);
@@ -91,14 +91,14 @@ AtkPat::AtkPat() : value(0) {}
 AtkPat::AtkPat(uint8_t value) : value(value) {}
 
 void AtkPat::add(Piece piece) {
-	_ASSERTE(Piece::PAWN <= piece && piece <= Piece::KING);
+	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	value++;
 	value |= pieceBit(piece);
 }
 
 
 bool AtkPat::contains(Piece piece) const{
-	_ASSERTE(Piece::PAWN <= piece && piece <= Piece::KING);
+	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	return (value & pieceBit(piece))!=0;
 }
 
@@ -129,7 +129,7 @@ std::string AtkPat::str() const {
 	res += ':';
 
 	FOR_PIECE_ALL(piece) {
-		if (piece != Piece::BISHOP && this->contains(piece)) {
+		if (piece != Piece::BISHOP() && this->contains(piece)) {
 			res += ChessUtils::charFromPieceTurn(Turn::WHITE(), piece);
 		}
 	}
@@ -159,7 +159,7 @@ int AtkPat::getPieceCount(Piece piece) const {
 			}
 		}
 		
-		Piece pieceToInc = Piece::UNKNOWN;
+		Piece pieceToInc = Piece::UNKNOWN();
 		int bestLike = 9999;
 		FOR_PIECE_NOT_BISHOP(p) {
 			if (counts[ind(p)] >= limit(p) || counts[ind(p)]!=minCount) {
@@ -171,7 +171,7 @@ int AtkPat::getPieceCount(Piece piece) const {
 			}
 		}
 
-		counts[ind(pieceToInc==Piece::UNKNOWN ? Piece::KNIGHT : pieceToInc)]++;
+		counts[ind(pieceToInc==Piece::UNKNOWN() ? Piece::KNIGHT() : pieceToInc)]++;
 	}
 	
 
@@ -211,7 +211,7 @@ void SEE::init() {
 			for (int j = 0; j < 256; j++) {
 				AtkPat attackers(i);
 				AtkPat defenders(j);
-				SEE_full[(uint8_t)attacker][attackers.value][defenders.value] = 
+				SEE_full[attacker.asIndex()][attackers.value][defenders.value] = 
 					attackCostImpl(attacker, attackers, defenders);
 			}
 		}
@@ -236,8 +236,8 @@ void SEE::init() {
 }
 
 int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
-	if (attacker == Piece::BISHOP) {
-		attacker = Piece::KNIGHT;
+	if (attacker == Piece::BISHOP()) {
+		attacker = Piece::KNIGHT();
 	}
 
 	if (!attackers.isValid() || !defenders.isValid() ||
@@ -250,8 +250,8 @@ int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
 	}
 
 	int atkPtr = 0, defPtr = 0;
-	Piece attackingPieces[8] = { Piece::EMPTY };
-	Piece defendingPieces[8] = { Piece::EMPTY };
+	Piece attackingPieces[8] = { Piece::EMPTY() };
+	Piece defendingPieces[8] = { Piece::EMPTY() };
 
 	FOR_PIECE_NOT_BISHOP(p) {
 		for (int i = 0; i < attackers.getPieceCount(p) - (p == attacker); i++) {
@@ -290,7 +290,7 @@ int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
 }
 
 int SEE::attackCost(Piece attacker, AtkPat attackers, AtkPat defenders) {
-	return SEE_full[(uint8_t)attacker][attackers.value][defenders.value];
+	return SEE_full[attacker.asIndex()][attackers.value][defenders.value];
 }
 
 int SEE::attackCostMin(AtkPat attackers, AtkPat defenders) {

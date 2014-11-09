@@ -28,7 +28,7 @@ public:
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, conf.getEnpeasentColumn());
 
 		FOR_POSITION_64(pos) {
-			Assert::AreEqual(Piece::EMPTY, conf.getPieceAt(pos));
+			Assert::AreEqual(Piece::EMPTY(), conf.getPieceAt(pos));
 		}
 	}
 
@@ -52,25 +52,25 @@ public:
 		Assert::AreEqual(3, conf.getEnpeasentColumn());
 
 		Position pos1(10);
-		conf.setPieceAt(pos1, Turn::WHITE(), Piece::KING);
+		conf.setPieceAt(pos1, Turn::WHITE(), Piece::KING());
 		Assert::AreEqual(Turn::WHITE(), conf.getOwnerAt(pos1));
-		Assert::AreEqual(Piece::KING, conf.getPieceAt(pos1));
+		Assert::AreEqual(Piece::KING(), conf.getPieceAt(pos1));
 
 		Position pos2(10);
-		conf.setPieceAt(pos2, Turn::BLACK(), Piece::PAWN);
+		conf.setPieceAt(pos2, Turn::BLACK(), Piece::PAWN());
 		Assert::AreEqual(Turn::BLACK(), conf.getOwnerAt(pos2));
-		Assert::AreEqual(Piece::PAWN, conf.getPieceAt(pos2));
+		Assert::AreEqual(Piece::PAWN(), conf.getPieceAt(pos2));
 	}
 
 	TEST_METHOD(Char_PieceConversions) {
 		int c = 0;
-		FOR_PIECE(piece, Piece::EMPTY, Piece::KING) {
+		FOR_PIECE(piece, Piece::EMPTY(), Piece::KING()) {
 			c++;
 			FOR_TURN(turn) {
 				char rep = ChessUtils::charFromPieceTurn(turn, piece);
 				Assert::AreEqual(piece, ChessUtils::pieceFromChar(rep));
 
-				if (piece != Piece::EMPTY) {
+				if (piece != Piece::EMPTY()) {
 					Assert::AreEqual(turn, Turn::fromChar(rep));
 				}
 			}
@@ -87,7 +87,7 @@ public:
 
 		FOR_BIT(bit, BitBoard::rowBits(1) | BitBoard::rowBits(6)) {
 			Position pos = bit.ToPosition();
-			Assert::AreEqual(Piece::PAWN, conf.getPieceAt(pos));
+			Assert::AreEqual(Piece::PAWN(), conf.getPieceAt(pos));
 		}
 
 		FOR_BIT(bit, BitBoard::rowBits(0) | BitBoard::rowBits(1)) {

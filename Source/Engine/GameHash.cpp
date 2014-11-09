@@ -86,7 +86,7 @@ int GameHash::getEnpeasent() const {
 }
 
 void GameHash::togglePiece(Position position,Turn player, Piece piece ) {
-	hash ^= zorbist[player.asIndex()][(uint8_t)piece][position.index()];
+	hash ^= zorbist[player.asIndex()][piece.asIndex()][position.index()];
 }
 
 void GameHash::setEnpeasent(int value) {

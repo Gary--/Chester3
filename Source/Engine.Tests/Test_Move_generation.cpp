@@ -79,7 +79,7 @@ public:
 		for (Move move : Game::getTacticalMoves()) {
 			numTactical++;
 
-			if (move.isPromotion() && move.promotionPiece()==Piece::QUEEN) {
+			if (move.isPromotion() && move.promotionPiece()==Piece::QUEEN()) {
 				Game::makeMove(move);
 				Game::getAllMoves();
 				Game::undoMove();
@@ -101,7 +101,7 @@ public:
 		int numTotal = 0;
 		for (Move move : Game::getAllMoves()) {
 			numTotal++;
-			if (move.getPiece() == Piece::KING) {
+			if (move.getPiece() == Piece::KING()) {
 				Game::makeMove(move);
 				Game::getAllMoves();
 				Game::undoMove();

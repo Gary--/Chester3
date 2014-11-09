@@ -7,37 +7,37 @@ namespace {
 BitBoard* Game::s(Turn turn, Piece piece) {
 	
 	if (turn == Turn::WHITE()) {
-		switch (piece) {
-		case Piece::EMPTY:
+		switch (piece.asEnum()) {
+		case PieceEnum::EMPTY:
 			return &scratch;
-		case Piece::PAWN:
+		case PieceEnum::PAWN:
 			return &WP;
-		case Piece::KNIGHT:
+		case PieceEnum::KNIGHT:
 			return &WN;
-		case Piece::BISHOP:
+		case PieceEnum::BISHOP:
 			return &WB;
-		case Piece::ROOK:
+		case PieceEnum::ROOK:
 			return &WR;
-		case Piece::QUEEN:
+		case PieceEnum::QUEEN:
 			return &WQ;
-		case Piece::KING:
+		case PieceEnum::KING:
 			return &WK;
 		}
 	} else {
-		switch (piece) {
-		case Piece::EMPTY:
+		switch (piece.asEnum()) {
+		case PieceEnum::EMPTY:
 			return &scratch;
-		case Piece::PAWN:
+		case PieceEnum::PAWN:
 			return &BP;
-		case Piece::KNIGHT:
+		case PieceEnum::KNIGHT:
 			return &BN;
-		case Piece::BISHOP:
+		case PieceEnum::BISHOP:
 			return &BB;
-		case Piece::ROOK:
+		case PieceEnum::ROOK:
 			return &BR;
-		case Piece::QUEEN:
+		case PieceEnum::QUEEN:
 			return &BQ;
-		case Piece::KING:
+		case PieceEnum::KING:
 			return &BK;
 		}
 	}
@@ -60,7 +60,7 @@ void Game::toggleBit(Turn turn, Position position, Piece piece) {
 
 void Game::clearPieceAt(Position position) {
 	Piece piece = getPieceAt(position);
-	if (piece == Piece::EMPTY) {
+	if (piece == Piece::EMPTY()) {
 		return;
 	}
 
@@ -70,7 +70,7 @@ void Game::clearPieceAt(Position position) {
 	*sp(turn) &= ~position.ToSingletonBoard();
 	ALL &= ~position.ToSingletonBoard();
 
-	setPieceAt(position, Piece::EMPTY);
+	setPieceAt(position, Piece::EMPTY());
 
 	cur.hash.togglePiece(position, turn, piece);
 }

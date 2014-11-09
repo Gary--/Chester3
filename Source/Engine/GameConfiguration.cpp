@@ -139,7 +139,7 @@ void GameConfiguration::setPieceAt(Position position, Turn turn, Piece piece) {
 }
 
 void GameConfiguration::clearPieceAt(Position position) {
-	setPieceAt(position, Turn::BLACK(), Piece::EMPTY);
+	setPieceAt(position, Turn::BLACK(), Piece::EMPTY());
 }
 
 
@@ -185,7 +185,7 @@ string GameConfiguration::str_min() const {
 		int empties = 0;
 		for (int c = 0; c < 8; ++c) {
 			Position pos(r, c);
-			if (getPieceAt(pos) != Piece::EMPTY) {
+			if (getPieceAt(pos) != Piece::EMPTY()) {
 				if (empties > 0) {
 					res += '0' + empties;
 					empties = 0;

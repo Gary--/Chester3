@@ -38,7 +38,7 @@ void Game::reset() {
 		Game::ALL = BitBoard::EMPTY();
 
 	FOR_POSITION_64(pos) {
-		pieces[pos.index()] = Piece::EMPTY;
+		pieces[pos.index()] = Piece::EMPTY();
 	}
 
 

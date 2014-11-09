@@ -8,11 +8,11 @@ bool Game::isDefinitelyAMoveAvailable() {
 		return false;
 	}
 	
-	Position kingPos = getPieces(getTurn(), Piece::KING).ToPosition();
+	Position kingPos = getPieces(getTurn(), Piece::KING()).ToPosition();
 	BitBoard kingSees = queenTargs(kingPos, ALL);
 	
 
-	BitBoard freePawnsForward = (getPieces(getTurn(), Piece::PAWN) &~kingSees).shiftForward(getTurn());
+	BitBoard freePawnsForward = (getPieces(getTurn(), Piece::PAWN()) &~kingSees).shiftForward(getTurn());
 
 	// A pawn can move forward
 	if ((freePawnsForward&~ALL) != BitBoard::EMPTY()) {
@@ -28,12 +28,12 @@ bool Game::isDefinitelyAMoveAvailable() {
 	BitBoard M = getPlayerPieces(getTurn());
 
 	// A knight can move
-	if ((knightTargs(getPieces(getTurn(), Piece::KNIGHT)&~kingSees)&~M)!=BitBoard::EMPTY()) {
+	if ((knightTargs(getPieces(getTurn(), Piece::KNIGHT())&~kingSees)&~M)!=BitBoard::EMPTY()) {
 		return true;
 	}
 
 	// A rook can move
-	BitBoard MR = (getPieces(getTurn(), Piece::ROOK) | getPieces(getTurn(), Piece::QUEEN))&~kingSees;
+	BitBoard MR = (getPieces(getTurn(), Piece::ROOK()) | getPieces(getTurn(), Piece::QUEEN()))&~kingSees;
 	if (MR != BitBoard::EMPTY()) {
 		if (((MR.shiftUp() | MR.shiftDown() | MR.shiftLeft() | MR.shiftRight())&~M) != BitBoard::EMPTY()) {
 			return true;
@@ -41,7 +41,7 @@ bool Game::isDefinitelyAMoveAvailable() {
 	}
 
 	// A bishop can move
-	BitBoard MB = (getPieces(getTurn(), Piece::BISHOP) | getPieces(getTurn(), Piece::QUEEN))&~kingSees;
+	BitBoard MB = (getPieces(getTurn(), Piece::BISHOP()) | getPieces(getTurn(), Piece::QUEEN()))&~kingSees;
 	if (MB != BitBoard::EMPTY()) {
 		BitBoard vert = MB.shiftUp() | MB.shiftDown();
 

@@ -11,20 +11,20 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 #pragma region Unpack variables
 	const bool check = getCheck();
 	const BitBoard M = getPlayerPieces(curTurn);
-	const BitBoard MK = getPieces(curTurn, Piece::KING);
-	const BitBoard MP = getPieces(curTurn, Piece::PAWN);
-	const BitBoard MR = getPieces(curTurn, Piece::ROOK);
-	const BitBoard MB = getPieces(curTurn, Piece::BISHOP);
-	const BitBoard MN = getPieces(curTurn, Piece::KNIGHT);
-	const BitBoard MQ = getPieces(curTurn, Piece::QUEEN);
+	const BitBoard MK = getPieces(curTurn, Piece::KING());
+	const BitBoard MP = getPieces(curTurn, Piece::PAWN());
+	const BitBoard MR = getPieces(curTurn, Piece::ROOK());
+	const BitBoard MB = getPieces(curTurn, Piece::BISHOP());
+	const BitBoard MN = getPieces(curTurn, Piece::KNIGHT());
+	const BitBoard MQ = getPieces(curTurn, Piece::QUEEN());
 
 	const Position kingPos = MK.ToPosition();
 	const BitBoard T = getPlayerPieces(!curTurn);
-	const BitBoard TR = getPieces(!curTurn, Piece::ROOK) | getPieces(!curTurn, Piece::QUEEN);
-	const BitBoard TB = getPieces(!curTurn, Piece::BISHOP) | getPieces(!curTurn, Piece::QUEEN);
-	const BitBoard TN = getPieces(!curTurn, Piece::KNIGHT);
-	const BitBoard TP = getPieces(!curTurn, Piece::PAWN);
-	const Position theirKingPos = getPieces(!curTurn, Piece::KING).ToPosition();
+	const BitBoard TR = getPieces(!curTurn, Piece::ROOK()) | getPieces(!curTurn, Piece::QUEEN());
+	const BitBoard TB = getPieces(!curTurn, Piece::BISHOP()) | getPieces(!curTurn, Piece::QUEEN());
+	const BitBoard TN = getPieces(!curTurn, Piece::KNIGHT());
+	const BitBoard TP = getPieces(!curTurn, Piece::PAWN());
+	const Position theirKingPos = getPieces(!curTurn, Piece::KING()).ToPosition();
 
 	const BitBoard kingRing = AttackFields::kingTargs(kingPos);
 #pragma endregion
@@ -76,7 +76,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 #pragma region KingMoves
 	FOR_BIT(bit, kingRing &~danger & posTargs) {
 		Position to=bit.ToPosition();
-		addMove(Move(MoveType::REGULAR, kingPos, to, Piece::KING, getPieceAt(to)));
+		addMove(Move(MoveType::REGULAR, kingPos, to, Piece::KING(), getPieceAt(to)));
 	}
 #pragma endregion
 
@@ -123,33 +123,33 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 
 		// Capture the threat with a pawn
 		FOR_BIT(pawn, pawnTargs(threatPos, !curTurn) & MP & posPieces) {
-			addPawnMove(Move(MoveType::REGULAR, pawn.ToPosition(), threatPos, Piece::PAWN, threatPiece));
+			addPawnMove(Move(MoveType::REGULAR, pawn.ToPosition(), threatPos, Piece::PAWN(), threatPiece));
 		}
-		if (threatPiece == Piece::PAWN && getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
+		if (threatPiece == Piece::PAWN() && getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
 			Position to = enpeasentTo(curTurn, getEnpeasentColumn());
 			FOR_BIT(pawn, pawnTargs(to, !curTurn) & MP & posPieces) {
-				addMove(Move(MoveType::ENPEASENT, pawn.ToPosition(), to, Piece::PAWN, Piece::EMPTY));
+				addMove(Move(MoveType::ENPEASENT, pawn.ToPosition(), to, Piece::PAWN(), Piece::EMPTY()));
 			}
 		}
 		
 
 		FOR_BIT(knight, knightTargs(threatPos) & MN & posPieces) {
-			addMove(Move(MoveType::REGULAR, knight.ToPosition(), threatPos, Piece::KNIGHT, threatPiece));
+			addMove(Move(MoveType::REGULAR, knight.ToPosition(), threatPos, Piece::KNIGHT(), threatPiece));
 		}
 
 		const BitBoard posHeroBishopLocations = bishopTargs(threatPos, ALL) & posPieces;
 		const BitBoard posHeroRookLocations = rookTargs(threatPos, ALL) & posPieces;
 
 		FOR_BIT(rook, posHeroRookLocations & MR) {
-			addMove(Move(MoveType::REGULAR, rook.ToPosition(), threatPos, Piece::ROOK, threatPiece));
+			addMove(Move(MoveType::REGULAR, rook.ToPosition(), threatPos, Piece::ROOK(), threatPiece));
 		}
 
 		FOR_BIT(bishop, posHeroBishopLocations & MB) {
-			addMove(Move(MoveType::REGULAR, bishop.ToPosition(), threatPos, Piece::BISHOP, threatPiece));
+			addMove(Move(MoveType::REGULAR, bishop.ToPosition(), threatPos, Piece::BISHOP(), threatPiece));
 		}
 
 		FOR_BIT(queen, (posHeroRookLocations | posHeroBishopLocations)&MQ) {
-			addMove(Move(MoveType::REGULAR, queen.ToPosition(), threatPos, Piece::QUEEN, threatPiece));
+			addMove(Move(MoveType::REGULAR, queen.ToPosition(), threatPos, Piece::QUEEN(), threatPiece));
 		}
 
 		// The only way to respond to a jump threat was to capture.
@@ -169,7 +169,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = knight.ToPosition();
 		FOR_BIT(toBit, knightTargs(from) & posTargs) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::KNIGHT, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::KNIGHT(), getPieceAt(to)));
 		}
 	}
 
@@ -177,7 +177,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = rook.ToPosition();
 		FOR_BIT(toBit, rookTargs(from,ALL) & posTargs) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK(), getPieceAt(to)));
 		}
 	}
 
@@ -185,7 +185,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = rook.ToPosition();
 		FOR_BIT(toBit, rookTargs(from, ALL) & posTargs & pinnedTargs(kingPos,from)) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::ROOK(), getPieceAt(to)));
 		}
 	}
 
@@ -193,7 +193,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = bishop.ToPosition();
 		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP(), getPieceAt(to)));
 		}
 	}
 
@@ -201,7 +201,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = bishop.ToPosition();
 		FOR_BIT(toBit, bishopTargs(from, ALL) & posTargs & pinnedTargs(kingPos, from)) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::BISHOP(), getPieceAt(to)));
 		}
 	}
 
@@ -209,7 +209,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = queen.ToPosition();
 		FOR_BIT(toBit, queenTargs(from, ALL) & posTargs) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN(), getPieceAt(to)));
 		}
 	}
 
@@ -217,7 +217,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		Position from = queen.ToPosition();
 		FOR_BIT(toBit, queenTargs(from, ALL) & posTargs & pinnedTargs(kingPos, from)) {
 			Position to = toBit.ToPosition();
-			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN, getPieceAt(to)));
+			addMove(Move(MoveType::REGULAR, from, to, Piece::QUEEN(), getPieceAt(to)));
 		}
 	}
 #pragma endregion
@@ -230,14 +230,14 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 	FOR_BIT(toBit, inEmptyFrontOfPawns & posPawnTargs) {
 		Position to = toBit.ToPosition();
 		Position from = to.shiftBackward(curTurn);
-		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, Piece::EMPTY));
+		addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN(), Piece::EMPTY()));
 	}
 
 	inEmptyFrontOfPawns &= pawnJumpZone(curTurn).shiftForward(curTurn);
 	FOR_BIT(toBit, inEmptyFrontOfPawns.shiftForward(curTurn) & ~ALL & posTargs) {
 		Position to = toBit.ToPosition();
 		Position from = to.shiftBackward(curTurn).shiftBackward(curTurn);
-		addPawnMove(Move(MoveType::PAWN_JUMP, from, to, Piece::PAWN, Piece::EMPTY));
+		addPawnMove(Move(MoveType::PAWN_JUMP, from, to, Piece::PAWN(), Piece::EMPTY()));
 	}
 #pragma endregion
 
@@ -250,13 +250,13 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftLeft())) {
 			Position to = toBit.ToPosition();
 			Position from = to.shiftBackward(curTurn).shiftRight();
-			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN(), getPieceAt(to)));
 		}
 		FOR_BIT(toBit, (MP & pawnsThatCanCapture).shiftForward(curTurn).shiftRight()  & T  &
 				(kingX | ~diagPinned.shiftForward(curTurn).shiftRight())) {
 			Position to = toBit.ToPosition();
 			Position from = to.shiftBackward(curTurn).shiftLeft();
-			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN, getPieceAt(to)));
+			addPawnMove(Move(MoveType::REGULAR, from, to, Piece::PAWN(), getPieceAt(to)));
 		}
 #pragma endregion
 
@@ -269,7 +269,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 				BitBoard newBlockers = ALL ^ to.ToSingletonBoard() ^ pawn ^ capturedBit;
 				if ((rookTargs(kingPos, newBlockers) & TR) == BitBoard::EMPTY() &&
 					(bishopTargs(kingPos, newBlockers) & TB) == BitBoard::EMPTY()) {
-					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN, Piece::EMPTY));
+					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN(), Piece::EMPTY()));
 				}
 			}
 		}
@@ -284,7 +284,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 					MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
 					Position to(curTurn == Turn::WHITE()? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
 
-					addMove(Move(type, kingPos, to, Piece::KING, Piece::EMPTY));
+					addMove(Move(type, kingPos, to, Piece::KING(), Piece::EMPTY()));
 				}
 			}
 		}

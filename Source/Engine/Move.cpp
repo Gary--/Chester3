@@ -2,7 +2,7 @@
 
 
 Move::Move() : 
-Move(MoveType::INVALID, Position(), Position(), Piece::EMPTY, Piece::EMPTY)
+Move(MoveType::INVALID, Position(), Position(), Piece::EMPTY(), Piece::EMPTY())
 {
 }
 
@@ -22,15 +22,15 @@ value(
 (uint32_t)type |
 (uint32_t)from.index() << 4 |
 (uint32_t)to.index() << 11 |
-(uint32_t)piece << 18 |
-(uint32_t)targ << 21
+(uint32_t)(piece.asIndex()) << 18 |
+(uint32_t)(targ.asIndex()) << 21
 )
 
 {}
 
 
 Move Move::NULL_MOVE(){
-	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY, Piece::EMPTY);
+	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY(), Piece::EMPTY());
 }
 
 
@@ -51,7 +51,7 @@ Piece Move::getTarg() const {
 }
 
 bool Move::isCapture() const {
-	return getTarg() != Piece::EMPTY || getType() == MoveType::ENPEASENT;
+	return getTarg() != Piece::EMPTY() || getType() == MoveType::ENPEASENT;
 }
 
 bool Move::isPromotion() const {
@@ -63,13 +63,13 @@ bool Move::isTactical() const {
 }
 
 Piece Move::promotionPiece() const {
-	return (Piece)((uint8_t)Piece::KNIGHT + (uint8_t)getType() - (uint8_t)MoveType::PROMO_KNIGHT);
+	return (Piece)((uint8_t)PieceEnum::KNIGHT + (uint8_t)getType() - (uint8_t)MoveType::PROMO_KNIGHT);
 }
 
 MoveType promoType(Piece piece) {
-	_ASSERTE(Piece::KNIGHT <= piece && piece <= Piece::QUEEN);
+	_ASSERTE(Piece::KNIGHT() <= piece && piece <= Piece::QUEEN());
 	return MoveType((uint8_t)MoveType::PROMO_KNIGHT
-					+ (uint8_t)piece - (uint8_t)Piece::KNIGHT);
+					+ piece.asIndex() - (uint8_t)PieceEnum::KNIGHT);
 
 }
 
