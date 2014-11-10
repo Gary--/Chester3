@@ -1,12 +1,12 @@
 #include "Evaluate_simple.h"
 #include "Game.h"
-
+#include <cstdint>
 namespace {
 	int matScores[2] = { 0 };
 	int posScores[2] = { 0 };
 
 #pragma region PieceSqr tables
-int pieceSquare[7][64] = {
+int8_t pieceSquare[7][64] = {
 		{},
     {//PAWN
          0,  0,  0,  0,  0,  0,  0,  0,
@@ -63,57 +63,85 @@ int pieceSquare[7][64] = {
         -20,-10,-10, -5, -5,-10,-10,-20
 	} };
 
-    //{//KING
-    //    -50,-40,-30,-20,-20,-30,-40,-50,
-    //    -30,-20,-10,  0,  0,-10,-20,-30,
-    //    -30,-10, 20, 30, 30, 20,-10,-30,
-    //    -30,-10, 30, 40, 40, 30,-10,-30,
-    //    -30,-10, 30, 40, 40, 30,-10,-30,
-    //    -30,-10, 20, 30, 30, 20,-10,-30,
-    //    -30,-30,  0,  0,  0,  0,-30,-30,
-    //    -50,-30,-30,-30,-30,-30,-30,-50
-    //}
+	int8_t kingEarlygame[64] = {
+		-30,-40,-40,-50,-50,-40,-40,-30,
+		-30,-40,-40,-50,-50,-40,-40,-30,
+		-30,-40,-40,-50,-50,-40,-40,-30,
+		-30,-40,-40,-50,-50,-40,-40,-30,
+		-20,-30,-30,-40,-40,-30,-30,-20,
+		-10,-20,-20,-20,-20,-20,-20,-10,
+		 20, 20,  0,-10,-10,-10, 20, 20,
+		 20, 30, 20,-10,  0,-10, 30, 20
+	};
+
+    int8_t kingLateGame[64] = {//KING
+        -50,-40,-30,-20,-20,-30,-40,-50,
+        -30,-20,-10,  0,  0,-10,-20,-30,
+        -30,-10, 20, 30, 30, 20,-10,-30,
+        -30,-10, 30, 40, 40, 30,-10,-30,
+        -30,-10, 30, 40, 40, 30,-10,-30,
+        -30,-10, 20, 30, 30, 20,-10,-30,
+        -30,-30,  0,  0,  0,  0,-30,-30,
+        -50,-30,-30,-30,-30,-30,-30,-50
+    };
 
 
-int pieceValue(Piece piece) {
-	switch (piece.asEnum()) {
-	case PieceEnum::EMPTY:
-		return 0;
-	case PieceEnum::PAWN:
-		return 100;
-	case PieceEnum::KNIGHT:
-		return 320;
-	case PieceEnum::BISHOP:
-		return 330;
-	case PieceEnum::ROOK:
-		return 500;
-	case PieceEnum::QUEEN:
-		return 900;
-	default:
-		return 0;
+
+
+	int pieceValue(Piece piece) {
+		switch (piece.asEnum()) {
+		case PieceEnum::EMPTY:
+			return 0;
+		case PieceEnum::PAWN:
+			return 100;
+		case PieceEnum::KNIGHT:
+			return 320;
+		case PieceEnum::BISHOP:
+			return 330;
+		case PieceEnum::ROOK:
+			return 500;
+		case PieceEnum::QUEEN:
+			return 900;
+		default:
+			return 0;
+		}
+	}
+
+	// fraction of material that is gone.
+	double materialLeft(Turn turn) {
+		return SimpleEvaluation::evaluateMaterial(turn) / 4800.0;
 	}
 }
 
-}
 
-
-int evaluateFull(Turn turn) {
+int SimpleEvaluation::evaluateFull(Turn turn) {
 	return evaluateMaterial(turn) + evaluatePosition(turn);
 }
-int evaluateMaterial(Turn turn) {
+int SimpleEvaluation::evaluateMaterial(Turn turn) {
 	return matScores[turn.asIndex()];
 }
-int evaluatePosition(Turn turn) {
-	return posScores[turn.asIndex()];
+int SimpleEvaluation::evaluatePosition(Turn turn) {
+	double earliness = materialLeft(!turn);
+
+	Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
+#pragma warning (disable: 4244)//Double to int
+	int kingPosValue = earliness*kingEarlygame[kingPos.perspective(turn).index()] +
+		(1 - earliness)*kingLateGame[kingPos.perspective(turn).index()];
+#pragma warning (default:4244)
+
+	return posScores[turn.asIndex()] + kingPosValue;
 }
 
 void SimpleEvaluation::synchronize() {
 	FOR_TURN(turn) {
+		matScores[turn.asIndex()] = 0;
+		posScores[turn.asIndex()] = 0;
+
 		FOR_PIECE_ALL(piece) {
 			matScores[turn.asIndex()] += Game::getPieces(turn, piece).count() * pieceValue(piece);
 
 			FOR_BIT(bit, Game::getPieces(turn, piece)) {
-				posScores[turn.asIndex()] += pieceSquare[piece.asIndex()][bit.ToPosition().index()];
+				posScores[turn.asIndex()] += pieceSquare[piece.asIndex()][bit.ToPosition().perspective(turn).index()];
 			}
 		}
 	}
