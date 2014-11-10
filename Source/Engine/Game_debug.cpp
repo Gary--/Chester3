@@ -66,5 +66,5 @@ void Game::assertMovesAreUnique() {
 }
 
 std::string Game::getFEN() {
-	return getGameConfiguration().str();
+	return getGameConfiguration().str_min();
 }
