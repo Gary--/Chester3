@@ -1,5 +1,7 @@
 #include "Evaluate_simple.h"
 #include "Game.h"
+#include "attack_fields.h"
+
 #include <cstdint>
 namespace {
 	int matScores[2] = { 0 };
@@ -111,6 +113,49 @@ int8_t pieceSquare[7][64] = {
 	double materialLeft(Turn turn) {
 		return SimpleEvaluation::evaluateMaterial(turn) / 4800.0;
 	}
+
+
+	
+	int getPieceSquare(Piece piece, Position pos) {
+		return pieceSquare[piece.asIndex()][pos.index()];
+	}
+
+	// factor is +1/-1 for make/unmake
+	void adjustScores(Move move, Turn turn,int factor) {
+		const Turn other = !turn;
+		const Position from = move.getFrom().perspective(turn);
+		const Position to = move.getTo().perspective(turn);
+
+		// Our piece moving
+		posScores[turn.asIndex()] += factor*(
+			getPieceSquare(move.getPiece(), to) - getPieceSquare(move.getPiece(), from));
+
+		// Capturing a piece
+		matScores[other.asIndex()] -= factor*pieceValue(move.getTarg());
+		posScores[other.asIndex()] -= factor*getPieceSquare(move.getTarg(), to.mirror());;
+
+		// Additional adjustments for special moves
+		if (move.isPromotion()) {
+			Piece promo = move.promotionPiece();
+			matScores[turn.asIndex()] += factor*(pieceValue(promo) - pieceValue(Piece::PAWN()));
+			posScores[turn.asIndex()] += factor*getPieceSquare(promo, to);//Pawn end row is 0
+
+		} else if (move.getType() == MoveType::ENPEASENT) {
+			matScores[other.asIndex()] -= factor*pieceValue(Piece::PAWN());
+
+			// Assume WLOG that we are white
+			int column = to.col();
+			Position capturedPos = AttackFields::enpeasentCaptured(Turn::BLACK(),column);
+			posScores[other.asIndex()] -= factor*getPieceSquare(Piece::PAWN(), capturedPos);
+
+		} else if (move.getType() == MoveType::CASTLE_LEFT || move.getType() == MoveType::CASTLE_RIGHT) {
+			// Assume WLOG that we are white
+			Position rookFrom(7, (move.getType() == MoveType::CASTLE_LEFT) ? 0 : 7);
+			Position rookTo(7, (move.getType() == MoveType::CASTLE_LEFT) ? 3 : 5);
+			posScores[turn.asIndex()] += factor*
+				(getPieceSquare(Piece::ROOK(), rookTo) - getPieceSquare(Piece::ROOK(), rookFrom));
+		}
+	}
 }
 
 
@@ -141,16 +186,16 @@ void SimpleEvaluation::synchronize() {
 			matScores[turn.asIndex()] += Game::getPieces(turn, piece).count() * pieceValue(piece);
 
 			FOR_BIT(bit, Game::getPieces(turn, piece)) {
-				posScores[turn.asIndex()] += pieceSquare[piece.asIndex()][bit.ToPosition().perspective(turn).index()];
+				posScores[turn.asIndex()] += getPieceSquare(piece, bit.ToPosition().perspective(turn));
 			}
 		}
 	}
 }
 
 void SimpleEvaluation::notifyMove(Move move, Turn turn) {
-	synchronize();
+	adjustScores(move, turn, +1);
 }
 
 void SimpleEvaluation::notifyUndoMove(Move move, Turn turn) {
-	synchronize();
+	adjustScores(move, turn, -1);
 }

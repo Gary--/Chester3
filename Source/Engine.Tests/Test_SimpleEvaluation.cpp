@@ -34,15 +34,14 @@ public:
 		Game::configure(conf);
 
 		FOR_TURN(turn) {
-			Assert::AreEqual(SimpleEvaluation::evaluateFull(turn), 
-								SimpleEvaluation::evaluateMaterial(turn) + 
-								SimpleEvaluation::evaluatePosition(turn));
+			Assert::AreEqual(SimpleEvaluation::evaluateFull(turn),
+							 SimpleEvaluation::evaluateMaterial(turn) +
+							 SimpleEvaluation::evaluatePosition(turn));
 		}
 	}
 
+	// For every move available, check that the incremental update matches the full update.
 	void testIncremental(const char* FEN) {
-		//This position incudes castling, enpeasent, promotion
-		
 		GameConfiguration confs[2] = { GameConfiguration(FEN), GameConfiguration(FEN).mirror() };
 
 		for (auto conf : confs) {
@@ -84,12 +83,24 @@ public:
 
 				i++;
 			}
-		
+
 		}
 	}
 
 	TEST_METHOD(Normal_Capturing_Incremental) {
-		testIncremental("8/6b1/7r/Pk2p3/1n4Np/K1P1P3/1B6/1b6 b - -");
+		testIncremental("6k1/8/2N3qQ/7P/1r3bR1/2Kp4/3n4/1B6 w - -");
+	}
+
+	TEST_METHOD(Promotion_Incremental) {
+		testIncremental("8/2P5/8/8/8/8/1K4k1/8 w - -");
+	}
+
+	TEST_METHOD(Enpeasent_Incremental) {
+		testIncremental("8/8/8/1PpP4/8/8/K7/2k5 w - c6");
+	}
+
+	TEST_METHOD(Castling_Incremental){
+		testIncremental("6k1/8/8/8/8/8/8/R3K2R w KQ -");
 	}
 
 #pragma endregion
