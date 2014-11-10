@@ -136,7 +136,7 @@ void Game::makeMove(Move move) {
 	
 }
 
-void Game::undoMove() {
+Move Game::undoMove() {
 	curTurn = !curTurn;
 
 	
@@ -144,9 +144,9 @@ void Game::undoMove() {
 	//====
 #pragma region Unpack Undo Data
 	popMove();
-	Move move = cur.move;
+	const Move move = cur.move;
 	if (move == Move::NULL_MOVE()) {
-		return;
+		return move;
 	}
 
 	const MoveType type = move.getType();
@@ -208,4 +208,6 @@ void Game::undoMove() {
 #pragma endregion
 
 	integrityCheck();
+
+	return move;
 }

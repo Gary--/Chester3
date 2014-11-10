@@ -41,7 +41,7 @@ public:
 
 	// Making moves
 	static void makeMove(Move move);
-	static void undoMove();
+	static Move undoMove();//returns the move we are undoing
 private:
 	// === FIELDS
 	static Turn curTurn;
