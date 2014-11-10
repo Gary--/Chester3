@@ -104,5 +104,32 @@ public:
 	}
 
 #pragma endregion
+
+#pragma region Basic Chess Knowledge
+	TEST_METHOD(Losing_A_Piece_Is_Bad) {
+		GameConfiguration conf("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");//Kiwipete
+		Game::configure(conf);
+		SimpleEvaluation::synchronize();
+		int initials[2] = { SimpleEvaluation::evaluateFull(Turn::BLACK()),
+			SimpleEvaluation::evaluateFull(Turn::WHITE()) };
+
+		FOR_POSITION_64(pos) {
+			Turn owner = conf.getOwnerAt(pos);
+			Piece piece = conf.getPieceAt(pos);
+			if (piece == Piece::KING() || piece == Piece::EMPTY()) {
+				continue;
+			}
+
+			conf.clearPieceAt(pos);
+			Game::configure(conf);
+			SimpleEvaluation::synchronize();
+			Assert::IsTrue(SimpleEvaluation::evaluateFull(owner) < initials[owner.asIndex()]);
+			
+			conf.setPieceAt(pos, owner, piece);
+		}
+	}
+
+	
+#pragma endregion
 	};
 }
