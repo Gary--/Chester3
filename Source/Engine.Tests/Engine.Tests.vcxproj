@@ -249,6 +249,7 @@
     <ClCompile Include="Test_Game_Setup.cpp" />
     <ClCompile Include="Test_Move.cpp" />
     <ClCompile Include="Test_SEE.cpp" />
+    <ClCompile Include="Test_SimpleEvaluation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
