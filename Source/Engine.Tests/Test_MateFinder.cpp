@@ -15,6 +15,13 @@ public:
 		Assert::AreEqual(Position("f6"), move.getFrom());
 		Assert::AreEqual(Position("g7"), move.getTo());
 	}
+
+	TEST_METHOD(Mate_1) {
+		Move move = MateFinder::findMatingMove(GameConfiguration("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - -"), 3);
+		Assert::AreEqual(Position("d6"), move.getFrom());
+		Assert::AreEqual(Position("d1"), move.getTo());
+	}
+
 	};
 
 
