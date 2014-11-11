@@ -74,5 +74,11 @@
     <ClCompile Include="Test_SEE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test_SimpleEvaluation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_MateFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
