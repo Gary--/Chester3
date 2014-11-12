@@ -1,6 +1,6 @@
-#include "AI_search_configuration.h"
+#include "AI_SearchConfiguration.h"
 
-SearchConfiguration::SearchConfiguration() {
+AI_SearchConfiguration::AI_SearchConfiguration() {
 	maxTimeMs = SEARCH_TIME_INF;
 	maxDepth = MAX_DEPTH_INF;
 	mateOnly = false;

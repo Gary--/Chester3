@@ -20,10 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
-    <ClInclude Include="AI_search.h" />
+    <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
-    <ClInclude Include="AI_search_configuration.h" />
-    <ClInclude Include="AI_search_result.h" />
+    <ClInclude Include="AI_SearchConfiguration.h" />
+    <ClInclude Include="AI_SearchResult.h" />
     <ClInclude Include="AttackDefend.h" />
     <ClInclude Include="attack_fields.h" />
     <ClInclude Include="Attack_Fields_init.h" />
@@ -41,6 +41,7 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="perft.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="Search_SearchResult.h" />
     <ClInclude Include="static_exchange.h" />
     <ClInclude Include="UndoData.h" />
   </ItemGroup>
@@ -76,6 +77,8 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="Search_search.cpp" />
+    <ClCompile Include="Search__main.cpp" />
     <ClCompile Include="UndoData.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

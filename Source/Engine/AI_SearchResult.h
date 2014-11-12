@@ -1,7 +1,8 @@
 #pragma once
 #include "Move.h"
 
-struct SearchResult {
+// Given back to the UI thread
+struct AI_SearchResult {
 	int score;
 	Move bestMove;
 

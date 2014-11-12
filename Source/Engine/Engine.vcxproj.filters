@@ -72,19 +72,22 @@
     <ClInclude Include="AI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AI_search_result.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_search_configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Evaluate_simple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MateFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AI_search.h">
+    <ClInclude Include="Search.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_SearchResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_SearchConfiguration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Search_SearchResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -183,6 +186,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ai__main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Search__main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Search_search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

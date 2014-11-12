@@ -1,6 +1,6 @@
 #pragma once
-#include "AI_search_result.h"
-#include "AI_search_configuration.h"
+#include "AI_SearchResult.h"
+#include "AI_SearchConfiguration.h"
 #include "GameConfiguration.h"
 
 
@@ -16,15 +16,11 @@ public:
 	// Free the memory used to support undo feature.
 	static void clearHistory();
 	
-	static void configureSearch(SearchConfiguration conf);
+	static void configureSearch(AI_SearchConfiguration conf);
 	static void startSearch();
 
 	// When this returns, Game state will be reset.
 	static void stop();
 
-	static SearchResult getSearchResult();
-
-//private:
-//	
-//	pthread_t 
+	static AI_SearchResult getSearchResult(); 
 };

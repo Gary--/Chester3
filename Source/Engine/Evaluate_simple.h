@@ -2,6 +2,7 @@
 
 class SimpleEvaluation {
 public:
+	static int evaluate();
 	static int evaluateFull(Turn turn);
 	static int evaluateMaterial(Turn turn);
 	static int evaluatePosition(Turn turn);

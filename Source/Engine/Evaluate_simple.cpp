@@ -158,6 +158,9 @@ int8_t pieceSquare[7][64] = {
 	}
 }
 
+int SimpleEvaluation::evaluate() {
+	return evaluateFull(Game::getTurn()) - evaluateFull(!Game::getTurn());
+}
 
 int SimpleEvaluation::evaluateFull(Turn turn) {
 	return evaluateMaterial(turn) + evaluatePosition(turn);

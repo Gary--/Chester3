@@ -1,7 +1,7 @@
 #pragma once
 
-struct SearchConfiguration {
-	SearchConfiguration();
+struct AI_SearchConfiguration {
+	AI_SearchConfiguration();
 
 	int maxTimeMs;
 	int maxDepth;
