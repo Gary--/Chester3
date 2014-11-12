@@ -44,6 +44,7 @@
     <ClInclude Include="UndoData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI_search_configuration.cpp" />
     <ClCompile Include="AttackDefend_SEE.cpp" />
     <ClCompile Include="attack_fields_bishop_rook.cpp" />
     <ClCompile Include="attack_fields_blocking_pinning.cpp" />
