@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
+    <ClInclude Include="AI_search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_search_configuration.h" />
     <ClInclude Include="AI_search_result.h" />
@@ -45,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI_search_configuration.cpp" />
+    <ClCompile Include="ai__main.cpp" />
     <ClCompile Include="AttackDefend_SEE.cpp" />
     <ClCompile Include="attack_fields_bishop_rook.cpp" />
     <ClCompile Include="attack_fields_blocking_pinning.cpp" />
