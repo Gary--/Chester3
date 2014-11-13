@@ -79,6 +79,7 @@
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Search_makeUnmake_Move.cpp" />
     <ClCompile Include="Search_search.cpp" />
+    <ClCompile Include="Search_SearchResult.cpp" />
     <ClCompile Include="Search__main.cpp" />
     <ClCompile Include="UndoData.cpp" />
   </ItemGroup>

@@ -26,8 +26,10 @@ public:
 	
 
 private:
-	Search_SearchResult search(int depth,int ply, int alpha, int beta);
+	static Search_SearchResult search(int depth,int ply, int alpha, int beta);
 
-	void searchMakeMove(Move move);
-	Move searchUndoMove();
+	static void searchMakeMove(Move move);
+	static Move searchUndoMove();
+
+	static Search_SearchResult searchResult;
 };

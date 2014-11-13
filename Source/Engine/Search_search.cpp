@@ -40,5 +40,6 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 
 	Search_SearchResult result;
 	result.score = bestScore;
+	result.bestMove = bestMove;
 	return result;
 }

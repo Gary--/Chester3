@@ -1,4 +1,5 @@
 #pragma once
+#include "Move.h"
 
 enum class NodeType : char {
 	PV,
@@ -10,4 +11,6 @@ enum class NodeType : char {
 struct Search_SearchResult {
 	int score;
 	Move bestMove;
+
+	Search_SearchResult();
 };
