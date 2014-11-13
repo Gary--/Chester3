@@ -27,6 +27,7 @@ public:
 	Move(MoveType type,Position from, Position to, Piece piece, Piece targ);
 
 	static Move NULL_MOVE();
+	static Move INVALID();
 	bool isPromotion() const;
 	Piece promotionPiece() const;
 	bool isCapture() const;

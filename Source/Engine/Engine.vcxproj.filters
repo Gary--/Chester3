@@ -194,5 +194,8 @@
     <ClCompile Include="Search_search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Search_makeUnmake_Move.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

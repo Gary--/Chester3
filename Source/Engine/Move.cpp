@@ -1,9 +1,9 @@
 #include "Move.h"
 
 
-Move::Move() : 
-Move(MoveType::INVALID, Position(), Position(), Piece::EMPTY(), Piece::EMPTY())
+Move::Move() 
 {
+	*this = INVALID();
 }
 
 
@@ -28,6 +28,9 @@ value(
 
 {}
 
+Move Move::INVALID() {
+	return Move(MoveType::INVALID, Position(), Position(), Piece::EMPTY(), Piece::EMPTY());
+}
 
 Move Move::NULL_MOVE(){
 	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY(), Piece::EMPTY());

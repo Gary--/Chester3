@@ -12,19 +12,22 @@ public:
 	static void startSearch(AI_SearchConfiguration conf);
 
 
-	static void stopAsync();
+	//static void stopAsync();
 
 
 	static AI_SearchResult getSearchResult();
 
 	// Get the Game state to where you want it.
 	static void configureGame(GameConfiguration conf);
-	static void makeMove(Move move);
-	static Move undoMove();
+	//static void makeMove(Move move);
+	//static Move undoMove();
 
 	
 	
 
 private:
-	Search_SearchResult search(const int depth,const int ply, int alpha, int beta);
+	Search_SearchResult search(int depth,int ply, int alpha, int beta);
+
+	void searchMakeMove(Move move);
+	Move searchUndoMove();
 };
