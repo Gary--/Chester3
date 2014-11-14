@@ -7,11 +7,8 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(A_Attack_Fields) {
+	TEST_CLASS(A_GameConfiguration) {
 public:
-	TEST_CLASS_INITIALIZE(CallAttackFieldInit) {
-		AttackFields::init();
-	}
 
 	TEST_METHOD(Defaults) {
 		GameConfiguration conf;

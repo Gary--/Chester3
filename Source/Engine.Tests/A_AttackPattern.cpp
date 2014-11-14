@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(A_Test_AttackDefendByte) {
+	TEST_CLASS(A_AttackPattern) {
 public:
 
 #pragma region Basic Contains/Total

@@ -227,15 +227,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A_AttackMap.cpp" />
-    <ClCompile Include="D_100_Perft_Cases.cpp" />
-    <ClCompile Include="A_AttackDefendByte.cpp" />
-    <ClCompile Include="A_Game_Make_Nullmove.cpp" />
-    <ClCompile Include="A_Game_Stalemate_Detection.cpp" />
+    <ClCompile Include="D_100_perft_cases.cpp" />
+    <ClCompile Include="A_AttackPattern.cpp" />
+    <ClCompile Include="A_Game_make_nullmove.cpp" />
+    <ClCompile Include="A_Game_stalemate_detection.cpp" />
     <ClCompile Include="B_MateFinder.cpp" />
-    <ClCompile Include="A_Move_generation.cpp" />
-    <ClCompile Include="B_Move_Generation_perft.cpp" />
-    <ClCompile Include="A_configure_check_detection.cpp" />
-    <ClCompile Include="A_GameHash.cpp" />
+    <ClCompile Include="A_Game_move_generation.cpp" />
+    <ClCompile Include="B_move_generation_perft.cpp" />
+    <ClCompile Include="A_Game_configure_check_detection.cpp" />
+    <ClCompile Include="A_Game_Hash.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
@@ -248,10 +248,10 @@
     <ClCompile Include="A_BitBoard_Position.cpp" />
     <ClCompile Include="A_GameConfiguration.cpp" />
     <ClCompile Include="A_Game_make_move.cpp" />
-    <ClCompile Include="A_Game_Setup.cpp" />
+    <ClCompile Include="A_Game_setup.cpp" />
     <ClCompile Include="A_Move.cpp" />
     <ClCompile Include="F_Search_Basic_BestMove.cpp" />
-    <ClCompile Include="A_SEE.cpp" />
+    <ClCompile Include="A_StaticExchange.cpp" />
     <ClCompile Include="E_SimpleEvaluation.cpp" />
   </ItemGroup>
   <ItemGroup>

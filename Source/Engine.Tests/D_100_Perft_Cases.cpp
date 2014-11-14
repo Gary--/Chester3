@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "perft.h"
+#include "Perft.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 
 namespace EngineTests {
-	TEST_CLASS(D_Test_100_Perft_Cases) {
+	TEST_CLASS(D_100_perft_cases) {
 public:
 
 

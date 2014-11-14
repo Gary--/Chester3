@@ -29,52 +29,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_AttackDefendByte.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="A_Attackfields.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="A_BitBoard_Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_configure_check_detection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="A_Game_make_move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_Game_Make_Nullmove.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A_Game_Setup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A_Game_Stalemate_Detection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="A_GameConfiguration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A_GameHash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="B_MateFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="A_Move.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A_Move_generation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="B_Move_Generation_perft.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A_SEE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D_100_Perft_Cases.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="E_SimpleEvaluation.cpp">
@@ -84,6 +54,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="A_AttackMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_AttackPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_make_nullmove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_setup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_stalemate_detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_StaticExchange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D_100_perft_cases.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="B_move_generation_perft.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_move_generation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_configure_check_detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Game_Hash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
