@@ -9,10 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Test_AttackDefendByte) {
 public:
-	Piece randomPiece() {
-		int val = rand() % 6;
-		return Piece(1 + val);
-	}
+
 #pragma region Basic Contains/Total
 	TEST_METHOD(Initializes_To_Empty) {
 		AtkPat pat;
@@ -64,7 +61,7 @@ public:
 		for (int trials = 0; trials < 1000; ++trials) {
 			AtkPat pat;
 			for (int i = 1; i <= 7; ++i) {
-				Piece pieceToAdd = randomPiece();
+				Piece pieceToAdd = Piece::random();
 				pat.add(pieceToAdd);
 				Assert::IsFalse(pat.isEmpty());
 				Assert::IsTrue(pat.contains(pieceToAdd));
@@ -95,7 +92,7 @@ public:
 			AtkPat pat;
 			int n = rand() % 7;
 			for (int i = 1; i <= n; ++i) {
-				pat.add(randomPiece());
+				pat.add(Piece::random());
 			}
 
 			int m = 0;
@@ -103,6 +100,27 @@ public:
 				m += pat.getPieceCount(piece);
 			}
 			Assert::AreEqual(n, m);
+		}
+	}
+
+	TEST_METHOD(Multi_Add) {
+		for (int trial = 0; trial < 1000; ++trial) {
+			AtkPat pat0;
+			int counts[7] = { 0 };
+
+			int n = rand() % 7;
+			for (int i = 1; i <= n; ++i) {
+				Piece randPiece = Piece::random();
+				pat0.add(randPiece);
+				counts[randPiece.asIndex()]++;
+			}
+
+			AtkPat pat1;
+			FOR_PIECE_ALL(piece) {
+				pat1.add(piece, counts[piece.asIndex()]);
+			}
+			Assert::AreEqual(pat0, pat1);
+
 		}
 	}
 

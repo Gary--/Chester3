@@ -95,7 +95,16 @@ void AtkPat::add(Piece piece) {
 	value++;
 	value |= pieceBit(piece);
 }
+void AtkPat::add(Piece piece, int n) {
+	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
+	_ASSERTE(n >= 0);
+	if (n == 0) {
+		return;
+	}
 
+	value += n;
+	value |= pieceBit(piece);
+}
 
 bool AtkPat::contains(Piece piece) const{
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());

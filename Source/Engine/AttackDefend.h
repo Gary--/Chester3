@@ -34,6 +34,8 @@ class AtkPat {
 public:
 	AtkPat();
 	void add(Piece piece);
+	void add(Piece piece, int n);
+
 	bool contains(Piece piece) const;
 	bool isEmpty() const;
 	int getCount() const;
