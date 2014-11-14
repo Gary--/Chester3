@@ -29,10 +29,6 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 
 	for (const Move move : Game::getAllMoves()) {
 
-		if (depth == 5 && move.getTo() == Position("d1")) {
-			cout << "";
-		}
-
 		searchMakeMove(move);
 		const Search_SearchResult moveResult = search(depth - 1, ply + 1, -beta, -bestScore);
 		searchUndoMove();
