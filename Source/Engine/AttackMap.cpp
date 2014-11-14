@@ -56,5 +56,7 @@ AttackPattern AttackMap::getAttackPatternImpl(Turn turn, Position position) {
 	pat.add(Piece::BISHOP(), bishops.count());
 
 	BitBoard queens = Game::getPieces(turn, Piece::QUEEN()) & (potentialBishops | potentialRooks);
-	pat.add(Piece::QUEEN(), queens.count);
+	pat.add(Piece::QUEEN(), queens.count());
+
+	return pat;
 }

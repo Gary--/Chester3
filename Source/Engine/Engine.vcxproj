@@ -79,7 +79,7 @@
     <ClCompile Include="Search_search.cpp" />
     <ClCompile Include="Search_SearchResult.cpp" />
     <ClCompile Include="Search__main.cpp" />
-    <ClCompile Include="UndoData.cpp" />
+    <ClCompile Include="Game_UndoData.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{304BB138-20B1-40BB-9420-02AF435AB391}</ProjectGuid>

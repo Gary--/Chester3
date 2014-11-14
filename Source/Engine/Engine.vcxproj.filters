@@ -113,9 +113,6 @@
     <ClCompile Include="Game_make_move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UndoData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game_debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -192,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AttackMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game_UndoData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

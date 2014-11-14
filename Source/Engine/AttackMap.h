@@ -6,14 +6,15 @@
 // By default will compute AttackPattern for squares on demand.
 // setPrecompute will efficiently compute the AttackPattern for every square
 class AttackMap {
-	void synchronize();
+public:
+	static void synchronize();
 
-	bool precompute();
-	void notifyMove(Move move, Turn turn);
-	void notifyUndoMove(Move move, Turn turn);
+	static bool precompute();
+	static void notifyMove(Move move, Turn turn);
+	static void notifyUndoMove(Move move, Turn turn);
 
 	// Control turn has on the position.
-	AttackPattern getAttackPattern(Turn turn, Position position);
+	static AttackPattern getAttackPattern(Turn turn, Position position);
 private:
-	AttackPattern getAttackPatternImpl(Turn turn, Position position);
+	static AttackPattern getAttackPatternImpl(Turn turn, Position position);
 };

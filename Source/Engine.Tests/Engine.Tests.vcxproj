@@ -226,6 +226,7 @@
     <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="A_AttackMap.cpp" />
     <ClCompile Include="D_100_Perft_Cases.cpp" />
     <ClCompile Include="A_AttackDefendByte.cpp" />
     <ClCompile Include="A_Game_Make_Nullmove.cpp" />
