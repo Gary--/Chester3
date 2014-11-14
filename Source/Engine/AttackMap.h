@@ -8,12 +8,12 @@
 class AttackMap {
 	void synchronize();
 
-	bool setPrecompute();
+	bool precompute();
 	void notifyMove(Move move, Turn turn);
 	void notifyUndoMove(Move move, Turn turn);
 
 	// Control turn has on the position.
-	AttackPattern getAtkPat(Turn turn, Position position);
+	AttackPattern getAttackPattern(Turn turn, Position position);
 private:
-
+	AttackPattern getAttackPatternImpl(Turn turn, Position position);
 };

@@ -46,6 +46,7 @@
   <ItemGroup>
     <ClCompile Include="AI_search_configuration.cpp" />
     <ClCompile Include="AI__main.cpp" />
+    <ClCompile Include="AttackMap.cpp" />
     <ClCompile Include="AttackPattern_StaticExchange.cpp" />
     <ClCompile Include="AttackFields_bishop_rook.cpp" />
     <ClCompile Include="AttackFields_blocking_pinning.cpp" />
