@@ -3,7 +3,6 @@
 #include "Position.h"
 #include "BitBoard.h"
 
-//NO FUNCTION AVAILABLE BEFORE MAIN
 class AttackFields {
 public:
 	static void init();

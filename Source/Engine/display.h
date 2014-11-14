@@ -3,5 +3,5 @@
 namespace Display {
 
 	// Display board to stdout.
-	void display();
+	void displayText();
 }

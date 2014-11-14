@@ -7,7 +7,7 @@
 //+------+------+------+------+------+------+------+------+
 //| BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0 |
 //+------+------+------+------+------+------+------+------+
-//| KING | QUEEN| Piece::ROOK() |KNIGHT| PAWN |      Number of     |
+//| KING | QUEEN| ROOK |KNIGHT| PAWN |      Number of     |
 //|      |      |      |BISHOP|      |      ATTACKERS     |
 //+------+------+------+------+------+------+------+------+
 

@@ -1,4 +1,4 @@
-#include "display.h"
+#include "Display.h"
 #include "Game.h"
 #include <iostream>
 #include "Chess.h"
@@ -6,7 +6,7 @@
 using namespace std;
 
 
-void Display::display() {
+void Display::displayText() {
 	cout << Game::getFEN() << endl;
 	if (Game::getCheck()) {
 		cout << "CHECK. ";
