@@ -90,7 +90,7 @@
     <ClInclude Include="Search_SearchResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttackBoards.h">
+    <ClInclude Include="AttackMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
