@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Game_UndoData.h"
 
 namespace {
 	BitBoard scratch;

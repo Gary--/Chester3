@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Game_UndoData.h"
 
 Turn Game::getTurn() {
 	return curTurn;

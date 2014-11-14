@@ -6,9 +6,9 @@
 #include "GameConfiguration.h"
 #include <cstdint>
 #include "Move.h"
-#include "Game_UndoData.h"
 #include "Game_MoveIterator.h"
 
+struct Game_UndoData;
 class GameMoveIteratorGenerator;
 class Game {
 public:

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "AttackFields.h"
+#include "Game_UndoData.h"
 
 void Game::makeMove(Move move) {
 	bool wasInCheck = getCheck();

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "AttackFields.h"
+#include "Game_UndoData.h"
 
 Piece Game::pieces[64];
 Turn Game::curTurn;

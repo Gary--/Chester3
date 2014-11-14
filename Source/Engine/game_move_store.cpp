@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "AttackFields.h"
 #include <vector>
+#include "Game_UndoData.h"
 
 namespace {
 	std::vector<Game_UndoData> undoDatas;
