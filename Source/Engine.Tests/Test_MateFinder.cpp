@@ -22,6 +22,8 @@ public:
 		Assert::AreEqual(Position("d1"), move.getTo());
 	}
 
+	
+
 	};
 
 

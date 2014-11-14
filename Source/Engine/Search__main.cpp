@@ -12,7 +12,7 @@ void Search::configureGame(GameConfiguration conf) {
 
 void Search::startSearch(const AI_SearchConfiguration conf){
 	searchResult = Search_SearchResult();
-	searchResult = search(conf.maxDepth, 0, INT_MIN, INT_MAX);
+	searchResult = search(conf.maxDepth, 0, -Search_SearchResult::MATE_SCORE, Search_SearchResult::MATE_SCORE);
 }
 
 AI_SearchResult Search::getSearchResult() {

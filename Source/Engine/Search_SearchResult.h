@@ -13,4 +13,6 @@ struct Search_SearchResult {
 	Move bestMove;
 
 	Search_SearchResult();
+
+	static const int MATE_SCORE = 100000;
 };
