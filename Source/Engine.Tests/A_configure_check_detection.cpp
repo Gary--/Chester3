@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Configure_Check_Detect) {
+	TEST_CLASS(A_Configure_Check_Detect) {
 public:
 	TEST_CLASS_INITIALIZE(Call_Game_Init) {
 		Game::init();

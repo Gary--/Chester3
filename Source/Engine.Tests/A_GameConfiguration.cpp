@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Attack_Fields) {
+	TEST_CLASS(A_Attack_Fields) {
 public:
 	TEST_CLASS_INITIALIZE(CallAttackFieldInit) {
 		AttackFields::init();

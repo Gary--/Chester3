@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Game_Make_Nullmove) {
+	TEST_CLASS(A_Game_Make_Nullmove) {
 public:
 
 	TEST_METHOD(Nullmove_Flips_Turn) {

@@ -226,15 +226,15 @@
     <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test_100_Perft_Cases.cpp" />
-    <ClCompile Include="Test_AttackDefendByte.cpp" />
-    <ClCompile Include="Test_Game_Make_Nullmove.cpp" />
-    <ClCompile Include="Test_Game_Stalemate_Detection.cpp" />
-    <ClCompile Include="Test_MateFinder.cpp" />
-    <ClCompile Include="Test_Move_generation.cpp" />
-    <ClCompile Include="Test_Move_Generation_perft.cpp" />
-    <ClCompile Include="Test_configure_check_detection.cpp" />
-    <ClCompile Include="Test_GameHash.cpp" />
+    <ClCompile Include="D_100_Perft_Cases.cpp" />
+    <ClCompile Include="A_AttackDefendByte.cpp" />
+    <ClCompile Include="A_Game_Make_Nullmove.cpp" />
+    <ClCompile Include="A_Game_Stalemate_Detection.cpp" />
+    <ClCompile Include="B_MateFinder.cpp" />
+    <ClCompile Include="A_Move_generation.cpp" />
+    <ClCompile Include="B_Move_Generation_perft.cpp" />
+    <ClCompile Include="A_configure_check_detection.cpp" />
+    <ClCompile Include="A_GameHash.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
@@ -243,15 +243,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Test_Attackfields.cpp" />
-    <ClCompile Include="Test_BitBoard_Position.cpp" />
-    <ClCompile Include="Test_GameConfiguration.cpp" />
-    <ClCompile Include="Test_Game_make_move.cpp" />
-    <ClCompile Include="Test_Game_Setup.cpp" />
-    <ClCompile Include="Test_Move.cpp" />
-    <ClCompile Include="Test_Search_Basic_BestMove.cpp" />
-    <ClCompile Include="Test_SEE.cpp" />
-    <ClCompile Include="Test_SimpleEvaluation.cpp" />
+    <ClCompile Include="A_Attackfields.cpp" />
+    <ClCompile Include="A_BitBoard_Position.cpp" />
+    <ClCompile Include="A_GameConfiguration.cpp" />
+    <ClCompile Include="A_Game_make_move.cpp" />
+    <ClCompile Include="A_Game_Setup.cpp" />
+    <ClCompile Include="A_Move.cpp" />
+    <ClCompile Include="F_Search_Basic_BestMove.cpp" />
+    <ClCompile Include="A_SEE.cpp" />
+    <ClCompile Include="E_SimpleEvaluation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

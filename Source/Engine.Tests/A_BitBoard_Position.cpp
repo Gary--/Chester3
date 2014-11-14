@@ -10,7 +10,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace EngineTests
 {
-	TEST_CLASS(Test_BitBoard_Position)
+	TEST_CLASS(A_BitBoard_Position)
 	{
 	public:
 

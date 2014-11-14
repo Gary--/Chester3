@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Search_Basic_BestMove) {
+	TEST_CLASS(F_Search_Basic_BestMove) {
 public:
 	AI_SearchResult getSearchResult(const char* FEN, int depth) {
 		Search::configureGame(GameConfiguration(FEN));

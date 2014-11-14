@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_MateFinder) {
+	TEST_CLASS(B_MateFinder) {
 public:
 
 	TEST_METHOD(Mate_0) {

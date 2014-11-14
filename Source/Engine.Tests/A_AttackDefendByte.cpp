@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_AttackDefendByte) {
+	TEST_CLASS(A_Test_AttackDefendByte) {
 public:
 	Piece randomPiece() {
 		int val = rand() % 6;

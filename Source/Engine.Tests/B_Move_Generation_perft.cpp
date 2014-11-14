@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Move_Generation_Perft) {
+	TEST_CLASS(B_Move_Generation_Perft) {
 public:
 	
 	int mirrorLazyPerft(const char* FEN,int depth) {

@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_SEE) {
+	TEST_CLASS(A_SEE) {
 public:
 	TEST_CLASS_INITIALIZE(Call_SEE_init) {
 		SEE::init();

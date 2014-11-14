@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_100_Perft_Cases) {
+	TEST_CLASS(D_Test_100_Perft_Cases) {
 public:
 
 

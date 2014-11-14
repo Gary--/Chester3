@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Game_Stalemate_Detection) {
+	TEST_CLASS(A_Test_Game_Stalemate_Detection) {
 public:
 
 	void testHasMove(const char* FEN, bool hasMove) {

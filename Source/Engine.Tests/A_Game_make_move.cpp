@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Game_make_move) {
+	TEST_CLASS(A_Game_make_move) {
 public:
 	TEST_CLASS_INITIALIZE(Call_Game_Init) {
 		Game::init();

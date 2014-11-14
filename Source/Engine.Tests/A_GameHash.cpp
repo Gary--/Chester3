@@ -10,7 +10,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_GameHash) {
+	TEST_CLASS(A_GameHash) {
 public:
 	TEST_CLASS_INITIALIZE(Call_GameHashInit) {
 		GameHash::init();

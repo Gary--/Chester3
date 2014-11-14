@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(Test_Move_Generation) {
+	TEST_CLASS(A_Move_Generation) {
 public:
 	int numTacticalMoves(const char* FEN) {
 		Game::configure(GameConfiguration(FEN));
