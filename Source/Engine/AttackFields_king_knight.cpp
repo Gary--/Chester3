@@ -1,5 +1,4 @@
 #include "AttackFields.h"
-#include "AttackFieldsInit.h"
 #include <cmath>
 #include <algorithm>
 
@@ -9,7 +8,7 @@ namespace {
 	BitBoard pawnTargsArr[2][64];
 }
 
-void AttackFieldInit::KingKnightPawn() {
+void AttackFields::initKingKnightPawn() {
 
 	
 	FOR_8(r1) {

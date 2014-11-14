@@ -1,7 +1,4 @@
-#include "AttackFieldsInit.h"
-
-
-
+#include "AttackFields.h"
 
 
 
@@ -21,7 +18,7 @@ BitBoard AttackFields::blockingTargs(Position kingPos, Position attacker) {
 	return blockingMoves[kingPos.index()][attacker.index()];
 }
 
-void AttackFieldInit::BlockingPinning() {
+void AttackFields::initBlockingPinning() {
 	for (int i = 0; i < 64; i++) {//king
 		BitBoard king = Position(i).asSingletonBitboard();
 

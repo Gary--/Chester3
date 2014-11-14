@@ -57,9 +57,6 @@
     <ClInclude Include="AttackFields.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttackFieldsInit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AttackPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>

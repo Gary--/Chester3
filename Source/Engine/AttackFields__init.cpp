@@ -1,5 +1,4 @@
 #include "AttackFields.h"
-#include "AttackFieldsInit.h"
 
 namespace {
 	bool inited = false;
@@ -10,8 +9,7 @@ void AttackFields::init() {
 	}
 	inited = true;
 
-	AttackFieldInit::KingKnightPawn();
-	AttackFieldInit::BishopRook();
-	AttackFieldInit::BlockingPinning();
-
+	initKingKnightPawn();
+	initBishopRook();
+	initBlockingPinning();
 }

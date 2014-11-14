@@ -27,7 +27,6 @@
     <ClInclude Include="AI_SearchResult.h" />
     <ClInclude Include="AttackPattern.h" />
     <ClInclude Include="AttackFields.h" />
-    <ClInclude Include="AttackFieldsInit.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Chess.h" />
     <ClInclude Include="ChessAssert.h" />

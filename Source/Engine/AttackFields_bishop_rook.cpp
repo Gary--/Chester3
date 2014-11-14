@@ -2,7 +2,6 @@
 #include <cstdint>
 #include <vector>
 #include "BitBoard.h"
-#include "AttackFieldsInit.h"
 
 using namespace std;
 namespace {
@@ -256,7 +255,7 @@ BitBoard AttackFields::queenTargs(Position position, BitBoard blockers) {
 	return rookTargs(position, blockers) | bishopTargs(position, blockers);
 }
 
-void AttackFieldInit::BishopRook() {
+void AttackFields::initBishopRook() {
 	initializeBishopRookOccupancy();
 	initializeBishopRookAttackFields(Piece::BISHOP());
 	initializeBishopRookAttackFields(Piece::ROOK());

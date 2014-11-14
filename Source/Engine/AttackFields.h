@@ -4,44 +4,48 @@
 #include "BitBoard.h"
 
 //NO FUNCTION AVAILABLE BEFORE MAIN
-namespace AttackFields {
-	void init();
+class AttackFields {
+public:
+	static void init();
 
 
-	BitBoard kingTargs(Position position);
-	BitBoard knightTargs(Position position);
-	BitBoard knightTargs(BitBoard knights);
+	static BitBoard kingTargs(Position position);
+	static BitBoard knightTargs(Position position);
+	static BitBoard knightTargs(BitBoard knights);
 
-	BitBoard pawnTargs(Position position,Turn turn);
-	BitBoard bishopTargs(Position position, BitBoard blockers);
-	BitBoard rookTargs(Position position, BitBoard blockers);
-	BitBoard queenTargs(Position position, BitBoard blockers);
+	static BitBoard pawnTargs(Position position, Turn turn);
+	static BitBoard bishopTargs(Position position, BitBoard blockers);
+	static BitBoard rookTargs(Position position, BitBoard blockers);
+	static BitBoard queenTargs(Position position, BitBoard blockers);
 
 	// Given a pinned piece, where could it possibly move to.
-	BitBoard pinnedTargs(Position kingPos, Position pinnedPos);
+	static BitBoard pinnedTargs(Position kingPos, Position pinnedPos);
 
 	// If the kind is in check, where coul we move a piece to block?
-	BitBoard blockingTargs(Position kingPos, Position attackerPos);
+	static BitBoard blockingTargs(Position kingPos, Position attackerPos);
 
 
 	// These squares must not be occupied for the castle to happen.
-	BitBoard castleEmptySquares(Turn turn, Side side);
+	static BitBoard castleEmptySquares(Turn turn, Side side);
 
 	// These squares must not be threatened for the castle to happen.
-	BitBoard castleSafeSquares(Turn turn, Side side);
+	static BitBoard castleSafeSquares(Turn turn, Side side);
 
 	// If a pawn moves from here, it will be promoted
-	BitBoard pawnPromoZone(Turn turn);
+	static BitBoard pawnPromoZone(Turn turn);
 
 	// If a pawn is here, it can move forward 2 squares.
-	BitBoard pawnJumpZone(Turn turn);
+	static BitBoard pawnJumpZone(Turn turn);
 
 	// Where are pawn moves to when making an EP
-	Position enpeasentTo(Turn turn, int enpeasentColumn);
+	static Position enpeasentTo(Turn turn, int enpeasentColumn);
 
 	// The position of the pawn that gets captured by EP
-	Position enpeasentCaptured(Turn turn, int enpeasentColumn);
+	static Position enpeasentCaptured(Turn turn, int enpeasentColumn);
 
-	
-}
+private:
+	static void initKingKnightPawn();
+	static void initBishopRook();
+	static void initBlockingPinning();
+};
 

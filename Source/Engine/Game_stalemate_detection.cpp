@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "AttackFields.h"
 
-using namespace AttackFields;
 
 bool Game::isDefinitelyAMoveAvailable() {
 	if (getCheck()) { // Should probably be dealing with the check..
@@ -9,7 +8,7 @@ bool Game::isDefinitelyAMoveAvailable() {
 	}
 	
 	Position kingPos = getPieces(getTurn(), Piece::KING()).ToPosition();
-	BitBoard kingSees = queenTargs(kingPos, ALL);
+	BitBoard kingSees = AttackFields::queenTargs(kingPos, ALL);
 	
 
 	BitBoard freePawnsForward = (getPieces(getTurn(), Piece::PAWN()) &~kingSees).shiftForward(getTurn());
@@ -28,7 +27,7 @@ bool Game::isDefinitelyAMoveAvailable() {
 	BitBoard M = getPlayerPieces(getTurn());
 
 	// A knight can move
-	if ((knightTargs(getPieces(getTurn(), Piece::KNIGHT())&~kingSees)&~M)!=BitBoard::EMPTY()) {
+	if ((AttackFields::knightTargs(getPieces(getTurn(), Piece::KNIGHT())&~kingSees)&~M) != BitBoard::EMPTY()) {
 		return true;
 	}
 
