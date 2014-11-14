@@ -1,4 +1,4 @@
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 
 BitBoard AttackFields::castleEmptySquares(Turn turn, Side side){

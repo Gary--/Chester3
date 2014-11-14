@@ -1,5 +1,5 @@
 #include "Search.h"
-#include "Evaluate_simple.h"
+#include "SimpleEvaluation.h"
 #include <cstdint>
 #include "Game.h"
 #include <algorithm>

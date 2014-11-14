@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "AttackDefend.h"
+#include "AttackPattern.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,7 +12,7 @@ public:
 
 #pragma region Basic Contains/Total
 	TEST_METHOD(Initializes_To_Empty) {
-		AtkPat pat;
+		AttackPattern pat;
 		Assert::IsTrue(pat.isEmpty());
 		FOR_PIECE_ALL(piece) {
 			Assert::IsFalse(pat.contains(piece));
@@ -20,21 +20,21 @@ public:
 	}
 	
 	TEST_METHOD(Knights_and_Bishops_Share) {
-		AtkPat pat;
+		AttackPattern pat;
 		pat.add(Piece::KNIGHT());
 		pat.add(Piece::BISHOP());
 		Assert::AreEqual(2, pat.getCount());
 		Assert::IsTrue(pat.contains(Piece::KNIGHT()));
 		Assert::IsTrue(pat.contains(Piece::BISHOP()));
 
-		pat = AtkPat();
+		pat = AttackPattern();
 		pat.add(Piece::KNIGHT());
 		pat.add(Piece::KNIGHT());
 		Assert::AreEqual(2, pat.getCount());
 		Assert::IsTrue(pat.contains(Piece::KNIGHT()));
 		Assert::IsTrue(pat.contains(Piece::BISHOP()));
 
-		pat = AtkPat();
+		pat = AttackPattern();
 		pat.add(Piece::BISHOP());
 		pat.add(Piece::BISHOP());
 		Assert::AreEqual(2, pat.getCount());
@@ -44,7 +44,7 @@ public:
 
 	TEST_METHOD(Adding_Single_Piece_Works) {
 		FOR_PIECE_ALL(piece) {
-			AtkPat pat;
+			AttackPattern pat;
 			pat.add(piece);
 
 			Assert::AreEqual(1, pat.getCount());
@@ -59,7 +59,7 @@ public:
 
 	TEST_METHOD(Count_Works) {
 		for (int trials = 0; trials < 1000; ++trials) {
-			AtkPat pat;
+			AttackPattern pat;
 			for (int i = 1; i <= 7; ++i) {
 				Piece pieceToAdd = Piece::random();
 				pat.add(pieceToAdd);
@@ -71,7 +71,7 @@ public:
 	}
 
 	TEST_METHOD(String_Representation) {
-		AtkPat pat0;
+		AttackPattern pat0;
 		pat0.add(Piece::KNIGHT());
 		pat0.add(Piece::QUEEN());
 		pat0.add(Piece::BISHOP());
@@ -81,7 +81,7 @@ public:
 
 	TEST_METHOD(Piece_Count_One) {
 		FOR_PIECE_ALL(piece) {
-			AtkPat pat;
+			AttackPattern pat;
 			pat.add(piece);
 			Assert::AreEqual(1, pat.getPieceCount(piece));
 		}
@@ -89,7 +89,7 @@ public:
 
 	TEST_METHOD(Piece_Count_Total_Matches) {
 		for (int trial = 0; trial < 1000; ++trial) {
-			AtkPat pat;
+			AttackPattern pat;
 			int n = rand() % 7;
 			for (int i = 1; i <= n; ++i) {
 				pat.add(Piece::random());
@@ -105,7 +105,7 @@ public:
 
 	TEST_METHOD(Multi_Add) {
 		for (int trial = 0; trial < 1000; ++trial) {
-			AtkPat pat0;
+			AttackPattern pat0;
 			int counts[7] = { 0 };
 
 			int n = rand() % 7;
@@ -115,7 +115,7 @@ public:
 				counts[randPiece.asIndex()]++;
 			}
 
-			AtkPat pat1;
+			AttackPattern pat1;
 			FOR_PIECE_ALL(piece) {
 				pat1.add(piece, counts[piece.asIndex()]);
 			}
@@ -125,7 +125,7 @@ public:
 	}
 
 	TEST_METHOD(NB_Incremented_Before_P) {
-		AtkPat pat;
+		AttackPattern pat;
 		pat.add(Piece::BISHOP());
 		pat.add(Piece::KNIGHT());
 		pat.add(Piece::PAWN());
@@ -134,7 +134,7 @@ public:
 	}
 
 	TEST_METHOD(Full_Up_0) {
-		AtkPat pat;
+		AttackPattern pat;
 
 		pat.add(Piece::PAWN());
 		pat.add(Piece::PAWN());
@@ -158,7 +158,7 @@ public:
 	}
 
 	TEST_METHOD(Full_Up_1) {
-		AtkPat pat;
+		AttackPattern pat;
 		pat.add(Piece::QUEEN());
 		pat.add(Piece::QUEEN());
 

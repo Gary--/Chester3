@@ -1,5 +1,5 @@
-#include "AttackDefend.h"
-#include "static_exchange.h"
+#include "AttackPattern.h"
+#include "StaticExchange.h"
 #include <algorithm>
 
 
@@ -86,16 +86,16 @@ namespace {
 	
 }
 
-#pragma region AtkPat
-AtkPat::AtkPat() : value(0) {}
-AtkPat::AtkPat(uint8_t value) : value(value) {}
+#pragma region AttackPattern
+AttackPattern::AttackPattern() : value(0) {}
+AttackPattern::AttackPattern(uint8_t value) : value(value) {}
 
-void AtkPat::add(Piece piece) {
+void AttackPattern::add(Piece piece) {
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	value++;
 	value |= pieceBit(piece);
 }
-void AtkPat::add(Piece piece, int n) {
+void AttackPattern::add(Piece piece, int n) {
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	_ASSERTE(n >= 0);
 	if (n == 0) {
@@ -106,33 +106,33 @@ void AtkPat::add(Piece piece, int n) {
 	value |= pieceBit(piece);
 }
 
-bool AtkPat::contains(Piece piece) const{
+bool AttackPattern::contains(Piece piece) const{
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	return (value & pieceBit(piece))!=0;
 }
 
 
-bool AtkPat::isEmpty() const {
+bool AttackPattern::isEmpty() const {
 	return value == 0;
 }
 
 
-int AtkPat::getCount() const {
+int AttackPattern::getCount() const {
 	return value & (uint8_t)0x7; // Count is stored in the least 3 bits.
 }
 
 
-bool AtkPat::operator==(const AtkPat other) const {
+bool AttackPattern::operator==(const AttackPattern other) const {
 	return value == other.value;
 }
 
 
-bool AtkPat::operator!=(const AtkPat other) const {
+bool AttackPattern::operator!=(const AttackPattern other) const {
 	return !(*this == other);
 }
 
 
-std::string AtkPat::str() const {
+std::string AttackPattern::str() const {
 	std::string res;
 	res += '0' + getCount();
 	res += ':';
@@ -146,7 +146,7 @@ std::string AtkPat::str() const {
 	return res;
 }
 
-int AtkPat::getPieceCount(Piece piece) const {
+int AttackPattern::getPieceCount(Piece piece) const {
 	int counts[6] = { 0 };
 	int tot = 0;
 
@@ -187,7 +187,7 @@ int AtkPat::getPieceCount(Piece piece) const {
 	return counts[ind(piece)];
 }
 
-bool AtkPat::isValid() const {
+bool AttackPattern::isValid() const {
 	int tot = 0;
 	bool hasPiece = false;
 	FOR_PIECE_NOT_BISHOP(p) {
@@ -208,8 +208,8 @@ bool AtkPat::isValid() const {
 
 #pragma endregion
 
-#pragma region SEE
-void SEE::init() {
+#pragma region StaticExchange
+void StaticExchange::init() {
 	if (inited) {
 		return;
 	}
@@ -218,8 +218,8 @@ void SEE::init() {
 	FOR_PIECE_ALL(attacker) {
 		for (int i = 0; i < 256; ++i) {
 			for (int j = 0; j < 256; j++) {
-				AtkPat attackers(i);
-				AtkPat defenders(j);
+				AttackPattern attackers(i);
+				AttackPattern defenders(j);
 				SEE_full[attacker.asIndex()][attackers.value][defenders.value] = 
 					attackCostImpl(attacker, attackers, defenders);
 			}
@@ -227,8 +227,8 @@ void SEE::init() {
 	}
 	for (int i = 0; i < 256; ++i) {
 		for (int j = 0; j < 256; j++) {
-			AtkPat attackers(i);
-			AtkPat defenders(j);
+			AttackPattern attackers(i);
+			AttackPattern defenders(j);
 			if (!attackers.isValid() || !defenders.isValid() ||
 				attackers.getCount() == 0) {
 				continue;
@@ -244,7 +244,7 @@ void SEE::init() {
 	}
 }
 
-int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
+int StaticExchange::attackCostImpl(Piece attacker, AttackPattern attackers, AttackPattern defenders) {
 	if (attacker == Piece::BISHOP()) {
 		attacker = Piece::KNIGHT();
 	}
@@ -298,11 +298,11 @@ int SEE::attackCostImpl(Piece attacker, AtkPat attackers, AtkPat defenders) {
 	
 }
 
-int SEE::attackCost(Piece attacker, AtkPat attackers, AtkPat defenders) {
+int StaticExchange::attackCost(Piece attacker, AttackPattern attackers, AttackPattern defenders) {
 	return SEE_full[attacker.asIndex()][attackers.value][defenders.value];
 }
 
-int SEE::attackCostMin(AtkPat attackers, AtkPat defenders) {
+int StaticExchange::attackCostMin(AttackPattern attackers, AttackPattern defenders) {
 	return SEE_min[attackers.value][defenders.value];
 }
 

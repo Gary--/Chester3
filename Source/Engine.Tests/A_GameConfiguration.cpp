@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "chess_macros.h"
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

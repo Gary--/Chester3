@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "BitBoard.h"
 #include <string>
-#include "chess_consts.h"
+#include "Chess.h"
 #define FOR_POSITION_64(p) for(Position p=Position(0);p.index()<64;p=Position(p.index()+1))
 
 class BitBoard;

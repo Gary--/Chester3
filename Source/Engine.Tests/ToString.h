@@ -5,7 +5,7 @@
 #include "BitBoard.h"
 #include "GameConfiguration.h"
 #include "Game.h"
-#include "AttackDefend.h"
+#include "AttackPattern.h"
 #define RETURN_WSTRING(x) std::wstring _s; std::string s(x.str()); _s.assign(s.begin(),s.end());  return _s;
 #define define_specialization(type) template<>static std::wstring ToString<type>(const type& x) {RETURN_WSTRING(x);}
 
@@ -22,7 +22,7 @@ namespace Microsoft
 			define_specialization(GameConfiguration);
 			define_specialization(Piece);
 			define_specialization(Turn);
-			define_specialization(AtkPat);
+			define_specialization(AttackPattern);
 			
 			
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 namespace AttackFieldInit {
 	void KingKnightPawn();

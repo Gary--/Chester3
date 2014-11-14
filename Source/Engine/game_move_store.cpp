@@ -1,9 +1,9 @@
 #include "Game.h"
-#include "attack_fields.h"
+#include "AttackFields.h"
 #include <vector>
 
 namespace {
-	std::vector<UndoData> undoDatas;
+	std::vector<Game_UndoData> undoDatas;
 	std::vector<Move> moves;
 }
 
@@ -11,7 +11,7 @@ void Game::resetMoveManager() {
 	undoDatas.clear();
 	moves.clear();
 	movePtr = 0;
-	cur = UndoData();
+	cur = Game_UndoData();
 }
 
 void Game::addMove(Move move) {
@@ -45,11 +45,11 @@ bool Game::areMovesAvailable() {
 }
 
 void Game::generateAllMoves() {
-	if (cur.movesStored == UndoData::MovesStored::ALL) {
+	if (cur.movesStored == Game_UndoData::MovesStored::ALL) {
 		return;
 	}
 
-	if (cur.movesStored == UndoData::MovesStored::TACTICAL) {
+	if (cur.movesStored == Game_UndoData::MovesStored::TACTICAL) {
 		moves.erase(moves.begin() + movePtr, moves.end());
 		cur.numMovesStored = 0;
 	} else {
@@ -58,19 +58,19 @@ void Game::generateAllMoves() {
 
 	generateMovesImpl(false);
 	
-	cur.movesStored = UndoData::MovesStored::ALL;
+	cur.movesStored = Game_UndoData::MovesStored::ALL;
 }
 
 void Game::generateTacticalMoves() {
-	if (cur.movesStored == UndoData::MovesStored::ALL ||
-		cur.movesStored == UndoData::MovesStored::TACTICAL) {
+	if (cur.movesStored == Game_UndoData::MovesStored::ALL ||
+		cur.movesStored == Game_UndoData::MovesStored::TACTICAL) {
 		return;
 	}
 
 	_ASSERTE(cur.numMovesStored == 0);
 
 	generateMovesImpl(true);
-	cur.movesStored = UndoData::MovesStored::TACTICAL;
+	cur.movesStored = Game_UndoData::MovesStored::TACTICAL;
 }
 
 int Game::getNumValidMoves() {
@@ -78,14 +78,14 @@ int Game::getNumValidMoves() {
 	return cur.numMovesStored;
 }
 
-AllMoveIteratorGenerator Game::getAllMoves() {
+GameMoveIteratorGenerator Game::getAllMoves() {
 	generateAllMoves();
-	return AllMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesStored, false);
+	return GameMoveIteratorGenerator(&moves, movePtr, movePtr+ cur.numMovesStored, false);
 }
 
-AllMoveIteratorGenerator Game::getTacticalMoves() {
+GameMoveIteratorGenerator Game::getTacticalMoves() {
 	generateTacticalMoves();
-	return AllMoveIteratorGenerator(&moves, movePtr, movePtr + cur.numMovesStored, true);
+	return GameMoveIteratorGenerator(&moves, movePtr, movePtr + cur.numMovesStored, true);
 }
 
 
@@ -96,8 +96,8 @@ void Game::pushMove(Move move) {
 
 	undoDatas.push_back(cur);
 	cur.numMovesStored = 0;
-	cur.deadPositionState = UndoData::DeadPositionState::UNKNOWN;
-	cur.movesStored = UndoData::MovesStored::NONE;
+	cur.deadPositionState = Game_UndoData::DeadPositionState::UNKNOWN;
+	cur.movesStored = Game_UndoData::MovesStored::NONE;
 
 }
 

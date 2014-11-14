@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string>
 #include "Position.h"
-#include "chess_consts.h"
+#include "Chess.h"
 
 #define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY(); (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY(); BITS_COPY^=VAR)
 

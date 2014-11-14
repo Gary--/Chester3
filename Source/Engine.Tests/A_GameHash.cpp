@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "chess_macros.h"
-#include "GameHash.h"
+#include "Game_Hash.h"
 #include "Game.h"
 #include "perft.h"
 
@@ -13,15 +12,15 @@ namespace EngineTests {
 	TEST_CLASS(A_GameHash) {
 public:
 	TEST_CLASS_INITIALIZE(Call_GameHashInit) {
-		GameHash::init();
+		Game_Hash::init();
 	}
 
 	TEST_METHOD(Hash_Is_Default_Zero) {
-		Assert::AreEqual((uint64_t)0, GameHash(GameConfiguration()).toInt64());
+		Assert::AreEqual((uint64_t)0, Game_Hash(GameConfiguration()).toInt64());
 	}
 
 	TEST_METHOD(Hash_Seems_To_Change) {
-		GameHash hash(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+		Game_Hash hash(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
 		uint64_t value = hash.toInt64();
 		Assert::AreNotEqual((uint64_t)0, value);
@@ -33,24 +32,24 @@ public:
 	TEST_METHOD(Hash_Does_Not_Use_Turn_Counts) {
 		GameConfiguration conf1("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 		GameConfiguration conf2("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 13 37");
-		Assert::AreEqual(GameHash(conf1).toInt64(), GameHash(conf2).toInt64());
+		Assert::AreEqual(Game_Hash(conf1).toInt64(), Game_Hash(conf2).toInt64());
 	}
 
 	TEST_METHOD(Piece_Toggling) {
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		GameHash hash(conf);
+		Game_Hash hash(conf);
 		uint64_t value0 = hash.toInt64();
 
 		Position pos1(20);
 		conf.setPieceAt(pos1, Turn::WHITE(), Piece::QUEEN());
 		hash.togglePiece(pos1, Turn::WHITE(), Piece::QUEEN());
 		Assert::AreNotEqual(value0, hash.toInt64());
-		Assert::AreEqual(hash.toInt64(), GameHash(conf).toInt64());
+		Assert::AreEqual(hash.toInt64(), Game_Hash(conf).toInt64());
 	}
 
 	TEST_METHOD(Piece_Toggling_2) {
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		GameHash hash(conf);
+		Game_Hash hash(conf);
 		uint64_t value0 = hash.toInt64();
 
 		Position pos("a8");
@@ -58,12 +57,12 @@ public:
 		hash.togglePiece(pos, Turn::BLACK(), Piece::ROOK());
 		hash.togglePiece(pos, Turn::WHITE(), Piece::QUEEN());
 		Assert::AreNotEqual(value0, hash.toInt64());
-		Assert::AreEqual(hash.toInt64(), GameHash(conf).toInt64());
+		Assert::AreEqual(hash.toInt64(), Game_Hash(conf).toInt64());
 	}
 
 	TEST_METHOD(Toggle_Turn) {
 		GameConfiguration conf1("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
-		GameHash hash(conf1);
+		Game_Hash hash(conf1);
 		uint64_t value = hash.toInt64();
 
 		hash.toggleTurn();
@@ -74,18 +73,18 @@ public:
 		GameConfiguration conf1("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
 		
 		GameConfiguration conf2("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		GameHash hash(conf2);
+		Game_Hash hash(conf2);
 		hash.togglePiece(Position("e2"), Turn::WHITE(), Piece::PAWN());
 		hash.togglePiece(Position("e4"), Turn::WHITE(), Piece::PAWN());
 		hash.setEnpeasent(4);
 		hash.toggleTurn();
 
-		Assert::AreEqual(GameHash(conf1).toInt64(), hash.toInt64());
+		Assert::AreEqual(Game_Hash(conf1).toInt64(), hash.toInt64());
 
 	}
 
 	TEST_METHOD(Castling_Rights) {
-		GameHash hash(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+		Game_Hash hash(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 		uint64_t prev = hash.toInt64();
 		FOR_TURN(turn) {
 			FOR_SIDE(side) {

@@ -1,6 +1,6 @@
-#include "Evaluate_simple.h"
+#include "SimpleEvaluation.h"
 #include "Game.h"
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 #include <cstdint>
 namespace {

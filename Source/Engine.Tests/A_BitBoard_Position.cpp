@@ -2,7 +2,6 @@
 #include "CppUnitTest.h"
 #include "BitBoard.h"
 #include "Position.h"
-#include "chess_macros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

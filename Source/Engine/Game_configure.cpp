@@ -14,8 +14,8 @@ void Game::configure(const GameConfiguration& config) {
 		}
 	}
 
-	cur = UndoData();
+	cur = Game_UndoData();
 	cur.check = posAttackedBy(getPieces(curTurn, Piece::KING()).ToPosition(), !curTurn);
-	cur.hash = GameHash(config);
+	cur.hash = Game_Hash(config);
 	integrityCheck();
 }

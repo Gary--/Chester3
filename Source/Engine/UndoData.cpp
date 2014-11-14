@@ -1,6 +1,6 @@
-#include "UndoData.h"
+#include "Game_UndoData.h"
 
-UndoData::UndoData() {
+Game_UndoData::Game_UndoData() {
 	check = false;
 	numMovesStored = 0;
 	movesStored = MovesStored::NONE;

@@ -1,8 +1,8 @@
-#include "attack_fields.h"
+#include "AttackFields.h"
 #include <cstdint>
 #include <vector>
 #include "BitBoard.h"
-#include "Attack_Fields_init.h"
+#include "AttackFieldsInit.h"
 
 using namespace std;
 namespace {

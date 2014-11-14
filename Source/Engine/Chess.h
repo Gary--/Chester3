@@ -2,7 +2,8 @@
 #include <cstdint>
 #include <string>
 
-
+#define FOR_8(x) for (int x = 0; x < 8;++x)
+#define FOR_64(x) for (int x = 0; x < 64;++x)
 
 //Used only for castling
 #define FOR_SIDE(x) for(Side x=Side::LEFT,temp__##__LINE__;x==Side::LEFT || temp__##__LINE__ == Side::LEFT;temp__##__LINE__ = x, x=Side::RIGHT )

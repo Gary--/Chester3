@@ -1,53 +1,53 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "static_exchange.h"
+#include "StaticExchange.h"
 #include <algorithm>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 
 namespace EngineTests {
-	TEST_CLASS(A_SEE) {
+	TEST_CLASS(A_StaticExchange) {
 public:
-	TEST_CLASS_INITIALIZE(Call_SEE_init) {
-		SEE::init();
+	TEST_CLASS_INITIALIZE(Call_StaticExchange_init) {
+		StaticExchange::init();
 	}
 
 	TEST_METHOD(No_Defenders) {
 		FOR_PIECE_ALL(piece) {
-			AtkPat attackers;
+			AttackPattern attackers;
 			attackers.add(piece);
 
-			Assert::AreEqual(0, SEE::attackCost(piece, attackers, AtkPat()));
+			Assert::AreEqual(0, StaticExchange::attackCost(piece, attackers, AttackPattern()));
 		}
 	}
 
 	TEST_METHOD(One_Attacker_One_Defender) {
 		FOR_PIECE_ALL(defender) {
-			AtkPat defenders;
+			AttackPattern defenders;
 			defenders.add(defender);
 
 			FOR_PIECE_ALL(attacker) {
-				AtkPat attackers;
+				AttackPattern attackers;
 				attackers.add(attacker);
 
-				Assert::IsTrue(SEE::attackCost(attacker, attackers, defenders) > 0);
+				Assert::IsTrue(StaticExchange::attackCost(attacker, attackers, defenders) > 0);
 			}
 		}
 	}
 
 	TEST_METHOD(Defended_Pawn) {
 		FOR_PIECE_ALL(piece) {
-			AtkPat attackers, defenders;
+			AttackPattern attackers, defenders;
 			attackers.add(piece);
 			defenders.add(piece);
 
 			attackers.add(Piece::PAWN());
-			if (SEE::attackCost(Piece::PAWN(), attackers, defenders)) {
-				Assert::AreEqual(0, SEE::attackCost(Piece::PAWN(), attackers, defenders));
+			if (StaticExchange::attackCost(Piece::PAWN(), attackers, defenders)) {
+				Assert::AreEqual(0, StaticExchange::attackCost(Piece::PAWN(), attackers, defenders));
 			}
 
-			Assert::AreEqual(0, SEE::attackCost(Piece::PAWN(), attackers, defenders));
+			Assert::AreEqual(0, StaticExchange::attackCost(Piece::PAWN(), attackers, defenders));
 		}
 	}
 
@@ -55,7 +55,7 @@ public:
 	int exchangeValue(char attacker0, std::string pat) {
 		Piece attacker = Piece::fromChar(attacker0);
 
-		AtkPat attackers, defenders;
+		AttackPattern attackers, defenders;
 		attackers.add(attacker);
 
 		for (char c : pat) {
@@ -63,7 +63,7 @@ public:
 			Turn turn = Turn::fromChar(c);
 			(turn == Turn::WHITE()? attackers : defenders).add(piece);
 		}
-		return SEE::attackCost(attacker, attackers, defenders);
+		return StaticExchange::attackCost(attacker, attackers, defenders);
 	}
 
 	TEST_METHOD(SEE_Q_Pr) {
@@ -108,7 +108,7 @@ public:
 
 	TEST_METHOD(SEE_AttackCostMin_Matches_AttackCost) {
 		for (int trials = 0; trials < 1000; ++trials) {
-			AtkPat attackers, defenders;
+			AttackPattern attackers, defenders;
 			int nAtk = 1+ rand() % 6, nDef = rand() % 7;
 			Piece smallestPiece = Piece::UNKNOWN();
 			for (int i = 0; i < nAtk; i++) {
@@ -120,8 +120,8 @@ public:
 				defenders.add(Piece::random());
 			}
 
-			Assert::AreEqual(SEE::attackCost(smallestPiece, attackers, defenders),
-							 SEE::attackCostMin(attackers, defenders));
+			Assert::AreEqual(StaticExchange::attackCost(smallestPiece, attackers, defenders),
+							 StaticExchange::attackCostMin(attackers, defenders));
 		}
 	}
 

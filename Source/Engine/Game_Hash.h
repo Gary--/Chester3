@@ -1,14 +1,14 @@
 #pragma once
-#include "chess_consts.h"
+#include "Chess.h"
 #include <cstdint>
 #include "GameConfiguration.h"
 
-class GameHash {
+class Game_Hash {
 
 
 public:
-	explicit GameHash(const GameConfiguration& conf);
-	GameHash();//undefined
+	explicit Game_Hash(const GameConfiguration& conf);
+	Game_Hash();//undefined
 	static void init();
 
 	void toggleTurn();

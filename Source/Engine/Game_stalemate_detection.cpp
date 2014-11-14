@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 using namespace AttackFields;
 

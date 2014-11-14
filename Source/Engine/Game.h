@@ -2,14 +2,14 @@
 
 #include "BitBoard.h"
 #include "Position.h"
-#include "chess_consts.h"
+#include "Chess.h"
 #include "GameConfiguration.h"
 #include <cstdint>
 #include "Move.h"
-#include "UndoData.h"
-#include "Game_move_iteration.h"
+#include "Game_UndoData.h"
+#include "Game_MoveIterator.h"
 
-class AllMoveIteratorGenerator;
+class GameMoveIteratorGenerator;
 class Game {
 public:
 	// Initing / Configure
@@ -34,8 +34,8 @@ public:
 
 
 	// Querying moves
-	static AllMoveIteratorGenerator getAllMoves();
-	static AllMoveIteratorGenerator getTacticalMoves();
+	static GameMoveIteratorGenerator getAllMoves();
+	static GameMoveIteratorGenerator getTacticalMoves();
 	static int getNumValidMoves();
 	static bool areMovesAvailable();
 
@@ -53,7 +53,7 @@ private:
 
 
 #pragma region Move Manager
-	static UndoData cur;
+	static Game_UndoData cur;
 
 	static int movePtr;
 

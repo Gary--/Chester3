@@ -1,5 +1,5 @@
-#include "attack_fields.h"
-#include "Attack_Fields_init.h"
+#include "AttackFields.h"
+#include "AttackFieldsInit.h"
 
 namespace {
 	bool inited = false;

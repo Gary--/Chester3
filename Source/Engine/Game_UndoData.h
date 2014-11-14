@@ -1,18 +1,18 @@
 #include "Move.h"
-#include "GameHash.h"
+#include "Game_Hash.h"
 
 
 
-struct UndoData {
+struct Game_UndoData {
 private:
 	friend class Game;
 
-	UndoData();
+	Game_UndoData();
 
 	enum class MovesStored : uint8_t { NONE, ALL, TACTICAL };
 	enum class DeadPositionState : uint8_t { UNKNOWN, IS_MOVE, NO_MOVE };
 
-	GameHash hash;
+	Game_Hash hash;
 	Move move;
 	int numMovesStored;
 	MovesStored movesStored;

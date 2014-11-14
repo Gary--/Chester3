@@ -2,14 +2,14 @@
 #include "Game.h"
 #include <vector>
 
-class AllMoveIterator {
+class GameMoveIterator {
 public:
 	Move operator*() const;
 	void operator++();
-	bool operator!=(const AllMoveIterator& other) const;
+	bool operator!=(const GameMoveIterator& other) const;
 
 private:
-	AllMoveIterator(const std::vector<Move>* const moves, uint16_t cur, uint8_t left, bool tacticalOnly);
+	GameMoveIterator(const std::vector<Move>* const moves, uint16_t cur, uint8_t left, bool tacticalOnly);
 	const std::vector<Move>* const moves;
 	uint16_t cur;//current index into the vector
 	uint8_t left;//how many moves left. Only useful for tactical only
@@ -17,19 +17,19 @@ private:
 
 	
 
-	friend class AllMoveIteratorGenerator;
+	friend class GameMoveIteratorGenerator;
 };
 
 
-class AllMoveIteratorGenerator {
+class GameMoveIteratorGenerator {
 public:
-	AllMoveIterator begin();
-	AllMoveIterator end();
+	GameMoveIterator begin();
+	GameMoveIterator end();
 	
 
 private:
 	friend class Game;
-	AllMoveIteratorGenerator(const std::vector<Move>* const moves, uint16_t start, uint16_t finish, bool tacticalOnly);
+	GameMoveIteratorGenerator(const std::vector<Move>* const moves, uint16_t start, uint16_t finish, bool tacticalOnly);
 	
 	const std::vector<Move>* const moves;
 	const uint16_t start;

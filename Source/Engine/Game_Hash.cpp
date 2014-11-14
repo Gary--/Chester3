@@ -1,9 +1,9 @@
-#include "GameHash.h"
-#include "chess_macros.h"
+#include "Game_Hash.h"
+
 
 #pragma warning (disable: 4800)
 
-GameHash::GameHash() {}
+Game_Hash::Game_Hash() {}
 
 namespace {
 	uint64_t zorbist[2][7][64] = { 0 };
@@ -19,7 +19,7 @@ namespace {
 
 
 
-void GameHash::init() {
+void Game_Hash::init() {
 	if (inited) {
 		return;
 	}
@@ -43,7 +43,7 @@ void GameHash::init() {
 	}
 }
 
-GameHash::GameHash(const GameConfiguration& conf) {
+Game_Hash::Game_Hash(const GameConfiguration& conf) {
 	hash = 0;
 	enpeasent = GameConfiguration::NO_ENPEASENT_COLUMN;
 
@@ -77,36 +77,36 @@ GameHash::GameHash(const GameConfiguration& conf) {
 
 }
 
-bool GameHash::getCanCastle(Turn player, Side side) const {
+bool Game_Hash::getCanCastle(Turn player, Side side) const {
 	return canCastle[player.asIndex()][bool(side)];
 }
 
-int GameHash::getEnpeasent() const {
+int Game_Hash::getEnpeasent() const {
 	return enpeasent;
 }
 
-void GameHash::togglePiece(Position position,Turn player, Piece piece ) {
+void Game_Hash::togglePiece(Position position,Turn player, Piece piece ) {
 	hash ^= zorbist[player.asIndex()][piece.asIndex()][position.index()];
 }
 
-void GameHash::setEnpeasent(int value) {
+void Game_Hash::setEnpeasent(int value) {
 	hash ^= enpeasentZorbist[enpeasent];
 	enpeasent = value;
 	hash ^= enpeasentZorbist[enpeasent];
 }
 
-void GameHash::voidCastle(Turn player, Side side) {
+void Game_Hash::voidCastle(Turn player, Side side) {
 	if (canCastle[player.asIndex()][bool(side)]) {
 		canCastle[player.asIndex()][bool(side)] = false;
 		hash ^= castleZorbist[player.asIndex()][bool(side)];
 	}
 }
 
-void GameHash::toggleTurn() {
+void Game_Hash::toggleTurn() {
 	hash = ~hash;
 }
 
-uint64_t GameHash::toInt64() const {
+uint64_t Game_Hash::toInt64() const {
 	return hash;
 }
 

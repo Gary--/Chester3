@@ -1,6 +1,6 @@
 #include "BitBoard.h"
 #include <stdlib.h>
-#include "chess_macros.h"
+#include "Chess.h"
 #include "ChessAssert.h"
 #include "Position.h"
 

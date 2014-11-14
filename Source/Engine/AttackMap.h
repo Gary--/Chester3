@@ -1,10 +1,10 @@
 #pragma once
-#include "AttackDefend.h"
+#include "AttackPattern.h"
 #include "Move.h"
 
-// Manages computing of AtkPat
-// By default will compute AtkPat for squares on demand.
-// setPrecompute will efficiently compute the AtkPat for every square
+// Manages computing of AttackPattern
+// By default will compute AttackPattern for squares on demand.
+// setPrecompute will efficiently compute the AttackPattern for every square
 class AttackMap {
 	void synchronize();
 
@@ -13,7 +13,7 @@ class AttackMap {
 	void notifyUndoMove(Move move, Turn turn);
 
 	// Control turn has on the position.
-	AtkPat getAtkPat(Turn turn, Position position);
+	AttackPattern getAtkPat(Turn turn, Position position);
 private:
 
 };

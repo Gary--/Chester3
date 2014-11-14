@@ -1,5 +1,4 @@
 #include "GameConfiguration.h"
-#include "chess_macros.h"
 #include <sstream>
 #include "Game.h"
 

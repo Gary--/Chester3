@@ -1,4 +1,4 @@
-#include "perft.h"
+#include "Perft.h"
 #include "Game.h"
 #include <set>
 using namespace std;

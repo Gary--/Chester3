@@ -1,6 +1,6 @@
 #include "Search.h"
 #include "Game.h"
-#include "Evaluate_simple.h"
+#include "SimpleEvaluation.h"
 void Search::searchMakeMove(Move move) {
 	SimpleEvaluation::notifyMove(move, Game::getTurn());
 	Game::makeMove(move);

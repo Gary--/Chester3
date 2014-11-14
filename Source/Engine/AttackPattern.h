@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "chess_consts.h"
+#include "Chess.h"
 #include <string>
 
 
@@ -30,9 +30,9 @@
 
 #define FOR_PIECE_NOT_BISHOP(x) for (Piece x = Piece::PAWN(); x <= Piece::KING(); x = Piece(x.asIndex()  + (x == Piece::KNIGHT() ? 2 : 1)))
 
-class AtkPat {
+class AttackPattern {
 public:
-	AtkPat();
+	AttackPattern();
 	void add(Piece piece);
 	void add(Piece piece, int n);
 
@@ -40,8 +40,8 @@ public:
 	bool isEmpty() const;
 	int getCount() const;
 
-	bool operator==(const AtkPat other) const;
-	bool operator!=(const AtkPat other) const;
+	bool operator==(const AttackPattern other) const;
+	bool operator!=(const AttackPattern other) const;
 	std::string str() const;// Example: "3:NQ"
 
 	// ONLY CALLED BY INIT
@@ -49,8 +49,8 @@ public:
 
 private:
 	bool isValid() const;
-	AtkPat(uint8_t value);
+	AttackPattern(uint8_t value);
 	uint8_t value;
-	friend class SEE;
+	friend class StaticExchange;
 };
 

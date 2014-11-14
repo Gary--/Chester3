@@ -1,5 +1,5 @@
 #pragma once
-#include "chess_consts.h"
+#include "Chess.h"
 #include "Position.h"
 
 enum class MoveType : uint8_t{

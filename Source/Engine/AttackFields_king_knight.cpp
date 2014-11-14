@@ -1,6 +1,5 @@
-#include "attack_fields.h"
-#include "Attack_Fields_init.h"
-#include "chess_macros.h"
+#include "AttackFields.h"
+#include "AttackFieldsInit.h"
 #include <cmath>
 #include <algorithm>
 

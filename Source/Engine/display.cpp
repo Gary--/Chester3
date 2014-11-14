@@ -1,7 +1,7 @@
 #include "display.h"
 #include "Game.h"
 #include <iostream>
-#include "chess_consts.h"
+#include "Chess.h"
 
 using namespace std;
 

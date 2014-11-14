@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "attack_fields.h"
+#include "AttackFields.h"
 
 Piece Game::pieces[64];
 Turn Game::curTurn;
@@ -9,11 +9,17 @@ BitBoard Game::WA, Game::BA;
 BitBoard Game::ALL;
 
 int Game::movePtr = 0;
-UndoData Game::cur;
+Game_UndoData Game::cur;
+
+
+Game::Game() {}
+Game::~Game() {}
+
 
 namespace {
 	bool inited = false;
 }
+
 
 void Game::init() {
 	if (inited) {
@@ -21,7 +27,7 @@ void Game::init() {
 	}
 	inited = true;
 
-	GameHash::init();
+	Game_Hash::init();
 	AttackFields::init();
 
 	reset();
