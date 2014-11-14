@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
+    <ClInclude Include="AttackBoards.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_SearchConfiguration.h" />
