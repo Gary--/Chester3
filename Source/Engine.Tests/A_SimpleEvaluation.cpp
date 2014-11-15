@@ -9,7 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(E_SimpleEvaluation) {
+	TEST_CLASS(A_SimpleEvaluation) {
 public:
 
 #pragma region Logic checks
