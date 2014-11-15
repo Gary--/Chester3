@@ -161,12 +161,6 @@
     <ClCompile Include="AttackFields_blocking_pinning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AttackFields_castling_pawns.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AttackFields_king_knight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AttackPattern_StaticExchange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -201,6 +195,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Evaluation_material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Evaluation_mobility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackFields_castling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackFields_king_knight_pawn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

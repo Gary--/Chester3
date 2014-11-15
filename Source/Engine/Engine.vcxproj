@@ -51,14 +51,15 @@
     <ClCompile Include="AttackPattern_StaticExchange.cpp" />
     <ClCompile Include="AttackFields_bishop_rook.cpp" />
     <ClCompile Include="AttackFields_blocking_pinning.cpp" />
-    <ClCompile Include="AttackFields_castling_pawns.cpp" />
+    <ClCompile Include="AttackFields_castling.cpp" />
     <ClCompile Include="AttackFields__init.cpp" />
-    <ClCompile Include="AttackFields_king_knight.cpp" />
+    <ClCompile Include="AttackFields_king_knight_pawn.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Evaluation_material.cpp" />
+    <ClCompile Include="Evaluation_mobility.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
