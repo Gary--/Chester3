@@ -84,6 +84,9 @@
     <ClInclude Include="Game_MoveIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Evaluation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -192,6 +195,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game_UndoData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Evaluation__main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Evaluation_material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

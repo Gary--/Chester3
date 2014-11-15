@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="AttackMap.h" />
+    <ClInclude Include="Evaluation.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_SearchConfiguration.h" />
@@ -57,6 +58,8 @@
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Evaluation_material.cpp" />
+    <ClCompile Include="Evaluation__main.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="Game_Hash.cpp" />
