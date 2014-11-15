@@ -13,6 +13,7 @@ public:
 	static BitBoard knightTargs(BitBoard knights);
 
 	static BitBoard pawnTargs(Position position, Turn turn);
+	static BitBoard pawnTargs(BitBoard pawns, Turn turn);
 	static BitBoard bishopTargs(Position position, BitBoard blockers);
 	static BitBoard rookTargs(Position position, BitBoard blockers);
 	static BitBoard queenTargs(Position position, BitBoard blockers);
