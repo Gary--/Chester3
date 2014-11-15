@@ -77,5 +77,47 @@ public:
 		patCheck("1:P", Turn::WHITE(), "d6");
 	}
 
+	void assert_onTheFly_and_precompute_matchImpl(int depth) {
+		AttackPattern pats[2][128];
+
+		FOR_TURN(turn) {
+			FOR_POSITION_64(pos) {
+				pats[turn.asIndex()][pos.index()] = AttackMap::getAttackPattern(turn, pos);
+			}
+		}
+		AttackMap::precompute();
+		FOR_TURN(turn) {
+			FOR_POSITION_64(pos) {
+				Assert::AreEqual(pats[turn.asIndex()][pos.index()],
+								 AttackMap::getAttackPattern(turn, pos));
+			}
+		}
+
+		if (depth == 0) {
+			return;
+		}
+
+		for (Move move : Game::getAllMoves()) {
+			Game::makeMove(move);
+			AttackMap::notifyMove(move, !Game::getTurn());
+			assert_onTheFly_and_precompute_matchImpl(depth - 1);
+			Game::undoMove();
+			AttackMap::notifyUndoMove(move, Game::getTurn());
+		}
+	}
+	void assertMatch(const char* FEN, int depth) {
+		Game::configure(GameConfiguration(FEN));
+		AttackMap::synchronize();
+		assert_onTheFly_and_precompute_matchImpl(depth);
+	}
+
+	TEST_METHOD(onTheFly_and_precompute) {
+		assertMatch("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -", 2);
+		assertMatch("8/4n3/3bp3/3BP3/K7/8/1k6/8 w - -", 2);
+		assertMatch("8/3r4/1p2K3/4p1p1/3N1R2/2k2n2/3RQNP1/5q2 b - -", 2);
+		assertMatch("1b2B3/8/1k6/8/4pN2/1KP5/8/7q w - -", 2);
+		assertMatch("1b5q/3B4/1k6/8/2P1pN2/1K6/8/8 b - -", 2);
+
+	}
 	};
 }

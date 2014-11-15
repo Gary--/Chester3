@@ -9,7 +9,7 @@ class AttackMap {
 public:
 	static void synchronize();
 
-	static bool precompute();
+	static void precompute();
 	static void notifyMove(Move move, Turn turn);
 	static void notifyUndoMove(Move move, Turn turn);
 
