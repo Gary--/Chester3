@@ -20,7 +20,7 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 
 	if (depth == 0) {
 		Search_SearchResult result;
-		result.score = SimpleEvaluation::evaluate();
+		result.score = SimpleEvaluation::bothAll();
 		return result;
 	}
 	

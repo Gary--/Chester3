@@ -2,10 +2,10 @@
 
 class SimpleEvaluation {
 public:
-	static int evaluate();
-	static int evaluateFull(Turn turn);
-	static int evaluateMaterial(Turn turn);
-	static int evaluatePosition(Turn turn);
+	static int bothAll();// Positive for advantage of turn player
+	static int all(Turn turn);
+	static int material(Turn turn);
+	static int position(Turn turn);
 
 	static void synchronize();
 

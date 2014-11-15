@@ -111,7 +111,7 @@ int8_t pieceSquare[7][64] = {
 
 	// fraction of material that is gone.
 	double materialLeft(Turn turn) {
-		return SimpleEvaluation::evaluateMaterial(turn) / 4800.0;
+		return SimpleEvaluation::material(turn) / 4800.0;
 	}
 
 
@@ -158,17 +158,17 @@ int8_t pieceSquare[7][64] = {
 	}
 }
 
-int SimpleEvaluation::evaluate() {
-	return evaluateFull(Game::getTurn()) - evaluateFull(!Game::getTurn());
+int SimpleEvaluation::bothAll() {
+	return all(Game::getTurn()) - all(!Game::getTurn());
 }
 
-int SimpleEvaluation::evaluateFull(Turn turn) {
-	return evaluateMaterial(turn) + evaluatePosition(turn);
+int SimpleEvaluation::all(Turn turn) {
+	return material(turn) + position(turn);
 }
-int SimpleEvaluation::evaluateMaterial(Turn turn) {
+int SimpleEvaluation::material(Turn turn) {
 	return matScores[turn.asIndex()];
 }
-int SimpleEvaluation::evaluatePosition(Turn turn) {
+int SimpleEvaluation::position(Turn turn) {
 	double earliness = materialLeft(!turn);
 
 	Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();

@@ -19,14 +19,14 @@ public:
 
 		SimpleEvaluation::synchronize();
 		FOR_TURN(turn) {
-			Assert::AreNotEqual(0, SimpleEvaluation::evaluateMaterial(turn));
-			Assert::AreNotEqual(0, SimpleEvaluation::evaluatePosition(turn));
+			Assert::AreNotEqual(0, SimpleEvaluation::material(turn));
+			Assert::AreNotEqual(0, SimpleEvaluation::position(turn));
 		}
 
-		Assert::AreEqual(SimpleEvaluation::evaluateMaterial(Turn::WHITE()),
-						 SimpleEvaluation::evaluateMaterial(Turn::BLACK()));
-		Assert::AreEqual(SimpleEvaluation::evaluatePosition(Turn::WHITE()),
-						 SimpleEvaluation::evaluatePosition(Turn::BLACK()));
+		Assert::AreEqual(SimpleEvaluation::material(Turn::WHITE()),
+						 SimpleEvaluation::material(Turn::BLACK()));
+		Assert::AreEqual(SimpleEvaluation::position(Turn::WHITE()),
+						 SimpleEvaluation::position(Turn::BLACK()));
 	}
 
 	TEST_METHOD(Full_Evaluation_Is_Sum) {
@@ -34,9 +34,9 @@ public:
 		Game::configure(conf);
 
 		FOR_TURN(turn) {
-			Assert::AreEqual(SimpleEvaluation::evaluateFull(turn),
-							 SimpleEvaluation::evaluateMaterial(turn) +
-							 SimpleEvaluation::evaluatePosition(turn));
+			Assert::AreEqual(SimpleEvaluation::all(turn),
+							 SimpleEvaluation::material(turn) +
+							 SimpleEvaluation::position(turn));
 		}
 	}
 
@@ -50,7 +50,7 @@ public:
 
 			int initals[2];// Score at the original configuration
 			FOR_TURN(turn) {
-				initals[turn.asIndex()] = SimpleEvaluation::evaluateFull(turn);
+				initals[turn.asIndex()] = SimpleEvaluation::all(turn);
 			}
 
 			std::vector<int> scores[2];//for each side using incremental
@@ -59,14 +59,14 @@ public:
 				SimpleEvaluation::notifyMove(move, !Game::getTurn());
 
 				FOR_TURN(turn) {// Save the score this move
-					scores[turn.asIndex()].push_back(SimpleEvaluation::evaluateFull(turn));
+					scores[turn.asIndex()].push_back(SimpleEvaluation::all(turn));
 				}
 
 				Game::undoMove();
 				SimpleEvaluation::notifyUndoMove(move, Game::getTurn());
 
 				FOR_TURN(turn) {// Make sure original score is preserved.
-					Assert::AreEqual(initals[turn.asIndex()], SimpleEvaluation::evaluateFull(turn));
+					Assert::AreEqual(initals[turn.asIndex()], SimpleEvaluation::all(turn));
 				}
 			}
 
@@ -77,7 +77,7 @@ public:
 				SimpleEvaluation::synchronize();
 				FOR_TURN(turn) {
 					Assert::AreEqual(scores[turn.asIndex()][i],
-									 SimpleEvaluation::evaluateFull(turn));
+									 SimpleEvaluation::all(turn));
 				}
 				Game::undoMove();
 
@@ -109,7 +109,7 @@ public:
 	int eval(GameConfiguration conf, Turn turn) {
 		Game::configure(conf);
 		SimpleEvaluation::synchronize();
-		return SimpleEvaluation::evaluateFull(turn);
+		return SimpleEvaluation::all(turn);
 	}
 	int eval(const char* FEN, Turn turn) {
 		return eval(GameConfiguration(FEN), turn);
