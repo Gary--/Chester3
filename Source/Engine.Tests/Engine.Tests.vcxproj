@@ -227,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A_AttackMap.cpp" />
+    <ClCompile Include="A_Evaluation.cpp" />
     <ClCompile Include="D_100_perft_cases.cpp" />
     <ClCompile Include="A_AttackPattern.cpp" />
     <ClCompile Include="A_Game_make_nullmove.cpp" />
@@ -252,7 +253,7 @@
     <ClCompile Include="A_Move.cpp" />
     <ClCompile Include="F_Search_Basic_BestMove.cpp" />
     <ClCompile Include="A_StaticExchange.cpp" />
-    <ClCompile Include="E_SimpleEvaluation.cpp" />
+    <ClCompile Include="A_SimpleEvaluation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
