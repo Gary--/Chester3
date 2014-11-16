@@ -172,7 +172,7 @@ namespace {
 							res |= BitBoard(r2, c2);
 						}
 
-						if ((BitBoard(r2, c2) & board) != BitBoard::EMPTY()) {
+						if ((BitBoard(r2, c2) & board).isNotEmpty()) {
 							break;
 						}
 						r2 += dr;

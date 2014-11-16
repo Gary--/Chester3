@@ -57,7 +57,7 @@ void Game::makeMove(Move move) {
 				BitBoard rightProblems = (getPieces(curTurn, Piece::QUEEN()) | getPieces(curTurn, Piece::ROOK()))&
 					AttackFields::rookTargs(theirKingPos, newBlockers);
 
-				if ((diagProblems | rightProblems) == BitBoard::EMPTY()) {
+				if ((diagProblems | rightProblems).isEmpty()) {
 					cur.hash.setEnpeasent(toPos.col());
 					break;
 				}
@@ -120,9 +120,9 @@ void Game::makeMove(Move move) {
 		BitBoard theirKingBit = getPieces(!curTurn, Piece::KING());
 
 		cur.check = false;
-		if ((piece == Piece::PAWN() && (AttackFields::pawnTargs(toPos, curTurn)&theirKingBit) != BitBoard::EMPTY()) ||
+		if ((piece == Piece::PAWN() && (AttackFields::pawnTargs(toPos, curTurn)&theirKingBit).isNotEmpty()) ||
 			((piece == Piece::KNIGHT() || (move.isPromotion() && move.promotionPiece() == Piece::KNIGHT())) &&
-			(AttackFields::knightTargs(toPos)&theirKingBit) != BitBoard::EMPTY())) {
+			(AttackFields::knightTargs(toPos)&theirKingBit).isNotEmpty())) {
 			cur.check = true;
 		}
 		if (cur.check == false && posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {

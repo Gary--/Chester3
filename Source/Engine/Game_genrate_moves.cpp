@@ -63,8 +63,8 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		rightLosThreats = TR & AttackFields::rookTargs(kingPos, ALL);
 		diagLosThreats = TB & AttackFields::bishopTargs(kingPos, ALL);
 
-		_ASSERTE((rightLosThreats & diagLosThreats) == BitBoard::EMPTY());
-		_ASSERTE(((rightLosThreats | diagLosThreats)&jumpThreats) == BitBoard::EMPTY());
+		_ASSERTE((rightLosThreats & diagLosThreats).isEmpty());
+		_ASSERTE(((rightLosThreats | diagLosThreats)&jumpThreats).isEmpty());
 	}
 	const BitBoard threats = jumpThreats | rightLosThreats | diagLosThreats;
 	_ASSERTE(threats.count() <= 2);
@@ -100,7 +100,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		}
 	}
 	const BitBoard allPinned = rightPinned | diagPinned;
-	_ASSERTE((rightPinned & diagPinned) == BitBoard::EMPTY());
+	_ASSERTE((rightPinned & diagPinned).isEmpty());
 	_ASSERTE(allPinned == (allPinned & M));//is a subset of my pieces
 
 	// In your face LOS same as jump. Do this after pinning!
@@ -151,7 +151,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		}
 
 		// The only way to respond to a jump threat was to capture.
-		if (jumpThreats != BitBoard::EMPTY()) {
+		if (jumpThreats.isNotEmpty()) {
 			return;
 		} else { // If it was an LOS threat, we can block also.
 			BitBoard blocking = AttackFields::blockingTargs(kingPos, threatPos) &~ALL;;
@@ -265,8 +265,8 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 			FOR_BIT(pawn, AttackFields::pawnTargs(to, !curTurn) & MP  & ~rightPinned) {
 				Position from = pawn.ToPosition();
 				BitBoard newBlockers = ALL ^ to.asSingletonBitboard() ^ pawn ^ capturedBit;
-				if ((AttackFields::rookTargs(kingPos, newBlockers) & TR) == BitBoard::EMPTY() &&
-					(AttackFields::bishopTargs(kingPos, newBlockers) & TB) == BitBoard::EMPTY()) {
+				if ((AttackFields::rookTargs(kingPos, newBlockers) & TR).isEmpty() &&
+					(AttackFields::bishopTargs(kingPos, newBlockers) & TB).isEmpty()) {
 					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN(), Piece::EMPTY()));
 				}
 			}
@@ -277,8 +277,8 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 		if (!tacticalOnly) {
 			FOR_SIDE(side) {
 				if (getCanCastle(curTurn, side) &&
-					(ALL & AttackFields::castleEmptySquares(curTurn, side)) == BitBoard::EMPTY() &&
-					(danger & AttackFields::castleSafeSquares(curTurn, side)) == BitBoard::EMPTY()) {
+					(ALL & AttackFields::castleEmptySquares(curTurn, side)).isEmpty() &&
+					(danger & AttackFields::castleSafeSquares(curTurn, side)).isEmpty()) {
 					MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
 					Position to(curTurn == Turn::WHITE()? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
 

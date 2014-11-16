@@ -105,7 +105,7 @@ std::string BitBoard::str() const
 }
 
 bool  BitBoard::contains(Position position) const{
-	return (position.asSingletonBitboard() & (*this)) != BitBoard::EMPTY();
+	return (position.asSingletonBitboard() & (*this)).isNotEmpty();
 }
 
 

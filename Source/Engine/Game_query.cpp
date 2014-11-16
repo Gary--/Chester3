@@ -60,7 +60,7 @@ Piece Game::getPieceAt(Position pos) {
 }
 
 Turn Game::getOwnerAt(Position pos) {
-	return (pos.asSingletonBitboard() & WA) == BitBoard::EMPTY() ? Turn::BLACK() : Turn::WHITE();
+	return (pos.asSingletonBitboard() & WA).isEmpty() ? Turn::BLACK() : Turn::WHITE();
 }
 
 bool Game::getCanCastle(Turn turn, Side side) {

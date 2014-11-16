@@ -4,14 +4,14 @@
 
 
 bool Game::posAttackedByJump(Position position, Turn turn) {
-	return (AttackFields::kingTargs(position) & getPieces(turn, Piece::KING())) != BitBoard::EMPTY() ||
-		(AttackFields::knightTargs(position) & getPieces(turn, Piece::KNIGHT())) != BitBoard::EMPTY() ||
-		(AttackFields::pawnTargs(position, !turn) & getPieces(turn, Piece::PAWN())) != BitBoard::EMPTY();
+	return (AttackFields::kingTargs(position) & getPieces(turn, Piece::KING())).isNotEmpty() ||
+		(AttackFields::knightTargs(position) & getPieces(turn, Piece::KNIGHT())).isNotEmpty() ||
+		(AttackFields::pawnTargs(position, !turn) & getPieces(turn, Piece::PAWN())).isNotEmpty();
 }
 
 bool Game::posAttackedByLOS(Position position, Turn turn) {
-	return (AttackFields::bishopTargs(position, ALL) & (getPieces(turn, Piece::BISHOP()) | getPieces(turn, Piece::QUEEN()))) != BitBoard::EMPTY() ||
-		(AttackFields::rookTargs(position, ALL) & (getPieces(turn, Piece::ROOK()) | getPieces(turn, Piece::QUEEN()))) != BitBoard::EMPTY();
+	return (AttackFields::bishopTargs(position, ALL) & (getPieces(turn, Piece::BISHOP()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty() ||
+		(AttackFields::rookTargs(position, ALL) & (getPieces(turn, Piece::ROOK()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty();
 }
 
 bool Game::posAttackedBy(Position position, Turn turn) {

@@ -10,7 +10,7 @@ void Game::integrityCheck() {
 #ifdef _DEBUG
 
 	_ASSERTE(ALL == (WA ^ BA));
-	_ASSERTE((WA & BA) == BitBoard::EMPTY());
+	_ASSERTE((WA & BA).isEmpty());
 
 	FOR_TURN(turn) {
 		BitBoard turnAll = BitBoard::EMPTY();
