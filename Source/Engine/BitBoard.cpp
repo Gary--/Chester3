@@ -211,6 +211,17 @@ BitBoard BitBoard::antiDiagonalBits(int i) {
 }
 
 
+BitBoard BitBoard::rowsLessThan(int r) {
+	ChessAssert::Assert_8(r);
+	return BitBoard((1ULL << (8 * r)) - 1ULL);
+}
+
+BitBoard BitBoard::rowsGreaterThan(int r) {
+	ChessAssert::Assert_8(r);
+#pragma warning (disable: 4146) //negating unsigned
+	return BitBoard(-(2ULL << (8 * r + 7)));
+#pragma warning (default: 4146)
+}
 
 BitBoard BitBoard::random(){
 	int size = BitBoard(RAND_MAX).count(), n = 0;

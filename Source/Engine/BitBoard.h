@@ -98,6 +98,12 @@ public:
 	//	0 | 0  1  2  3  4  5  6  7
 	static BitBoard antiDiagonalBits(int i);
 
+	// rowBits(0) | rowBits(1) | ... | rowBits(r-1)
+	static BitBoard rowsLessThan(int r);
+	
+	// rowBits(r+1) | ... | rowBits(7)
+	static BitBoard rowsGreaterThan(int r);
+
 	static BitBoard random();
 };
 

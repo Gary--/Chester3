@@ -91,6 +91,22 @@ Position Position::shiftBackward(Turn turn) const {
 	return shiftForward(!turn);
 }
 
+BitBoard Position::squaresAbove() const{
+	return BitBoard::rowsLessThan(row());
+}
+
+BitBoard Position::squaresBelow() const {
+	return BitBoard::rowsGreaterThan(row());
+}
+
+BitBoard Position::squaresForward(Turn turn) const {
+	return turn == Turn::WHITE() ? squaresAbove() : squaresBelow();
+}
+
+BitBoard Position::squaresBackward(Turn turn) const {
+	return squaresForward(!turn);
+}
+
 BitBoard Position::asSingletonBitboard() const
 {
 	AssertValid();

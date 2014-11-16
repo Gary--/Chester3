@@ -44,6 +44,13 @@ public:
 	Position shiftForward(Turn turn) const;
 	Position shiftBackward(Turn turn) const;
 
+	// Not including the current row
+	BitBoard squaresAbove() const;
+	BitBoard squaresBelow() const;
+	BitBoard squaresForward(Turn turn) const;
+	BitBoard squaresBackward(Turn turn) const;
+
+
 	BitBoard asSingletonBitboard() const;
 	std::string str() const;
 };

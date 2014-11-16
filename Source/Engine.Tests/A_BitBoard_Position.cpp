@@ -289,5 +289,35 @@ namespace EngineTests
 				Assert::AreEqual(pos.mirror(), pos.perspective(Turn::BLACK()));
 			}
 		}
+
+		TEST_METHOD(BitBoard_rowsLessThan) {
+			FOR_8(r){
+				BitBoard before = BitBoard::EMPTY();
+				for (int i = 0; i < r; ++i) {
+					before |= BitBoard::rowBits(i);
+				}
+				Assert::AreEqual(before, BitBoard::rowsLessThan(r));
+
+
+			}
+		}
+		TEST_METHOD(BitBoard_rowsGreaterThan) {
+			FOR_8(r) {
+				BitBoard after = BitBoard::EMPTY();
+				for (int i = r + 1; i < 8; ++i) {
+					after |= BitBoard::rowBits(i);
+				}
+				Assert::AreEqual(after, BitBoard::rowsGreaterThan(r));
+			}
+		}
+		TEST_METHOD(Position_Squares_Forward_Backward) {
+			FOR_POSITION_64(pos) {
+				Assert::AreEqual(BitBoard::rowsLessThan(pos.row()), pos.squaresAbove());
+				Assert::AreEqual(BitBoard::rowsGreaterThan(pos.row()), pos.squaresBelow());
+
+				Assert::AreEqual(pos.squaresForward(Turn::WHITE()), pos.squaresBackward(Turn::BLACK()));
+				Assert::AreEqual(pos.squaresAbove(), pos.squaresForward(Turn::WHITE()));
+			}
+		}
 	};
 }
