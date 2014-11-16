@@ -53,7 +53,7 @@ public:
 
 
 
-	
+	bool isEmpty() const;
 
 	friend bool operator==(const BitBoard bb1, const BitBoard bb2);
 	friend bool operator!=(const BitBoard bb1, const BitBoard bb2);

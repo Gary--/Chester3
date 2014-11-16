@@ -55,6 +55,9 @@ BitBoard BitBoard::operator^=(const BitBoard other){
 	return BitBoard(value);
 }
 
+bool BitBoard::isEmpty() const {
+	return *this == EMPTY();
+}
 
 BitBoard const BitBoard::LSB(){
 #pragma warning( disable : 4146)
