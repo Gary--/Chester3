@@ -52,7 +52,7 @@ public:
 	static BitBoard EDGE_SQUARES();
 
 
-
+	bool isNotEmpty() const;
 	bool isEmpty() const;
 
 	friend bool operator==(const BitBoard bb1, const BitBoard bb2);
