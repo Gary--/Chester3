@@ -1,6 +1,8 @@
 #include "Game.h"
 #include <crtdbg.h>
 #include <iostream>
+#include "Game_Hash.h"
+#include "Game_UndoData.h"
 
 using namespace std;
 void Game::integrityCheck() {

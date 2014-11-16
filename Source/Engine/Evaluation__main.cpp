@@ -1,6 +1,19 @@
 #include "Evaluation.h"
 
+namespace {
+	bool inited = false;
+}
+void Evaluation::init() {
+	if (inited) {
+		return;
+	}
+	inited = true;
+
+	initPawns();
+}
+
 void Evaluation::synchronize() {
+	init();
 	synchronizeMaterial();
 }
 

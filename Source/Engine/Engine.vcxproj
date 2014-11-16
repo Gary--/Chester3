@@ -58,6 +58,9 @@
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Evaluate_misc.cpp" />
+    <ClCompile Include="Evaluation_init_pawns.cpp" />
+    <ClCompile Include="Evaluation_kingDanger.cpp" />
     <ClCompile Include="Evaluation_material.cpp" />
     <ClCompile Include="Evaluation_mobility.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />

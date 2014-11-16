@@ -94,5 +94,5 @@ int Evaluation::materialBalance() {
 	
 	const double tradeBonusFact = 0.2;
 
-	return (w - b)*(1.0 + matGone*tradeBonusFact);
+	return (int)((w - b)*(1.0 + matGone*tradeBonusFact));
 }

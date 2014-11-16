@@ -12,7 +12,7 @@ namespace EngineTests {
 	TEST_CLASS(A_Evaluation) {
 public:
 
-#pragma region Logic checks
+
 	TEST_METHOD(Non_zero_symetrical) {
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
 		Game::configure(conf);
@@ -20,13 +20,7 @@ public:
 		Evaluation::synchronize();
 		FOR_TURN(turn) {
 			Assert::AreNotEqual(0, Evaluation::material(turn));
-			//Assert::AreNotEqual(0, Evaluation::evaluatePosition(turn));
 		}
-
-		Assert::AreEqual(Evaluation::material(Turn::WHITE()),
-						 Evaluation::material(Turn::BLACK()));
-		//Assert::AreEqual(Evaluation::evaluatePosition(Turn::WHITE()),
-		//				 Evaluation::evaluatePosition(Turn::BLACK()));
 	}
 	void confSync(GameConfiguration conf) {
 		Game::configure(conf);
@@ -87,7 +81,35 @@ public:
 		Assert::IsTrue(Evaluation::materialBalance() < b2);
 	}
 
-#pragma endregion
+	void assertSymmetry(const char* FEN) {
+		FOR_TURN(turn) {
+			const Turn other = !turn;
+			GameConfiguration conf(FEN);
+
+			confSync(conf);
+			int material = Evaluation::material(turn);
+			int materialBalence = Evaluation::materialBalance();
+			int mobility = Evaluation::mobility();
+			int kingDanger = Evaluation::kingDanger(turn);
+			int misc = Evaluation::misc(turn);
+
+			confSync(conf.mirror());
+			Assert::AreEqual(material, Evaluation::material(other));
+			Assert::AreEqual(-materialBalence, Evaluation::materialBalance());
+			Assert::AreEqual(-mobility, Evaluation::mobility());
+			Assert::AreEqual(kingDanger, Evaluation::kingDanger(other));
+			Assert::AreEqual(misc, Evaluation::misc(other));
+		}
+	}
+
+
+	TEST_METHOD(Symmetry) {
+		assertSymmetry("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		assertSymmetry("rnbqkbnr/pppp3p/5N2/4ppp1/8/8/PPPPPPPP/RNBQKB1R w - -");
+		assertSymmetry("rnbqkbnr/pppppppp/8/8/8/2N2N2/PPPPPPPP/R1BQKB1R w - -");
+		assertSymmetry("rnbqkbnr/p2pp3/2p2p1p/1p4p1/8/2N2N2/PPPPPPPP/R1BQKB1R w - -");
+	}
+
 	};
 }
 

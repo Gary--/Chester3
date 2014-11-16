@@ -3,7 +3,7 @@
 
 class Evaluation {
 public:
-
+	static void init();
 
 	// 1 for full on lategame brawl, 0 for just started
 	static double lateness();
@@ -12,10 +12,12 @@ public:
 	static int material(Turn turn);
 
 	// [turn's mat - other's mat] and adjustments
-	// Positive values are good for white.
+	// Positive for white advantage.
 	static int materialBalance();
 	
-	static int mobility(Turn turn);
+	// Positive for white advantage.
+	static int mobility();
+
 	static int kingDanger(Turn turn);// positive values Turn's king is in danger
 	static int pawns(Turn turn);
 	static int center(Turn turn);
@@ -24,9 +26,19 @@ public:
 	static void synchronize();
 	static void notifyMove(Move move, Turn turn);
 	static void notifyUndoMove(Move move, Turn turn);
+
+	// Methods exposed for testing purposes
+	static int exactMobility(Turn turn);
+	static int relativeMobility(Turn turn);
 private:
 
 	static void synchronizeMaterial();
 	static void notifyMoveMaterial(Move move, Turn turn);
 	static void notifyUndoMoveMaterial(Move move, Turn turn);
+
+
+	static void initPawns();
+
+	// If we have a pawn here, where opposite pawns could be to stop us
+	static BitBoard opposingPawns(Position position, Turn turn);
 };
