@@ -141,6 +141,11 @@ public:
 					   eval("rnbqkbnr/pppppppp/8/4K3/8/8/PPPPPPPP/RNBQ1BNR w - - ", Turn::WHITE()));
 	}
 	
+	TEST_METHOD(King_In_Center_Late_Is_Good) {
+		Assert::IsTrue(eval("3k4/8/8/8/2K5/8/P7/8 w - - ", Turn::WHITE()) >
+					   eval("3k4/8/8/8/8/8/P7/K7 w - - ", Turn::WHITE()));
+	}
+
 	TEST_METHOD(Pawns_Forward_Is_Good) {
 		Assert::IsTrue(eval("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - ", Turn::WHITE()) <
 					   eval("rnbqkbnr/pppppppp/8/8/3PP3/2P2P2/PP4PP/RNBQKBNR w - -", Turn::WHITE()));
