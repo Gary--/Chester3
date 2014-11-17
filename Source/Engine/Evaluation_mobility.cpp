@@ -21,7 +21,7 @@ namespace {
 	const int knightMinMobilePenalty[9] = { 26, 10, 5 , 0, 0, 0, 0, 0, 0 };
 	const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    int knightOutpostValue[64] = {
+    const int knightOutpostValue[64] = {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0,10,15,20,20,15,10, 0,
@@ -31,6 +31,16 @@ namespace {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
     };
+
+    const int rookConnectedValue[64] = {
+        15,15,15,15,15,15,15,15,
+        25,25,25,25,25,25,25,25,
+         4, 4, 6,10,10, 6, 4, 4,
+         0, 0, 2, 3, 3 ,2, 0, 0,
+         0, 0, 2, 3, 3, 2, 0, 0,
+         0, 0, 2, 3, 3, 2, 0, 0,
+         0, 0, 2, 3, 3, 2, 0, 0,
+         0, 0, 2, 3, 3, 2, 0, 0,};
 
 	struct MobilityScore {
 		int relative;
@@ -45,6 +55,8 @@ namespace {
 		const Turn other = !turn;
 
 		const BitBoard M = Game::getPlayerPieces(turn);
+		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
+		const BitBoard T = Game::getPlayerPieces(other);
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
 		const BitBoard theirPawnControl = AttackFields::pawnTargs(TP, other);
 
@@ -70,7 +82,66 @@ namespace {
 		}
 #pragma endregion
 
+#pragma region Bishop
+		FOR_BIT(bishop, Game::getPieces(turn, Piece::BISHOP())) {
+			Position pos = bishop.ToPosition();
 
+			// We are only stopped by their pieces and our pawns.
+			BitBoard targs = AttackFields::bishopTargs(pos, T | MP);
+			targs &= ~M ; // ... which are not occupied by us
+			res.relative += targs.count();
+
+			targs &= ~theirPawnControl;
+			res.exact -= bishopMinMobilePenalty[targs.count()];
+		}
+#pragma endregion
+
+#pragma region Rook
+		const BitBoard MR = Game::getPieces(turn, Piece::ROOK());
+		FOR_BIT(rook, MR) {
+			const Position pos = rook.ToPosition();
+			const int row = pos.row();
+			const int col = pos.col();
+			const BitBoard colBits = BitBoard::colBits(col);
+			const BitBoard rowBits = BitBoard::rowBits(row);
+
+			BitBoard targsXRay = AttackFields::rookTargs(pos, T | MP);
+			BitBoard targsNorm = AttackFields::rookTargs(pos, Game::getAllPieces());
+			const bool openFile = (targsNorm & colBits & MP).isEmpty();
+			const bool fullOpenFile = (targsNorm & colBits & (MP | TP)).isEmpty();
+			const bool connectedRook = (targsNorm & MR).isNotEmpty();
+			const bool horizontalConnectedRook = (targsNorm & MR & rowBits).isNotEmpty();
+
+			targsXRay &= ~M;
+			targsNorm &= ~M;
+			res.relative += (targsNorm & rowBits).count(); // 1 point for horizontal
+			
+			// vertical mobility
+			targsXRay &= colBits;
+			targsNorm &= colBits;
+			res.relative += 2 * targsNorm.count();
+			res.relative += 1 * (targsXRay &~targsNorm).count();// 1 point for vertical XRAY
+
+			// Scale value of open files based on number of my pawns
+			if (fullOpenFile) {
+				res.relative += MP.count() + 1;
+
+				if (horizontalConnectedRook) {
+					const int file_value[] = { -6, -5, -2, 0, 0, -2, -5, -6 };
+					const int pawn_tab[] = { 0, 0, 0, 0, 0, 4, 8, 16, 16, 0, 0 };
+					int bonus = file_value[col] + pawn_tab[TP.count()];
+					res.exact += max(0, bonus);
+				}
+			} else if (openFile) {
+				res.relative += MP.count() / 2 + 1;
+			}
+
+			// Rook connectedness
+			if (connectedRook) {
+				res.exact += rookConnectedValue[pos.perspective(turn).index()];
+			}
+		}
+#pragma endregion
 
 		return res;
 	}
