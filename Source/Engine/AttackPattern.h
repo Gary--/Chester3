@@ -39,6 +39,7 @@ public:
 	bool contains(Piece piece) const;
 	bool isEmpty() const;
 	int getCount() const;
+	Piece getSmallestPiece() const;//unknown if none
 
 	bool operator==(const AttackPattern other) const;
 	bool operator!=(const AttackPattern other) const;
@@ -50,6 +51,7 @@ public:
 private:
 	bool isValid() const;
 	AttackPattern(uint8_t value);
+	Piece smallestAttackerImpl() const;
 	uint8_t value;
 	friend class StaticExchange;
 };

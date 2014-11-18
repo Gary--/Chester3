@@ -80,7 +80,7 @@ namespace {
 	int8_t SEE_full[7][256][256] = { 0 };
 
 	int8_t SEE_min[256][256] = { 0 };
-
+	Piece smallest[256];
 	bool inited = false;
 
 	
@@ -241,6 +241,8 @@ void StaticExchange::init() {
 				}
 			}
 		}
+
+		smallest[i] = AttackPattern(i).smallestAttackerImpl();
 	}
 }
 
@@ -304,6 +306,19 @@ int StaticExchange::attackCost(Piece attacker, AttackPattern attackers, AttackPa
 
 int StaticExchange::attackCostMin(AttackPattern attackers, AttackPattern defenders) {
 	return SEE_min[attackers.value][defenders.value];
+}
+
+Piece AttackPattern::smallestAttackerImpl() const {
+	FOR_PIECE_NOT_BISHOP(piece) {
+		if (contains(piece)) {
+			return piece;
+		}
+	}
+	return Piece::UNKNOWN();
+}
+
+Piece AttackPattern::getSmallestPiece() const {
+	return smallest[value];
 }
 
 #pragma endregion

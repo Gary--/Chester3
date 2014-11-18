@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "AttackPattern.h"
-
+#include <algorithm>
+#include "StaticExchange.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -9,6 +10,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_AttackPattern) {
 public:
+	TEST_CLASS_INITIALIZE(Call_StaticExchange_init) {
+		StaticExchange::init();
+	}
 
 #pragma region Basic Contains/Total
 	TEST_METHOD(Initializes_To_Empty) {
@@ -121,6 +125,23 @@ public:
 			}
 			Assert::AreEqual(pat0, pat1);
 
+		}
+	}
+
+	TEST_METHOD(Smallest_Piece) {
+		for (int trial = 0; trial < 1000; ++trial) {
+			Piece smallest = Piece::UNKNOWN();
+			AttackPattern pat0;
+			int n = rand() % 7;
+			for (int i = 1; i <= n; ++i) {
+				Piece randPiece = Piece::random();
+				if (randPiece == Piece::BISHOP()) {
+					continue;
+				}
+				pat0.add(randPiece);
+				smallest = std::min(smallest, randPiece);
+			}
+			Assert::AreEqual(smallest, pat0.getSmallestPiece());
 		}
 	}
 
