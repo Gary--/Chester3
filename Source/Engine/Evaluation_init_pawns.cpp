@@ -12,9 +12,8 @@ void Evaluation::initPawns() {
 	FOR_TURN(turn) {
 		FOR_POSITION_64(pos) {
 			BitBoard result = BitBoard::EMPTY();
-			FOR_BIT(bit, pos.shiftLeft().asSingletonBitboard() |
-					pos.asSingletonBitboard() |
-					pos.shiftRight().asSingletonBitboard()) {
+			BitBoard posBit = pos.asSingletonBitboard();
+			FOR_BIT(bit, posBit | posBit.shiftLeft() | posBit.shiftRight()) {
 				result |= BitBoard::colBits(bit.ToPosition().col());
 			}
 			result &= pos.squaresForward(turn);
