@@ -105,6 +105,11 @@ public:
 		Assert::AreEqual(ex_Bishop("rnbqkbnr/pppppppp/8/3P4/3P4/2B1P3/PPP2PP1/RNBQK1NR w - -", Turn::WHITE()),
 					     ex_Bishop("rnbqkbnr/ppp1pppp/8/3p4/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
 	}
+
+	TEST_METHOD(Bad_Bishop_Only_Forward_Pawns) {
+		Assert::AreEqual(ex_Bishop("rnbqkbnr/pppppppp/8/8/3P1B2/4P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()),
+						 ex_Bishop("rnb1kbnr/pppppppp/8/8/3PqB2/4P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
+	}
 	};
 }
 
