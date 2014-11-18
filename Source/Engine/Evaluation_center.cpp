@@ -23,7 +23,7 @@ namespace {
 }
 
 int Evaluation::center() {
-	const BitBoard range(0x0000E7E7E7E70000ULL);
+	const BitBoard range(0x00007E7E7E7E0000ULL);
 	if (Game::getPieces(Turn::WHITE(), Piece::PAWN()).count() < 4 ||
 		Game::getPieces(Turn::BLACK(), Piece::PAWN()).count() < 4) {
 		return 0;
