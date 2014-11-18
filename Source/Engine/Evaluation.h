@@ -28,8 +28,12 @@ public:
 	static void notifyUndoMove(Move move, Turn turn);
 
 	// Methods exposed for testing purposes
-	static int exactMobility(Turn turn);
-	static int relativeMobility(Turn turn);
+	static int DEBUG_knightExactMobility(Turn turn);
+	static int DEBUG_knightRelativeMobility(Turn turn);
+	static int DEBUG_bishopExactMobility(Turn turn);
+	static int DEBUG_bishopRelativeMobility(Turn turn);
+	static int DEBUG_rookExactMobility(Turn turn);
+	static int DEBUG_rookRelativeMobility(Turn turn);
 private:
 
 	static void synchronizeMaterial();

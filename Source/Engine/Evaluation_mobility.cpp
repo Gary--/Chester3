@@ -16,31 +16,7 @@ namespace {
 		300, 303, 306, 309, 312, 315, 318, 321, 325, 328, 331, 334, 337, 340, 343, 346,
 		350, 353, 356, 359, 362, 365, 368, 371, 375, 378, 381, 384, 384, 390 };
 
-	const BitBoard twoPointKnightSqrs = BitBoard(0x007E424242427E00ULL);
-	const BitBoard fourPointKnightSqrs = BitBoard(0x00003C3C3C3C0000ULL);
-	const int knightMinMobilePenalty[9] = { 26, 10, 5 , 0, 0, 0, 0, 0, 0 };
-	const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    const int knightOutpostValue[64] = {
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0,10,15,20,20,15,10, 0,
-        0, 8,12,15,15,12, 8, 0,
-        0, 5, 8,10,10, 8, 5, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-    };
-
-    const int rookConnectedValue[64] = {
-        15,15,15,15,15,15,15,15,
-        25,25,25,25,25,25,25,25,
-         4, 4, 6,10,10, 6, 4, 4,
-         0, 0, 2, 3, 3 ,2, 0, 0,
-         0, 0, 2, 3, 3, 2, 0, 0,
-         0, 0, 2, 3, 3, 2, 0, 0,
-         0, 0, 2, 3, 3, 2, 0, 0,
-         0, 0, 2, 3, 3, 2, 0, 0,};
 
 	struct MobilityScore {
 		int relative;
@@ -49,20 +25,41 @@ namespace {
 			relative = 0;
 			exact = 0;
 		}
+
+		MobilityScore operator+(const MobilityScore& other) {
+			MobilityScore res;
+			res.exact = this->exact + other.exact;
+			res.relative = this->relative + other.relative;
+			return res;
+		}
 	};
 
-	MobilityScore turnMobilityScore(Turn turn) {
+
+
+	MobilityScore knightMobilityScore(Turn turn) {
+		const int knightOutpostValue[64] = {
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0,10,15,20,20,15,10, 0,
+			0, 8,12,15,15,12, 8, 0,
+			0, 5, 8,10,10, 8, 5, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+		};
+		const int knightMinMobilePenalty[9] = { 26, 10, 5, 0, 0, 0, 0, 0, 0 };
+		const BitBoard twoPointKnightSqrs = BitBoard(0x007E424242427E00ULL);
+		const BitBoard fourPointKnightSqrs = BitBoard(0x00003C3C3C3C0000ULL);
+
 		const Turn other = !turn;
 
 		const BitBoard M = Game::getPlayerPieces(turn);
-		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
 		const BitBoard T = Game::getPlayerPieces(other);
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
 		const BitBoard theirPawnControl = AttackFields::pawnTargs(TP, other);
 
 		MobilityScore res;
 
-#pragma region Knight
 		FOR_BIT(knight, Game::getPieces(turn, Piece::KNIGHT())) {
 			Position pos = knight.ToPosition();
 			BitBoard targs = AttackFields::knightTargs(pos); // Squares the knight controls...
@@ -80,9 +77,22 @@ namespace {
 				}
 			}
 		}
-#pragma endregion
+		return res;
+	}
 
-#pragma region Bishop
+	MobilityScore bishopMobilityScore(Turn turn) {
+		const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+		const Turn other = !turn;
+
+		const BitBoard M = Game::getPlayerPieces(turn);
+		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
+		const BitBoard T = Game::getPlayerPieces(other);
+		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
+		const BitBoard theirPawnControl = AttackFields::pawnTargs(TP, other);
+
+		MobilityScore res;
+
 		FOR_BIT(bishop, Game::getPieces(turn, Piece::BISHOP())) {
 			Position pos = bishop.ToPosition();
 
@@ -94,9 +104,30 @@ namespace {
 			targs &= ~theirPawnControl;
 			res.exact -= bishopMinMobilePenalty[targs.count()];
 		}
-#pragma endregion
+		return res;
+	}
 
-#pragma region Rook
+	MobilityScore rookMobilityScore(Turn turn) {
+		const int rookConnectedValue[64] = {
+			15, 15, 15, 15, 15, 15, 15, 15,
+			25, 25, 25, 25, 25, 25, 25, 25,
+			4, 4, 6, 10, 10, 6, 4, 4,
+			0, 0, 2, 3, 3, 2, 0, 0,
+			0, 0, 2, 3, 3, 2, 0, 0,
+			0, 0, 2, 3, 3, 2, 0, 0,
+			0, 0, 2, 3, 3, 2, 0, 0,
+			0, 0, 2, 3, 3, 2, 0, 0, };
+
+		const Turn other = !turn;
+
+		const BitBoard M = Game::getPlayerPieces(turn);
+		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
+		const BitBoard T = Game::getPlayerPieces(other);
+		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
+
+		MobilityScore res;
+
+
 		const BitBoard MR = Game::getPieces(turn, Piece::ROOK());
 		FOR_BIT(rook, MR) {
 			const Position pos = rook.ToPosition();
@@ -115,7 +146,7 @@ namespace {
 			targsXRay &= ~M;
 			targsNorm &= ~M;
 			res.relative += (targsNorm & rowBits).count(); // 1 point for horizontal
-			
+
 			// vertical mobility
 			targsXRay &= colBits;
 			targsNorm &= colBits;
@@ -141,9 +172,12 @@ namespace {
 				res.exact += rookConnectedValue[pos.perspective(turn).index()];
 			}
 		}
-#pragma endregion
-
 		return res;
+	}
+
+
+	MobilityScore turnMobilityScore(Turn turn) {
+		return knightMobilityScore(turn) + bishopMobilityScore(turn) + rookMobilityScore(turn);
 	}
 }
 
@@ -160,9 +194,22 @@ int Evaluation::mobility() {
 	return res;
 }
 
-int Evaluation::exactMobility(Turn turn) {
-	return turnMobilityScore(turn).exact;
+int Evaluation::DEBUG_knightExactMobility(Turn turn) {
+	return knightMobilityScore(turn).exact;
 }
-int Evaluation::relativeMobility(Turn turn) {
-	return turnMobilityScore(turn).relative;
+
+int Evaluation::DEBUG_knightRelativeMobility(Turn turn) {
+	return  knightMobilityScore(turn).relative;
+}
+int Evaluation::DEBUG_bishopExactMobility(Turn turn) {
+	return bishopMobilityScore(turn).exact;
+}
+int Evaluation::DEBUG_bishopRelativeMobility(Turn turn) {
+	return bishopMobilityScore(turn).relative;
+}
+int Evaluation::DEBUG_rookExactMobility(Turn turn) {
+	return rookMobilityScore(turn).exact;
+}
+int Evaluation::DEBUG_rookRelativeMobility(Turn turn) {
+	return rookMobilityScore(turn).relative;
 }
