@@ -82,7 +82,7 @@ namespace {
 
 	MobilityScore bishopMobilityScore(Turn turn) {
 		const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+		
 		const Turn other = !turn;
 
 		const BitBoard M = Game::getPlayerPieces(turn);
@@ -94,15 +94,41 @@ namespace {
 		MobilityScore res;
 
 		FOR_BIT(bishop, Game::getPieces(turn, Piece::BISHOP())) {
-			Position pos = bishop.ToPosition();
+			const Position pos = bishop.ToPosition();
 
 			// We are only stopped by their pieces and our pawns.
 			BitBoard targs = AttackFields::bishopTargs(pos, T | MP);
+			const BitBoard blockingPawns = targs & pos.squaresForward(turn) & MP;
 			targs &= ~M ; // ... which are not occupied by us
 			res.relative += targs.count();
 
 			targs &= ~theirPawnControl;
 			res.exact -= bishopMinMobilePenalty[targs.count()];
+
+			// bad bishop
+			FOR_BIT(pawn, blockingPawns) {
+				//                                            .  P  N  B  R  Q  K  p  n  b  r  q  k
+				const uint8_t badBishopBlockerPenalty[13] = { 1, 4, 1, 1, 1, 1, 1, 4, 2, 2, 1, 1, 1 };//penalty based on piece in front of blocking pawn
+				const uint8_t badBishopPositionPenalty[64] = {
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 1, 1, 0, 0, 0,
+					0, 0, 1, 2, 2, 1, 0, 0,
+					0, 1, 2, 2, 2, 2, 1, 0,
+					0, 0, 2, 2, 2, 2, 2, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+				};
+
+				const Position frontPos = pawn.ToPosition().shiftForward(turn);
+				const Piece frontPiece = Game::getPieceAt(frontPos);
+				int frontPieceIndex = frontPiece.asIndex();
+				if (frontPiece != Piece::EMPTY() && Game::getOwnerAt(frontPos) != turn) {
+					frontPieceIndex += 6;
+				}
+				_ASSERTE(frontPieceIndex < 13);
+				res.exact -= badBishopBlockerPenalty[frontPieceIndex] << badBishopPositionPenalty[pos.perspective(turn).index()];
+			}
 		}
 		return res;
 	}

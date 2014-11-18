@@ -93,6 +93,18 @@ public:
 			ex_Rook("rnbqk1nr/pppppbpp/8/8/B7/NQ6/PPPPP1PP/R4RK1 w - -", Turn::WHITE()) >
 			ex_Rook("rnbqkbnr/pppppppp/8/8/B7/NQ6/PPPPP1PP/R4RK1 w - -", Turn::WHITE()) + 5);
 	}
+
+	TEST_METHOD(Bad_Bishop) {
+		Assert::IsTrue(ex_Bishop("rnbqkbnr/pppppppp/8/8/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()) >
+					   ex_Bishop("rnbqkbnr/ppp1pppp/8/3p4/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
+
+		Assert::IsTrue(ex_Bishop("rnb1kbnr/pppppppp/8/3q4/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()) >
+					   ex_Bishop("rnbqkbnr/ppp1pppp/8/3p4/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
+
+
+		Assert::AreEqual(ex_Bishop("rnbqkbnr/pppppppp/8/3P4/3P4/2B1P3/PPP2PP1/RNBQK1NR w - -", Turn::WHITE()),
+					     ex_Bishop("rnbqkbnr/ppp1pppp/8/3p4/3P4/2B1P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
+	}
 	};
 }
 
