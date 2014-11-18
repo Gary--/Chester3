@@ -31,10 +31,21 @@ int Evaluation::center() {
 
 	int res = 0;
 	FOR_BIT(bit, range) {
-		const Controller ctrl = getController(bit.ToPosition());
+		const Position pos = bit.ToPosition();
+		const Controller ctrl = getController(pos);
+		
+		switch (ctrl) {
+		case Controller::WHITE:
+			res += squareValue[pos.index()];
+			break;
+		case Controller::BLACK:
+			res += squareValue[pos.perspective(Turn::BLACK()).index()];
+			break;
+		default:
+			break;
+		}
 
-
-
+		
 
 	}
 	return 0;
