@@ -20,7 +20,7 @@ public:
 
 	static int kingDanger(Turn turn);// positive values Turn's king is in danger
 	static int pawns(Turn turn);
-	static int center(Turn turn);
+	static int center();
 	static int misc(Turn turn);
 
 	static void synchronize();
