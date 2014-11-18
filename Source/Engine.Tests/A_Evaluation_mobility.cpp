@@ -48,7 +48,29 @@ public:
 			);
 	}
 
+	TEST_METHOD(Rook_Half_Open_File) {
+		Assert::IsTrue(
+			evalRel("rnbqkbnr/pppppppp/8/8/8/8/PPPPP1PP/RNBQ1RK1 w - -", Turn::WHITE()) >
+			evalRel("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1RK1 w - -", Turn::WHITE()));
+	}
 
+	TEST_METHOD(Rook_Full_Open_File) {
+		Assert::IsTrue(
+			evalRel("rnbqk1nr/pppppbpp/8/8/8/8/PPPPP1PP/RNBQ1RK1 w - -", Turn::WHITE()) >
+			evalRel("rnbqkbnr/pppppppp/8/8/8/8/PPPPP1PP/RNBQ1RK1 w - -", Turn::WHITE()));
+	}
+
+	TEST_METHOD(Rook_Connected) {
+		Assert::IsTrue(
+			evalEx("rnbqkbnr/pppppppp/8/8/B7/NQ6/PPPPPPPP/3R1RK1 w - -", Turn::WHITE()) >
+			evalEx("rnbqkbnr/pppppppp/8/8/B7/NQ6/PPPPPPPP/R4RK1 w - -", Turn::WHITE()));
+	}
+
+	TEST_METHOD(Rook_Connected_Open_File) {
+		Assert::IsTrue(
+			evalEx("rnbqk1nr/pppppbpp/8/8/B7/NQ6/PPPPP1PP/R4RK1 w - -", Turn::WHITE()) >
+			evalEx("rnbqkbnr/pppppppp/8/8/B7/NQ6/PPPPP1PP/R4RK1 w - -", Turn::WHITE()) + 5);
+	}
 	};
 }
 
