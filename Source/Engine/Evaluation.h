@@ -27,7 +27,7 @@ public:
 	static void notifyMove(Move move, Turn turn);
 	static void notifyUndoMove(Move move, Turn turn);
 
-	// Methods exposed for testing purposes
+	//=====  Methods exposed for testing purposes
 	static int DEBUG_knightExactMobility(Turn turn);
 	static int DEBUG_knightRelativeMobility(Turn turn);
 	static int DEBUG_bishopExactMobility(Turn turn);
