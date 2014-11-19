@@ -1,6 +1,7 @@
 #pragma once
 #include "Move.h"
 
+class AttackPattern;
 class Evaluation {
 public:
 	static void init();
@@ -37,6 +38,9 @@ public:
 
 	// If noone has control over square
 	static char DEBUG_control(Position position);// 'w','b','?'
+
+	static AttackPattern DEBUG_kingDangerPattern(Turn turn);// what pieces attack our king
+	static int DEBUG_kingDangerCount(Turn turn);//how serious the attack is without considering the pattern
 private:
 
 	static void synchronizeMaterial();

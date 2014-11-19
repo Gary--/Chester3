@@ -228,6 +228,7 @@
   <ItemGroup>
     <ClCompile Include="A_AttackMap.cpp" />
     <ClCompile Include="A_Evaluation.cpp" />
+    <ClCompile Include="A_Evaluation_kingDanger.cpp" />
     <ClCompile Include="A_Evaluation_mobility.cpp" />
     <ClCompile Include="D_100_perft_cases.cpp" />
     <ClCompile Include="A_AttackPattern.cpp" />
