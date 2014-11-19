@@ -131,6 +131,10 @@ bool AttackPattern::operator!=(const AttackPattern other) const {
 	return !(*this == other);
 }
 
+AttackPattern AttackPattern::operator|(const AttackPattern other) const {
+	return AttackPattern(value | other.value);
+}
+
 
 std::string AttackPattern::str() const {
 	std::string res;

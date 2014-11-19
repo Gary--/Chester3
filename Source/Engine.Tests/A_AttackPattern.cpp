@@ -187,5 +187,23 @@ public:
 		Assert::AreEqual(1, pat.getPieceCount(Piece::KNIGHT()));
 	}
 
+	AttackPattern randPattern() {
+		AttackPattern pat;
+		int n = rand() % 7;
+		for (int i = 1; i <= n; ++i) {
+			pat.add(Piece::random());
+		}
+		return pat;
+	}
+	TEST_METHOD(Or_Operator) {
+		for (int trial = 0; trial < 1000; trial++) {
+			AttackPattern pat0 = randPattern(), pat1 = randPattern();
+			AttackPattern or = pat0 | pat1;
+			FOR_PIECE_ALL(piece) {
+				Assert::AreEqual(pat0.contains(piece)||pat1.contains(piece) , or.contains(piece));
+			}
+		}
+	}
+
 	};
 }

@@ -43,6 +43,7 @@ public:
 
 	bool operator==(const AttackPattern other) const;
 	bool operator!=(const AttackPattern other) const;
+	AttackPattern operator|(const AttackPattern other) const;// (a|b).contains(p) == (a.contains(p) || b.contains(p))
 	std::string str() const;// Example: "3:NQ"
 
 	// ONLY CALLED BY INIT
