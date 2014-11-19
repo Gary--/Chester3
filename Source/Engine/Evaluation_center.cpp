@@ -57,8 +57,7 @@ int Evaluation::center() {
 	int res = 0;
 	FOR_BIT(bit, range) {
 		const Position pos = bit.ToPosition();
-		_ASSERTE(squareValue[pos.index()] > 0);
-		_ASSERTE(squareValue[pos.mirror().index()] > 0);
+		_ASSERTE(squareValue[pos.index()] + squareValue[pos.mirror().index()] > 0);//make sure we aren't checking useless squares
 
 		const Controller ctrl = getController(pos);
 		
