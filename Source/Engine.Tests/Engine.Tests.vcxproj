@@ -238,6 +238,7 @@
     <ClCompile Include="B_move_generation_perft.cpp" />
     <ClCompile Include="A_Game_configure_check_detection.cpp" />
     <ClCompile Include="A_Game_Hash.cpp" />
+    <ClCompile Include="A_Evaluation_center.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>

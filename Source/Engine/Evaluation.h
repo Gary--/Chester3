@@ -34,6 +34,9 @@ public:
 	static int DEBUG_bishopRelativeMobility(Turn turn);
 	static int DEBUG_rookExactMobility(Turn turn);
 	static int DEBUG_rookRelativeMobility(Turn turn);
+
+	// If noone has control over square
+	static char DEBUG_control(Position position);// 'w','b','?'
 private:
 
 	static void synchronizeMaterial();

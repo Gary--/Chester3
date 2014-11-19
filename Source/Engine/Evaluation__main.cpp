@@ -1,4 +1,6 @@
 #include "Evaluation.h"
+#include "StaticExchange.h"
+#include "AttackMap.h"
 
 namespace {
 	bool inited = false;
@@ -8,6 +10,7 @@ void Evaluation::init() {
 		return;
 	}
 	inited = true;
+	StaticExchange::init();
 
 	initPawns();
 }
@@ -15,6 +18,7 @@ void Evaluation::init() {
 void Evaluation::synchronize() {
 	init();
 	synchronizeMaterial();
+	AttackMap::synchronize();
 }
 
 void Evaluation::notifyMove(Move move, Turn turn) {

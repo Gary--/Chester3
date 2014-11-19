@@ -92,6 +92,7 @@ public:
 			int mobility = Evaluation::mobility();
 			int kingDanger = Evaluation::kingDanger(turn);
 			int misc = Evaluation::misc(turn);
+			int center = Evaluation::center();
 
 			confSync(conf.mirror());
 			Assert::AreEqual(material, Evaluation::material(other));
@@ -99,6 +100,7 @@ public:
 			Assert::AreEqual(-mobility, Evaluation::mobility());
 			Assert::AreEqual(kingDanger, Evaluation::kingDanger(other));
 			Assert::AreEqual(misc, Evaluation::misc(other));
+			Assert::AreEqual(-center, Evaluation::center());
 		}
 	}
 

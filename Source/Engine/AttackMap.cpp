@@ -36,6 +36,10 @@ void AttackMap::notifyUndoMove(Move move, Turn turn) {
 }
 
 AttackPattern AttackMap::getAttackPattern(Turn turn, Position position) {
+	if (maps.back().precomputed) {
+		return maps.back().patterns[turn.asIndex()][position.index()];;
+	}
+
 	return getAttackPatternImpl(turn, position);
 }
 
@@ -108,7 +112,7 @@ void AttackMap::precompute() {
 
 		const BitBoard MP_forward = Game::getPieces(turn, Piece::PAWN()).shiftForward(turn);
 		const BitBoard left = MP_forward.shiftLeft();
-		const BitBoard right = MP_forward.shiftLeft();
+		const BitBoard right = MP_forward.shiftRight();
 		const BitBoard both = left&right;
 
 		FOR_BIT(targ, (left | right) &~both) {
