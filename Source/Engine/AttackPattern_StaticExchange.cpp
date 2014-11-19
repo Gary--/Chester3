@@ -89,6 +89,18 @@ namespace {
 #pragma region AttackPattern
 AttackPattern::AttackPattern() : value(0) {}
 AttackPattern::AttackPattern(uint8_t value) : value(value) {}
+AttackPattern::AttackPattern(std::string str) : AttackPattern() {
+	int n = str[0] - '0';
+	int actuallyAdded = 0;
+
+	Piece piece = piece;
+	for (char c : str.substr(2)) {
+		piece = Piece::fromChar(c);
+		add(Piece::fromChar(c));
+		actuallyAdded++;
+	}
+	add(piece, n - actuallyAdded);
+}
 
 void AttackPattern::add(Piece piece) {
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
@@ -143,7 +155,7 @@ std::string AttackPattern::str() const {
 
 	FOR_PIECE_ALL(piece) {
 		if (piece != Piece::BISHOP() && this->contains(piece)) {
-			res += piece.asChar(Turn::WHITE());
+			res += piece.asChar(Turn::BLACK());
 		}
 	}
 

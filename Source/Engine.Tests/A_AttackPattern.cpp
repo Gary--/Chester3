@@ -74,12 +74,20 @@ public:
 		}
 	}
 
-	TEST_METHOD(String_Representation) {
+	TEST_METHOD(String_Representation_0) {
 		AttackPattern pat0;
 		pat0.add(Piece::KNIGHT());
 		pat0.add(Piece::QUEEN());
 		pat0.add(Piece::BISHOP());
-		Assert::AreEqual("3:NQ", pat0.str().c_str());
+		Assert::AreEqual("3:nq", pat0.str().c_str());
+	}
+
+	TEST_METHOD(String_Representation_1) {
+		AttackPattern pat0;
+		pat0.add(Piece::PAWN());
+		pat0.add(Piece::ROOK());
+		pat0.add(Piece::KING());
+		Assert::AreEqual("3:prk", pat0.str().c_str());
 	}
 #pragma endregion
 
@@ -204,6 +212,14 @@ public:
 			}
 		}
 	}
+
+	TEST_METHOD(Construct_From_String_0) {
+		for (int trial = 0; trial < 1000; trial++) {
+			AttackPattern pat = randPattern();
+			Assert::AreEqual(pat, AttackPattern(pat.str()));
+		}
+	}
+
 
 	};
 }

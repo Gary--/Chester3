@@ -3,7 +3,7 @@
 #include "Chess.h"
 #include <string>
 
-
+// Things are unspecified if more than 7 pieces are added.
 //+------+------+------+------+------+------+------+------+
 //| BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0 |
 //+------+------+------+------+------+------+------+------+
@@ -33,6 +33,7 @@
 class AttackPattern {
 public:
 	AttackPattern();
+	explicit AttackPattern(std::string str);// For debugging. Example: "3:NQ"
 	void add(Piece piece);
 	void add(Piece piece, int n);
 
