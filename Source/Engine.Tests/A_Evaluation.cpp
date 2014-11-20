@@ -81,40 +81,6 @@ public:
 		Assert::IsTrue(Evaluation::materialBalance() < b2);
 	}
 
-	void assertSymmetry(const char* FEN) {
-		FOR_TURN(turn) {
-			const Turn other = !turn;
-			GameConfiguration conf(FEN);
-
-			confSync(conf);
-			int material = Evaluation::material(turn);
-			int materialBalence = Evaluation::materialBalance();
-			int mobility = Evaluation::mobility();
-			int kingDanger = Evaluation::kingDanger(turn);
-			int misc = Evaluation::misc(turn);
-			int center = Evaluation::center();
-
-			confSync(conf.mirror());
-			Assert::AreEqual(material, Evaluation::material(other));
-			Assert::AreEqual(-materialBalence, Evaluation::materialBalance());
-			Assert::AreEqual(-mobility, Evaluation::mobility());
-			Assert::AreEqual(kingDanger, Evaluation::kingDanger(other));
-			Assert::AreEqual(misc, Evaluation::misc(other));
-			Assert::AreEqual(-center, Evaluation::center());
-		}
-	}
-
-
-	TEST_METHOD(Symmetry) {
-		assertSymmetry("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
-		assertSymmetry("rnbqkbnr/pppp3p/5N2/4ppp1/8/8/PPPPPPPP/RNBQKB1R w - -");
-		assertSymmetry("rnbqkbnr/pppppppp/8/8/8/2N2N2/PPPPPPPP/R1BQKB1R w - -");
-		assertSymmetry("rnbqkbnr/p2pp3/2p2p1p/1p4p1/8/2N2N2/PPPPPPPP/R1BQKB1R w - -");
-		assertSymmetry("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1RK1 w - -");
-		assertSymmetry("rnbqk1nr/pppppbpp/8/8/8/8/PPPPP1PP/RNBQ1RK1 w - -");
-		assertSymmetry("rnbqkbnr/pppppppp/8/8/B7/NQ6/PPPPPPPP/R4RK1 w - -");
-	}
-
 	};
 }
 

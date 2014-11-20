@@ -240,6 +240,7 @@
     <ClCompile Include="A_Game_configure_check_detection.cpp" />
     <ClCompile Include="A_Game_Hash.cpp" />
     <ClCompile Include="A_Evaluation_center.cpp" />
+    <ClCompile Include="Evaluation_symmetry.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>

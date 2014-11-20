@@ -98,5 +98,8 @@
     <ClCompile Include="A_Evaluation_kingDanger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Evaluation_symmetry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
