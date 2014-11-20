@@ -77,6 +77,12 @@ public:
 		patCheck("1:p", Turn::WHITE(), "d6");
 	}
 
+	TEST_METHOD(Hard_2) {
+		Game::configure(GameConfiguration("rnbqkb1r/pppppppp/8/6n1/8/3BPN2/PPPP1PPP/RNBQ2KR w - -"));
+		patCheck("0:", Turn::BLACK(), "g2");
+
+	}
+
 	void assert_onTheFly_and_precompute_matchImpl(int depth) {
 		AttackPattern pats[2][128];
 
