@@ -93,7 +93,7 @@ AttackPattern::AttackPattern(std::string str) : AttackPattern() {
 	int n = str[0] - '0';
 	int actuallyAdded = 0;
 
-	Piece piece = piece;
+	Piece piece = Piece::UNKNOWN();
 	for (char c : str.substr(2)) {
 		piece = Piece::fromChar(c);
 		add(Piece::fromChar(c));
@@ -108,11 +108,11 @@ void AttackPattern::add(Piece piece) {
 	value |= pieceBit(piece);
 }
 void AttackPattern::add(Piece piece, int n) {
-	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	_ASSERTE(n >= 0);
 	if (n == 0) {
 		return;
 	}
+	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 
 	value += n;
 	value |= pieceBit(piece);
