@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Game.h"
 #include "Evaluation.h"
 #include "Evaluation_test_helpers.h"
 

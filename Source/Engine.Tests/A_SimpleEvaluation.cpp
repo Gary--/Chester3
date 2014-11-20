@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "Game.h"
 #include "SimpleEvaluation.h"
-#include <vector>
+
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

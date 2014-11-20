@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Game.h"
 #include "Evaluation.h"
-#include <vector>
-
+#include "Evaluation_test_helpers.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -11,10 +9,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Evaluation_Mobility) {
 public:
-	void confSync(GameConfiguration conf) {
-		Game::configure(conf);
-		Evaluation::synchronize();
-	}
 	int ex_Bishop(const char* FEN,Turn turn) {
 		confSync(GameConfiguration(FEN));
 		return Evaluation::DEBUG_bishopExactMobility(turn);

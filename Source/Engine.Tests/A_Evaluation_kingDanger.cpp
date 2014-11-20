@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Game.h"
 #include "Evaluation.h"
-
+#include "Evaluation_test_helpers.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -11,10 +10,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Evaluation_kingDanger) {
 public:
-	void confSync(const char* FEN) {
-		Game::configure(GameConfiguration(FEN));
-		Evaluation::synchronize();
-	}
 
 	TEST_METHOD(Initial_Position_no_Danger) {
 		confSync("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
