@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Game.h"
 #include "Evaluation.h"
-#include <vector>
+#include "Evaluation_test_helpers.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "Game.h"
 #include "Evaluation.h"
+#include "Evaluation_test_helpers.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -11,11 +12,6 @@ namespace EngineTests {
 	TEST_CLASS(A_Evaluation_symmetry) {
 public:
 
-
-	void confSync(GameConfiguration conf) {
-		Game::configure(conf);
-		Evaluation::synchronize();
-	}
 	void assertSymmetry(const char* FEN) {
 		FOR_TURN(turn) {
 			const Turn other = !turn;
