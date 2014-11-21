@@ -128,6 +128,10 @@ bool AttackPattern::isEmpty() const {
 	return value == 0;
 }
 
+bool AttackPattern::isNotEmpty() const {
+	return !(this->isEmpty());
+}
+
 
 int AttackPattern::getCount() const {
 	return value & (uint8_t)0x7; // Count is stored in the least 3 bits.

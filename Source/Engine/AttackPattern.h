@@ -39,6 +39,8 @@ public:
 
 	bool contains(Piece piece) const;
 	bool isEmpty() const;
+	bool isNotEmpty() const;
+
 	int getCount() const;
 	Piece getSmallestPiece() const;//unknown if none
 
