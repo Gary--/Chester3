@@ -61,8 +61,20 @@ public:
 					   danger("rnb1kb1r/ppp1pppp/3q4/6n1/8/3BP3/PPPPNPPP/RNBQ1RK1 w - -", Turn::WHITE()));
 	}
 
+
 	TEST_METHOD(High_danger) {
 		Assert::IsTrue(danger("3r1rk1/B4ppp/2pb4/8/1n4n1/2N2N1q/PP2QP2/R4RK1 w - -", Turn::WHITE()) > 100);
+	}
+
+	TEST_METHOD(King_Out_of_Back_row) {
+		Assert::AreNotEqual(0, danger("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPKPPP/RNBQ1BNR w- -", Turn::WHITE()));
+		Assert::IsTrue(danger("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPKPPP/RNBQ1BNR w - -", Turn::WHITE()) <
+					   danger("rnbqkbnr/pppppppp/8/8/8/3KP3/PPPP1PPP/RNBQ1BNR w - -", Turn::WHITE()));
+	}
+
+	TEST_METHOD(King_Out_of_Back_row_less_than_2_minors) {
+		Assert::IsTrue(danger("r2qk2r/pppppppp/8/8/8/3KP3/PPPP1PPP/RNBQ1BNR w - -", Turn::WHITE()) > 0);
+		Assert::AreEqual(0, danger("r2qk3/pppppppp/8/8/8/3KP3/PPPP1PPP/RNBQ1BNR w - -",Turn::WHITE()));
 	}
 
 	};

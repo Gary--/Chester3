@@ -65,7 +65,17 @@ namespace {
 
 		Danger danger;
 		if (getLightPieces(other).count() >= 2) {
-
+			const char kingPositionValue[64] = {
+				4, 4, 4, 4, 4, 4, 4, 4,
+				4, 4, 4, 4, 4, 4, 4, 4,
+				4, 4, 4, 4, 4, 4, 4, 4,
+				4, 4, 4, 4, 4, 4, 4, 4,
+				4, 4, 4, 4, 4, 4, 4, 4,
+				4, 3, 3, 3, 3, 3, 3, 4,
+				2, 1, 1, 1, 1, 1, 1, 2,
+				2, 0, 0, 0, 0, 0, 0, 2,
+			};
+			danger.count += kingPositionValue[kingPos.perspective(turn).index()];
 		}
 
 		FOR_BIT(bit, patternZone | blockerZone | backZone) { // Each position around the king..
