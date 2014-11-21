@@ -231,6 +231,7 @@
     <ClCompile Include="A_Evaluation_material.cpp" />
     <ClCompile Include="A_Evaluation_kingDanger.cpp" />
     <ClCompile Include="A_Evaluation_mobility.cpp" />
+    <ClCompile Include="A_Evaluation_pawns_passed.cpp" />
     <ClCompile Include="A_Evaluation_pawns_structure.cpp" />
     <ClCompile Include="D_100_perft_cases.cpp" />
     <ClCompile Include="A_AttackPattern.cpp" />

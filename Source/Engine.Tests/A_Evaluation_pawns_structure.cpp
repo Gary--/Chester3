@@ -12,7 +12,7 @@ namespace EngineTests {
 public:
 
 	TEST_METHOD(Pushing_pawns_initially_is_good) {
-		confSync("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		confSync(GameConfiguration::INITIAL);
 		int initial = Evaluation::DEBUG_pawnFormation(Turn::WHITE());
 		for (Move move : Game::getAllMoves()) {
 			if (move.getPiece() != Piece::PAWN()) {
@@ -29,14 +29,16 @@ public:
 			Evaluation::notifyUndoMove(move, Turn::WHITE());
 		}
 	}
-
-	int form(const char* FEN) {
-		confSync(FEN);
+	int form(GameConfiguration conf) {
+		confSync(conf);
 		return Evaluation::DEBUG_pawnFormation(Turn::WHITE());
 	}
+	int form(const char* FEN) {
+		return form(GameConfiguration(FEN));
+	}
 	TEST_METHOD(Lone_Pawn_is_Bad) {
-		int initial = form("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
-		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		int initial = form(GameConfiguration::INITIAL);
+		GameConfiguration conf(GameConfiguration::INITIAL);
 
 		// Any pawn moving 3 squares forward is bad
 		FOR_POSITION_64(pos) {
@@ -55,8 +57,8 @@ public:
 	}
 
 	TEST_METHOD(Almost_Protected_Pawn_is_good) {
-		int initial = form("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
-		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		int initial = form(GameConfiguration::INITIAL);
+		GameConfiguration conf(GameConfiguration::INITIAL);
 
 		// Any pawn moving 2 squares forward is good
 		FOR_POSITION_64(pos) {
@@ -70,7 +72,7 @@ public:
 	}
 
 	TEST_METHOD(Side_By_Side_is_good) {
-		int initial = form("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		int initial = form(GameConfiguration::INITIAL);
 
 		for (int c = 0; c < 7; ++c) {
 			Position pos(6, c);

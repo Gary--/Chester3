@@ -110,5 +110,8 @@
     <ClCompile Include="A_Evaluation_pawns_structure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="A_Evaluation_pawns_passed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

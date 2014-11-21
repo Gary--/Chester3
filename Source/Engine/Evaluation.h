@@ -43,15 +43,25 @@ public:
 	static int DEBUG_kingDangerCount(Turn turn);//how serious the attack is without considering the pattern
 
 	static int DEBUG_pawnFormation(Turn turn);
+	static BitBoard DEBUG_passedPawns(Turn turn);
+	static int DEBUG_passedPawnScore(Turn turn);
 private:
 
 	static void synchronizeMaterial();
 	static void notifyMoveMaterial(Move move, Turn turn);
 	static void notifyUndoMoveMaterial(Move move, Turn turn);
 
-
 	static void initPawns();
 
 	// If we have a pawn here, where opposite pawns could be to stop us
 	static BitBoard opposingPawns(Position position, Turn turn);
+
+	static int pawnStructureScore(Turn turn);
+	struct PassedPawnResult {
+		BitBoard passedPawns;
+		int score;
+		PassedPawnResult();
+	};
+	static PassedPawnResult passedPawnEvaluation(Turn turn);
+
 };

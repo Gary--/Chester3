@@ -23,6 +23,7 @@ public:
 			int kingDanger = Evaluation::kingDanger(turn);
 			int misc = Evaluation::misc(turn);
 			int center = Evaluation::center();
+			int pawns = Evaluation::pawns(turn);
 
 			confSync(conf.mirror());
 			Assert::AreEqual(material, Evaluation::material(other));
@@ -31,6 +32,7 @@ public:
 			Assert::AreEqual(kingDanger, Evaluation::kingDanger(other));
 			Assert::AreEqual(misc, Evaluation::misc(other));
 			Assert::AreEqual(-center, Evaluation::center());
+			Assert::AreEqual(pawns, Evaluation::pawns(other));
 		}
 	}
 
