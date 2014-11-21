@@ -68,6 +68,27 @@ namespace {
 		const BitBoard myPawnCoverage = AttackFields::pawnTargs(MP, turn);
 		const BitBoard theirPawnCoverage = AttackFields::pawnTargs(TP, other);
 
+		// Stacked pawns
+		FOR_BIT(pawn, MP) {
+			const Position pos = pawn.ToPosition();
+			const BitBoard colBits = BitBoard::colBits(pos.col());
+			int nPawnsInCol = (colBits&MP).count();
+			_ASSERTE(nPawnsInCol >= 1);
+			if (nPawnsInCol == 1) { // not stacked, skip
+				continue;
+			}
+			res -= (nPawnsInCol - 1) * 20; // penalty based on stackage factor
+
+			// No friendly pawns on adjacent files
+			if ((MP&(colBits.shiftLeft() | colBits.shiftRight())).isEmpty()) {
+				res -= 20;
+			}
+
+			if ((colBits&TP).isEmpty()) { // On half open file
+				res -= 10;
+			}
+		}
+
 		BitBoard weakPawns = MP; // not defended or easily defendable
 
 		const BitBoard sideBySide = (weakPawns.shiftForward(turn)&myPawnCoverage).shiftBackward(turn);
@@ -93,6 +114,8 @@ namespace {
 				res -= weakpawn_2[pos.index()];
 			}
 		}
+
+
 
 		_ASSERTE(MP == (weakPawns ^ sideBySide ^ directlyProtected ^ aBitAhead));
 
