@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 namespace EngineTests {
-	TEST_CLASS(A_Evaluation_pawns) {
+	TEST_CLASS(A_Evaluation_pawns_structure) {
 public:
 
 	TEST_METHOD(Pushing_pawns_initially_is_good) {

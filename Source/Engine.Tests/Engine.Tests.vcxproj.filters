@@ -104,10 +104,10 @@
     <ClCompile Include="Evaluation_test_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_Evaluation_pawns.cpp">
+    <ClCompile Include="A_Evaluation_material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_Evaluation_material.cpp">
+    <ClCompile Include="A_Evaluation_pawns_structure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
