@@ -12,7 +12,7 @@ namespace EngineTests {
 public:
 
 	TEST_METHOD(Initial_Position_no_Danger) {
-		confSync("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		confSync(GameConfiguration::INITIAL);
 		Assert::AreEqual(0, Evaluation::kingDanger(Turn::WHITE()));
 		Assert::AreEqual(0, Evaluation::kingDanger(Turn::BLACK()));
 		Assert::AreEqual(AttackPattern(), Evaluation::DEBUG_kingDangerPattern(Turn::WHITE()));

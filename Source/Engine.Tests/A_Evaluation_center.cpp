@@ -17,7 +17,7 @@ public:
 	}
 
 	TEST_METHOD(InitialPosition) {
-		confSync(GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -"));
+		confSync(GameConfiguration::INITIAL);
 
 		FOR_BIT(bit, BitBoard::rowsLessThan(3)) {
 			Assert::AreEqual('b', Evaluation::DEBUG_control(bit.ToPosition()));

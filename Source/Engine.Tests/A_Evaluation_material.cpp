@@ -13,7 +13,7 @@ public:
 
 
 	TEST_METHOD(Non_zero_symetrical) {
-		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
+		GameConfiguration conf(GameConfiguration::INITIAL);
 		confSync(conf);
 
 
