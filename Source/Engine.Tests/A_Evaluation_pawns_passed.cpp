@@ -54,6 +54,12 @@ public:
 		Assert::IsTrue(score("rnbqkbnr/pp4pp/6p1/2pPp3/2PpP3/8/PP3PPP/RNBQKBNR w - -") > 0);
 	}
 
+	TEST_METHOD(No_Passed_Pawn_No_Score) {
+		Assert::AreEqual(0, score(GameConfiguration::INITIAL.str_min().c_str()));
+		Assert::AreEqual(0, score("rnbqkbnr/p2p2p1/8/8/8/8/PPPPPPPP/RNBQKBNR w - -"));
+		Assert::AreEqual(0, score("rnbqkbnr/1p2p2p/8/8/8/8/PPPPPPPP/RNBQKBNR w - -"));
+	}
+
 	};
 
 
