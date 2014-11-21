@@ -39,7 +39,7 @@ public:
 	std::string str_min() const;//without turn counts
 
 
-
+	const static GameConfiguration INITIAL;//"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	const static int NO_ENPEASENT_COLUMN;
 private:
 	Piece pieces[64];

@@ -253,3 +253,4 @@ string GameConfiguration::str() const {
 	return res;
 }
 
+const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
