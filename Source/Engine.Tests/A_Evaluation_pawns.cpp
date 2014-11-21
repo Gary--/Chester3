@@ -49,6 +49,11 @@ public:
 		}
 	}
 
+	TEST_METHOD(Lone_Pawn_on_half_open_really_bad) {
+		Assert::IsTrue(form("rnb1kbnr/ppp1pppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR w - -") <
+					   form("rnb1kbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR w - -"));
+	}
+
 	TEST_METHOD(Almost_Protected_Pawn_is_good) {
 		int initial = form("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
@@ -99,7 +104,28 @@ public:
 	}
 
 	TEST_METHOD(Stacked_on_open_file_extra_bad) {
+		Assert::IsTrue(form("rnbqkbnr/pp1ppppp/8/8/8/2P5/PPPP1PPP/RNBQKBNR w - -") <
+					   form("rnbqkbnr/pppppppp/8/8/8/2P5/PPPP1PPP/RNBQKBNR w - -"));
+	}
 
+	TEST_METHOD(Pressure_On_Protected_Pawn_No_Problem) {
+		Assert::AreEqual(form("rnbqkbnr/pppppp1p/6p1/8/3P4/2P5/PP2PPPP/RNBQKBNR w - -"),
+						 form("r1bqk1nr/ppppppbp/2n3p1/8/3P4/2P5/PP2PPPP/RNBQKBNR w - -"));
+	}
+
+	TEST_METHOD(Pressure_On_Fighting_Pawn_No_Problem) { //no pressure penalty if we can capture their pawn
+		Assert::AreEqual(form("rnbqkbnr/pppppp1p/6p1/8/3P4/8/PPP1PPPP/RNBQKBNR w - -"),
+						 form("r1b1kbnr/pppp1p1p/1qn3p1/4p3/3P4/8/PPP1PPPP/RNBQKBNR w - -"));
+	}
+
+	TEST_METHOD(Pressure_On_Undefended_Pawn_is_Bad) {
+		Assert::IsTrue(form("r1bqk1nr/pppppp1p/2n2bp1/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - -") <
+					   form("rnbqkbnr/pppppp1p/6p1/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - -"));
+	}
+
+	TEST_METHOD(Pressure_On_Pawn_Higher_with_lateness) {
+		Assert::IsTrue(form("r1bqk1nr/pppppp1p/2n2bp1/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - -") >
+					   form("3qk3/pppppp1p/2n2bp1/8/3P4/5N2/PPP1PPPP/2BQK3 w - -"));
 	}
 
 	};
