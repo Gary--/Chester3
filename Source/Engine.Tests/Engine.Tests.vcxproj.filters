@@ -89,9 +89,6 @@
     <ClCompile Include="A_SimpleEvaluation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_Evaluation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="A_Evaluation_mobility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,6 +102,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Evaluation_test_helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Evaluation_pawns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Evaluation_material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

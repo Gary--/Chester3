@@ -41,6 +41,8 @@ public:
 
 	static AttackPattern DEBUG_kingDangerPattern(Turn turn);// what pieces attack our king
 	static int DEBUG_kingDangerCount(Turn turn);//how serious the attack is without considering the pattern
+
+	static int DEBUG_pawnFormation(Turn turn);
 private:
 
 	static void synchronizeMaterial();

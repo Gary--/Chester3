@@ -228,9 +228,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A_AttackMap.cpp" />
-    <ClCompile Include="A_Evaluation.cpp" />
+    <ClCompile Include="A_Evaluation_material.cpp" />
     <ClCompile Include="A_Evaluation_kingDanger.cpp" />
     <ClCompile Include="A_Evaluation_mobility.cpp" />
+    <ClCompile Include="A_Evaluation_pawns.cpp" />
     <ClCompile Include="D_100_perft_cases.cpp" />
     <ClCompile Include="A_AttackPattern.cpp" />
     <ClCompile Include="A_Game_make_nullmove.cpp" />

@@ -14,17 +14,14 @@ public:
 
 	TEST_METHOD(Non_zero_symetrical) {
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -");
-		Game::configure(conf);
+		confSync(conf);
 
-		Evaluation::synchronize();
+
 		FOR_TURN(turn) {
 			Assert::AreNotEqual(0, Evaluation::material(turn));
 		}
 	}
-	void confSync(GameConfiguration conf) {
-		Game::configure(conf);
-		Evaluation::synchronize();
-	}
+
 	int eval(GameConfiguration conf, Turn turn) {
 		confSync(conf);
 		return Evaluation::material(turn);
@@ -34,7 +31,7 @@ public:
 		GameConfiguration conf("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");//Kiwipete
 
 		int initials[2] = { eval(conf, Turn::BLACK()), eval(conf, Turn::WHITE()) };
-
+		double initialLateness = Evaluation::lateness();
 		FOR_POSITION_64(pos) {
 			Turn owner = conf.getOwnerAt(pos);
 			Piece piece = conf.getPieceAt(pos);
@@ -45,6 +42,7 @@ public:
 			conf.clearPieceAt(pos);
 			confSync(conf);
 			Assert::IsTrue(eval(conf, owner) < initials[owner.asIndex()]);
+			Assert::IsTrue(initialLateness < Evaluation::lateness());
 
 			conf.setPieceAt(pos, owner, piece);
 		}

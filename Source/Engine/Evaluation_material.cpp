@@ -36,7 +36,10 @@ namespace {
 	double materialLeft(Turn turn) {
 		return Evaluation::material(turn) / (double)totalInitialMaterial();
 	}
-
+	double latenessValue;
+	void syncLatenessValue() {
+		latenessValue = 1.0 - (materialLeft(Turn::WHITE()) + materialLeft(Turn::BLACK())) / 2;
+	}
 
 
 	// factor is +1/-1 for make/unmake
@@ -74,17 +77,23 @@ void Evaluation::synchronizeMaterial() {
 			matScores[turn.asIndex()] += Game::getPieces(turn, piece).count() * pieceValue(piece);
 		}
 	}
+	syncLatenessValue();
 }
+
 
 void Evaluation::notifyMoveMaterial(Move move, Turn turn) {
 	adjustScores(move, turn, +1);
+	syncLatenessValue();
 }
 
 void Evaluation::notifyUndoMoveMaterial(Move move, Turn turn) {
 	adjustScores(move, turn, -1);
+	syncLatenessValue();
 }
 
-
+double Evaluation::lateness() {
+	return latenessValue;
+}
 
 int Evaluation::materialBalance() {
 	double w = material(Turn::WHITE());
