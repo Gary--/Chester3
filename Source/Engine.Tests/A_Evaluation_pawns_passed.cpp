@@ -17,6 +17,10 @@ public:
 	BitBoard getPassedPawns(const char* FEN) {
 		return getPassedPawns(GameConfiguration(FEN));
 	}
+	int score(const char* FEN) {
+		confSync(FEN);
+		return Evaluation::DEBUG_passedPawnScore(Turn::WHITE());
+	}
 
 
 	TEST_METHOD(No_passed_pawns_initially) {
@@ -44,7 +48,11 @@ public:
 		Assert::AreEqual(BitBoard::EMPTY(), getPassedPawns("rnbqkbnr/1p2p2p/8/8/8/8/PPPPPPPP/RNBQKBNR w - -"));
 	}
 
-	
+	TEST_METHOD(Passed_pawn_non_zero_score) {
+		Assert::IsTrue(score("rnbqkbnr/2pppppp/2p5/2p5/8/8/PPPPPPPP/RNBQKBNR w - -") > 0);
+		Assert::IsTrue(score("rnbqkbnr/pp3ppp/6p1/2pPp3/8/8/PPP1PPPP/RNBQKBNR w - -") > 0);
+		Assert::IsTrue(score("rnbqkbnr/pp4pp/6p1/2pPp3/2PpP3/8/PP3PPP/RNBQKBNR w - -") > 0);
+	}
 
 	};
 

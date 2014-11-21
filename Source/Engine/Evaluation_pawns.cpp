@@ -275,3 +275,7 @@ int Evaluation::DEBUG_pawnFormation(Turn turn) {
 BitBoard Evaluation::DEBUG_passedPawns(Turn turn) {
 	return passedPawnEvaluation(turn).passedPawns;
 }
+
+int Evaluation::DEBUG_passedPawnScore(Turn turn) {
+	return passedPawnEvaluation(turn).score;
+}
