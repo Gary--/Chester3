@@ -38,7 +38,8 @@ namespace {
 	}
 	double latenessValue;
 	void syncLatenessValue() {
-		latenessValue = 1.0 - (Evaluation::material(Turn::WHITE()) + Evaluation::material(Turn::BLACK())) / totalInitialMaterial() / 2;
+		int totMat = Evaluation::material(Turn::WHITE()) + Evaluation::material(Turn::BLACK());
+		latenessValue = 1.0 - (double)totMat / totalInitialMaterial() / 2;
 	}
 
 
