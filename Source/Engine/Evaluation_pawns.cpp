@@ -163,6 +163,17 @@ namespace {
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
 
+	const char passedPawnLateValue[64] = {//more value to outside passed pawns
+        0, 0, 0, 0, 0, 0, 0, 0,
+       50,45,40,40,40,40,45,50,
+       39,32,31,31,31,31,32,39,
+       28,24,22,22,22,22,24,28,
+       17,14,11,11,11,11,14,17,
+       17, 8, 6, 6, 6, 6, 8,17,
+       10, 8, 6, 6, 6, 6, 8,10,
+        0, 0, 0, 0, 0, 0, 0, 0,
+	};
+
 	const char kingSupportValue[64] {
 		0, 0, 0, 0, 0, 0, 0, 0,
 	   32,32,32,32,32,32,32,32,
@@ -229,17 +240,17 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 		if ((AttackFields::kingTargs(pos)&MK).isNotEmpty()) {
 #pragma warning (disable : 4244) //loss of precison
 			res.score += lateness() * kingSupportValue[pos.perspective(turn).index()];
-#pragma warning (default : 4244)
+
 		}
 
-		
 		// Enemy king distance
 		const int distanceToTheirKing = theirKingPos.taxiDistance(pos);
 		res.score += lateness()* distanceToTheirKing *enemyKingDistValue[pos.perspective(turn).index()];
 		
 
-#pragma warning (disable : 4244) //loss of precison
-		const int baseScore = (1.0 + lateness())* passedPawnValue[pos.perspective(turn).index()];
+
+		const int baseScore = (1.0-lateness())* passedPawnValue[pos.perspective(turn).index()] + 
+			                  lateness() * passedPawnLateValue[pos.perspective(turn).index()];
 #pragma warning (default : 4244)
 
 		res.score += baseScore;

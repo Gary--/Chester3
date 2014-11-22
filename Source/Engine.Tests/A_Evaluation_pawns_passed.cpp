@@ -175,6 +175,15 @@ public:
 					   score("r5kn/P5pp/8/8/8/8/6PP/R6K w - -"));
 	}
 
+	TEST_METHOD(Outside_passed_pawns_more_dangerous) {
+		Assert::IsTrue(score("6kn/2q3pp/2P5/8/8/8/6PP/2R4K w - -") <
+					   score("6kn/q5pp/P7/8/8/8/6PP/R6K w - -"));
+		Assert::IsTrue(score("6kq/2n3pp/2P5/8/8/8/6PP/2R4K w - -") <
+					   score("6kq/n5pp/P7/8/8/8/6PP/R6K w - -"));
+	}
+
+
+
 	};
 
 
