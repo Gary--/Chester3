@@ -58,7 +58,6 @@ namespace {
 		const BitBoard backZone = kingSquare &~blockerZone;
 		_ASSERTE((kingSquare | kingSquare.shiftForward(turn)) == (patternZone | blockerZone | backZone));
 		_ASSERTE(kingPos.col() == 0 || kingPos.col() == 0 || kingPos.row() == 0 || kingPos.row() == 7 || backZone.count() == 6);
-		_ASSERTE(kingPos.row() == 0 || kingPos.row() == 7 || (blockerZone.count() == backZone.count() + 2));
 		_ASSERTE((patternZone&blockerZone).isEmpty());
 		_ASSERTE((patternZone&backZone).isEmpty());
 		_ASSERTE((blockerZone&backZone).isEmpty());
