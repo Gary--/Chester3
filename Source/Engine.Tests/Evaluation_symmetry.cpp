@@ -24,8 +24,11 @@ public:
 			int misc = Evaluation::misc(turn);
 			int center = Evaluation::center();
 			int pawns = Evaluation::pawns(turn);
+			double lateness = Evaluation::lateness();
 
 			confSync(conf.mirror());
+			Assert::AreEqual(lateness, Evaluation::lateness());
+
 			Assert::AreEqual(material, Evaluation::material(other));
 			Assert::AreEqual(-materialBalence, Evaluation::materialBalance());
 			Assert::AreEqual(-mobility, Evaluation::mobility());
@@ -33,6 +36,7 @@ public:
 			Assert::AreEqual(misc, Evaluation::misc(other));
 			Assert::AreEqual(-center, Evaluation::center());
 			Assert::AreEqual(pawns, Evaluation::pawns(other));
+			
 		}
 	}
 
