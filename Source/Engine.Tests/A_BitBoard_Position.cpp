@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "BitBoard.h"
 #include "Position.h"
-
+#include <algorithm>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -317,6 +317,29 @@ namespace EngineTests
 
 				Assert::AreEqual(pos.squaresForward(Turn::WHITE()), pos.squaresBackward(Turn::BLACK()));
 				Assert::AreEqual(pos.squaresAbove(), pos.squaresForward(Turn::WHITE()));
+
+				Assert::AreEqual(pos.squaresBackward(Turn::WHITE()), pos.squaresForward(Turn::BLACK()));
+			}
+		}
+
+		TEST_METHOD(Position_forward_backward_symmetry) {
+			FOR_TURN(turn) {
+				FOR_POSITION_64(pos) {
+					Assert::AreEqual(pos.squaresForward(turn), pos.mirror().squaresForward(!turn).mirror());
+				}
+			}
+		}
+
+
+		TEST_METHOD(Position_taxiDistance) {
+			FOR_POSITION_64(pos0) {
+				Assert::AreEqual(0, pos0.taxiDistance(pos0));
+				FOR_POSITION_64(pos1) {
+					int dx = std::abs(pos0.col() - pos1.col());
+					int dy = std::abs(pos0.row() - pos1.row());
+
+					Assert::AreEqual(std::max(dx,dy), pos0.taxiDistance(pos1));
+				}
 			}
 		}
 	};

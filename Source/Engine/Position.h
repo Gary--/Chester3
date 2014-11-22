@@ -37,6 +37,8 @@ public:
 	int diag() const;
 	int antiDiag() const;
 
+	int taxiDistance(Position other) const;//how many moves a king would take to move from here to there
+
 	Position shiftUp() const;
 	Position shiftDown() const;
 	Position shiftLeft() const;

@@ -2,6 +2,7 @@
 #include "ChessAssert.h"
 #include <crtdbg.h>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 
 
@@ -66,6 +67,9 @@ int Position::diag() const {
 	return col() + row();
 }
 
+int Position::taxiDistance(Position other) const{
+	return max(abs(col() - other.col()), abs(row() - other.row()));
+}
 
 int Position::index() const
 {
