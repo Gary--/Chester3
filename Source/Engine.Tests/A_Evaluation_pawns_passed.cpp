@@ -148,6 +148,33 @@ public:
 					   score("5k2/5ppp/8/n7/P7/5N2/5PPP/R6K w - -"));
 	}
 
+	TEST_METHOD(Bonus_if_opponent_blocking_with_rook_or_queen) {
+		// If our pawn is 3 or fewer moves from promotion and being stopped by R/Q, get bonus
+		Assert::AreEqual(score("6kq/6pp/8/n7/P7/8/6PP/R6K w - -"),
+						 score("6kn/6pp/8/q7/P7/8/6PP/R6K w - -"));
+
+		// blocking with queen is worse than blocking with knight
+		Assert::IsTrue(score("6kq/6pp/n7/P7/8/8/6PP/R6K w - -") <
+					   score("6kn/6pp/q7/P7/8/8/6PP/R6K w - -"));
+
+		
+		Assert::IsTrue(score("6kq/n5pp/P7/8/8/8/6PP/R6K w - -") < score("6kn/q5pp/P7/8/8/8/6PP/R6K w - -"));
+
+		Assert::IsTrue(score("n5kq/P5pp/8/8/8/8/6PP/R6K w - -") <
+					   score("q5kn/P5pp/8/8/8/8/6PP/R6K w - -"));
+
+		// blocking with rook is worse than blocking with knight
+		Assert::IsTrue(score("6kr/6pp/n7/P7/8/8/6PP/R6K w - -") <
+					   score("6kn/6pp/r7/P7/8/8/6PP/R6K w - -"));
+
+
+		Assert::IsTrue(score("6kr/n5pp/P7/8/8/8/6PP/R6K w - -") < 
+					   score("6kn/r5pp/P7/8/8/8/6PP/R6K w - -"));
+
+		Assert::IsTrue(score("n5kr/P5pp/8/8/8/8/6PP/R6K w - -") <
+					   score("r5kn/P5pp/8/8/8/8/6PP/R6K w - -"));
+	}
+
 	};
 
 

@@ -306,6 +306,14 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 		} else { // Square in front is occupied
 			if (Game::getOwnerAt(pos_1) == turn) {// We occupy the square in front
 				res.score += baseScore;
+			} else {
+				const Piece enemyBlocker = Game::getPieceAt(pos_1);
+				// Opponent is blocking our pawn with Rook or Queen. They are immobilized.
+				if (enemyBlocker == Piece::ROOK() || enemyBlocker == Piece::QUEEN()) {
+					// give 150 points if furthest pushed, otherwise, 100, otherwise 50.
+					int factor = 3-min(3,pos.perspective(turn).row()-1);
+					res.score += factor * 50;
+				}
 			}
 
 			if (AttackMap::getAttackPattern(turn, pos).getCount() >= 2) { //square in front is covered by 2 of our pieces
