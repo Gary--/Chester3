@@ -101,8 +101,8 @@ public:
 	}
 
 	TEST_METHOD(Stacked_isolated_extra_bad) {
-		Assert::IsTrue(form("rnbqkbnr/pppppppp/3P4/3P4/8/8/PP3PPP/RNBQKBNR w - -") <
-					   form("rnbqkbnr/pppppppp/3P4/3P4/8/8/PPP2PPP/RNBQKBNR w - -") + 30);
+		Assert::IsTrue(form("rnbqkbnr/pppppppp/4P3/4P3/8/8/PPP3PP/RNBQKBNR w - -") + 30 <
+					   form("rnbqkbnr/pppppppp/4P3/4P3/8/8/PP3PPP/RNBQKBNR w - -"));
 	}
 
 	TEST_METHOD(Stacked_on_open_file_extra_bad) {
@@ -125,11 +125,11 @@ public:
 					   form("rnbqkbnr/pppppp1p/6p1/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - -"));
 	}
 
-	TEST_METHOD(Pressure_On_Pawn_Higher_with_lateness) {
-		Assert::IsTrue(form("r1bqk1nr/pppppp1p/2n2bp1/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - -") >
-					   form("3qk3/pppppp1p/2n2bp1/8/3P4/5N2/PPP1PPPP/2BQK3 w - -"));
+	TEST_METHOD(Pawns_Worth_a_lot_late) {
+		//slightly subjective. may depend on other factors.
+		Assert::IsTrue(form("6k1/2p2npp/2P5/8/8/8/1P3PPP/2R4K w - -") >
+					   form("6k1/2p2npp/2P5/8/8/8/6PP/2R4K w - -") + 140);
 	}
-
 	};
 
 

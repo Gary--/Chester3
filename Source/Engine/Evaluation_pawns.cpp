@@ -5,7 +5,7 @@
 #include <algorithm>
 
 using namespace std;
-
+#pragma warning (disable : 4244) //loss of precison
 namespace {
 	const char formation_1[64] = {
 		0, 0, 0, 0, 0, 0, 0, 0,
@@ -71,26 +71,39 @@ int Evaluation::pawnStructureScore(Turn turn) {
 	const BitBoard myPawnCoverage = AttackFields::pawnTargs(MP, turn);
 	const BitBoard theirPawnCoverage = AttackFields::pawnTargs(TP, other);
 
+
+	int goodPawnCount = 0; // how many pawns we have, counting stacked isolated as 1
 	// Stacked pawns
-	FOR_BIT(pawn, MP) {
-		const Position pos = pawn.ToPosition();
-		const BitBoard colBits = BitBoard::colBits(pos.col());
-		int nPawnsInCol = (colBits&MP).count();
-		_ASSERTE(nPawnsInCol >= 1);
-		if (nPawnsInCol == 1) { // not stacked, skip
+	FOR_8(col) {
+		const BitBoard colBits = BitBoard::colBits(col);
+		const int nPawns = (colBits&MP).count();//number 
+
+		if (nPawns == 0) {//no pawns on this file
 			continue;
 		}
-		res -= (nPawnsInCol - 1) * 20; // penalty based on stackage factor
+
+		if (nPawns == 1) {//no stackage here
+			goodPawnCount++;
+			continue;
+		}
+
+		res -= nPawns*(nPawns-1)* 20;
 
 		// No friendly pawns on adjacent files
 		if ((MP&(colBits.shiftLeft() | colBits.shiftRight())).isEmpty()) {
-			res -= 20;
+			res -= nPawns*(nPawns - 1) * 20;
+			goodPawnCount += 1; //count this stack as just 1 pawn
+		} else {
+			goodPawnCount += nPawns; //count as the actual nmber
 		}
 
 		if ((colBits&TP).isEmpty()) { // On half open file
-			res -= 10;
+			res -= nPawns*(nPawns - 1) * 10;
 		}
 	}
+
+	// Pawns become much more valuable as the game goes on
+	res += (int)(lateness() * max(0, goodPawnCount - 1) * 100);
 
 	BitBoard weakPawns = MP; // not defended or easily defendable
 
@@ -135,10 +148,10 @@ int Evaluation::pawnStructureScore(Turn turn) {
 		int penalty = importance[pos.perspective(turn).index()];
 		penalty <<= attackers.getCount();
 
-#pragma warning (disable: 4244)//loss of precison
+
 		penalty += Evaluation::lateness() * penalty;
 		penalty *= 0.4; // scale for binary
-#pragma warning (default: 4244)
+
 
 		res -= penalty;
 	}
@@ -238,20 +251,18 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 		
 		// Our king is supporting the pawn. Bonus depending on how far along pawn is.
 		if ((AttackFields::kingTargs(pos)&MK).isNotEmpty()) {
-#pragma warning (disable : 4244) //loss of precison
-			res.score += lateness() * kingSupportValue[pos.perspective(turn).index()];
-
+			res.score += (int)(lateness() * kingSupportValue[pos.perspective(turn).index()]);
 		}
 
 		// Enemy king distance
 		const int distanceToTheirKing = theirKingPos.taxiDistance(pos);
-		res.score += lateness()* distanceToTheirKing *enemyKingDistValue[pos.perspective(turn).index()];
+		res.score += (int)(lateness()* distanceToTheirKing *enemyKingDistValue[pos.perspective(turn).index()]);
 		
 
 
-		const int baseScore = (1.0-lateness())* passedPawnValue[pos.perspective(turn).index()] + 
-			                  lateness() * passedPawnLateValue[pos.perspective(turn).index()];
-#pragma warning (default : 4244)
+		const int baseScore = (int)((1.0 - lateness())* passedPawnValue[pos.perspective(turn).index()] +
+			                  lateness() * passedPawnLateValue[pos.perspective(turn).index()]);
+
 
 		res.score += baseScore;
 
@@ -358,3 +369,5 @@ BitBoard Evaluation::DEBUG_passedPawns(Turn turn) {
 int Evaluation::DEBUG_passedPawnScore(Turn turn) {
 	return passedPawnEvaluation(turn).score;
 }
+
+#pragma warning (default: 4244)
