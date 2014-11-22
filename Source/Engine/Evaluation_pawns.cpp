@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "AttackFields.h"
 #include "AttackMap.h"
+#include <algorithm>
+
+using namespace std;
 
 namespace {
 	const char formation_1[64] = {
@@ -48,7 +51,7 @@ namespace {
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
 
-	// 
+	// for pressure calculation
 	const char importance[64] = {
 		0, 0, 0, 0, 0, 0, 0, 0,
 		2, 2, 2, 2, 2, 2, 2, 2,
@@ -159,6 +162,33 @@ namespace {
 		3, 3, 3, 3, 3, 3, 3, 3,
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
+
+	const char kingSupportValue[64] {
+		0, 0, 0, 0, 0, 0, 0, 0,
+	   32,32,32,32,32,32,32,32,
+	   26,26,26,26,26,26,26,26,
+	   20,20,20,20,20,20,20,20,
+	   13,13,13,13,13,13,13,13,
+	   10,10,10,10,10,10,10,10,
+		6, 6, 6, 6, 6, 6, 6, 6,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	};
+
+	const char enemyKingDistValue[64] = {
+		0, 0, 0, 0, 0, 0, 0, 0,
+		8, 8, 8, 8, 8, 8, 8, 8,
+		6, 6, 6, 6, 6, 6, 6, 6,
+		4, 4, 4, 4, 4, 4, 4, 4,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	};
+
+	//int taxiDist(Position a, Position b) {
+
+	//	return max(abs(a.col() - b.col()), abs(a.row() - b.row());
+	//}
 }
 
 Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
@@ -167,6 +197,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 	const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
 	const BitBoard TP = Game::getPieces(other, Piece::PAWN());
 	const BitBoard myPawnCoverage = AttackFields::pawnTargs(MP, turn);
+	const Position theirKingPos = Game::getPieces(other, Piece::KING()).ToPosition();
 
 	// Identify passed pawns.
 	FOR_BIT(pawn, MP) {
@@ -175,9 +206,38 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 			res.passedPawns |= pawn;
 		}
 	}
-
+	
+	const BitBoard MR = Game::getPieces(turn, Piece::ROOK());
+	const BitBoard MK = Game::getPieces(turn, Piece::KING());
 	FOR_BIT(pawn, res.passedPawns) {
 		const Position pos = pawn.ToPosition();
+		const BitBoard colBits = BitBoard::colBits(pos.col());
+
+		// Our rook is in the way of this passed pawn. HUGE penalty.
+		// No bonuses are given at all.
+		if ((colBits & pos.squaresForward(turn) & MR).isNotEmpty()) {
+			res.score -= 70;
+
+			// If the pawn is threatened, more penalty
+			if (AttackMap::getAttackPattern(other, pos).isNotEmpty()) {
+				res.score -= 70;
+			}
+			continue;//no other bonuses are given
+		}
+		
+		// Our king is supporting the pawn. Bonus depending on how far along pawn is.
+		if ((AttackFields::kingTargs(pos)&MK).isNotEmpty()) {
+#pragma warning (disable : 4244) //loss of precison
+			res.score += lateness() * kingSupportValue[pos.perspective(turn).index()];
+#pragma warning (default : 4244)
+		}
+
+		
+		// Enemy king distance
+		const int distanceToTheirKing = theirKingPos.taxiDistance(pos);
+		res.score += lateness()* distanceToTheirKing *enemyKingDistValue[pos.perspective(turn).index()];
+		
+
 #pragma warning (disable : 4244) //loss of precison
 		const int baseScore = (1.0 + lateness())* passedPawnValue[pos.perspective(turn).index()];
 #pragma warning (default : 4244)
@@ -248,7 +308,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 				res.score += baseScore;
 			}
 
-			if (AttackMap::getAttackPattern(turn, pos_1).getCount() >= 2) { //square in front is covered by 2 of our pieces
+			if (AttackMap::getAttackPattern(turn, pos).getCount() >= 2) { //square in front is covered by 2 of our pieces
 				res.score += baseScore;
 			}
 
