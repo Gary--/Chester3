@@ -5,7 +5,7 @@
 
 Search_SearchResult Search::searchResult;
 
-void Search::configureGame(GameConfiguration conf) {
+void Search::configureGame(const GameConfiguration conf) {
 	Game::configure(conf);
 	SimpleEvaluation::synchronize();
 }

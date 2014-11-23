@@ -13,9 +13,9 @@ void AttackFields::initKingKnightPawn() {
 	
 	FOR_8(r1) {
 		FOR_8(c1) {
-			Position from(r1, c1);
+			const Position from(r1, c1);
 			FOR_TURN(turn) {
-				BitBoard forwarded = from.asSingletonBitboard().shiftForward(turn);
+				const BitBoard forwarded = from.asSingletonBitboard().shiftForward(turn);
 #pragma warning(disable : 4800)
 				pawnTargsArr[turn.asIndex()][from.index()] = forwarded.shiftLeft() | forwarded.shiftRight();
 #pragma warning(default : 4800)
@@ -23,9 +23,9 @@ void AttackFields::initKingKnightPawn() {
 
 			FOR_8(r2) {
 				FOR_8(c2) {
-					Position to(r2, c2);
-					int dr = abs(r1 - r2);
-					int dc = abs(c1 - c2);
+					const Position to(r2, c2);
+					const int dr = abs(r1 - r2);
+					const int dc = abs(c1 - c2);
 
 					if (from == to || std::max(dr,dc)>2) {
 						continue;

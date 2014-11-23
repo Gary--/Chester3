@@ -2,7 +2,7 @@
 #include "Game.h"
 
 namespace {
-	int bishopPairScore(Turn turn) {
+	int bishopPairScore(const Turn turn) {
 		const Turn other = !turn;
 		const BitBoard MB = Game::getPieces(turn, Piece::BISHOP());
 

@@ -5,7 +5,7 @@ Turn Game::getTurn() {
 	return curTurn;
 }
 
-BitBoard Game::getPieces(Turn turn, Piece piece) {
+BitBoard Game::getPieces(const Turn turn, const Piece piece) {
 	if (turn == Turn::WHITE()) {
 		switch (piece.asEnum()) {
 		case PieceEnum::PAWN:
@@ -47,7 +47,7 @@ BitBoard Game::getAllPieces() {
 	return ALL;
 }
 
-BitBoard Game::getPlayerPieces(Turn turn) {
+BitBoard Game::getPlayerPieces(const Turn turn) {
 	if (turn == Turn::WHITE()) {
 		return WA;
 	} else {
@@ -55,15 +55,15 @@ BitBoard Game::getPlayerPieces(Turn turn) {
 	}
 }
 
-Piece Game::getPieceAt(Position pos) {
+Piece Game::getPieceAt(const Position pos) {
 	return pieces[pos.index()];
 }
 
-Turn Game::getOwnerAt(Position pos) {
+Turn Game::getOwnerAt(const Position pos) {
 	return (pos.asSingletonBitboard() & WA).isEmpty() ? Turn::BLACK() : Turn::WHITE();
 }
 
-bool Game::getCanCastle(Turn turn, Side side) {
+bool Game::getCanCastle(const Turn turn, const Side side) {
 	return cur.hash.getCanCastle(turn, side);
 }
 

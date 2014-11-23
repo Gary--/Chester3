@@ -26,8 +26,8 @@ namespace {
 			}
 		}
 
-		bool occed = Game::getPieceAt(position) != Piece::EMPTY();
-		Turn owner = Game::getOwnerAt(position);
+		const bool occed = Game::getPieceAt(position) != Piece::EMPTY();
+		const Turn owner = Game::getOwnerAt(position);
 		if (occed) {
 			return owner == Turn::WHITE() ? Controller::WHITE : Controller::BLACK;
 		}
@@ -75,7 +75,7 @@ int Evaluation::center() {
 	return res;
 }
 
-char Evaluation::DEBUG_control(Position position) {
+char Evaluation::DEBUG_control(const Position position) {
 	switch (getController(position)) {
 	case Controller::WHITE:
 		return 'w';

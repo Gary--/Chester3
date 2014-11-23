@@ -1,8 +1,8 @@
 #include "AttackFields.h"
 
 
-BitBoard AttackFields::castleEmptySquares(Turn turn, Side side){
-	int r = turn == Turn::WHITE() ? 7 : 0;
+BitBoard AttackFields::castleEmptySquares(const Turn turn, const  Side side) {
+	const int r = turn == Turn::WHITE() ? 7 : 0;
 	if (side==Side::LEFT){
 		return Position(r, 1).asSingletonBitboard() |
 			Position(r, 2).asSingletonBitboard() |
@@ -15,8 +15,8 @@ BitBoard AttackFields::castleEmptySquares(Turn turn, Side side){
 }
 
 
-BitBoard AttackFields::castleSafeSquares(Turn turn, Side side){
-	int r = turn == Turn::WHITE() ? 7 : 0;
+BitBoard AttackFields::castleSafeSquares(const Turn turn, const  Side side) {
+	const int r = turn == Turn::WHITE() ? 7 : 0;
 	if (side == Side::LEFT){
 		return
 			Position(r, 2).asSingletonBitboard() |

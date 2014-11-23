@@ -3,22 +3,22 @@
 
 
 
-bool Game::posAttackedByJump(Position position, Turn turn) {
+bool Game::posAttackedByJump(const Position position, const Turn turn) {
 	return (AttackFields::kingTargs(position) & getPieces(turn, Piece::KING())).isNotEmpty() ||
 		(AttackFields::knightTargs(position) & getPieces(turn, Piece::KNIGHT())).isNotEmpty() ||
 		(AttackFields::pawnTargs(position, !turn) & getPieces(turn, Piece::PAWN())).isNotEmpty();
 }
 
-bool Game::posAttackedByLOS(Position position, Turn turn) {
+bool Game::posAttackedByLOS(const Position position, const Turn turn) {
 	return (AttackFields::bishopTargs(position, ALL) & (getPieces(turn, Piece::BISHOP()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty() ||
 		(AttackFields::rookTargs(position, ALL) & (getPieces(turn, Piece::ROOK()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty();
 }
 
-bool Game::posAttackedBy(Position position, Turn turn) {
+bool Game::posAttackedBy(const Position position, const Turn turn) {
 	return posAttackedByJump(position, turn) || posAttackedByLOS(position, turn);
 }
 
-BitBoard Game::attackedByJump(Turn turn) {
+BitBoard Game::attackedByJump(const Turn turn) {
 	BitBoard res = BitBoard::EMPTY();
 	res |= AttackFields::kingTargs(getPieces(turn, Piece::KING()).ToPosition());
 

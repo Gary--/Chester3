@@ -15,12 +15,12 @@ void Game::resetMoveManager() {
 	cur = Game_UndoData();
 }
 
-void Game::addMove(Move move) {
+void Game::addMove(const Move move) {
 	moves.push_back(move);
 	cur.numMovesStored++;
 }
 
-void Game::addPawnMove(Move move) {
+void Game::addPawnMove(const Move move) {
 	if (AttackFields::pawnPromoZone(curTurn).contains(move.getFrom())) {
 		FOR_PIECE(promo, Piece::KNIGHT(), Piece::QUEEN()) {
 			addMove(Move(promoType(promo), move.getFrom(), move.getTo(), Piece::PAWN(), move.getTarg()));
@@ -90,7 +90,7 @@ GameMoveIteratorGenerator Game::getTacticalMoves() {
 }
 
 
-void Game::pushMove(Move move) {
+void Game::pushMove(const Move move) {
 	cur.move = move;
 
 	movePtr += cur.numMovesStored;

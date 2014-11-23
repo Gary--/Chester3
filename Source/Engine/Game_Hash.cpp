@@ -77,7 +77,7 @@ Game_Hash::Game_Hash(const GameConfiguration& conf) {
 
 }
 
-bool Game_Hash::getCanCastle(Turn player, Side side) const {
+bool Game_Hash::getCanCastle(const Turn player, const  Side side) const {
 	return canCastle[player.asIndex()][bool(side)];
 }
 
@@ -85,17 +85,17 @@ int Game_Hash::getEnpeasent() const {
 	return enpeasent;
 }
 
-void Game_Hash::togglePiece(Position position,Turn player, Piece piece ) {
+void Game_Hash::togglePiece(const Position position, const  Turn player, const  Piece piece) {
 	hash ^= zorbist[player.asIndex()][piece.asIndex()][position.index()];
 }
 
-void Game_Hash::setEnpeasent(int value) {
+void Game_Hash::setEnpeasent(const int value) {
 	hash ^= enpeasentZorbist[enpeasent];
 	enpeasent = value;
 	hash ^= enpeasentZorbist[enpeasent];
 }
 
-void Game_Hash::voidCastle(Turn player, Side side) {
+void Game_Hash::voidCastle(const Turn player, const  Side side) {
 	if (canCastle[player.asIndex()][bool(side)]) {
 		canCastle[player.asIndex()][bool(side)] = false;
 		hash ^= castleZorbist[player.asIndex()][bool(side)];

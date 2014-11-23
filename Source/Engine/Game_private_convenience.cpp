@@ -5,7 +5,7 @@ namespace {
 	BitBoard scratch;
 }
 
-BitBoard* Game::s(Turn turn, Piece piece) {
+BitBoard* Game::s(const Turn turn, const  Piece piece) {
 	
 	if (turn == Turn::WHITE()) {
 		switch (piece.asEnum()) {
@@ -46,11 +46,11 @@ BitBoard* Game::s(Turn turn, Piece piece) {
 	return nullptr;
 }
 
-BitBoard* Game::sp(Turn turn) {
+BitBoard* Game::sp(const Turn turn) {
 	return turn == Turn::WHITE()? &WA : &BA;
 }
 
-void Game::toggleBit(Turn turn, Position position, Piece piece) {
+void Game::toggleBit(const Turn turn, const  Position position, const  Piece piece) {
 	*s(turn, piece) ^= position.asSingletonBitboard();
 	*sp(turn) ^= position.asSingletonBitboard();
 	ALL ^= position.asSingletonBitboard();
@@ -59,13 +59,13 @@ void Game::toggleBit(Turn turn, Position position, Piece piece) {
 }
 
 
-void Game::clearPieceAt(Position position) {
-	Piece piece = getPieceAt(position);
+void Game::clearPieceAt(const Position position) {
+	const Piece piece = getPieceAt(position);
 	if (piece == Piece::EMPTY()) {
 		return;
 	}
 
-	Turn turn = getOwnerAt(position);
+	const Turn turn = getOwnerAt(position);
 	
 	*s(turn, piece) &= ~position.asSingletonBitboard();
 	*sp(turn) &= ~position.asSingletonBitboard();
@@ -75,7 +75,7 @@ void Game::clearPieceAt(Position position) {
 
 	cur.hash.togglePiece(position, turn, piece);
 }
-void Game::addPieceAt(Turn turn, Position position, Piece piece) {
+void Game::addPieceAt(const Turn turn, const Position position, const Piece piece) {
 	*s(turn, piece) |= position.asSingletonBitboard();
 	*sp(turn) |= position.asSingletonBitboard();
 	ALL |= position.asSingletonBitboard();
@@ -84,6 +84,6 @@ void Game::addPieceAt(Turn turn, Position position, Piece piece) {
 }
 
 
-void Game::setPieceAt(Position position, Piece piece) {
+void Game::setPieceAt(const Position position, const Piece piece) {
 	pieces[position.index()] = piece;
 }

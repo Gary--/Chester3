@@ -152,17 +152,17 @@ namespace {
 		};
 #pragma endregion
 
-		bool coordIsOnGrid(int r, int c) {
+	bool coordIsOnGrid(const int r, const  int c) {
 			return 0 <= r && r < 8 && 0 <= c && c < 8;
 		}
 		const int ROOK_SHIFT = 64 - 12;
 		const int BISHOP_SHIFT = 64 - 9;
-		BitBoard attackableSquares(BitBoard board, int r, int c, Piece piece, bool ignoreLast) {
+		BitBoard attackableSquares(const BitBoard board, const  int r, const  int c, const  Piece piece, const  bool ignoreLast) {
 			BitBoard res = BitBoard::EMPTY();
 			for (int dr = -1; dr <= 1; ++dr) {
 				for (int dc = -1; dc <= 1; ++dc) {
-					bool right = (dr || dc) && !(dr*dc);
-					bool diag = dr&&dc;
+					const bool right = (dr || dc) && !(dr*dc);
+					const bool diag = dr&&dc;
 					if (!((diag&&piece == Piece::BISHOP()) || (right&&piece == Piece::ROOK()))) {
 						continue;
 					}
@@ -187,7 +187,7 @@ namespace {
 		void initializeBishopRookOccupancy() {
 			for (int r = 0; r < 8; ++r) {
 				for (int c = 0; c < 8; ++c) {
-					int index = Position(r, c).index();
+					const int index = Position(r, c).index();
 					rook_magics[index].occupancy = attackableSquares(BitBoard::EMPTY(), r, c, Piece::ROOK(), true);
 					bishop_magics[index].occupancy = attackableSquares(BitBoard::EMPTY(), r, c, Piece::BISHOP(), true);
 				}
@@ -195,13 +195,13 @@ namespace {
 		}
 
 
-		std::vector<BitBoard> allFieldsUsingTheseBits(BitBoard bits) {
+		std::vector<BitBoard> allFieldsUsingTheseBits(const BitBoard bits) {
 			std::vector<BitBoard> res;
 			res.push_back(BitBoard::EMPTY());
 
 			FOR_BIT(bit, bits) {
 
-				size_t cursize = res.size();
+				const size_t cursize = res.size();
 				for (size_t i = 0; i<cursize; ++i) {
 					res.push_back(res[i] | bit);
 				}
@@ -209,24 +209,24 @@ namespace {
 			return res;
 		}
 
-		void initializeBishopRookAttackFields(Piece piece) {
+		void initializeBishopRookAttackFields(const Piece piece) {
 			/*const uint64_t*  magics = (piece == Piece::ROOK()) ? rookMagic : bishopMagic;
 			BitBoard** indexes = (piece == Piece::ROOK()) ? rookIndexes : bishopIndexes;
 			*/
 			for (int loc = 0; loc < 64; ++loc) {
-				BitBoard occupancy = (piece == Piece::ROOK() ? rook_magics : bishop_magics)[loc].occupancy;
+				const BitBoard occupancy = (piece == Piece::ROOK() ? rook_magics : bishop_magics)[loc].occupancy;
 				std::vector<BitBoard> occPats = allFieldsUsingTheseBits(occupancy);
 
 
 				for (unsigned i = 0; i < occPats.size(); ++i) {
 
-					BitBoard res = attackableSquares(occPats[i], loc / 8, loc % 8, piece, false);
+					const BitBoard res = attackableSquares(occPats[i], loc / 8, loc % 8, piece, false);
 
 
-					uint64_t magic = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].factor;
-					int position = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].position;
-					int SHIFT = (piece == Piece::ROOK()) ? ROOK_SHIFT : BISHOP_SHIFT;
-					uint64_t ind = position + ((magic*occPats[i].asInt64()) >> SHIFT);
+					const uint64_t magic = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].factor;
+					const int position = ((piece == Piece::ROOK()) ? rook_magics : bishop_magics)[loc].position;
+					const int SHIFT = (piece == Piece::ROOK()) ? ROOK_SHIFT : BISHOP_SHIFT;
+					const uint64_t ind = position + ((magic*occPats[i].asInt64()) >> SHIFT);
 
 					lookup_table[ind] = res;
 
@@ -237,21 +237,21 @@ namespace {
 
 }
 
-BitBoard AttackFields::rookTargs(Position position, BitBoard blockers) {
+BitBoard AttackFields::rookTargs(const Position position, const BitBoard blockers) {
 	
-	Magic magic = rook_magics[position.index()];
+	const Magic magic = rook_magics[position.index()];
 	return lookup_table[magic.position +
 		(((magic.occupancy&blockers).asInt64() * magic.factor) >> ROOK_SHIFT)];
 
 }
 
-BitBoard AttackFields::bishopTargs(Position position, BitBoard blockers) {
-	Magic magic = bishop_magics[position.index()];
+BitBoard AttackFields::bishopTargs(const Position position, const BitBoard blockers) {
+	const Magic magic = bishop_magics[position.index()];
 	return lookup_table[magic.position +
 		(((magic.occupancy&blockers).asInt64() * magic.factor) >> BISHOP_SHIFT)];
 }
 
-BitBoard AttackFields::queenTargs(Position position, BitBoard blockers) {
+BitBoard AttackFields::queenTargs(const Position position, const  BitBoard blockers) {
 	return rookTargs(position, blockers) | bishopTargs(position, blockers);
 }
 

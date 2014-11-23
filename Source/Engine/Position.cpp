@@ -11,10 +11,10 @@ Position::Position() : Position(64)
 }
 
 
-Position::Position(int value) : value(value) {
+Position::Position(const int value) : value(value) {
 	_ASSERTE(0 <= value && value <= 64);//allow one more for invalid position
 }
-Position::Position(int row, int column) : value(8 * row + column) {
+Position::Position(const int row, const  int column) : value(8 * row + column) {
 	ChessAssert::Assert_8(row);
 	ChessAssert::Assert_8(column);
 }
@@ -67,7 +67,7 @@ int Position::diag() const {
 	return col() + row();
 }
 
-int Position::taxiDistance(Position other) const{
+int Position::taxiDistance(const Position other) const {
 	return max(abs(col() - other.col()), abs(row() - other.row()));
 }
 
@@ -88,10 +88,10 @@ Position Position::shiftLeft() const {
 Position Position::shiftRight() const {
 	return Position(row(), col() + 1);
 }
-Position Position::shiftForward(Turn turn) const {
+Position Position::shiftForward(const Turn turn) const {
 	return turn == Turn::WHITE() ? shiftUp() : shiftDown();
 }
-Position Position::shiftBackward(Turn turn) const {
+Position Position::shiftBackward(const Turn turn) const {
 	return shiftForward(!turn);
 }
 
@@ -103,11 +103,11 @@ BitBoard Position::squaresBelow() const {
 	return BitBoard::rowsGreaterThan(row());
 }
 
-BitBoard Position::squaresForward(Turn turn) const {
+BitBoard Position::squaresForward(const Turn turn) const {
 	return turn == Turn::WHITE() ? squaresAbove() : squaresBelow();
 }
 
-BitBoard Position::squaresBackward(Turn turn) const {
+BitBoard Position::squaresBackward(const Turn turn) const {
 	return squaresForward(!turn);
 }
 
@@ -122,7 +122,7 @@ Position Position::mirror() const{
 	return Position(value ^ 56);
 }
 
-Position Position::perspective(Turn turn) const {
+Position Position::perspective(const Turn turn) const {
 	return turn == Turn::WHITE() ? *this : mirror();
 }
 

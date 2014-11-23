@@ -17,7 +17,7 @@ Move::~Move()
 //  7 bits for to
 //  3 bits for piece
 //  3 bits for targ
-Move::Move(MoveType type, Position from, Position to, Piece piece, Piece targ) :
+Move::Move(const MoveType type, const Position from, const Position to, const Piece piece, const  Piece targ) :
 value(
 (uint32_t)type |
 (uint32_t)from.index() << 4 |
@@ -69,7 +69,7 @@ Piece Move::promotionPiece() const {
 	return (Piece)((uint8_t)PieceEnum::KNIGHT + (uint8_t)getType() - (uint8_t)MoveType::PROMO_KNIGHT);
 }
 
-MoveType promoType(Piece piece) {
+MoveType promoType(const Piece piece) {
 	_ASSERTE(Piece::KNIGHT() <= piece && piece <= Piece::QUEEN());
 	return MoveType((uint8_t)MoveType::PROMO_KNIGHT
 					+ piece.asIndex() - (uint8_t)PieceEnum::KNIGHT);

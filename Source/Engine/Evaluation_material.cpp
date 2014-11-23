@@ -5,7 +5,7 @@
 namespace {
 	int matScores[2] = { 0 };
 
-	int pieceValue(Piece piece) {
+	int pieceValue(const Piece piece) {
 		switch (piece.asEnum()) {
 		case PieceEnum::EMPTY:
 			return 0;
@@ -33,7 +33,7 @@ namespace {
 	}
 
 	// fraction of material that remaining
-	double materialLeft(Turn turn) {
+	double materialLeft(const Turn turn) {
 		return Evaluation::material(turn) / (double)totalInitialMaterial();
 	}
 	double latenessValue;
@@ -44,7 +44,7 @@ namespace {
 
 
 	// factor is +1/-1 for make/unmake
-	void adjustScores(Move move, Turn turn, int factor) {
+	void adjustScores(const Move move, const  Turn turn, const  int factor) {
 		const Turn other = !turn;
 		const Position from = move.getFrom().perspective(turn);
 		const Position to = move.getTo().perspective(turn);
@@ -54,7 +54,7 @@ namespace {
 
 		// Additional adjustments for special moves
 		if (move.isPromotion()) {
-			Piece promo = move.promotionPiece();
+			const Piece promo = move.promotionPiece();
 			matScores[turn.asIndex()] += factor*(pieceValue(promo) - pieceValue(Piece::PAWN()));
 		} else if (move.getType() == MoveType::ENPEASENT) {
 			matScores[other.asIndex()] -= factor*pieceValue(Piece::PAWN());
@@ -65,7 +65,7 @@ namespace {
 
 
 
-int Evaluation::material(Turn turn) {
+int Evaluation::material(const Turn turn) {
 	return matScores[turn.asIndex()];
 }
 
@@ -82,12 +82,12 @@ void Evaluation::synchronizeMaterial() {
 }
 
 
-void Evaluation::notifyMoveMaterial(Move move, Turn turn) {
+void Evaluation::notifyMoveMaterial(const Move move, const  Turn turn) {
 	adjustScores(move, turn, +1);
 	syncLatenessValue();
 }
 
-void Evaluation::notifyUndoMoveMaterial(Move move, Turn turn) {
+void Evaluation::notifyUndoMoveMaterial(const Move move, const  Turn turn) {
 	adjustScores(move, turn, -1);
 	syncLatenessValue();
 }
@@ -97,10 +97,10 @@ double Evaluation::lateness() {
 }
 
 int Evaluation::materialBalance() {
-	double w = material(Turn::WHITE());
-	double b = material(Turn::BLACK());
+	const double w = material(Turn::WHITE());
+	const double b = material(Turn::BLACK());
 
-	double matGone = 1.0 - (w + b) / totalInitialMaterial() / 2.0;
+	const double matGone = 1.0 - (w + b) / totalInitialMaterial() / 2.0;
 	
 	const double tradeBonusFact = 0.2;
 

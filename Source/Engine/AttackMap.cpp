@@ -27,15 +27,15 @@ void AttackMap::synchronize() {
 	maps.push_back(AttackMapSaved());
 }
 
-void AttackMap::notifyMove(Move move, Turn turn) {
+void AttackMap::notifyMove(const Move move, const  Turn turn) {
 	maps.push_back(AttackMapSaved());
 }
 
-void AttackMap::notifyUndoMove(Move move, Turn turn) {
+void AttackMap::notifyUndoMove(const Move move, const  Turn turn) {
 	maps.pop_back();
 }
 
-AttackPattern AttackMap::getAttackPattern(Turn turn, Position position) {
+AttackPattern AttackMap::getAttackPattern(const Turn turn, const  Position position) {
 	if (maps.back().precomputed) {
 		return maps.back().patterns[turn.asIndex()][position.index()];;
 	}
@@ -43,29 +43,37 @@ AttackPattern AttackMap::getAttackPattern(Turn turn, Position position) {
 	return getAttackPatternImpl(turn, position);
 }
 
-AttackPattern AttackMap::getAttackPatternImpl(Turn turn, Position position) {
+AttackPattern AttackMap::getAttackPatternImpl(const Turn turn, const  Position position) {
 	AttackPattern pat;
-	
-	BitBoard pawns = Game::getPieces(turn, Piece::PAWN()) & AttackFields::pawnTargs(position, !turn);
-	pat.add(Piece::PAWN(), pawns.count());
 
-	BitBoard knights = Game::getPieces(turn, Piece::KNIGHT()) & AttackFields::knightTargs(position);
-	pat.add(Piece::KNIGHT(), knights.count());
+	{
+		const BitBoard pawns = Game::getPieces(turn, Piece::PAWN()) & AttackFields::pawnTargs(position, !turn);
+		pat.add(Piece::PAWN(), pawns.count());
+	}
 
-	bool king = (Game::getPieces(turn, Piece::KING()) & AttackFields::kingTargs(position))!=BitBoard::EMPTY();
-	pat.add(Piece::KING(), king);
+	{
+		const BitBoard knights = Game::getPieces(turn, Piece::KNIGHT()) & AttackFields::knightTargs(position);
+		pat.add(Piece::KNIGHT(), knights.count());
+	}
 
-	BitBoard potentialRooks = AttackFields::rookTargs(position, Game::getAllPieces());
-	BitBoard potentialBishops = AttackFields::bishopTargs(position, Game::getAllPieces());
+	{
+		bool king = (Game::getPieces(turn, Piece::KING()) & AttackFields::kingTargs(position)) != BitBoard::EMPTY();
+		pat.add(Piece::KING(), king);
+	}
 
-	BitBoard rooks = Game::getPieces(turn, Piece::ROOK()) & potentialRooks;
-	pat.add(Piece::ROOK(), rooks.count());
+	{
+		const BitBoard potentialRooks = AttackFields::rookTargs(position, Game::getAllPieces());
+		const BitBoard potentialBishops = AttackFields::bishopTargs(position, Game::getAllPieces());
 
-	BitBoard bishops = Game::getPieces(turn, Piece::BISHOP()) & potentialBishops;
-	pat.add(Piece::BISHOP(), bishops.count());
+		const BitBoard rooks = Game::getPieces(turn, Piece::ROOK()) & potentialRooks;
+		pat.add(Piece::ROOK(), rooks.count());
 
-	BitBoard queens = Game::getPieces(turn, Piece::QUEEN()) & (potentialBishops | potentialRooks);
-	pat.add(Piece::QUEEN(), queens.count());
+		const BitBoard bishops = Game::getPieces(turn, Piece::BISHOP()) & potentialBishops;
+		pat.add(Piece::BISHOP(), bishops.count());
+
+		const BitBoard queens = Game::getPieces(turn, Piece::QUEEN()) & (potentialBishops | potentialRooks);
+		pat.add(Piece::QUEEN(), queens.count());
+	}
 
 	return pat;
 }

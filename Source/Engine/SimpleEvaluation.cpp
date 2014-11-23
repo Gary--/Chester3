@@ -8,7 +8,7 @@ namespace {
 	int posScores[2] = { 0 };
 
 #pragma region PieceSqr tables
-int8_t pieceSquare[7][64] = {
+	const int8_t pieceSquare[7][64] = {
 		{},
     {//PAWN
          0,  0,  0,  0,  0,  0,  0,  0,
@@ -90,7 +90,7 @@ int8_t pieceSquare[7][64] = {
 
 
 
-	int pieceValue(Piece piece) {
+	int pieceValue(const Piece piece) {
 		switch (piece.asEnum()) {
 		case PieceEnum::EMPTY:
 			return 0;
@@ -110,18 +110,18 @@ int8_t pieceSquare[7][64] = {
 	}
 
 	// fraction of material that is gone.
-	double materialLeft(Turn turn) {
+	double materialLeft(const Turn turn) {
 		return SimpleEvaluation::material(turn) / 4800.0;
 	}
 
 
 	
-	int getPieceSquare(Piece piece, Position pos) {
+	int getPieceSquare(const Piece piece, const  Position pos) {
 		return pieceSquare[piece.asIndex()][pos.index()];
 	}
 
 	// factor is +1/-1 for make/unmake
-	void adjustScores(Move move, Turn turn,int factor) {
+	void adjustScores(const Move move, const  Turn turn, const  int factor) {
 		const Turn other = !turn;
 		const Position from = move.getFrom().perspective(turn);
 		const Position to = move.getTo().perspective(turn);
@@ -136,7 +136,7 @@ int8_t pieceSquare[7][64] = {
 
 		// Additional adjustments for special moves
 		if (move.isPromotion()) {
-			Piece promo = move.promotionPiece();
+			const Piece promo = move.promotionPiece();
 			matScores[turn.asIndex()] += factor*(pieceValue(promo) - pieceValue(Piece::PAWN()));
 			posScores[turn.asIndex()] += factor*getPieceSquare(promo, to);//Pawn end row is 0
 
@@ -144,14 +144,14 @@ int8_t pieceSquare[7][64] = {
 			matScores[other.asIndex()] -= factor*pieceValue(Piece::PAWN());
 
 			// Assume WLOG that we are white
-			int column = to.col();
+			const int column = to.col();
 			Position capturedPos = AttackFields::enpeasentCaptured(Turn::BLACK(),column);
 			posScores[other.asIndex()] -= factor*getPieceSquare(Piece::PAWN(), capturedPos);
 
 		} else if (move.getType() == MoveType::CASTLE_LEFT || move.getType() == MoveType::CASTLE_RIGHT) {
 			// Assume WLOG that we are white
-			Position rookFrom(7, (move.getType() == MoveType::CASTLE_LEFT) ? 0 : 7);
-			Position rookTo(7, (move.getType() == MoveType::CASTLE_LEFT) ? 3 : 5);
+			const Position rookFrom(7, (move.getType() == MoveType::CASTLE_LEFT) ? 0 : 7);
+			const Position rookTo(7, (move.getType() == MoveType::CASTLE_LEFT) ? 3 : 5);
 			posScores[turn.asIndex()] += factor*
 				(getPieceSquare(Piece::ROOK(), rookTo) - getPieceSquare(Piece::ROOK(), rookFrom));
 		}
@@ -162,16 +162,16 @@ int SimpleEvaluation::bothAll() {
 	return all(Game::getTurn()) - all(!Game::getTurn());
 }
 
-int SimpleEvaluation::all(Turn turn) {
+int SimpleEvaluation::all(const Turn turn) {
 	return material(turn) + position(turn);
 }
-int SimpleEvaluation::material(Turn turn) {
+int SimpleEvaluation::material(const Turn turn) {
 	return matScores[turn.asIndex()];
 }
-int SimpleEvaluation::position(Turn turn) {
-	double earliness = materialLeft(!turn);
+int SimpleEvaluation::position(const Turn turn) {
+	const double earliness = materialLeft(!turn);
 
-	Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
+	const Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
 #pragma warning (disable: 4244)//Double to int
 	int kingPosValue = earliness*kingEarlygame[kingPos.perspective(turn).index()] +
 		(1 - earliness)*kingLateGame[kingPos.perspective(turn).index()];
@@ -195,10 +195,10 @@ void SimpleEvaluation::synchronize() {
 	}
 }
 
-void SimpleEvaluation::notifyMove(Move move, Turn turn) {
+void SimpleEvaluation::notifyMove(const Move move, const Turn turn) {
 	adjustScores(move, turn, +1);
 }
 
-void SimpleEvaluation::notifyUndoMove(Move move, Turn turn) {
+void SimpleEvaluation::notifyUndoMove(const Move move, const Turn turn) {
 	adjustScores(move, turn, -1);
 }

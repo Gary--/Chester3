@@ -12,7 +12,7 @@ void Evaluation::initPawns() {
 	FOR_TURN(turn) {
 		FOR_POSITION_64(pos) {
 			BitBoard result = BitBoard::EMPTY();
-			BitBoard posBit = pos.asSingletonBitboard();
+			const BitBoard posBit = pos.asSingletonBitboard();
 			FOR_BIT(bit, posBit | posBit.shiftLeft() | posBit.shiftRight()) {
 				result |= BitBoard::colBits(bit.ToPosition().col());
 			}
@@ -22,6 +22,6 @@ void Evaluation::initPawns() {
 	}
 }
 
-BitBoard Evaluation::opposingPawns(Position position, Turn turn) {
+BitBoard Evaluation::opposingPawns(const Position position, const  Turn turn) {
 	return opposingPawnsArr[turn.asIndex()][position.index()];
 }

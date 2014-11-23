@@ -11,7 +11,7 @@ Piece randPiece() {
 	return (Piece)(1 + rand() % 6);
 }
 
-Side operator!(Side side) {
+Side operator!(const Side side) {
 #pragma warning(disable : 4800) //Forcing to bool
 	return (Side)(!(bool)side);
 #pragma warning(default : 4800)
@@ -20,7 +20,7 @@ Side operator!(Side side) {
 
 #pragma region Piece
 
-Piece::Piece(uint8_t value) : value(value) {}
+Piece::Piece(const uint8_t value) : value(value) {}
 Piece::Piece() : Piece(0) {}
 
 Piece Piece::fromChar(char c) {
@@ -46,7 +46,7 @@ Piece Piece::fromChar(char c) {
 	}
 }
 
-char Piece::asChar(Turn turn) const {
+char Piece::asChar(const Turn turn) const {
 	char res = '?';
 
 	switch (asEnum()) {
@@ -160,7 +160,7 @@ std::string Piece::str() const {
 
 #pragma region Turn
 Turn::Turn() : value(false) {}
-Turn::Turn(bool value) : value(value) {}
+Turn::Turn(const bool value) : value(value) {}
 
 std::string Turn::str() const {
 	return *this == WHITE() ? "WHITE" : "BLACK";
@@ -174,7 +174,7 @@ bool Turn::asIndex() const {
 	return value;
 }
 
-Turn Turn::fromChar(char c) {
+Turn Turn::fromChar(const char c) {
 	return ('a' <= c && c < 'z') ? Turn::BLACK() : Turn::WHITE();
 }
 

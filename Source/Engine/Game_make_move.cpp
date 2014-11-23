@@ -2,8 +2,8 @@
 #include "AttackFields.h"
 #include "Game_UndoData.h"
 
-void Game::makeMove(Move move) {
-	bool wasInCheck = getCheck();
+void Game::makeMove(const Move move) {
+	const bool wasInCheck = getCheck();
 	pushMove(move);
 	if (move == Move::NULL_MOVE()) {
 		_ASSERTE(!wasInCheck);
@@ -105,17 +105,18 @@ void Game::makeMove(Move move) {
 
 		_ASSERTE(!posAttackedBy(getPieces(curTurn, Piece::KING()).ToPosition(), !curTurn));
 
+		{ // Check detection
+			const BitBoard theirKingBit = getPieces(!curTurn, Piece::KING());
 
-		BitBoard theirKingBit = getPieces(!curTurn, Piece::KING());
-
-		cur.check = false;
-		if ((piece == Piece::PAWN() && (AttackFields::pawnTargs(toPos, curTurn)&theirKingBit).isNotEmpty()) ||
-			((piece == Piece::KNIGHT() || (move.isPromotion() && move.promotionPiece() == Piece::KNIGHT())) &&
-			(AttackFields::knightTargs(toPos)&theirKingBit).isNotEmpty())) {
-			cur.check = true;
-		}
-		if (cur.check == false && posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {
-			cur.check = true;
+			cur.check = false;
+			if ((piece == Piece::PAWN() && (AttackFields::pawnTargs(toPos, curTurn)&theirKingBit).isNotEmpty()) ||
+				((piece == Piece::KNIGHT() || (move.isPromotion() && move.promotionPiece() == Piece::KNIGHT())) &&
+				(AttackFields::knightTargs(toPos)&theirKingBit).isNotEmpty())) {
+				cur.check = true;
+			}
+			if (cur.check == false && posAttackedByLOS(theirKingBit.ToPosition(), curTurn)) {
+				cur.check = true;
+			}
 		}
 
 	}
@@ -154,21 +155,21 @@ Move Game::undoMove() {
 
 #pragma region Pawn Special
 	if (type == MoveType::ENPEASENT) {
-		BitBoard capturedBit = toBit.shiftBackward(curTurn);
-		Position capturedPos = capturedBit.ToPosition();
+		const BitBoard capturedBit = toBit.shiftBackward(curTurn);
+		const Position capturedPos = capturedBit.ToPosition();
 
 		setPieceAt(capturedPos, Piece::PAWN());
 		toggleBit(!curTurn, capturedPos, Piece::PAWN());
 	} else if (move.isPromotion()) {
-		Piece promo = move.promotionPiece();
+		const Piece promo = move.promotionPiece();
 
 		*s(curTurn, Piece::PAWN()) ^= toBit;
 		*s(curTurn, promo) ^= toBit;
 	} else if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
 		int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
-		Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
-		Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
-		BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();
+		const Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
+		const Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
+		const BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();
 
 		ALL ^= rookChange;
 		*sp(curTurn) ^= rookChange;

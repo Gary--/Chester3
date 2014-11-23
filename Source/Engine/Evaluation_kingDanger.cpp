@@ -8,7 +8,7 @@
 using namespace std;
 
 namespace {
-	int patternScore(AttackPattern pat) {
+	int patternScore(const AttackPattern pat) {
 		const uint8_t patternValueTable[32] = {
        //      . P N N R R R R Q Q Q Q Q Q Q Q K K K K K K K K K K K K K K K K
        //            P   P N N   P N N R R R R   P N N R R R R Q Q Q Q Q Q Q Q
@@ -43,12 +43,12 @@ namespace {
 		}
 	};
 
-	BitBoard getLightPieces(Turn turn) {
+	BitBoard getLightPieces(const Turn turn) {
 		return Game::getPieces(turn, Piece::KNIGHT()) |
 			Game::getPieces(turn, Piece::ROOK()) | Game::getPieces(turn, Piece::BISHOP());
 	}
 
-	Danger calcDanger(Turn turn) {
+	Danger calcDanger(const Turn turn) {
 		const Turn other = !turn;
 		const Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
 		const BitBoard kingSquare = AttackFields::kingTargs(kingPos) | Game::getPieces(turn, Piece::KING());
@@ -107,7 +107,7 @@ namespace {
 
 }
 
-int Evaluation::kingDanger(Turn turn) {
+int Evaluation::kingDanger(const Turn turn) {
 	const Turn other = !turn;
 
 	// skip safety if they have no queen or they have only a queen
@@ -128,10 +128,10 @@ int Evaluation::kingDanger(Turn turn) {
 	return scaling[danger.count];
 }
 
-AttackPattern  Evaluation::DEBUG_kingDangerPattern(Turn turn) {
+AttackPattern  Evaluation::DEBUG_kingDangerPattern(const Turn turn) {
 	return calcDanger(turn).pattern;
 }
 
-int Evaluation::DEBUG_kingDangerCount(Turn turn) {
+int Evaluation::DEBUG_kingDangerCount(const Turn turn) {
 	return calcDanger(turn).count;
 }

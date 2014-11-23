@@ -4,7 +4,7 @@
 using namespace std;
 namespace {
 	set<uint64_t> hashes;
-	int perft(int depth, bool full, bool storeHashes=false) {
+	int perft(const int depth, const  bool full, const  bool storeHashes = false) {
 		if (depth == 0) {
 			if (full) {
 				if (storeHashes) {
@@ -17,10 +17,10 @@ namespace {
 		}
 
 #ifdef _DEBUG
-		string FEN = Game::getFEN();
+		const string FEN = Game::getFEN();
 #endif
 		int res = 0;
-		for (Move move: Game::getAllMoves()){
+		for (const Move move: Game::getAllMoves()){
 
 			Game::makeMove(move);
 			res += perft(depth - 1, full, storeHashes);
@@ -31,22 +31,22 @@ namespace {
 	}
 }
 
-int Perft::perftLazy(const char* FEN, int depth) {
-	GameConfiguration conf(FEN);
+int Perft::perftLazy(const char* FEN, const int depth) {
+	const GameConfiguration conf(FEN);
 	Game::configure(conf);
 	return perft(depth-1, false);
 }
 
-int Perft::perftFull(const char* FEN, int depth) {
-	GameConfiguration conf(FEN);
+int Perft::perftFull(const char* FEN, const int depth) {
+	const GameConfiguration conf(FEN);
 	Game::configure(conf);
 	return perft(depth, true);
 }
 
 
 
-int Perft::perftUniquePositions(const char* FEN, int depth) {
-	GameConfiguration conf(FEN);
+int Perft::perftUniquePositions(const char* FEN, const int depth) {
+	const GameConfiguration conf(FEN);
 	Game::configure(conf);
 
 	hashes.clear();

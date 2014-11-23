@@ -104,7 +104,7 @@ std::string BitBoard::str() const
 	return res;
 }
 
-bool  BitBoard::contains(Position position) const{
+bool  BitBoard::contains(const Position position) const {
 	return (position.asSingletonBitboard() & (*this)).isNotEmpty();
 }
 
@@ -126,7 +126,7 @@ BitBoard BitBoard::mirror() const{
 	return BitBoard(_byteswap_uint64(value));
 }
 
-BitBoard BitBoard::perspective(Turn turn) const {
+BitBoard BitBoard::perspective(const Turn turn) const {
 	return turn == Turn::WHITE() ? *this : mirror();
 }
 
@@ -147,7 +147,7 @@ BitBoard BitBoard::shiftLeft() const{
 	return BitBoard((*this &~colBits(0)).value >> 1);
 }
 
-BitBoard BitBoard::shiftForward(Turn turn) const {
+BitBoard BitBoard::shiftForward(const Turn turn) const {
 	if (turn == Turn::WHITE()) {
 		return this->shiftUp();
 	} else {
@@ -155,7 +155,7 @@ BitBoard BitBoard::shiftForward(Turn turn) const {
 	}
 }
 
-BitBoard BitBoard::shiftBackward(Turn turn) const {
+BitBoard BitBoard::shiftBackward(const Turn turn) const {
 	return shiftForward(!turn);
 }
 
@@ -166,14 +166,14 @@ int BitBoard::count() const
 }
 
 
-BitBoard BitBoard::rowBits(int row)
+BitBoard BitBoard::rowBits(const int row)
 {
 	ChessAssert::Assert_8(row);
 	return BitBoard(0xFFULL << (8*row));
 }
 
 
-BitBoard BitBoard::colBits(int col)
+BitBoard BitBoard::colBits(const int col)
 {
 	ChessAssert::Assert_8(col);
 	return BitBoard(0x0101010101010101ULL << col);
@@ -202,7 +202,7 @@ namespace {
 
 }
 
-BitBoard BitBoard::diagonalBits(int i) {
+BitBoard BitBoard::diagonalBits(const int i) {
 	_ASSERTE(0 <= i && i < 15);
 	return i==7 ? diag7() :
 		( i < 7 ?
@@ -210,7 +210,7 @@ BitBoard BitBoard::diagonalBits(int i) {
 		BitBoard(diag7().value << (i - 7)) &~(diag0to7() | diag7()) );
 }
 
-BitBoard BitBoard::antiDiagonalBits(int i) {
+BitBoard BitBoard::antiDiagonalBits(const int i) {
 	_ASSERTE(0 <= i && i < 15);
 	return i < 7 ?
 		BitBoard(antiDiag7().value >> (7-i)) &~antiDiag8to14() :
@@ -218,12 +218,12 @@ BitBoard BitBoard::antiDiagonalBits(int i) {
 }
 
 
-BitBoard BitBoard::rowsLessThan(int r) {
+BitBoard BitBoard::rowsLessThan(const int r) {
 	ChessAssert::Assert_8(r);
 	return BitBoard((1ULL << (8 * r)) - 1ULL);
 }
 
-BitBoard BitBoard::rowsGreaterThan(int r) {
+BitBoard BitBoard::rowsGreaterThan(const int r) {
 	ChessAssert::Assert_8(r);
 #pragma warning (disable: 4146) //negating unsigned
 	return BitBoard(-(2ULL << (8 * r + 7)));
@@ -231,7 +231,8 @@ BitBoard BitBoard::rowsGreaterThan(int r) {
 }
 
 BitBoard BitBoard::random(){
-	int size = BitBoard(RAND_MAX).count(), n = 0;
+	const int size = BitBoard(RAND_MAX).count();
+	int n = 0;
 	uint64_t res = 0;
 	while (n<64){
 		res <<= size;

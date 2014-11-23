@@ -36,7 +36,7 @@ namespace {
 
 
 
-	MobilityScore knightMobilityScore(Turn turn) {
+	MobilityScore knightMobilityScore(const Turn turn) {
 		const int knightOutpostValue[64] = {
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -81,7 +81,7 @@ namespace {
 		return res;
 	}
 
-	MobilityScore bishopMobilityScore(Turn turn) {
+	MobilityScore bishopMobilityScore(const Turn turn) {
 		const Turn other = !turn;
 
 		const BitBoard ALL = Game::getAllPieces();
@@ -106,7 +106,7 @@ namespace {
 			const BitBoard blockingPawns = targsXRay & pos.squaresForward(turn) & MP;
 
 			res.relative += ctrl.count();
-			{
+			{ // minimum mobility
 				const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 				res.exact -= bishopMinMobilePenalty[ctrl.count()];
 			}
@@ -149,6 +149,7 @@ namespace {
 
 				const Position frontPos = pawn.ToPosition().shiftForward(turn);
 				const Piece frontPiece = Game::getPieceAt(frontPos); //what is blocking the pawn
+
 				int frontPieceIndex = frontPiece.asIndex();
 				if (frontPiece != Piece::EMPTY() && Game::getOwnerAt(frontPos) != turn) {
 					frontPieceIndex += 6;
@@ -263,7 +264,7 @@ namespace {
 	}
 
 
-	MobilityScore turnMobilityScore(Turn turn) {
+	MobilityScore turnMobilityScore(const Turn turn) {
 		return knightMobilityScore(turn) + bishopMobilityScore(turn) + rookMobilityScore(turn);
 	}
 }
@@ -281,22 +282,22 @@ int Evaluation::mobility() {
 	return res;
 }
 
-int Evaluation::DEBUG_knightExactMobility(Turn turn) {
+int Evaluation::DEBUG_knightExactMobility(const Turn turn) {
 	return knightMobilityScore(turn).exact;
 }
 
-int Evaluation::DEBUG_knightRelativeMobility(Turn turn) {
+int Evaluation::DEBUG_knightRelativeMobility(const Turn turn) {
 	return  knightMobilityScore(turn).relative;
 }
-int Evaluation::DEBUG_bishopExactMobility(Turn turn) {
+int Evaluation::DEBUG_bishopExactMobility(const Turn turn) {
 	return bishopMobilityScore(turn).exact;
 }
-int Evaluation::DEBUG_bishopRelativeMobility(Turn turn) {
+int Evaluation::DEBUG_bishopRelativeMobility(const Turn turn) {
 	return bishopMobilityScore(turn).relative;
 }
-int Evaluation::DEBUG_rookExactMobility(Turn turn) {
+int Evaluation::DEBUG_rookExactMobility(const Turn turn) {
 	return rookMobilityScore(turn).exact;
 }
-int Evaluation::DEBUG_rookRelativeMobility(Turn turn) {
+int Evaluation::DEBUG_rookRelativeMobility(const Turn turn) {
 	return rookMobilityScore(turn).relative;
 }

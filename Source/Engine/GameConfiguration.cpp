@@ -45,7 +45,7 @@ GameConfiguration GameConfiguration::mirror() const {
 
 
 
-GameConfiguration::GameConfiguration(std::string ForsythEdwardsNotation)
+GameConfiguration::GameConfiguration(const std::string ForsythEdwardsNotation)
 :GameConfiguration() {
 	istringstream ss(ForsythEdwardsNotation);
 
@@ -124,32 +124,32 @@ const int GameConfiguration::NO_ENPEASENT_COLUMN = 8;
 Turn GameConfiguration::getTurn() const {
 	return turn;
 }
-void GameConfiguration::setTurn(Turn turn) {
+void GameConfiguration::setTurn(const Turn turn) {
 	this->turn = turn;
 }
 
-Piece GameConfiguration::getPieceAt(Position position) const {
+Piece GameConfiguration::getPieceAt(const Position position) const {
 	return pieces[position.index()];
 }
-void GameConfiguration::setPieceAt(Position position, Turn turn, Piece piece) {
+void GameConfiguration::setPieceAt(const Position position, const Turn turn, const Piece piece) {
 	pieces[position.index()] = piece;
 	owners[position.index()] = turn;
 }
 
-void GameConfiguration::clearPieceAt(Position position) {
+void GameConfiguration::clearPieceAt(const Position position) {
 	setPieceAt(position, Turn::BLACK(), Piece::EMPTY());
 }
 
 
-Turn GameConfiguration::getOwnerAt(Position position) const {
+Turn GameConfiguration::getOwnerAt(const Position position) const {
 	return owners[position.index()];
 }
 
 #pragma warning(disable:4800)//force to bool
-bool GameConfiguration::getCanCastle(Turn turn, Side side) const {
+bool GameConfiguration::getCanCastle(const Turn turn, const Side side) const {
 	return canCastle[turn.asIndex()][(bool)side];
 }
-void GameConfiguration::setCanCastle(Turn turn, Side side, bool value) {
+void GameConfiguration::setCanCastle(const Turn turn, const Side side, const bool value) {
 	canCastle[turn.asIndex()][(bool)side] = value;
 }
 #pragma warning(default:4800)
@@ -157,21 +157,21 @@ void GameConfiguration::setCanCastle(Turn turn, Side side, bool value) {
 int GameConfiguration::getHalfMoveClock() const {
 	return halfMoveClock;
 }
-void GameConfiguration::setHalfMoveClock(int value) {
+void GameConfiguration::setHalfMoveClock(const int value) {
 	halfMoveClock = value;
 }
 
 int GameConfiguration::getMoveNumber() const {
 	return moveNumber;
 }
-void GameConfiguration::setMoveNumber(int value) {
+void GameConfiguration::setMoveNumber(const int value) {
 	moveNumber = value;
 }
 
 int GameConfiguration::getEnpeasentColumn() const {
 	return enpeasentColumn;
 }
-void GameConfiguration::setEnpeasentColumn(int value) {
+void GameConfiguration::setEnpeasentColumn(const int value) {
 	enpeasentColumn = value;
 }
 

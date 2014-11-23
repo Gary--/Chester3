@@ -1,7 +1,8 @@
 #include "Game_MoveIterator.h"
 
 
-GameMoveIterator::GameMoveIterator(const std::vector<Move>* const moves, uint16_t cur, uint8_t left, bool tacticalOnly) :
+GameMoveIterator::GameMoveIterator(const std::vector<Move>* const moves, 
+								   const  uint16_t cur, const  uint8_t left, const  bool tacticalOnly) :
 moves(moves), cur(cur), left(left), tacticalOnly(tacticalOnly){
 	if (left && tacticalOnly && !(**this).isTactical()) {
 		++(*this);
@@ -28,7 +29,8 @@ bool GameMoveIterator::operator!=(const GameMoveIterator& other) const {
 
 
 
-GameMoveIteratorGenerator::GameMoveIteratorGenerator(const std::vector<Move>* const moves, uint16_t start, uint16_t finish, bool tacticalOnly) :
+GameMoveIteratorGenerator::GameMoveIteratorGenerator(const std::vector<Move>* const moves, 
+													 const  uint16_t start, const  uint16_t finish, const  bool tacticalOnly) :
 moves(moves), start(start), finish(finish), tacticalOnly(tacticalOnly){
 	_ASSERTE(start <= finish);
 }

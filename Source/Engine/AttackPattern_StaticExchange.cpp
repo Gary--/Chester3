@@ -7,18 +7,18 @@
 namespace {
 
 	// Knights and Bishops share the same type.
-	int ind(Piece piece) {
+	int ind(const Piece piece) {
 		return piece.asIndex() - (piece >= Piece::BISHOP());
 	}
 
-	uint8_t pieceBit(Piece piece) {
+	uint8_t pieceBit(const Piece piece) {
 		_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 
 		// 5 highest bits are for the piece types.
 		return (uint8_t)4 << ind(piece);
 	}
 
-	int limit(Piece piece) {
+	int limit(const Piece piece) {
 		switch (piece.asEnum()) {
 		case PieceEnum::PAWN:
 			return 2;
@@ -38,7 +38,7 @@ namespace {
 		}
 	}
 
-	int likliness(Piece piece) {
+	int likliness(const Piece piece) {
 		switch (piece.asEnum()) {
 		case PieceEnum::PAWN:
 			return 2;
@@ -57,7 +57,7 @@ namespace {
 		}
 	}
 
-	int pieceValue(Piece piece) {
+	int pieceValue(const Piece piece) {
 		switch (piece.asEnum()) {
 		case PieceEnum::PAWN:
 			return 1;
@@ -89,8 +89,8 @@ namespace {
 #pragma region AttackPattern
 AttackPattern::AttackPattern() : value(0) {}
 AttackPattern::AttackPattern(uint8_t value) : value(value) {}
-AttackPattern::AttackPattern(std::string str) : AttackPattern() {
-	int n = str[0] - '0';
+AttackPattern::AttackPattern(const std::string str) : AttackPattern() {
+	const int n = str[0] - '0';
 	int actuallyAdded = 0;
 
 	Piece piece = Piece::UNKNOWN();
@@ -102,12 +102,12 @@ AttackPattern::AttackPattern(std::string str) : AttackPattern() {
 	add(piece, n - actuallyAdded);
 }
 
-void AttackPattern::add(Piece piece) {
+void AttackPattern::add(const Piece piece) {
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	value++;
 	value |= pieceBit(piece);
 }
-void AttackPattern::add(Piece piece, int n) {
+void AttackPattern::add(const Piece piece, const  int n) {
 	_ASSERTE(n >= 0);
 	if (n == 0) {
 		return;
@@ -118,7 +118,7 @@ void AttackPattern::add(Piece piece, int n) {
 	value |= pieceBit(piece);
 }
 
-bool AttackPattern::contains(Piece piece) const{
+bool AttackPattern::contains(const Piece piece) const {
 	_ASSERTE(Piece::PAWN() <= piece && piece <= Piece::KING());
 	return (value & pieceBit(piece))!=0;
 }
@@ -166,7 +166,7 @@ std::string AttackPattern::str() const {
 	return res;
 }
 
-int AttackPattern::getPieceCount(Piece piece) const {
+int AttackPattern::getPieceCount(const Piece piece) const {
 	int counts[6] = { 0 };
 	int tot = 0;
 
@@ -247,8 +247,8 @@ void StaticExchange::init() {
 	}
 	for (int i = 0; i < 256; ++i) {
 		for (int j = 0; j < 256; j++) {
-			AttackPattern attackers(i);
-			AttackPattern defenders(j);
+			const AttackPattern attackers(i);
+			const AttackPattern defenders(j);
 			if (!attackers.isValid() || !defenders.isValid() ||
 				attackers.getCount() == 0) {
 				continue;
@@ -266,7 +266,7 @@ void StaticExchange::init() {
 	}
 }
 
-int StaticExchange::attackCostImpl(Piece attacker, AttackPattern attackers, AttackPattern defenders) {
+int StaticExchange::attackCostImpl( Piece attacker, const  AttackPattern attackers, const  AttackPattern defenders) {
 	if (attacker == Piece::BISHOP()) {
 		attacker = Piece::KNIGHT();
 	}

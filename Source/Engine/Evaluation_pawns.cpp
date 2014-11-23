@@ -63,7 +63,7 @@ namespace {
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
 }
-int Evaluation::pawnStructureScore(Turn turn) {
+int Evaluation::pawnStructureScore(const Turn turn) {
 	int res = 0;
 	const Turn other = !turn;
 	const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
@@ -71,69 +71,71 @@ int Evaluation::pawnStructureScore(Turn turn) {
 	const BitBoard myPawnCoverage = AttackFields::pawnTargs(MP, turn);
 	const BitBoard theirPawnCoverage = AttackFields::pawnTargs(TP, other);
 
+	{ // Stacked pawns
+		int goodPawnCount = 0; // how many pawns we have, counting stacked isolated as 1
+		FOR_8(col) {
+			const BitBoard colBits = BitBoard::colBits(col);
+			const int nPawns = (colBits&MP).count();//number 
 
-	int goodPawnCount = 0; // how many pawns we have, counting stacked isolated as 1
-	// Stacked pawns
-	FOR_8(col) {
-		const BitBoard colBits = BitBoard::colBits(col);
-		const int nPawns = (colBits&MP).count();//number 
+			if (nPawns == 0) {//no pawns on this file
+				continue;
+			}
 
-		if (nPawns == 0) {//no pawns on this file
-			continue;
-		}
+			if (nPawns == 1) {//no stackage here
+				goodPawnCount++;
+				continue;
+			}
 
-		if (nPawns == 1) {//no stackage here
-			goodPawnCount++;
-			continue;
-		}
-
-		res -= nPawns*(nPawns-1)* 20;
-
-		// No friendly pawns on adjacent files
-		if ((MP&(colBits.shiftLeft() | colBits.shiftRight())).isEmpty()) {
 			res -= nPawns*(nPawns - 1) * 20;
-			goodPawnCount += 1; //count this stack as just 1 pawn
-		} else {
-			goodPawnCount += nPawns; //count as the actual nmber
+
+			// No friendly pawns on adjacent files
+			if ((MP&(colBits.shiftLeft() | colBits.shiftRight())).isEmpty()) {
+				res -= nPawns*(nPawns - 1) * 20;
+				goodPawnCount += 1; //count this stack as just 1 pawn
+			} else {
+				goodPawnCount += nPawns; //count as the actual nmber
+			}
+
+			if ((colBits&TP).isEmpty()) { // On half open file
+				res -= nPawns*(nPawns - 1) * 10;
+			}
 		}
 
-		if ((colBits&TP).isEmpty()) { // On half open file
-			res -= nPawns*(nPawns - 1) * 10;
+		// Pawns become much more valuable as the game goes on
+		res += (int)(lateness() * max(0, goodPawnCount - 1) * 100);
+	}
+
+
+	{ // score pawns by how much they defend each other
+		BitBoard weakPawns = MP; // not defended or easily defendable
+
+		const BitBoard sideBySide = (weakPawns.shiftForward(turn)&myPawnCoverage).shiftBackward(turn);
+		weakPawns ^= sideBySide;
+		FOR_BIT(pawn, sideBySide) {
+			res += formation_1[pawn.ToPosition().perspective(turn).index()];
 		}
-	}
+		_ASSERTE(sideBySide == ((MP.shiftLeft()&MP) | (MP.shiftRight()&MP)));
 
-	// Pawns become much more valuable as the game goes on
-	res += (int)(lateness() * max(0, goodPawnCount - 1) * 100);
+		const BitBoard directlyProtected = weakPawns&myPawnCoverage;
+		weakPawns ^= directlyProtected;
 
-	BitBoard weakPawns = MP; // not defended or easily defendable
-
-	const BitBoard sideBySide = (weakPawns.shiftForward(turn)&myPawnCoverage).shiftBackward(turn);
-	weakPawns ^= sideBySide;
-	FOR_BIT(pawn, sideBySide) {
-		res += formation_1[pawn.ToPosition().perspective(turn).index()];
-	}
-	_ASSERTE(sideBySide == ((MP.shiftLeft()&MP) | (MP.shiftRight()&MP)));
-
-	const BitBoard directlyProtected = weakPawns&myPawnCoverage;
-	weakPawns ^= directlyProtected;
-
-	const BitBoard aBitAhead = (weakPawns.shiftBackward(turn)&myPawnCoverage).shiftForward(turn);
-	weakPawns ^= aBitAhead;
-	FOR_BIT(pawn, aBitAhead | directlyProtected) {
-		res += formation_2[pawn.ToPosition().perspective(turn).index()];
-	}
-
-	FOR_BIT(pawn, weakPawns) {
-		const Position pos = pawn.ToPosition().perspective(turn);
-		res -= weakpawn_1[pos.index()];
-		if ((BitBoard::colBits(pos.col()) & TP).isEmpty()) { // half open file
-			res -= weakpawn_2[pos.index()];
+		const BitBoard aBitAhead = (weakPawns.shiftBackward(turn)&myPawnCoverage).shiftForward(turn);
+		weakPawns ^= aBitAhead;
+		FOR_BIT(pawn, aBitAhead | directlyProtected) {
+			res += formation_2[pawn.ToPosition().perspective(turn).index()];
 		}
+
+		FOR_BIT(pawn, weakPawns) {
+			const Position pos = pawn.ToPosition().perspective(turn);
+			res -= weakpawn_1[pos.index()];
+			if ((BitBoard::colBits(pos.col()) & TP).isEmpty()) { // half open file
+				res -= weakpawn_2[pos.index()];
+			}
+		}
+
+		_ASSERTE(MP == (weakPawns ^ sideBySide ^ directlyProtected ^ aBitAhead));
 	}
 
-
-
-	_ASSERTE(MP == (weakPawns ^ sideBySide ^ directlyProtected ^ aBitAhead));
 
 	// Pressure on unprotected pawns. Exclude pawns that attack their pawn
 	FOR_BIT(pawn, MP &~(myPawnCoverage | theirPawnCoverage)) {
@@ -209,13 +211,9 @@ namespace {
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
 
-	//int taxiDist(Position a, Position b) {
-
-	//	return max(abs(a.col() - b.col()), abs(a.row() - b.row());
-	//}
 }
 
-Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
+Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(const Turn turn) {
 	PassedPawnResult res;
 	const Turn other = !turn;
 	const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
@@ -354,19 +352,19 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(Turn turn) {
 	return res;
 }
 
-int Evaluation::pawns(Turn turn) {
+int Evaluation::pawns(const Turn turn) {
 	return pawnStructureScore(turn) + passedPawnEvaluation(turn).score;
 }
 
-int Evaluation::DEBUG_pawnFormation(Turn turn) {
+int Evaluation::DEBUG_pawnFormation(const Turn turn) {
 	return pawnStructureScore(turn);
 }
 
-BitBoard Evaluation::DEBUG_passedPawns(Turn turn) {
+BitBoard Evaluation::DEBUG_passedPawns(const Turn turn) {
 	return passedPawnEvaluation(turn).passedPawns;
 }
 
-int Evaluation::DEBUG_passedPawnScore(Turn turn) {
+int Evaluation::DEBUG_passedPawnScore(const Turn turn) {
 	return passedPawnEvaluation(turn).score;
 }
 
