@@ -16,7 +16,13 @@ void Game::configure(const GameConfiguration& config) {
 	}
 
 	cur = Game_UndoData();
-	cur.check = posAttackedBy(getPieces(curTurn, Piece::KING()).ToPosition(), !curTurn);
+	cur.check = posAttackedBy(getPieces(getTurn(), Piece::KING()).ToPosition(), !getTurn());
+
 	cur.hash = Game_Hash(config);
+	if (!canEnpeasent(getTurn(), cur.hash.getEnpeasent())) {
+		cur.hash.setEnpeasent(GameConfiguration::NO_ENPEASENT_COLUMN);
+	}
+
+
 	integrityCheck();
 }
