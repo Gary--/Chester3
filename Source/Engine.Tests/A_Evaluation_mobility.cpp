@@ -104,6 +104,35 @@ public:
 		Assert::AreEqual(ex_Bishop("rnbqkbnr/pppppppp/8/8/3P1B2/4P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()),
 						 ex_Bishop("rnb1kbnr/pppppppp/8/8/3PqB2/4P3/PPP2PPP/RNBQK1NR w - -", Turn::WHITE()));
 	}
+
+	TEST_METHOD(Bishop_pin) {
+		Assert::IsTrue(ex_Bishop("6k1/3q1pp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6k1/5pp1/3q3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+		Assert::IsTrue(ex_Bishop("6k1/3r1pp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6k1/5pp1/3r3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+		Assert::IsTrue(ex_Bishop("6q1/3k1pp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6q1/5pp1/3k3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+
+		Assert::IsTrue(ex_Bishop("6k1/3q1pp1/7p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6k1/5pp1/3q3p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+		Assert::IsTrue(ex_Bishop("6k1/3r1pp1/7p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6k1/5pp1/3r3p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+		Assert::IsTrue(ex_Bishop("6q1/3k1pp1/7p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Bishop("6q1/5pp1/3k3p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
+
+		Assert::IsTrue(ex_Bishop("8/2k2pp1/3r3p/8/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) > 100);
+	}
+
+	TEST_METHOD(Rook_pinn) {
+		Assert::IsTrue(ex_Rook("4k3/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Rook("3k4/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()));
+
+		Assert::IsTrue(ex_Rook("4q2k/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) <
+					   ex_Rook("3q3k/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()));
+
+		Assert::IsTrue(ex_Rook("3k4/3q1pp1/7p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) > 100);
+	}
+
 	};
 }
 

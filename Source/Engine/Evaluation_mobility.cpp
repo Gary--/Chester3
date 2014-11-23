@@ -87,9 +87,13 @@ namespace {
 
 		const BitBoard M = Game::getPlayerPieces(turn);
 		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
-		const BitBoard T = Game::getPlayerPieces(other);
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
 		const BitBoard theirPawnControl = AttackFields::pawnTargs(TP, other);
+
+		const BitBoard TQ = Game::getPieces(other, Piece::QUEEN());
+		const BitBoard TK = Game::getPieces(other, Piece::KING());
+		const BitBoard TR = Game::getPieces(other, Piece::ROOK());
+		const BitBoard TBig = TQ | TK | TR;
 
 		MobilityScore res;
 
@@ -97,13 +101,19 @@ namespace {
 			const Position pos = bishop.ToPosition();
 
 			// We are only stopped by their pieces and our pawns.
-			BitBoard targs = AttackFields::bishopTargs(pos, T | MP);
+			BitBoard targs = AttackFields::bishopTargs(pos, TP | MP);//only blocked by pawns
 			const BitBoard blockingPawns = targs & pos.squaresForward(turn) & MP;
 			targs &= ~M ; // ... which are not occupied by us
 			res.relative += targs.count();
 
 			targs &= ~theirPawnControl;
 			res.exact -= bishopMinMobilePenalty[targs.count()];
+
+			const BitBoard pins = targs&TBig;
+			res.exact += 8 * pins.count();
+			if (pins.count() >= 2) {
+				res.exact += 100;
+			}
 
 			// bad bishop
 			FOR_BIT(pawn, blockingPawns) {
@@ -129,6 +139,8 @@ namespace {
 				_ASSERTE(frontPieceIndex < 13);
 				res.exact -= badBishopBlockerPenalty[frontPieceIndex] << badBishopPositionPenalty[pos.perspective(turn).index()];
 			}
+
+
 		}
 		return res;
 	}
@@ -148,8 +160,11 @@ namespace {
 
 		const BitBoard M = Game::getPlayerPieces(turn);
 		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
-		const BitBoard T = Game::getPlayerPieces(other);
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
+
+		const BitBoard TQ = Game::getPieces(other, Piece::QUEEN());
+		const BitBoard TK = Game::getPieces(other, Piece::KING());
+		const BitBoard TBig = TQ | TK;
 
 		MobilityScore res;
 
@@ -162,12 +177,21 @@ namespace {
 			const BitBoard colBits = BitBoard::colBits(col);
 			const BitBoard rowBits = BitBoard::rowBits(row);
 
-			BitBoard targsXRay = AttackFields::rookTargs(pos, T | MP);
+			BitBoard targsXRay = AttackFields::rookTargs(pos, TP | MP);//only blocked by pawns
 			BitBoard targsNorm = AttackFields::rookTargs(pos, Game::getAllPieces());
 			const bool openFile = (targsNorm & colBits & MP).isEmpty();
 			const bool fullOpenFile = (targsNorm & colBits & (MP | TP)).isEmpty();
 			const bool connectedRook = (targsNorm & MR).isNotEmpty();
 			const bool horizontalConnectedRook = (targsNorm & MR & rowBits).isNotEmpty();
+
+			// pinned piece
+			const BitBoard pins = targsXRay&TBig;
+			if (pins.isNotEmpty()) {
+				res.exact += 16;
+				if (pins.count() >= 2) {
+					res.exact += 100;
+				}
+			}
 
 			targsXRay &= ~M;
 			targsNorm &= ~M;
