@@ -143,8 +143,7 @@ public:
 		FOR_POSITION_64(kingPos) {
 			FOR_POSITION_64(attackerPos) {
 				BitBoard targs = AttackFields::blockingTargs(kingPos, attackerPos);
-				Assert::AreNotEqual(BitBoard::EMPTY(), targs);
-				Assert::IsTrue(targs.contains(attackerPos));
+				Assert::AreEqual(targs, AttackFields::blockingTargs(attackerPos, kingPos));
 
 				//Does not actually attack
 				if (!AttackFields::queenTargs(attackerPos, BitBoard::EMPTY()).contains(kingPos)) {

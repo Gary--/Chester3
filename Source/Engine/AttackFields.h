@@ -21,7 +21,8 @@ public:
 	// Given a pinned piece, where could it possibly move to.
 	static BitBoard pinnedTargs(Position kingPos, Position pinnedPos);
 
-	// If the kind is in check, where coul we move a piece to block?
+	// If the kind is in check, where could we move a piece to block?
+	// Does not include kingPos or attackerPos
 	static BitBoard blockingTargs(Position kingPos, Position attackerPos);
 
 

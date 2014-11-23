@@ -27,8 +27,6 @@ void AttackFields::initBlockingPinning() {
 			BitBoard pinned = Position(j).asSingletonBitboard();
 			BitBoard attacker = Position(j).asSingletonBitboard();
 
-			blockingMoves[i][j] |= attacker | king;
-
 			if ((pinned& AttackFields::queenTargs(Position(i),BitBoard::EMPTY())).isEmpty()) {//no pin here
 				pinnedMoves[i][j] = BitBoard::FULL();
 			}
