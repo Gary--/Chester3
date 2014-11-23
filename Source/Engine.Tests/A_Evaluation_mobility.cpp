@@ -120,7 +120,7 @@ public:
 		Assert::IsTrue(ex_Bishop("6q1/3k1pp1/7p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
 					   ex_Bishop("6q1/5pp1/3k3p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
 
-		Assert::IsTrue(ex_Bishop("8/2k2pp1/3r3p/8/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) > 100);
+		Assert::IsTrue(ex_Bishop("8/2k2pp1/3r3p/8/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) >= 100);
 	}
 
 	TEST_METHOD(Rook_pinn) {
@@ -130,7 +130,7 @@ public:
 		Assert::IsTrue(ex_Rook("4q2k/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) <
 					   ex_Rook("3q3k/5pp1/3n3p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()));
 
-		Assert::IsTrue(ex_Rook("3k4/3q1pp1/7p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) > 100);
+		Assert::IsTrue(ex_Rook("3k4/3q1pp1/7p/8/8/P2R4/1PP5/1K6 w - -", Turn::WHITE()) >= 100);
 	}
 
 	};

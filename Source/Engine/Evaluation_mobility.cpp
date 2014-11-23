@@ -61,13 +61,14 @@ namespace {
 		MobilityScore res;
 
 		FOR_BIT(knight, Game::getPieces(turn, Piece::KNIGHT())) {
-			Position pos = knight.ToPosition();
-			BitBoard targs = AttackFields::knightTargs(pos); // Squares the knight controls...
-			targs &= ~(M | theirPawnControl); // ... which aren't controlled by enemy pawn and are not occupied by us
-			res.relative += 2 * (targs & twoPointKnightSqrs).count();
-			res.relative += 4 * (targs & fourPointKnightSqrs).count();
+			const Position pos = knight.ToPosition();
+			const BitBoard targs = AttackFields::knightTargs(pos); // Squares the knight controls...
+			const BitBoard ctrl = targs&~(M | theirPawnControl); // ... which aren't controlled by enemy pawn and are not occupied by us
+			
+			res.relative += 2 * (ctrl & twoPointKnightSqrs).count();
+			res.relative += 4 * (ctrl & fourPointKnightSqrs).count();
 
-			res.exact -= knightMinMobilePenalty[targs.count()];
+			res.exact -= knightMinMobilePenalty[ctrl.count()];
 
 			if (TP.count() >= 5) {
 
@@ -81,10 +82,9 @@ namespace {
 	}
 
 	MobilityScore bishopMobilityScore(Turn turn) {
-		const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		
 		const Turn other = !turn;
 
+		const BitBoard ALL = Game::getAllPieces();
 		const BitBoard M = Game::getPlayerPieces(turn);
 		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
@@ -101,19 +101,36 @@ namespace {
 			const Position pos = bishop.ToPosition();
 
 			// We are only stopped by their pieces and our pawns.
-			BitBoard targs = AttackFields::bishopTargs(pos, TP | MP);//only blocked by pawns
-			const BitBoard blockingPawns = targs & pos.squaresForward(turn) & MP;
-			targs &= ~M ; // ... which are not occupied by us
-			res.relative += targs.count();
+			const BitBoard targsXRay = AttackFields::bishopTargs(pos, TP | MP);//only blocked by pawns
+			const BitBoard ctrl = targsXRay&~(M | theirPawnControl);
+			const BitBoard blockingPawns = targsXRay & pos.squaresForward(turn) & MP;
 
-			targs &= ~theirPawnControl;
-			res.exact -= bishopMinMobilePenalty[targs.count()];
-
-			const BitBoard pins = targs&TBig;
-			res.exact += 8 * pins.count();
-			if (pins.count() >= 2) {
-				res.exact += 100;
+			res.relative += ctrl.count();
+			{
+				const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				res.exact -= bishopMinMobilePenalty[ctrl.count()];
 			}
+
+			// pinning
+			{
+				int pinScore = 0;
+				FOR_BIT(big, TBig&targsXRay) {
+					const Position bigPos = big.ToPosition();
+					const BitBoard blockers = AttackFields::blockingTargs(bigPos, pos) & ALL;
+
+					// One piece stopping us from taking that big piece
+					if (blockers.count() == 1) {
+						pinScore += 8;
+						if ((blockers&TBig).isNotEmpty()) { // we've pinned 2 big pieces together
+							pinScore += 100;
+							break;
+						}
+					}
+				}
+				pinScore = min(pinScore, 100);
+				res.exact += pinScore;
+			}
+
 
 			// bad bishop
 			FOR_BIT(pawn, blockingPawns) {
@@ -131,7 +148,7 @@ namespace {
 				};
 
 				const Position frontPos = pawn.ToPosition().shiftForward(turn);
-				const Piece frontPiece = Game::getPieceAt(frontPos);
+				const Piece frontPiece = Game::getPieceAt(frontPos); //what is blocking the pawn
 				int frontPieceIndex = frontPiece.asIndex();
 				if (frontPiece != Piece::EMPTY() && Game::getOwnerAt(frontPos) != turn) {
 					frontPieceIndex += 6;
@@ -145,7 +162,7 @@ namespace {
 		return res;
 	}
 
-	MobilityScore rookMobilityScore(Turn turn) {
+	MobilityScore rookMobilityScore(const Turn turn) {
 		const int rookConnectedValue[64] = {
 			15, 15, 15, 15, 15, 15, 15, 15,
 			25, 25, 25, 25, 25, 25, 25, 25,
@@ -158,6 +175,7 @@ namespace {
 
 		const Turn other = !turn;
 
+		const BitBoard ALL = Game::getAllPieces();
 		const BitBoard M = Game::getPlayerPieces(turn);
 		const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
 		const BitBoard TP = Game::getPieces(other, Piece::PAWN());
@@ -177,49 +195,68 @@ namespace {
 			const BitBoard colBits = BitBoard::colBits(col);
 			const BitBoard rowBits = BitBoard::rowBits(row);
 
-			BitBoard targsXRay = AttackFields::rookTargs(pos, TP | MP);//only blocked by pawns
-			BitBoard targsNorm = AttackFields::rookTargs(pos, Game::getAllPieces());
-			const bool openFile = (targsNorm & colBits & MP).isEmpty();
-			const bool fullOpenFile = (targsNorm & colBits & (MP | TP)).isEmpty();
-			const bool connectedRook = (targsNorm & MR).isNotEmpty();
-			const bool horizontalConnectedRook = (targsNorm & MR & rowBits).isNotEmpty();
+			const BitBoard targsXRay = AttackFields::rookTargs(pos, TP | MP);//only blocked by pawns
+			const BitBoard targsNorm = AttackFields::rookTargs(pos, Game::getAllPieces());
 
 			// pinned piece
-			const BitBoard pins = targsXRay&TBig;
-			if (pins.isNotEmpty()) {
-				res.exact += 16;
-				if (pins.count() >= 2) {
-					res.exact += 100;
+			// pinning
+			{
+				int pinScore = 0;
+				FOR_BIT(big, TBig&targsXRay) {
+					const Position bigPos = big.ToPosition();
+					const BitBoard blockers = AttackFields::blockingTargs(bigPos, pos) & ALL;
+
+					// One piece stopping us from taking that big piece
+					if (blockers.count() == 1) {
+						pinScore += 8;
+						if ((blockers&TBig).isNotEmpty()) { // we've pinned 2 big pieces together
+							pinScore += 100;
+							break;
+						}
+					}
+				}
+				pinScore = min(pinScore, 100);
+				res.exact += pinScore;
+			}
+
+			{ // Horizontal control
+				const BitBoard horiCtrl = targsNorm & rowBits &~M;
+				res.relative += horiCtrl.count(); // 1 point for horizontal
+			}
+
+			
+			{ // Vertical mobility
+				const BitBoard vertCtrlXRay = colBits&targsXRay&~M;
+				const BitBoard vertCtrlNorm = colBits&targsNorm&~M;
+				res.relative += 2 * vertCtrlNorm.count();
+				res.relative += 1 * (vertCtrlXRay &~vertCtrlNorm).count();// 1 point for vertical XRAY
+			}
+
+			{ // Open file
+				const bool openFile = (targsNorm & colBits & MP).isEmpty();
+				const bool fullOpenFile = (targsNorm & colBits & (MP | TP)).isEmpty();
+				// Scale value of open files based on number of my pawns
+				if (fullOpenFile) {
+					res.relative += MP.count() + 1;
+
+					const bool horizontalConnectedRook = (targsNorm & MR & rowBits).isNotEmpty();
+					if (horizontalConnectedRook) {
+						const int file_value[] = { -6, -5, -2, 0, 0, -2, -5, -6 };
+						const int pawn_tab[] = { 0, 0, 0, 0, 0, 4, 8, 16, 16, 0, 0 };
+						const int bonus = file_value[col] + pawn_tab[TP.count()];
+						res.exact += max(0, bonus);
+					}
+				} else if (openFile) {
+					res.relative += MP.count() / 2 + 1;
 				}
 			}
 
-			targsXRay &= ~M;
-			targsNorm &= ~M;
-			res.relative += (targsNorm & rowBits).count(); // 1 point for horizontal
-
-			// vertical mobility
-			targsXRay &= colBits;
-			targsNorm &= colBits;
-			res.relative += 2 * targsNorm.count();
-			res.relative += 1 * (targsXRay &~targsNorm).count();// 1 point for vertical XRAY
-
-			// Scale value of open files based on number of my pawns
-			if (fullOpenFile) {
-				res.relative += MP.count() + 1;
-
-				if (horizontalConnectedRook) {
-					const int file_value[] = { -6, -5, -2, 0, 0, -2, -5, -6 };
-					const int pawn_tab[] = { 0, 0, 0, 0, 0, 4, 8, 16, 16, 0, 0 };
-					int bonus = file_value[col] + pawn_tab[TP.count()];
-					res.exact += max(0, bonus);
+			
+			{ // Rook connectedness
+				const bool connectedRook = (targsNorm & MR).isNotEmpty();
+				if (connectedRook) {
+					res.exact += rookConnectedValue[pos.perspective(turn).index()];
 				}
-			} else if (openFile) {
-				res.relative += MP.count() / 2 + 1;
-			}
-
-			// Rook connectedness
-			if (connectedRook) {
-				res.exact += rookConnectedValue[pos.perspective(turn).index()];
 			}
 		}
 		return res;
