@@ -66,6 +66,7 @@
     <ClCompile Include="Evaluation_mobility.cpp" />
     <ClCompile Include="Evaluation_pawns.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />
+    <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
     <ClCompile Include="Game_Hash.cpp" />

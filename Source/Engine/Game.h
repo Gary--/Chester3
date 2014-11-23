@@ -67,7 +67,6 @@ private:
 	static void generateAllMoves();
 	static void generateTacticalMoves();
 	static void generateMovesImpl(bool tacticalOnly);
-	//static void generateMovesImpl_BLACK();
 	
 #pragma endregion
 	// === Private getters
@@ -79,7 +78,9 @@ private:
 	static void clearPieceAt(Position position);
 	static void addPieceAt(Turn turn, Position position, Piece piece);
 
-
+	// === misc
+	//hypothetically, if that was the enpeasent column, could turn perform an EP?
+	static bool canEnpeasent(Turn turn,int enpeasentCol);
 
 	// === Debug
 	static void integrityCheck();

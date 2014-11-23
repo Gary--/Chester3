@@ -47,21 +47,10 @@ void Game::makeMove(Move move) {
 
 
 		if (type == MoveType::PAWN_JUMP) { // Make sure the move enpeasent is actually legal
-			BitBoard enpeasentFrom = toBit.shiftLeft() | toBit.shiftRight();
-			FOR_BIT(pawn, getPieces(!curTurn, Piece::PAWN()) & enpeasentFrom) {
-				Position theirKingPos = getPieces(!curTurn, Piece::KING()).ToPosition();
-				BitBoard newBlockers = getAllPieces() ^ pawn^toBit^
-					AttackFields::enpeasentTo(!curTurn, toPos.col()).asSingletonBitboard();
-				BitBoard diagProblems = (getPieces(curTurn, Piece::QUEEN()) | getPieces(curTurn, Piece::BISHOP()))&
-					AttackFields::bishopTargs(theirKingPos, newBlockers);
-				BitBoard rightProblems = (getPieces(curTurn, Piece::QUEEN()) | getPieces(curTurn, Piece::ROOK()))&
-					AttackFields::rookTargs(theirKingPos, newBlockers);
-
-				if ((diagProblems | rightProblems).isEmpty()) {
-					cur.hash.setEnpeasent(toPos.col());
-					break;
-				}
+			if (canEnpeasent(!getTurn(),toPos.col())) {
+				cur.hash.setEnpeasent(toPos.col());
 			}
+
 		} else if (type == MoveType::ENPEASENT) {
 			BitBoard capturedBit = toBit.shiftBackward(curTurn);
 			Position capturedPos = capturedBit.ToPosition();
