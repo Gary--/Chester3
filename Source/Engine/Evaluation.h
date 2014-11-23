@@ -45,6 +45,8 @@ public:
 	static int DEBUG_pawnFormation(Turn turn);
 	static BitBoard DEBUG_passedPawns(Turn turn);
 	static int DEBUG_passedPawnScore(Turn turn);
+
+	static int DEBUG_bishopPairScore(Turn turn);
 private:
 
 	static void synchronizeMaterial();

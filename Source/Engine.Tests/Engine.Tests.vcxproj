@@ -230,6 +230,7 @@
     <ClCompile Include="A_AttackMap.cpp" />
     <ClCompile Include="A_Evaluation_material.cpp" />
     <ClCompile Include="A_Evaluation_kingDanger.cpp" />
+    <ClCompile Include="A_Evaluation_misc.cpp" />
     <ClCompile Include="A_Evaluation_mobility.cpp" />
     <ClCompile Include="A_Evaluation_pawns_passed.cpp" />
     <ClCompile Include="A_Evaluation_pawns_structure.cpp" />
