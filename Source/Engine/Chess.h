@@ -26,6 +26,9 @@ public:
 
 	std::string str() const;
 
+	bool isWhite() const;
+	bool isBlack() const;
+
 	static Turn WHITE();
 	static Turn BLACK();
 	static Turn fromChar(char c);// Uppercase = WHITE, else BLACK

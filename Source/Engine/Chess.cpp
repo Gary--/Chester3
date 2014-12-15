@@ -193,6 +193,16 @@ bool Turn::operator!=(const Turn other) const {
 	return !(*this == other);
 }
 
+bool Turn::isWhite() const {
+	return *this == WHITE();
+}
+
+bool Turn::isBlack() const {
+	return *this == BLACK();
+}
+
+
+
 #pragma endregion
 
 
