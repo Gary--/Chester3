@@ -7,7 +7,7 @@ namespace {
 
 BitBoard* Game::s(const Turn turn, const  Piece piece) {
 	
-	if (turn == Turn::WHITE()) {
+	if (turn.isWhite()) {
 		switch (piece.asEnum()) {
 		case PieceEnum::EMPTY:
 			return &scratch;
@@ -47,7 +47,7 @@ BitBoard* Game::s(const Turn turn, const  Piece piece) {
 }
 
 BitBoard* Game::sp(const Turn turn) {
-	return turn == Turn::WHITE()? &WA : &BA;
+	return turn.isWhite()? &WA : &BA;
 }
 
 void Game::toggleBit(const Turn turn, const  Position position, const  Piece piece) {

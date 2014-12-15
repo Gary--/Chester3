@@ -61,7 +61,7 @@ public:
 		for (char c : pat) {
 			Piece piece = Piece::fromChar(c);
 			Turn turn = Turn::fromChar(c);
-			(turn == Turn::WHITE()? attackers : defenders).add(piece);
+			(turn.isWhite()? attackers : defenders).add(piece);
 		}
 		return StaticExchange::attackCost(attacker, attackers, defenders);
 	}

@@ -280,7 +280,7 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 					(ALL & AttackFields::castleEmptySquares(curTurn, side)).isEmpty() &&
 					(danger & AttackFields::castleSafeSquares(curTurn, side)).isEmpty()) {
 					const MoveType type = side == Side::LEFT ? MoveType::CASTLE_LEFT : MoveType::CASTLE_RIGHT;
-					const Position to(curTurn == Turn::WHITE() ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
+					const Position to(curTurn.isWhite() ? 7 : 0, 4 + (side == Side::LEFT ? (-2) : 2));
 
 					addMove(Move(type, kingPos, to, Piece::KING(), Piece::EMPTY()));
 				}

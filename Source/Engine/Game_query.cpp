@@ -6,7 +6,7 @@ Turn Game::getTurn() {
 }
 
 BitBoard Game::getPieces(const Turn turn, const Piece piece) {
-	if (turn == Turn::WHITE()) {
+	if (turn.isWhite()) {
 		switch (piece.asEnum()) {
 		case PieceEnum::PAWN:
 			return WP;
@@ -48,7 +48,7 @@ BitBoard Game::getAllPieces() {
 }
 
 BitBoard Game::getPlayerPieces(const Turn turn) {
-	if (turn == Turn::WHITE()) {
+	if (turn.isWhite()) {
 		return WA;
 	} else {
 		return BA;

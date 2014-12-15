@@ -73,7 +73,7 @@ void Game::makeMove(const Move move) {
 			cur.hash.voidCastle(curTurn, Side::RIGHT);
 
 			if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
-				int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
+				int baseRow = curTurn.isWhite() ? 7 : 0;
 				Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 				Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
 				BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();
@@ -166,7 +166,7 @@ Move Game::undoMove() {
 		*s(curTurn, Piece::PAWN()) ^= toBit;
 		*s(curTurn, promo) ^= toBit;
 	} else if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
-		int baseRow = curTurn == Turn::WHITE() ? 7 : 0;
+		int baseRow = curTurn.isWhite() ? 7 : 0;
 		const Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
 		const Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
 		const BitBoard rookChange = rookFrom.asSingletonBitboard() | rookTo.asSingletonBitboard();

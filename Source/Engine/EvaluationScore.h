@@ -27,15 +27,15 @@ struct EvaluationScore {
 private:
 	EvaluationScore(bool _);
 
-	const double lateness;
+	double lateness;
 
-	const int whiteSimple, blackSimple;
+	int whiteSimple, blackSimple;
 
-	const int relativeMobility;
-	const int relativeMaterial;
-	const int whiteKingDanger, blackKingDanger;
-	const int relativeCenter;
-	const int whitePawns, blackPawns;
-	const int whiteMisc, blackMisc;
-	const bool _isValid;
+	int relativeMobility;
+	int relativeMaterial;
+	int whiteKingDanger, blackKingDanger;
+	int relativeCenter;
+	int whitePawns, blackPawns;
+	int whiteMisc, blackMisc;
+	bool _isValid;
 };

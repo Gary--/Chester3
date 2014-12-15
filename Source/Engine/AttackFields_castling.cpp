@@ -2,7 +2,7 @@
 
 
 BitBoard AttackFields::castleEmptySquares(const Turn turn, const  Side side) {
-	const int r = turn == Turn::WHITE() ? 7 : 0;
+	const int r = turn.isWhite() ? 7 : 0;
 	if (side==Side::LEFT){
 		return Position(r, 1).asSingletonBitboard() |
 			Position(r, 2).asSingletonBitboard() |
@@ -16,7 +16,7 @@ BitBoard AttackFields::castleEmptySquares(const Turn turn, const  Side side) {
 
 
 BitBoard AttackFields::castleSafeSquares(const Turn turn, const  Side side) {
-	const int r = turn == Turn::WHITE() ? 7 : 0;
+	const int r = turn.isWhite() ? 7 : 0;
 	if (side == Side::LEFT){
 		return
 			Position(r, 2).asSingletonBitboard() |

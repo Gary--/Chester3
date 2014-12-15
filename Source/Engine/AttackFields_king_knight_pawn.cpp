@@ -75,7 +75,7 @@ BitBoard AttackFields::knightTargs(BitBoard knights) {
 
 // If a pawn moves from here, it will be promoted
 BitBoard AttackFields::pawnPromoZone(Turn turn) {
-	return BitBoard::rowBits(turn == Turn::WHITE() ? 1 : 6);
+	return BitBoard::rowBits(turn.isWhite() ? 1 : 6);
 }
 
 // If a pawn is here, it can move forward 2 squares.
@@ -84,8 +84,8 @@ BitBoard AttackFields::pawnJumpZone(Turn turn) {
 }
 
 Position AttackFields::enpeasentTo(Turn turn, int enpeasentColumn) {
-	return Position(turn == Turn::WHITE() ? 2 : 5, enpeasentColumn);
+	return Position(turn.isWhite() ? 2 : 5, enpeasentColumn);
 }
 Position AttackFields::enpeasentCaptured(Turn turn, int enpeasentColumn) {
-	return Position(turn == Turn::WHITE() ? 3 : 4, enpeasentColumn);
+	return Position(turn.isWhite() ? 3 : 4, enpeasentColumn);
 }

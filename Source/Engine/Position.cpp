@@ -89,7 +89,7 @@ Position Position::shiftRight() const {
 	return Position(row(), col() + 1);
 }
 Position Position::shiftForward(const Turn turn) const {
-	return turn == Turn::WHITE() ? shiftUp() : shiftDown();
+	return turn.isWhite() ? shiftUp() : shiftDown();
 }
 Position Position::shiftBackward(const Turn turn) const {
 	return shiftForward(!turn);
@@ -104,7 +104,7 @@ BitBoard Position::squaresBelow() const {
 }
 
 BitBoard Position::squaresForward(const Turn turn) const {
-	return turn == Turn::WHITE() ? squaresAbove() : squaresBelow();
+	return turn.isWhite() ? squaresAbove() : squaresBelow();
 }
 
 BitBoard Position::squaresBackward(const Turn turn) const {
@@ -123,7 +123,7 @@ Position Position::mirror() const{
 }
 
 Position Position::perspective(const Turn turn) const {
-	return turn == Turn::WHITE() ? *this : mirror();
+	return turn.isWhite() ? *this : mirror();
 }
 
 std::string Position::str() const

@@ -205,7 +205,7 @@ string GameConfiguration::str_min() const {
 	res += ' ';
 
 	//Turn
-	res += getTurn() == Turn::WHITE()? 'w' : 'b';
+	res += getTurn().isWhite()? 'w' : 'b';
 	res += ' ';
 
 	//Castling
@@ -232,7 +232,7 @@ string GameConfiguration::str_min() const {
 	//enpeasent
 	if (getEnpeasentColumn() != NO_ENPEASENT_COLUMN) {
 		res += 'a' + getEnpeasentColumn();
-		res += getTurn() == Turn::WHITE()? '6' : '3';
+		res += getTurn().isWhite()? '6' : '3';
 	} else {
 		res += '-';
 	}

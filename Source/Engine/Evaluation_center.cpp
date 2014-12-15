@@ -29,7 +29,7 @@ namespace {
 		const bool occed = Game::getPieceAt(position) != Piece::EMPTY();
 		const Turn owner = Game::getOwnerAt(position);
 		if (occed) {
-			return owner == Turn::WHITE() ? Controller::WHITE : Controller::BLACK;
+			return owner.isWhite() ? Controller::WHITE : Controller::BLACK;
 		}
 
 		return Controller::NEUTRAL;

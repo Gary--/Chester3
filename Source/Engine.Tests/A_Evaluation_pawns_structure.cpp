@@ -42,7 +42,7 @@ public:
 
 		// Any pawn moving 3 squares forward is bad
 		FOR_POSITION_64(pos) {
-			if (conf.getPieceAt(pos) == Piece::PAWN() && conf.getOwnerAt(pos) == Turn::WHITE()) {
+			if (conf.getPieceAt(pos) == Piece::PAWN() && conf.getOwnerAt(pos).isWhite()) {
 				GameConfiguration conf2 = conf;
 				conf2.clearPieceAt(pos);
 				conf2.setPieceAt(Position(pos.row() - 3, pos.col()),Turn::WHITE(),Piece::PAWN());
@@ -62,7 +62,7 @@ public:
 
 		// Any pawn moving 2 squares forward is good
 		FOR_POSITION_64(pos) {
-			if (conf.getPieceAt(pos) == Piece::PAWN() && conf.getOwnerAt(pos) == Turn::WHITE()) {
+			if (conf.getPieceAt(pos) == Piece::PAWN() && conf.getOwnerAt(pos).isWhite()) {
 				GameConfiguration conf2 = conf;
 				conf2.clearPieceAt(pos);
 				conf2.setPieceAt(Position(pos.row() - 2, pos.col()), Turn::WHITE(), Piece::PAWN());

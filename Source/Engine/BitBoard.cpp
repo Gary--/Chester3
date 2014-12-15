@@ -127,7 +127,7 @@ BitBoard BitBoard::mirror() const{
 }
 
 BitBoard BitBoard::perspective(const Turn turn) const {
-	return turn == Turn::WHITE() ? *this : mirror();
+	return turn.isWhite() ? *this : mirror();
 }
 
 
@@ -148,7 +148,7 @@ BitBoard BitBoard::shiftLeft() const{
 }
 
 BitBoard BitBoard::shiftForward(const Turn turn) const {
-	if (turn == Turn::WHITE()) {
+	if (turn.isWhite()) {
 		return this->shiftUp();
 	} else {
 		return this->shiftDown();
