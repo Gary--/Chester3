@@ -22,6 +22,8 @@
     <ClInclude Include="AI.h" />
     <ClInclude Include="AttackMap.h" />
     <ClInclude Include="Evaluation.h" />
+    <ClInclude Include="EvaluationManager.h" />
+    <ClInclude Include="EvaluationScore.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_SearchConfiguration.h" />

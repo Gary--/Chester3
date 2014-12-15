@@ -12,17 +12,13 @@ public:
 	// Static piece score values.
 	static int material(Turn turn);
 
-	// [turn's mat - other's mat] and adjustments
-	// Positive for white advantage.
-	static int materialBalance();
-	
-	// Positive for white advantage.
+	//===  Positive for white advantage.
 	static int mobility();
-
 	static int kingDanger(Turn turn);// positive values Turn's king is in danger
 	static int pawns(Turn turn);
 	static int center();
 	static int misc(Turn turn);
+	static int materialBalance(); // [turn's mat - other's mat] and adjustments
 
 	static void synchronize();
 	static void notifyMove(Move move, Turn turn);
