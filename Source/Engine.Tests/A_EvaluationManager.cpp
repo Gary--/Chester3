@@ -17,6 +17,8 @@ public:
 		auto score = EvaluationManager::getScore();
 		Assert::IsTrue(score.isValid());
 		Assert::AreEqual(0, score.getRelativeMobility(Turn::WHITE()));
+		Assert::AreEqual(0, score.getOverall(Turn::WHITE()));
+		Assert::AreEqual(score.getMisc(Turn::WHITE()), -score.getMisc(Turn::BLACK()));
 		Assert::AreNotEqual(0, score.getMisc(Turn::WHITE()));
 	}
 	
