@@ -228,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A_AttackMap.cpp" />
+    <ClCompile Include="A_EvaluationManager.cpp" />
     <ClCompile Include="A_Evaluation_material.cpp" />
     <ClCompile Include="A_Evaluation_kingDanger.cpp" />
     <ClCompile Include="A_Evaluation_misc.cpp" />
