@@ -22,15 +22,16 @@ struct EvaluationScore {
 	int getRelativeMobility(Turn perspective) const;
 	int getPawns(Turn turn);
 private:
+	EvaluationScore(bool _);
+
 	const double lateness;
 
-	const int simple;
+	const int whiteSimple, blackSimple;
 
 	const int relativeMobility;
 	const int relativeMaterial;
 	const int whiteKingDanger, blackKingDanger;
 	const int relativeCenter;
-	const int relativeMobility;
 	const int whitePawns, blackPawns;
 
 	const bool _isValid;
