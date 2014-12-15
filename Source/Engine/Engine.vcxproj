@@ -61,6 +61,7 @@
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Evaluate_misc.cpp" />
+    <ClCompile Include="EvaluationManager.cpp" />
     <ClCompile Include="EvaluationScore.cpp" />
     <ClCompile Include="Evaluation_center.cpp" />
     <ClCompile Include="Evaluation_init_pawns.cpp" />
