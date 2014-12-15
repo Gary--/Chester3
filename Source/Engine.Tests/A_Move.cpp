@@ -9,9 +9,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Move) {
 public:
-	TEST_CLASS_INITIALIZE(Call_Game_Init) {
-		Game::init();
-	}
 
 	TEST_METHOD(Getters) {
 		Move move(MoveType::REGULAR, Position(11), Position(12), Piece::KING(), Piece::PAWN());

@@ -12,9 +12,7 @@ struct Game_UndoData;
 class GameMoveIteratorGenerator;
 class Game {
 public:
-	// Initing / Configure
-	static void init();
-	static void reset();//Invalidates the position.
+
 	static void configure(const GameConfiguration& conf);
 	static GameConfiguration getGameConfiguration();
 	static std::string getFEN();
@@ -43,6 +41,9 @@ public:
 	static void makeMove(Move move);
 	static Move undoMove();//returns the move we are undoing
 private:
+	static void init();
+	static void reset();
+
 	// === FIELDS
 	static Turn curTurn;
 	static BitBoard WK, WQ, WR, WB, WN, WP;

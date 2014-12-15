@@ -4,8 +4,6 @@
 class AttackPattern;
 class Evaluation {
 public:
-	static void init();
-
 	// 1 for full on lategame brawl, 0 for just started
 	static double lateness();
 
@@ -44,6 +42,7 @@ public:
 
 	static int DEBUG_bishopPairScore(Turn turn);
 private:
+	static void init();
 
 	static void synchronizeMaterial();
 	static void notifyMoveMaterial(Move move, Turn turn);

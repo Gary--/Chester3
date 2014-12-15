@@ -9,11 +9,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Game_make_move) {
 public:
-	TEST_CLASS_INITIALIZE(Call_Game_Init) {
-		Game::init();
-	}
-
-
 
 	void Test_Regular_Move0(const char* from, const char* to) {
 		//http://www.chessvideos.tv/bimg/1nf6dm4t1nhqo.png

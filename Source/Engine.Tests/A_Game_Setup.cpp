@@ -9,13 +9,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace EngineTests {
 	TEST_CLASS(A_Game_setup) {
 public:
-	TEST_CLASS_INITIALIZE(CallGameInit) {
-		Game::init();
-	}
-
-	TEST_METHOD_INITIALIZE(CallGameReset) {
-		Game::reset();
-	}
 
 	void testConvert(std::string FEN) {
 		GameConfiguration conf(FEN);
