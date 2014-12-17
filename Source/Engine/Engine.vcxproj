@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="AttackMap.h" />
+    <ClInclude Include="ConsoleMode.h" />
     <ClInclude Include="Evaluation.h" />
     <ClInclude Include="EvaluationManager.h" />
     <ClInclude Include="EvaluationScore.h" />
@@ -59,6 +60,7 @@
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="ConsoleMode.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Evaluate_misc.cpp" />
     <ClCompile Include="EvaluationManager.cpp" />
