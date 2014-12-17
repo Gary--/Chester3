@@ -9,16 +9,6 @@
 class AI {
 
 public:
-	// Set the Game state.
-	static void configureGame(GameConfiguration conf);
-
-	// Used to control the Game state
-	static void makeMove(Move move);
-
-	// Used to control the Game state
-	static Move undoMove();
-
-
 	static void configureSearch(AI_SearchConfiguration conf);
 	static void startSearch();
 

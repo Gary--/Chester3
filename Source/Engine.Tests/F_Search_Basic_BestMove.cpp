@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "AI.h"
-
+#include "Game.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -10,7 +10,7 @@ namespace EngineTests {
 	TEST_CLASS(F_Search_basic_best_move) {
 public:
 	AI_SearchResult getSearchResult(const char* FEN, int depth) {
-		AI::configureGame(GameConfiguration(FEN));
+		Game::configure(GameConfiguration(FEN));
 
 		AI_SearchConfiguration searchConfig;
 		searchConfig.maxDepth = depth;

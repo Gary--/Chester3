@@ -5,17 +5,6 @@
 
 AI_SearchConfiguration AI::searchConfiguration;
 
-void AI::configureGame(GameConfiguration conf) {
-	Game::configure(conf);
-}
-
-void AI::makeMove(Move move) {
-	Game::makeMove(move);
-}
-
-Move AI::undoMove() {
-	return Game::undoMove();
-}
 
 void AI::configureSearch(AI_SearchConfiguration conf) {
 	searchConfiguration = conf;
