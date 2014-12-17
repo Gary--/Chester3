@@ -158,9 +158,6 @@ namespace {
 	}
 }
 
-int SimpleEvaluation::bothAll() {
-	return all(Game::getTurn()) - all(!Game::getTurn());
-}
 
 int SimpleEvaluation::all(const Turn turn) {
 	return material(turn) + position(turn);
