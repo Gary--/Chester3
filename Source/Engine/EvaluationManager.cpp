@@ -1,7 +1,7 @@
 #include "EvaluationManager.h"
 #include "Evaluation.h"
 #include <vector>
-
+#include "SimpleEvaluation.h"
 using namespace std;
 namespace {
 	vector<EvaluationScore> scores(1, EvaluationScore::GetInvalid());
@@ -14,11 +14,13 @@ void EvaluationManager::synchronize() {
 
 void EvaluationManager::notifyMove(Move move, Turn turn) {
 	Evaluation::notifyMove(move, turn);
+	SimpleEvaluation::notifyMove(move, turn);
 	scores.push_back(EvaluationScore::GetInvalid());
 }
 
 void EvaluationManager::notifyUndoMove(Move move, Turn turn) {
 	Evaluation::notifyUndoMove(move, turn);
+	SimpleEvaluation::notifyUndoMove(move, turn);
 	scores.pop_back();
 }
 
@@ -38,4 +40,8 @@ void EvaluationManager::calcScoreCurrent() {
 	if (!scores.back().isValid()) {
 		scores.back() = EvaluationScore::GetFromGameState();
 	}
+}
+
+int EvaluationManager::getSimpleScore(Turn turn) {
+	return SimpleEvaluation::all(turn) - SimpleEvaluation::all(!turn);
 }

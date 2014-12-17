@@ -8,6 +8,8 @@ public:
 	static void notifyMove(Move move, Turn turn);
 	static void notifyUndoMove(Move move, Turn turn);
 
+	static int getSimpleScore(Turn turn);
+
 	// Save the score of the current state
 	static void calcScoreCurrent();
 
