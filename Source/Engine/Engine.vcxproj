@@ -48,6 +48,7 @@
     <ClInclude Include="Game_UndoData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI_search.cpp" />
     <ClCompile Include="AI_search_configuration.cpp" />
     <ClCompile Include="AI__main.cpp" />
     <ClCompile Include="AttackMap.cpp" />

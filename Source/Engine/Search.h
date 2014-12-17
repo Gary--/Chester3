@@ -5,27 +5,21 @@
 #include "Search_SearchResult.h"
 
 // The brains.
+// Configure Game to where you want and call startSearch.
 class Search {
 public:
 
 	// synchronously starts the search
 	static void startSearch(AI_SearchConfiguration conf);
-
-
-	//static void stopAsync();
-
-
 	static AI_SearchResult getSearchResult();
 
-	// Get the Game state to where you want it.
-	static void configureGame(GameConfiguration conf);
-	//static void makeMove(Move move);
-	//static Move undoMove();
 
 	
 	
 
 private:
+	static void synchronize();
+
 	static Search_SearchResult search(int depth,int ply, int alpha, int beta);
 	static Search_SearchResult quiescenceSearch(int ply, int alpha, int beta);
 

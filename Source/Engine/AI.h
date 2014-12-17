@@ -9,18 +9,24 @@
 class AI {
 
 public:
+	// Set the Game state.
 	static void configureGame(GameConfiguration conf);
+
+	// Used to control the Game state
 	static void makeMove(Move move);
+
+	// Used to control the Game state
 	static Move undoMove();
 
-	// Free the memory used to support undo feature.
-	static void clearHistory();
-	
+
 	static void configureSearch(AI_SearchConfiguration conf);
 	static void startSearch();
 
 	// When this returns, Game state will be reset.
-	static void stop();
+	static void stopSearch();
 
 	static AI_SearchResult getSearchResult(); 
+
+private:
+	static AI_SearchConfiguration searchConfiguration;
 };
