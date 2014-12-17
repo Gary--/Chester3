@@ -44,10 +44,10 @@ public:
 		GameConfiguration conf("rnbqkbnr/ppp1p1pp/8/8/3p1p2/8/PPPPPPPP/RNBQKBNR w - -");
 		Game::configure(conf);
 
-		Game::makeMove(Move(MoveType::PAWN_JUMP, Position("e2"), Position("e4"), Piece::PAWN(), Piece::EMPTY()));
+		Game::makeMove(Game::getMove("e2e4"));
 		Assert::AreEqual(4, Game::getEnpeasentColumn());
 
-		Game::makeMove(Move(MoveType::ENPEASENT, Position("d4"), Position("e3"), Piece::PAWN(), Piece::EMPTY()));
+		Game::makeMove(Game::getMove("d4e3"));
 		Assert::AreEqual(Piece::EMPTY(), Game::getPieceAt(Position("e4")));
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
 
@@ -62,7 +62,7 @@ public:
 		Game::makeMove(Move(MoveType::PAWN_JUMP, Position("d7"), Position("d5"), Piece::PAWN(), Piece::EMPTY()));
 		Assert::AreEqual(3, Game::getEnpeasentColumn());
 
-		Game::makeMove(Move(MoveType::ENPEASENT, Position("e5"), Position("d6"), Piece::PAWN(), Piece::EMPTY()));
+		Game::makeMove(Game::getMove("e5d6"));;
 		Assert::AreEqual(Piece::EMPTY(), Game::getPieceAt(Position("d5")));
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
 
@@ -80,7 +80,7 @@ public:
 		GameConfiguration conf("rn1qkbnr/ppPpp1pp/8/8/8/3K3B/PP1PpPPP/RNBQ2NR w - -");
 		Game::configure(conf);
 
-		Game::makeMove(promotion(Piece::ROOK(), "c7", "c8"));
+		Game::makeMove(Game::getMove("c7c8r"));
 		Assert::AreEqual(Piece::ROOK(), Game::getPieceAt(Position("c8")));
 
 		Game::makeMove(promotion(Piece::QUEEN(), "e2", "e1"));

@@ -7,6 +7,8 @@
 #include <cstdint>
 #include "Move.h"
 #include "Game_MoveIterator.h"
+#include <string>
+
 
 struct Game_UndoData;
 class GameMoveIteratorGenerator;
@@ -36,6 +38,7 @@ public:
 	static GameMoveIteratorGenerator getTacticalMoves();
 	static int getNumValidMoves();
 	static bool areMovesAvailable();
+	static Move getMove(std::string str);
 
 	// Making moves
 	static void makeMove(Move move);

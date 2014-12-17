@@ -111,3 +111,12 @@ void Game::popMove() {
 
 	movePtr -= cur.numMovesStored;
 }
+
+Move Game::getMove(std::string str) {
+	for (Move move : getAllMoves()) {
+		if (move.str() == str) {
+			return move;
+		}
+	}
+	return Move::INVALID();
+}
