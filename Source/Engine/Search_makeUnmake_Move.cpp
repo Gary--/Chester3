@@ -1,14 +1,18 @@
 #include "Search.h"
 #include "Game.h"
-#include "SimpleEvaluation.h"
+#include "EvaluationManager.h"
+void Search::configureGame(const GameConfiguration conf) {
+	Game::configure(conf);
+	EvaluationManager::synchronize();
+}
+
 void Search::searchMakeMove(const Move move) {
-	SimpleEvaluation::notifyMove(move, Game::getTurn());
+	EvaluationManager::notifyMove(move, Game::getTurn());
 	Game::makeMove(move);
-	
 }
 
 Move Search::searchUndoMove() {
 	const Move move = Game::undoMove();
-	SimpleEvaluation::notifyUndoMove(move,Game::getTurn());
+	EvaluationManager::notifyUndoMove(move, Game::getTurn());
 	return move;
 }

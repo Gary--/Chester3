@@ -1,9 +1,7 @@
 #include "Search.h"
-#include "SimpleEvaluation.h"
 #include <cstdint>
 #include "Game.h"
 #include <algorithm>
-#include <iostream>
 using namespace std;
 
 Search_SearchResult Search::search(const int depth, const int ply,const int alpha,const int beta) {
@@ -19,9 +17,8 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 	}
 
 	if (depth == 0) {
-		Search_SearchResult result;
-		result.score = SimpleEvaluation::bothAll();
-		return result;
+		return quiescenceSearch(0, alpha, beta);
+
 	}
 	
 	Move bestMove = Move::INVALID();

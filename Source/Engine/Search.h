@@ -27,6 +27,7 @@ public:
 
 private:
 	static Search_SearchResult search(int depth,int ply, int alpha, int beta);
+	static Search_SearchResult quiescenceSearch(int ply, int alpha, int beta);
 
 	static void searchMakeMove(Move move);
 	static Move searchUndoMove();

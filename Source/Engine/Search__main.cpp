@@ -1,14 +1,11 @@
 #include "Search.h"
-#include "SimpleEvaluation.h"
+#include "EvaluationManager.h"
 #include "Game.h"
 #include <cstdint>
 
 Search_SearchResult Search::searchResult;
 
-void Search::configureGame(const GameConfiguration conf) {
-	Game::configure(conf);
-	SimpleEvaluation::synchronize();
-}
+
 
 void Search::startSearch(const AI_SearchConfiguration conf){
 	searchResult = Search_SearchResult();
