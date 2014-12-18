@@ -9,6 +9,8 @@ class Game_Hash {
 public:
 	explicit Game_Hash(const GameConfiguration& conf);
 	Game_Hash();//undefined
+
+	// Initialize internal static data.
 	static void init();
 
 	void toggleTurn();
@@ -21,16 +23,12 @@ public:
 	//===== gets
 	uint64_t toInt64() const;
 
-
+	bool operator==(const Game_Hash& other) const;
 private:
 	
 	uint64_t hash;
 	int enpeasent;
 	bool canCastle[2][2];
-
-
-
-
 
 };
 

@@ -85,7 +85,8 @@ GameConfiguration Game::getGameConfiguration() {
 	GameConfiguration conf;
 	conf.setTurn(Game::getTurn());
 	conf.setEnpeasentColumn(Game::getEnpeasentColumn());
-
+	conf.setHalfMoveClock(getHalfMoveClock());
+	conf.setMoveNumber(getMoveNumber());
 
 	FOR_TURN(turn) {
 		FOR_SIDE(side) {

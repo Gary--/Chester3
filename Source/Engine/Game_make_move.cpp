@@ -121,8 +121,13 @@ void Game::makeMove(const Move move) {
 
 	}
 	
+	fullMoveCount += curTurn.isBlack();
+
+
 	curTurn = !curTurn;
 	cur.hash.toggleTurn();
+	postMoveUpdates();
+
 	integrityCheck();
 	
 }
@@ -131,7 +136,7 @@ Move Game::undoMove() {
 	curTurn = !curTurn;
 
 	
-
+	fullMoveCount -= curTurn.isBlack();
 	//====
 #pragma region Unpack Undo Data
 	popMove();
@@ -197,6 +202,8 @@ Move Game::undoMove() {
 		ALL ^= toBit;
 	}
 #pragma endregion
+
+	
 
 	integrityCheck();
 

@@ -8,6 +8,7 @@ BitBoard Game::WK, Game::WQ, Game::WR, Game::WB, Game::WN, Game::WP;
 BitBoard Game::BK, Game::BQ, Game::BR, Game::BB, Game::BN, Game::BP;
 BitBoard Game::WA, Game::BA;
 BitBoard Game::ALL;
+int Game::fullMoveCount=0;
 
 int Game::movePtr = 0;
 Game_UndoData Game::cur;
@@ -44,6 +45,7 @@ void Game::reset() {
 		Game::WA = Game::BA =
 		Game::ALL = BitBoard::EMPTY();
 
+	fullMoveCount = 1;
 	FOR_POSITION_64(pos) {
 		pieces[pos.index()] = Piece::EMPTY();
 	}

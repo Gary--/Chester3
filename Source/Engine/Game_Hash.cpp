@@ -110,4 +110,8 @@ uint64_t Game_Hash::toInt64() const {
 	return hash;
 }
 
+bool Game_Hash::operator==(const Game_Hash& other) const {
+	return hash == other.hash;
+}
+
 #pragma warning (default: 4800)

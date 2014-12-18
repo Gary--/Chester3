@@ -100,6 +100,22 @@ void Game::pushMove(const Move move) {
 	cur.deadPositionState = Game_UndoData::DeadPositionState::UNKNOWN;
 	cur.movesStored = Game_UndoData::MovesStored::NONE;
 
+
+}
+
+void Game::postMoveUpdates() {
+	for (int i = (int)undoDatas.size() - 1; i >= 0; --i) {
+		if (undoDatas[i].hash == cur.hash) {
+			cur.repeatedness = undoDatas[i].repeatedness + 1;
+			return;
+		}
+	}
+
+	cur.halfMoveClock = undoDatas.back().halfMoveClock + 1;
+	Move prevMove = undoDatas.back().move;
+	if (prevMove.getPiece() == Piece::PAWN() || prevMove.getTarg() != Piece::EMPTY()) {
+		cur.halfMoveClock = 0;
+	}
 }
 
 void Game::popMove() {
@@ -119,4 +135,16 @@ Move Game::getMove(std::string str) {
 		}
 	}
 	return Move::INVALID();
+}
+
+int Game::getRepeatCount() {
+	return cur.repeatedness;
+}
+
+int Game::getHalfMoveClock() {
+	return cur.halfMoveClock;
+}
+
+int Game::getMoveNumber() {
+	return fullMoveCount;
 }

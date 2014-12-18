@@ -5,4 +5,6 @@ Game_UndoData::Game_UndoData() {
 	numMovesStored = 0;
 	movesStored = MovesStored::NONE;
 	deadPositionState = DeadPositionState::UNKNOWN;
+	repeatedness = 1;
+	halfMoveClock = 0;
 }

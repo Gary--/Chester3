@@ -15,6 +15,8 @@ private:
 	Game_Hash hash;
 	Move move;
 	int numMovesStored;
+	int repeatedness;
+	int halfMoveClock;
 	MovesStored movesStored;
 	DeadPositionState deadPositionState;
 	bool check;

@@ -32,6 +32,15 @@ public:
 
 	static uint64_t getHash();
 
+	// How many full moves have been made.
+	static int getMoveNumber();
+
+	// Number of half moves since last capture or pawn move.
+	static int getHalfMoveClock();
+
+	// How many times this position has occurred. 1 if first time.
+	static int getRepeatCount();
+
 
 	// Querying moves
 	static GameMoveIteratorGenerator getAllMoves();
@@ -55,6 +64,9 @@ private:
 	static BitBoard ALL;
 	static Piece pieces[64];
 
+	// Starts at 1. Incremented after Black's move.
+	static int fullMoveCount;
+
 
 #pragma region Move Manager
 	static Game_UndoData cur;
@@ -65,7 +77,12 @@ private:
 	static void addMove(Move move);
 	static void addPawnMove(Move move);//accounts for promotions
 	static void pushMove(Move move);// Called by makeMove to store this layer's info
-	static void popMove();//  Called by undoMove to restore this layer's info
+
+	// Called at the very end of makeMove.
+	static void postMoveUpdates();
+
+	// Called by undoMove to restore this layer's info
+	static void popMove();
 	static bool isDefinitelyAMoveAvailable();//Tries to find a move
 
 	static void generateAllMoves();
