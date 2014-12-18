@@ -17,7 +17,7 @@ void Display::displayText() {
 		cout << char('8' - r) << " ";
 		for (int c = 0; c < 8; c++) {
 			const Position pos(r, c);
-			cout << Game::getPieceAt(pos).asChar(Game::getOwnerAt(pos)) << endl;
+			cout << Game::getPieceAt(pos).asChar(Game::getOwnerAt(pos));
 		}
 		cout << endl;
 	}
