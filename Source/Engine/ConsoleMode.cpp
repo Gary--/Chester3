@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "AI.h"
+
 using namespace std;
 
 void ConsoleMode::run() {
@@ -14,7 +16,7 @@ void ConsoleMode::run() {
 
 		Display::displayText();
 
-		Move move = humanMove();
+		Move move = computerMove();
 		Game::makeMove(move);
 	}
 }
@@ -52,6 +54,14 @@ Move ConsoleMode::humanMove() {
 }
 
 Move ConsoleMode::computerMove() {
-	return Move::INVALID();
+	AI_SearchConfiguration conf;
+	conf.maxDepth = 3;
+
+	AI::configureSearch(conf);
+	AI::startSearch();
+
+	AI::stopSearch();
+
+	return AI::getSearchResult().bestMove;
 }
 
