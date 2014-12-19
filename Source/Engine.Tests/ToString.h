@@ -23,7 +23,7 @@ namespace Microsoft
 			define_specialization(Piece);
 			define_specialization(Turn);
 			define_specialization(AttackPattern);
-			
+			define_specialization(Move);
 			
 
 			template<>static std::wstring ToString<Side>(const Side& side) {
