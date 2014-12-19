@@ -99,6 +99,9 @@
     <ClInclude Include="MoveResolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExtendedPositionDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -255,6 +258,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoveResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtendedPositionDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

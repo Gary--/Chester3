@@ -25,6 +25,7 @@
     <ClInclude Include="Evaluation.h" />
     <ClInclude Include="EvaluationManager.h" />
     <ClInclude Include="EvaluationScore.h" />
+    <ClInclude Include="ExtendedPositionDescription.h" />
     <ClInclude Include="MoveResolver.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
@@ -74,6 +75,7 @@
     <ClCompile Include="Evaluation_mobility.cpp" />
     <ClCompile Include="Evaluation_pawns.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />
+    <ClCompile Include="ExtendedPositionDescription.cpp" />
     <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveResolver.cpp" />
