@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "Game.h"
+#include "MoveResolver.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -44,10 +45,10 @@ public:
 		GameConfiguration conf("rnbqkbnr/ppp1p1pp/8/8/3p1p2/8/PPPPPPPP/RNBQKBNR w - -");
 		Game::configure(conf);
 
-		Game::makeMove(Game::getMove("e2e4"));
+		Game::makeMove(MoveResolver::resolveUCI("e2e4"));
 		Assert::AreEqual(4, Game::getEnpeasentColumn());
 
-		Game::makeMove(Game::getMove("d4e3"));
+		Game::makeMove(MoveResolver::resolveUCI("d4e3"));
 		Assert::AreEqual(Piece::EMPTY(), Game::getPieceAt(Position("e4")));
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
 
@@ -62,7 +63,7 @@ public:
 		Game::makeMove(Move(MoveType::PAWN_JUMP, Position("d7"), Position("d5"), Piece::PAWN(), Piece::EMPTY()));
 		Assert::AreEqual(3, Game::getEnpeasentColumn());
 
-		Game::makeMove(Game::getMove("e5d6"));;
+		Game::makeMove(MoveResolver::resolveUCI("e5d6"));;
 		Assert::AreEqual(Piece::EMPTY(), Game::getPieceAt(Position("d5")));
 		Assert::AreEqual(GameConfiguration::NO_ENPEASENT_COLUMN, Game::getEnpeasentColumn());
 
@@ -80,7 +81,7 @@ public:
 		GameConfiguration conf("rn1qkbnr/ppPpp1pp/8/8/8/3K3B/PP1PpPPP/RNBQ2NR w - -");
 		Game::configure(conf);
 
-		Game::makeMove(Game::getMove("c7c8r"));
+		Game::makeMove(MoveResolver::resolveUCI("c7c8r"));
 		Assert::AreEqual(Piece::ROOK(), Game::getPieceAt(Position("c8")));
 
 		Game::makeMove(promotion(Piece::QUEEN(), "e2", "e1"));

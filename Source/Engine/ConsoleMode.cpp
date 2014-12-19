@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "AI.h"
+#include "MoveResolver.h"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ Move ConsoleMode::humanMove() {
 		string moveStr;
 		stream >> moveStr;
 		
-		Move move = Game::getMove(moveStr);
+		Move move = MoveResolver::resolveUCI(moveStr);
 		if (move != Move::INVALID()) {
 			return move;
 		}

@@ -47,8 +47,7 @@ public:
 	static GameMoveIteratorGenerator getTacticalMoves();
 	static int getNumValidMoves();
 	static bool areMovesAvailable();
-	static Move getMove(std::string str);
-
+	
 	// Making moves
 	static void makeMove(Move move);
 	static Move undoMove();//returns the move we are undoing
