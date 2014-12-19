@@ -104,10 +104,11 @@ void Game::pushMove(const Move move) {
 }
 
 void Game::postMoveUpdates() {
+	cur.repeatedness = 1;
 	for (int i = (int)undoDatas.size() - 1; i >= 0; --i) {
 		if (undoDatas[i].hash == cur.hash) {
 			cur.repeatedness = undoDatas[i].repeatedness + 1;
-			return;
+			break;
 		}
 	}
 

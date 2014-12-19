@@ -16,6 +16,8 @@ void Game::configure(const GameConfiguration& config) {
 	}
 
 	cur = Game_UndoData();
+	cur.halfMoveClock = config.getHalfMoveClock();
+	fullMoveCount = config.getMoveNumber();
 	cur.check = posAttackedBy(getPieces(getTurn(), Piece::KING()).ToPosition(), !getTurn());
 
 	cur.hash = Game_Hash(config);
