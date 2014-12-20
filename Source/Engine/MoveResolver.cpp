@@ -44,7 +44,7 @@ Move MoveResolver::resolveEPD(string s) {
 	}
 
 	Piece promo = Piece::fromChar(s.back());
-	if (promo != Piece::UNKNOWN()) {
+	if (promo != Piece::INVALID()) {
 		s = s.substr(0, s.size() - 2);
 	}
 
@@ -53,7 +53,7 @@ Move MoveResolver::resolveEPD(string s) {
 	}
 	 
 	Piece piece = Piece::fromChar(s[0]);
-	if (piece == Piece::UNKNOWN()) {
+	if (piece == Piece::INVALID()) {
 		piece = Piece::PAWN();
 	} else {
 		s = s.substr(1);

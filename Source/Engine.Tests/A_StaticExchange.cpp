@@ -110,7 +110,7 @@ public:
 		for (int trials = 0; trials < 1000; ++trials) {
 			AttackPattern attackers, defenders;
 			int nAtk = 1+ rand() % 6, nDef = rand() % 7;
-			Piece smallestPiece = Piece::UNKNOWN();
+			Piece smallestPiece = Piece::INVALID();
 			for (int i = 0; i < nAtk; i++) {
 				Piece piece = Piece::random();
 				smallestPiece = std::min(smallestPiece, piece);

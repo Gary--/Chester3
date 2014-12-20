@@ -39,7 +39,7 @@ Piece Piece::fromChar(char c) {
 
 
 	default:
-		return Piece::UNKNOWN();
+		return Piece::INVALID();
 
 	}
 }
@@ -90,7 +90,7 @@ Piece Piece::QUEEN() {
 Piece Piece::KING() {
 	return Piece(6);
 }
-Piece Piece::UNKNOWN() {
+Piece Piece::INVALID() {
 	return Piece(7);
 }
 
@@ -146,8 +146,8 @@ std::string Piece::str() const {
 		return "QUEEN";
 	case PieceEnum::KING:
 		return "KING";
-	case PieceEnum::UNKNOWN:
-		return "UNKNOWN";
+	case PieceEnum::INVALID:
+		return "INVALID";
 	default:
 		_ASSERTE(false);
 		return "ERROR";

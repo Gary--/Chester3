@@ -138,7 +138,7 @@ public:
 
 	TEST_METHOD(Smallest_Piece) {
 		for (int trial = 0; trial < 1000; ++trial) {
-			Piece smallest = Piece::UNKNOWN();
+			Piece smallest = Piece::INVALID();
 			AttackPattern pat0;
 			int n = rand() % 7;
 			for (int i = 1; i <= n; ++i) {

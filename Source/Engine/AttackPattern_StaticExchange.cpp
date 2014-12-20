@@ -93,7 +93,7 @@ AttackPattern::AttackPattern(const std::string str) : AttackPattern() {
 	const int n = str[0] - '0';
 	int actuallyAdded = 0;
 
-	Piece piece = Piece::UNKNOWN();
+	Piece piece = Piece::INVALID();
 	for (char c : str.substr(2)) {
 		piece = Piece::fromChar(c);
 		add(Piece::fromChar(c));
@@ -188,7 +188,7 @@ int AttackPattern::getPieceCount(const Piece piece) const {
 			}
 		}
 		
-		Piece pieceToInc = Piece::UNKNOWN();
+		Piece pieceToInc = Piece::INVALID();
 		int bestLike = 9999;
 		FOR_PIECE_NOT_BISHOP(p) {
 			if (counts[ind(p)] >= limit(p) || counts[ind(p)]!=minCount) {
@@ -200,7 +200,7 @@ int AttackPattern::getPieceCount(const Piece piece) const {
 			}
 		}
 
-		counts[ind(pieceToInc==Piece::UNKNOWN() ? Piece::KNIGHT() : pieceToInc)]++;
+		counts[ind(pieceToInc==Piece::INVALID() ? Piece::KNIGHT() : pieceToInc)]++;
 	}
 	
 
@@ -334,7 +334,7 @@ Piece AttackPattern::smallestAttackerImpl() const {
 			return piece;
 		}
 	}
-	return Piece::UNKNOWN();
+	return Piece::INVALID();
 }
 
 Piece AttackPattern::getSmallestPiece() const {

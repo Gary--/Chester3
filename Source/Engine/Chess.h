@@ -55,7 +55,7 @@ enum class PieceEnum : uint8_t { // used for switches
 	ROOK,	//4
 	QUEEN,	//5
 	KING,	//6
-	UNKNOWN,//7
+	INVALID,//7
 };
 
 
@@ -73,7 +73,7 @@ public:
 	static Piece ROOK();
 	static Piece QUEEN();
 	static Piece KING();
-	static Piece UNKNOWN();
+	static Piece INVALID();
 
 	static Piece random();//  [PAWN,KING]
 
