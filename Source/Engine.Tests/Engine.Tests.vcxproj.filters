@@ -125,5 +125,8 @@
     <ClCompile Include="A_MoveResolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="A_ExtendedPositionDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

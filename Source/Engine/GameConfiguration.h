@@ -61,6 +61,6 @@ private:
 	int moveNumber;
 	int enpeasentColumn;
 
-
+	bool kingIsThreatened(Turn turn);
 };
 

@@ -26,6 +26,7 @@
     <ClInclude Include="EvaluationManager.h" />
     <ClInclude Include="EvaluationScore.h" />
     <ClInclude Include="ExtendedPositionDescription.h" />
+    <ClInclude Include="GameConfiguration_MoveIterator.h" />
     <ClInclude Include="MoveResolver.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />

@@ -309,4 +309,8 @@ bool GameConfiguration::isValid() const {
 	return true;
 }
 
+bool GameConfiguration::kingIsThreatened(const Turn turn) {
+
+}
+
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
