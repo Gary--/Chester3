@@ -253,4 +253,43 @@ string GameConfiguration::str() const {
 	return res;
 }
 
+bool GameConfiguration::isValid() const {
+
+	// Pawn in first/last ranks
+	FOR_8(col) {
+		if (getPieceAt(Position(0, col)) == Piece::PAWN() || getPieceAt(Position(7, col)) == Piece::PAWN()) {
+			return false;
+		}
+	}
+
+
+
+
+	return true;
+}
+
+BitBoard GameConfiguration::getPieces(Turn turn, Piece piece) const {
+	BitBoard result;
+
+	FOR_POSITION_64(pos) {
+		if (getOwnerAt(pos) == turn && getPieceAt(pos) == piece) {
+			result |= pos.asSingletonBitboard();
+		}
+	}
+
+	return result;
+}
+
+BitBoard GameConfiguration::getPlayerPieces(Turn turn) const {
+	BitBoard result;
+	FOR_PIECE_ALL(piece) {
+		result |= getPieces(turn, piece);
+	}
+	return result;
+}
+
+BitBoard GameConfiguration::getAllPieces() const {
+	return getPlayerPieces(Turn::WHITE()) | getPlayerPieces(Turn::BLACK());
+}
+
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

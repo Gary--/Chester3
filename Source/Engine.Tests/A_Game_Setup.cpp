@@ -14,6 +14,15 @@ public:
 		GameConfiguration conf(FEN);
 		Game::configure(conf);
 		Assert::AreEqual(conf.str(), Game::getGameConfiguration().str());
+
+		Assert::AreEqual(Game::getAllPieces(), conf.getAllPieces());
+		FOR_TURN(turn) {
+			Assert::AreEqual(Game::getPlayerPieces(turn), conf.getPlayerPieces(turn));
+
+			FOR_PIECE_ALL(piece) {
+				Assert::AreEqual(Game::getPieces(turn, piece), conf.getPieces(turn, piece));
+			}
+		}
 	}
 
 	TEST_METHOD(Game_Configure_and_Extract_Configuration) {

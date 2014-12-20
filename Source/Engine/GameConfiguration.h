@@ -3,6 +3,7 @@
 #include "BitBoard.h"
 #include "Chess.h"
 #include <string>
+#include "Move.h"
 
 struct GameConfiguration {
 
@@ -21,6 +22,9 @@ public:
 	Turn getOwnerAt(Position position) const;
 	void setPieceAt(Position position, Turn turn, Piece piece);
 	void clearPieceAt(Position position);
+	BitBoard getPieces(Turn turn, Piece piece) const;
+	BitBoard getPlayerPieces(Turn turn) const;
+	BitBoard getAllPieces() const;
 
 	bool getCanCastle(Turn turn, Side side) const;
 	void setCanCastle(Turn turn, Side side, bool value);
