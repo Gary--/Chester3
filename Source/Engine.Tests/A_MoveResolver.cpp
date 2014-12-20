@@ -80,5 +80,12 @@ public:
 		assertInvalidEpd("Qec4");
 	}
 
+	TEST_METHOD(Caslting) {
+		Game::configure(GameConfiguration("r3k2r/8/8/8/8/8/8/R3K2R w KQkq -"));
+
+		assertSame("e1c1", "O-O-O");
+		assertSame("e1g1", "O-O");
+	}
+
 	};
 }

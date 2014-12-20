@@ -29,15 +29,26 @@ Move MoveResolver::resolveUCI(string uciString) {
 
 Move MoveResolver::resolveEPD(string s) {
 	{
+		string toRemove("x+#-");
 		string ns;
 		for (char c : s) {
-			if (string("x+#").find(c) == string::npos) {
+			if (toRemove.find(c) == string::npos) {
 				ns += c;
 			}
 		}
 		s = ns;
 	}
+	if (s == "OOO" || s == "OO") {
+		for (Move move : Game::getAllMoves()) {
+			if ((s == "OOO" && move.getType() == MoveType::CASTLE_LEFT) ||
+				(s == "OO" && move.getType() == MoveType::CASTLE_RIGHT)) {
+				return move;
+			}
 
+		}
+
+		return Move::INVALID();
+	}
 
 	if (s.size() < 2) {
 		return Move::INVALID();
