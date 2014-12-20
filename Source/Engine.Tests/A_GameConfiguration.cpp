@@ -1,14 +1,21 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "AttackFields.h"
-
+#include <string>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-
+using namespace std;
 
 namespace EngineTests {
 	TEST_CLASS(A_GameConfiguration) {
 public:
+	void assertInvalid(string FEN) {
+		Assert::IsFalse(GameConfiguration(FEN).isValid());
+	}
+	void assertValid(string FEN) {
+		Assert::IsTrue(GameConfiguration(FEN).isValid());
+	}
+
 
 	TEST_METHOD(Defaults) {
 		GameConfiguration conf;
@@ -80,7 +87,7 @@ public:
 	TEST_METHOD(FEN_PieceSet) {
 		//Starting configuration
 		GameConfiguration conf("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
+		Assert::IsTrue(conf.isValid());
 		FOR_BIT(bit, BitBoard::rowBits(1) | BitBoard::rowBits(6)) {
 			Position pos = bit.ToPosition();
 			Assert::AreEqual(Piece::PAWN(), conf.getPieceAt(pos));
@@ -167,6 +174,19 @@ public:
 
 		Assert::AreEqual(std::string("rnbqkbnr/ppp1pppp/8/8/3pP3/8/PPPP1PPP/RNBQKBNR b KQkq e3"),
 						 GameConfiguration("rnbqkbnr/pppp1ppp/8/3Pp3/8/8/PPP1PPPP/RNBQKBNR w KQkq e6").mirror().str_min());
+
+
+	}
+
+
+
+	TEST_METHOD(Game_Configuration_Invalid) {
+		assertInvalid("8/8/8/8/8/8/8/8 w - -");
+		assertValid("8/8/3k4/8/8/5K2/8/8 w - -");
+		assertInvalid("1P6/5p1p/3k4/8/8/5K2/PP5p/8 w - -");
+		assertInvalid("8/1P3p1p/3k4/8/8/5K2/1P5p/P7 w - -");
+		assertInvalid("8/1P3p1p/3k4/8/8/5K2/PP6/7p w - -");
+		assertInvalid("5p2/1P5p/3k4/8/8/5K2/PP5p/8 w - -");
 
 
 	}

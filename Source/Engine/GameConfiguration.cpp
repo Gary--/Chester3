@@ -1,11 +1,25 @@
 #include "GameConfiguration.h"
 #include <sstream>
 #include "Game.h"
+#include "AttackFields.h"
 
 using namespace std;
 
+namespace {
+	bool inited = false;
+}
+
+void GameConfiguration::init() {
+	if (inited) {
+		return;
+	}
+	inited = true;
+	AttackFields::init();// Needed for move generation and validation
+}
+
 GameConfiguration::GameConfiguration() 
 {
+	init();
 	FOR_POSITION_64(pos) {
 		clearPieceAt(pos);
 	}
@@ -253,22 +267,8 @@ string GameConfiguration::str() const {
 	return res;
 }
 
-bool GameConfiguration::isValid() const {
 
-	// Pawn in first/last ranks
-	FOR_8(col) {
-		if (getPieceAt(Position(0, col)) == Piece::PAWN() || getPieceAt(Position(7, col)) == Piece::PAWN()) {
-			return false;
-		}
-	}
-
-
-
-
-	return true;
-}
-
-BitBoard GameConfiguration::getPieces(Turn turn, Piece piece) const {
+BitBoard GameConfiguration::getPieces(const Turn turn,const Piece piece) const {
 	BitBoard result;
 
 	FOR_POSITION_64(pos) {
@@ -280,7 +280,7 @@ BitBoard GameConfiguration::getPieces(Turn turn, Piece piece) const {
 	return result;
 }
 
-BitBoard GameConfiguration::getPlayerPieces(Turn turn) const {
+BitBoard GameConfiguration::getPlayerPieces(const Turn turn) const {
 	BitBoard result;
 	FOR_PIECE_ALL(piece) {
 		result |= getPieces(turn, piece);
@@ -290,6 +290,23 @@ BitBoard GameConfiguration::getPlayerPieces(Turn turn) const {
 
 BitBoard GameConfiguration::getAllPieces() const {
 	return getPlayerPieces(Turn::WHITE()) | getPlayerPieces(Turn::BLACK());
+}
+
+bool GameConfiguration::isValid() const {
+	FOR_TURN(turn) {
+		// 1 king per side
+		if (getPieces(turn, Piece::KING()).count() != 1) {
+			return false;
+		}
+
+		// No pawns
+		const BitBoard pawns = getPieces(turn, Piece::PAWN());
+		if ((pawns&BitBoard::rowBits(0) | (pawns&BitBoard::rowBits(7))).isNotEmpty()) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

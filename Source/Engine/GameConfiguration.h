@@ -42,10 +42,16 @@ public:
 	std::string str() const;
 	std::string str_min() const;//without turn counts
 
+	// Is this a legal chess position?
+	// Has 1 king each, no pawns on rank1/rank8, cannot capture enemy king.
+	bool isValid() const;
+
 
 	const static GameConfiguration INITIAL;//"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	const static int NO_ENPEASENT_COLUMN;
 private:
+	static void init();
+
 	Piece pieces[64];
 	Turn owners[64];
 
