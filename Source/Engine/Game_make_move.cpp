@@ -3,6 +3,8 @@
 #include "Game_UndoData.h"
 
 void Game::makeMove(const Move move) {
+	_ASSERTE(move != Move::INVALID());
+
 	const bool wasInCheck = getCheck();
 	pushMove(move);
 	if (move == Move::NULL_MOVE()) {

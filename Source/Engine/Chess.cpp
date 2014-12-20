@@ -39,9 +39,7 @@ Piece Piece::fromChar(char c) {
 
 
 	default:
-		_ASSERT(false);
 		return Piece::UNKNOWN();
-		break;
 
 	}
 }

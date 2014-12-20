@@ -93,6 +93,10 @@ std::string Move::str() const {
 		return "0000";
 	}
 
+	if (*this == INVALID()) {
+		return "INVALID_MOVE";
+	}
+
 	std::string result = getFrom().str() + getTo().str();
 	if (isPromotion()) {
 		result += promotionPiece().asChar(Turn::BLACK());
