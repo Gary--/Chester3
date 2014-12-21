@@ -28,7 +28,7 @@ public:
 	}
 
 	TEST_METHOD(Losing_A_Piece_Is_Bad) {
-		GameConfiguration conf("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");//Kiwipete
+		GameConfiguration conf("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w - -");//Kiwipete
 
 		int initials[2] = { eval(conf, Turn::BLACK()), eval(conf, Turn::WHITE()) };
 		double initialLateness = Evaluation::lateness();

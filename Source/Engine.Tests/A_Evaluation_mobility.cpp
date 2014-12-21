@@ -59,8 +59,8 @@ public:
 
 	TEST_METHOD(Knight_Outpost) {
 		Assert::IsTrue(
-			ex_Knight("rnbqkbnr/pppp3p/5N2/4ppp1/8/8/PPPPPPPP/RNBQKB1R w - -", Turn::WHITE()) >
-			ex_Knight("rnbqkbnr/pppp2pp/5N2/4pp2/8/8/PPPPPPPP/RNBQKB1R w - -", Turn::WHITE())
+			ex_Knight("rnbkqbnr/pppp3p/5N2/4ppp1/8/8/PPPPPPPP/RNBQKB1R w - -", Turn::WHITE()) >
+			ex_Knight("rnbkqbnr/pppp2pp/5N2/4pp2/8/8/PPPPPPPP/RNBQKB1R w - -", Turn::WHITE())
 			);
 	}
 
@@ -110,7 +110,7 @@ public:
 					   ex_Bishop("6k1/5pp1/3q3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
 		Assert::IsTrue(ex_Bishop("6k1/3r1pp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
 					   ex_Bishop("6k1/5pp1/3r3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
-		Assert::IsTrue(ex_Bishop("6q1/3k1pp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
+		Assert::IsTrue(ex_Bishop("6q1/4kpp1/7p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
 					   ex_Bishop("6q1/5pp1/3k3p/4N3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()));
 
 		Assert::IsTrue(ex_Bishop("6k1/3q1pp1/7p/4n3/8/P5B1/1PP5/1K6 w - -", Turn::WHITE()) <
