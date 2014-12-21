@@ -299,18 +299,40 @@ bool GameConfiguration::isValid() const {
 			return false;
 		}
 
-		// No pawns
+		// No pawns can be in first or last rank
 		const BitBoard pawns = getPieces(turn, Piece::PAWN());
 		if ((pawns&BitBoard::rowBits(0) | (pawns&BitBoard::rowBits(7))).isNotEmpty()) {
 			return false;
 		}
 	}
 
+	if (kingIsThreatened(!getTurn())) {
+		return false;
+	}
+
 	return true;
 }
 
-bool GameConfiguration::kingIsThreatened(const Turn turn) {
+bool GameConfiguration::posAttackedByJump(const Position position, const Turn turn) const{
+	return (AttackFields::kingTargs(position) & getPieces(turn, Piece::KING())).isNotEmpty() ||
+		(AttackFields::knightTargs(position) & getPieces(turn, Piece::KNIGHT())).isNotEmpty() ||
+		(AttackFields::pawnTargs(position, !turn) & getPieces(turn, Piece::PAWN())).isNotEmpty();
+}
 
+bool GameConfiguration::posAttackedByLOS(const Position position, const Turn turn) const{
+	const BitBoard ALL = getAllPieces();
+	return (AttackFields::bishopTargs(position, ALL) & (getPieces(turn, Piece::BISHOP()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty() ||
+		(AttackFields::rookTargs(position, ALL) & (getPieces(turn, Piece::ROOK()) | getPieces(turn, Piece::QUEEN()))).isNotEmpty();
+}
+
+bool GameConfiguration::posAttackedBy(const Position position, const Turn turn) const{
+	return posAttackedByJump(position, turn) || posAttackedByLOS(position, turn);
+}
+
+bool GameConfiguration::kingIsThreatened(const Turn turn) const{
+	const Position kingPos = getPieces(turn, Piece::KING()).ToPosition();
+
+	return posAttackedBy(kingPos, !turn);
 }
 
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

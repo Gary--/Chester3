@@ -61,6 +61,12 @@ private:
 	int moveNumber;
 	int enpeasentColumn;
 
-	bool kingIsThreatened(Turn turn);
+	bool posAttackedBy(Position position, Turn turn) const;//Does turn attack the given position?
+	bool posAttackedByJump(Position position, Turn turn) const;
+	bool posAttackedByLOS(Position position, Turn turn) const;
+
+	// Is turn's king under attack?
+	bool kingIsThreatened(const Turn turn) const;
+
 };
 
