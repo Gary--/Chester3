@@ -1,7 +1,12 @@
 #include "Game.h"
 #include "Game_UndoData.h"
+#include <stdexcept>
+void Game::configure(GameConfiguration config) {
+	if (!config.isValid()) {
+		throw std::invalid_argument("Invalid configuration: " + config.str());
+	}
+	
 
-void Game::configure(const GameConfiguration& config) {
 	reset();
 
 

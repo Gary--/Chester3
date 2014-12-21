@@ -15,7 +15,7 @@ class GameMoveIteratorGenerator;
 class Game {
 public:
 
-	static void configure(const GameConfiguration& conf);
+	static void configure(GameConfiguration conf);
 	static GameConfiguration getGameConfiguration();
 	static std::string getFEN();
 
