@@ -1,6 +1,5 @@
 #include "GameConfiguration.h"
 #include <sstream>
-#include "Game.h"
 #include "AttackFields.h"
 
 using namespace std;
@@ -335,7 +334,7 @@ bool GameConfiguration::kingIsThreatened(const Turn turn) const{
 	return posAttackedBy(kingPos, !turn);
 }
 
-void GameConfiguration::makeMove(const Move move) {
+void GameConfiguration::makeMoveImpl(const Move move) {
 	const Turn turn = getTurn();
 
 #pragma region Unpack move
@@ -401,8 +400,118 @@ void GameConfiguration::makeMove(const Move move) {
 	setTurn(!turn);
 }
 
-void GameConfiguration::clean() {
+void GameConfiguration::makeMove(Move move) {
+	makeMoveImpl(move);
+	clean();
+}
 
+void GameConfiguration::clean() {
+	bool isEnpeasent = false;
+	for (Move move : getMoves()) {
+		if (move.getType() == MoveType::ENPEASENT) {
+			isEnpeasent = true;
+		}
+	}
+	if (!isEnpeasent) {
+		setEnpeasentColumn(NO_ENPEASENT_COLUMN);
+	}
+
+
+}
+
+GameConfiguration_MoveIterator_Generator GameConfiguration::getMoves() const {
+	return GameConfiguration_MoveIterator_Generator(*this);
+}
+
+Move GameConfiguration::getMoveUciString(std::string uciString) {
+	for (Move move : getMoves()) {
+		if (move.str() == uciString) {
+			return move;
+		}
+	}
+	return Move::INVALID();
+}
+
+Move GameConfiguration::getMoveEpdString(std::string s) {
+	{
+		string toRemove("x+#-");
+		string ns;
+		for (char c : s) {
+			if (toRemove.find(c) == string::npos) {
+				ns += c;
+			}
+		}
+		s = ns;
+	}
+	if (s == "OOO" || s == "OO") {
+		for (Move move : getMoves()) {
+			if ((s == "OOO" && move.getType() == MoveType::CASTLE_LEFT) ||
+				(s == "OO" && move.getType() == MoveType::CASTLE_RIGHT)) {
+				return move;
+			}
+
+		}
+
+		return Move::INVALID();
+	}
+
+	if (s.size() < 2) {
+		return Move::INVALID();
+	}
+
+	Piece promo = Piece::fromChar(s.back());
+	if (promo != Piece::INVALID()) {
+		s = s.substr(0, s.size() - 2);
+	}
+
+	if (s.size() < 2) {
+		return Move::INVALID();
+	}
+
+	Piece piece = Piece::fromChar(s[0]);
+	if (piece == Piece::INVALID()) {
+		piece = Piece::PAWN();
+	} else {
+		s = s.substr(1);
+	}
+
+
+
+	if (s.size() < 2) {
+		return Move::INVALID();
+	}
+
+	Position to(s.substr(s.size() - 2));
+	s = s.substr(0, s.size() - 2);
+
+	int row = -1, col = -1;
+	for (char c : s) {
+		if ('a' <= c && c <= 'h') {
+			col = c - 'a';
+		}
+
+		if ('1' <= c && c <= '8') {
+			row = '8' - c;
+		}
+	}
+
+	int numMatching = 0;
+	Move result = Move::INVALID();
+	for (Move move : getMoves()) {
+		if (move.getPiece() == piece &&
+			move.getTo() == to &&
+			(!move.isPromotion() || move.promotionPiece() == promo) &&
+			(row == -1 || move.getFrom().row() == row) &&
+			(col == -1 || move.getFrom().col() == col)) {
+			result = move;
+			numMatching++;
+		}
+	}
+	if (numMatching > 1) {
+		return Move::INVALID();
+	}
+
+	return result;
 }
 
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

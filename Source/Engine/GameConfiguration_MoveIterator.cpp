@@ -8,7 +8,7 @@ GameConfiguration_MoveIterator_Generator::GameConfiguration_MoveIterator_Generat
 
 void GameConfiguration_MoveIterator_Generator::addMove(const GameConfiguration& conf,const Move move) {
 	GameConfiguration confCopy = conf;
-	confCopy.makeMove(move);
+	confCopy.makeMoveImpl(move);
 	if (confCopy.isValid()) {
 		moves.push_back(move);
 	}
@@ -37,7 +37,7 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 			const Position from = bit.ToPosition();
 
 			BitBoard tos;
-			switch (PieceEnum::INVALID) {
+			switch (piece.asEnum()) {
 			case PieceEnum::KNIGHT:
 				tos = AttackFields::knightTargs(from);
 				break;

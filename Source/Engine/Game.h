@@ -41,6 +41,11 @@ public:
 	// How many times this position has occurred. 1 if first time.
 	static int getRepeatCount();
 
+	// Get the move matching the given string. Example: e1e2, e7e8q (promotion)
+	static Move getMoveUciString(std::string uciString);
+
+	// Get the move matching the given string.
+	static Move getMoveEpdString(std::string epdString);
 
 	// Querying moves
 	static GameMoveIteratorGenerator getAllMoves();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "Game.h"
-#include "MoveResolver.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
@@ -10,11 +10,11 @@ namespace EngineTests {
 	TEST_CLASS(A_MoveResolver) {
 public:
 	void assertSame(string uci, string epd) {
-		Assert::AreNotEqual(Move::INVALID(),MoveResolver::resolveUCI(uci));
-		Assert::AreEqual(MoveResolver::resolveUCI(uci), MoveResolver::resolveEPD(epd));
+		Assert::AreNotEqual(Move::INVALID(),Game::getMoveUciString(uci));
+		Assert::AreEqual(Game::getMoveUciString(uci), Game::getMoveEpdString(epd));
 	}
 	void assertInvalidEpd(string epd) {
-		Assert::AreEqual(Move::INVALID(), MoveResolver::resolveEPD(epd));
+		Assert::AreEqual(Move::INVALID(), Game::getMoveEpdString(epd));
 	}
 
 	TEST_METHOD(Basic_EPD) {
@@ -24,7 +24,7 @@ public:
 		assertSame("a2a4", "a4");
 		assertSame("c2c3", "c3");
 
-		Game::makeMove(MoveResolver::resolveUCI("a2a4"));
+		Game::makeMove(Game::getMoveUciString("a2a4"));
 
 		assertSame("a7a5", "a5");
 		assertSame("g8f6", "Nf6");

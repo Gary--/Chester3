@@ -4,7 +4,7 @@
 #include "Chess.h"
 #include <string>
 #include "Move.h"
-
+#include "GameConfiguration_MoveIterator.h"
 struct GameConfiguration {
 
 	
@@ -17,6 +17,15 @@ public:
 
 	// Clears castling and enpeasent flags if none are available.
 	void clean();
+
+	// Iterator generator for the legal moves for the turn player in this position.
+	GameConfiguration_MoveIterator_Generator getMoves() const;
+
+	// Get the move matching the given string. Example: e1e2, e7e8q (promotion)
+	Move getMoveUciString(std::string uciString);
+
+	// Get the move matching the given string.
+	Move getMoveEpdString(std::string epdString);
 
 	// Alters the configuration to what it would be after making the move.
 	void makeMove(Move move);
@@ -75,5 +84,6 @@ private:
 	// Is turn's king under attack?
 	bool kingIsThreatened(const Turn turn) const;
 
+	void makeMoveImpl(Move move);
 };
 

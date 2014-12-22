@@ -27,7 +27,6 @@
     <ClInclude Include="EvaluationScore.h" />
     <ClInclude Include="ExtendedPositionDescription.h" />
     <ClInclude Include="GameConfiguration_MoveIterator.h" />
-    <ClInclude Include="MoveResolver.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_SearchConfiguration.h" />
@@ -80,7 +79,6 @@
     <ClCompile Include="GameConfiguration_MoveIterator.cpp" />
     <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MoveResolver.cpp" />
     <ClCompile Include="Search_quiescenceSearch.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />

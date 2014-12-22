@@ -100,3 +100,13 @@ GameConfiguration Game::getGameConfiguration() {
 
 	return conf;
 }
+
+// Get the move matching the given string. Example: e1e2, e7e8q (promotion)
+Move Game::getMoveUciString(std::string uciString) {
+	return getGameConfiguration().getMoveUciString(uciString);
+}
+
+// Get the move matching the given string.
+Move Game::getMoveEpdString(std::string epdString) {
+	return getGameConfiguration().getMoveEpdString(epdString);
+}

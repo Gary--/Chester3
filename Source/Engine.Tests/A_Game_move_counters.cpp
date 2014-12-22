@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "Game.h"
-#include "MoveResolver.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -11,7 +11,7 @@ namespace EngineTests {
 public:
 
 	void checkedMakeMove(std::string moveStr) {
-		Move move = MoveResolver::resolveUCI(moveStr);
+		Move move = Game::getMoveUciString(moveStr);
 		Assert::AreNotEqual(Move::INVALID(), move);
 		Game::makeMove(move);
 	}

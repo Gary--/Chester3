@@ -2,6 +2,8 @@
 #include "CppUnitTest.h"
 #include "AttackFields.h"
 #include <string>
+#include "Evaluation_test_helpers.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace std;
@@ -187,9 +189,40 @@ public:
 		assertInvalid("8/1P3p1p/3k4/8/8/5K2/1P5p/P7 w - -");
 		assertInvalid("8/1P3p1p/3k4/8/8/5K2/PP6/7p w - -");
 		assertInvalid("5p2/1P5p/3k4/8/8/5K2/PP5p/8 w - -");
-
-
 	}
+
+	TEST_METHOD(Generate_Basic) {
+		int count = 0;
+		for (Move move : GameConfiguration::INITIAL.getMoves()) {
+			count++;
+		}
+		Assert::AreEqual(20, count);
+	}
+
+	TEST_METHOD(GameConfiguration_MakeMove_and_Generation) {
+		for (string fen : fenSamples) {
+			GameConfiguration conf(fen);
+			Game::configure(conf);
+
+			int gameCount = 0;
+			for (Move move : Game::getAllMoves()) {
+				gameCount++;
+				Game::makeMove(move);
+				GameConfiguration confCopy = conf;
+				confCopy.makeMove(move);
+				Assert::AreEqual(Game::getFEN(), confCopy.str_min());
+				Game::undoMove();
+			}
+
+			int confCount = 0;
+			for (Move move : conf.getMoves()) {
+				confCount++;
+			}
+			Assert::AreEqual(gameCount, confCount);
+		}
+	}
+
+
 	//TEST CLASS END
 	};
 
