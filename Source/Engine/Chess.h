@@ -19,6 +19,8 @@ public:
 	Turn();
 
 	Turn operator!() const;
+
+	// White gives true, Black gives false.
 	bool asIndex() const;
 
 	bool operator==(const Turn other) const;
@@ -31,7 +33,9 @@ public:
 
 	static Turn WHITE();
 	static Turn BLACK();
-	static Turn fromChar(char c);// Uppercase = WHITE, else BLACK
+
+	// Uppercase = WHITE, else BLACK
+	static Turn fromChar(char c);
 private:
 	explicit Turn(bool value);
 	bool value;

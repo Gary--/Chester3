@@ -19,17 +19,34 @@ public:
 	static GameConfiguration getGameConfiguration();
 	static std::string getFEN();
 
-	// Game state query
+	// The turn player.
 	static Turn getTurn();
+
+	// The pieces of that type owned by turn.
 	static BitBoard getPieces(Turn turn, Piece piece);
+
+	// All the pieces on the board.
 	static BitBoard getAllPieces();
+
+	// All pieces owned by turn.
 	static BitBoard getPlayerPieces(Turn turn);
+
+	// The piece type at the given position.
 	static Piece getPieceAt(Position position);
+
+	// The owner at the given position. Unspecified if getPieceAt(position)==Piece::EMPTY()
 	static Turn getOwnerAt(Position position);
+
+	// Does turn have castling rights?
 	static bool getCanCastle(Turn turn, Side side);
-	static int getEnpeasentColumn(); // 8 For cannot enpeasent
+
+	// Which column the turn player can enpeasent to. 8 For cannot enpeasent
+	static int getEnpeasentColumn();
+
+	// Is the turn player in check?
 	static bool getCheck();
 
+	// Hash including pieces, turn, enpeasent, caslting rights
 	static uint64_t getHash();
 
 	// How many full moves have been made.
@@ -47,15 +64,23 @@ public:
 	// Get the move matching the given string.
 	static Move getMoveEpdString(std::string epdString);
 
-	// Querying moves
+	// Iterator generator to every move.
 	static GameMoveIteratorGenerator getAllMoves();
+
+	// Iterator generator to tactical moves: captures, promotions, enpeasent
 	static GameMoveIteratorGenerator getTacticalMoves();
+
+	// How many valid moves are available?
 	static int getNumValidMoves();
+
+	// A fast check of getNumValidMoves() > 0.
 	static bool areMovesAvailable();
 	
-	// Making moves
+	// Alter the game state by making the move.
 	static void makeMove(Move move);
-	static Move undoMove();//returns the move we are undoing
+
+	// Undo the previous makeMove. Returns the move being reverted.
+	static Move undoMove();
 private:
 	static void init();
 	static void reset();

@@ -13,6 +13,7 @@ public:
 	GameConfiguration(std::string ForsythEdwardsNotation);
 	~GameConfiguration();
 
+	// Returns the mirrored position. 
 	GameConfiguration mirror() const;
 
 	// Clears castling and enpeasent flags if none are available.
@@ -30,39 +31,69 @@ public:
 	// Alters the configuration to what it would be after making the move.
 	void makeMove(Move move);
 
+	// The turn player.
 	Turn getTurn() const;
+
+	// Set the turn player.
 	void setTurn(Turn turn);
 
+	// Get the piece at the given position.
 	Piece getPieceAt(Position position) const;
+
+	// Get the owner of the piece at the given position. Unspecified if getPieceAt(position)==Piece::EMPTY()
 	Turn getOwnerAt(Position position) const;
+
+	// Set position to contain the piece owned by turn.
 	void setPieceAt(Position position, Turn turn, Piece piece);
+
+	// Set the piece type at the position to EMPTY()
 	void clearPieceAt(Position position);
+
+	// Pieces owned by turn of that type.
 	BitBoard getPieces(Turn turn, Piece piece) const;
+
+	// All pieces owned by turn.
 	BitBoard getPlayerPieces(Turn turn) const;
+
+	// All pieces on the board.
 	BitBoard getAllPieces() const;
 
+	// Castling rights.
 	bool getCanCastle(Turn turn, Side side) const;
+
+	// Castling rights.
 	void setCanCastle(Turn turn, Side side, bool value);
 	
-
+	// Number of moves since the last capture/pawn push. 0 if the previous move was.
 	int getHalfMoveClock() const;
+
+	// Number of moves since the last capture/pawn push. 0 if the previous move was.
 	void setHalfMoveClock(int value);
 
+	// Starts at 1. Incremented after Black's move.
 	int getMoveNumber() const;
+
+	// Starts at 1. Incremented after Black's move.
 	void setMoveNumber(int value);
 
+	// Which column the turn player can EP to. NO_ENPEASENT_COLUMN if none available.
 	int getEnpeasentColumn() const;
+
+	// Which column the turn player can EP to. NO_ENPEASENT_COLUMN if none available.
 	void setEnpeasentColumn(int value);
 
+	// FEN representation.
 	std::string str() const;
-	std::string str_min() const;//without turn counts
+
+	// FEN representation without turn counts.
+	std::string str_min() const;
 
 	// Is this a legal chess position?
 	// Has 1 king each, no pawns on rank1/rank8, cannot capture enemy king.
 	bool isValid() const;
 
-
-	const static GameConfiguration INITIAL;//"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+	//"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+	const static GameConfiguration INITIAL;
 	const static int NO_ENPEASENT_COLUMN;
 private:
 	friend class GameConfiguration_MoveIterator_Generator;

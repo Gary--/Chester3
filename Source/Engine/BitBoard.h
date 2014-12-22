@@ -8,7 +8,7 @@
 
 
 class Position;
-// Represents a set of up to Positions
+// Represents a set of up to 64 Positions
 class BitBoard
 {
 
@@ -43,6 +43,8 @@ public:
 
 	// Least significant bit
 	BitBoard const LSB();
+
+	// Is the Position in the set represented by this BitBoard?
 	bool  contains(Position position) const;
 
 	static BitBoard EMPTY();
@@ -61,15 +63,22 @@ public:
 
 	std::string  str() const;
 	
+	// Flip. Maps e1 <-> e8.
 	BitBoard mirror() const;
-	BitBoard perspective(Turn turn) const;//If black, returns mirror, else self.
 
-	Position ToPosition() const;// Only use on a singleton board
+	//If Turn is black, returns mirror(), else self.
+	BitBoard perspective(Turn turn) const;
+
+	// If count()==1, returns the Position such that contains(Position)
+	Position ToPosition() const;
 	
+	// How many on bits.
 	int count() const;
 
-
+	// All the bits in the given row.
 	static BitBoard rowBits(int row);
+
+	// All the bits in the given column.
 	static BitBoard colBits(int col);
 
 	//rank + file
@@ -104,6 +113,7 @@ public:
 	// rowBits(r+1) | ... | rowBits(7)
 	static BitBoard rowsGreaterThan(int r);
 
+	// Returns a randomly populated BitBoard
 	static BitBoard random();
 };
 
