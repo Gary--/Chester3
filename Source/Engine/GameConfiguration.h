@@ -15,6 +15,12 @@ public:
 
 	GameConfiguration mirror() const;
 
+	// Clears castling and enpeasent flags if none are available.
+	void clean();
+
+	// Alters the configuration to what it would be after making the move.
+	void makeMove(Move move);
+
 	Turn getTurn() const;
 	void setTurn(Turn turn);
 
@@ -50,6 +56,7 @@ public:
 	const static GameConfiguration INITIAL;//"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	const static int NO_ENPEASENT_COLUMN;
 private:
+	friend class GameConfiguration_MoveIterator_Generator;
 	static void init();
 
 	Piece pieces[64];

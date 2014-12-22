@@ -260,11 +260,11 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 
 #pragma region Enpeasent
 		if (getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
-			Position to = AttackFields::enpeasentTo(curTurn, getEnpeasentColumn());
-			BitBoard capturedBit = AttackFields::enpeasentCaptured(curTurn, getEnpeasentColumn()).asSingletonBitboard();
+			const Position to = AttackFields::enpeasentTo(curTurn, getEnpeasentColumn());
+			const BitBoard capturedBit = AttackFields::enpeasentCaptured(curTurn, getEnpeasentColumn()).asSingletonBitboard();
 			FOR_BIT(pawn, AttackFields::pawnTargs(to, !curTurn) & MP  & ~rightPinned) {
-				Position from = pawn.ToPosition();
-				BitBoard newBlockers = ALL ^ to.asSingletonBitboard() ^ pawn ^ capturedBit;
+				const Position from = pawn.ToPosition();
+				const BitBoard newBlockers = ALL ^ to.asSingletonBitboard() ^ pawn ^ capturedBit;
 				if ((AttackFields::rookTargs(kingPos, newBlockers) & TR).isEmpty() &&
 					(AttackFields::bishopTargs(kingPos, newBlockers) & TB).isEmpty()) {
 					addMove(Move(MoveType::ENPEASENT, from, to, Piece::PAWN(), Piece::EMPTY()));

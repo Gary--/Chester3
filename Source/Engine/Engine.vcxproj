@@ -77,6 +77,7 @@
     <ClCompile Include="Evaluation_pawns.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />
     <ClCompile Include="ExtendedPositionDescription.cpp" />
+    <ClCompile Include="GameConfiguration_MoveIterator.cpp" />
     <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveResolver.cpp" />

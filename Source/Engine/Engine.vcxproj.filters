@@ -266,5 +266,8 @@
     <ClCompile Include="ExtendedPositionDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameConfiguration_MoveIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

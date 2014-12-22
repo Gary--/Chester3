@@ -335,4 +335,74 @@ bool GameConfiguration::kingIsThreatened(const Turn turn) const{
 	return posAttackedBy(kingPos, !turn);
 }
 
+void GameConfiguration::makeMove(const Move move) {
+	const Turn turn = getTurn();
+
+#pragma region Unpack move
+	const MoveType type = move.getType();
+	const Position fromPos = move.getFrom();
+	const Position toPos = move.getTo();
+	const Piece piece = move.getPiece();
+	const Piece targ = move.getTarg();
+#pragma endregion
+
+	clearPieceAt(fromPos);
+	setPieceAt(toPos, turn, piece);
+	setEnpeasentColumn(NO_ENPEASENT_COLUMN);
+
+	if (type == MoveType::PAWN_JUMP) {
+		setEnpeasentColumn(toPos.col());
+
+	} else if (type == MoveType::ENPEASENT) {
+		Position capturedPos = toPos.shiftBackward(turn);
+		clearPieceAt(capturedPos);
+
+	} else if (piece == Piece::KING()) {
+
+		setCanCastle(turn, Side::LEFT, false);
+		setCanCastle(turn, Side::RIGHT, false);
+
+		if (type == MoveType::CASTLE_LEFT || type == MoveType::CASTLE_RIGHT) {
+			int baseRow = turn.isWhite() ? 7 : 0;
+			Position rookFrom(baseRow, type == MoveType::CASTLE_LEFT ? 0 : 7);
+			Position rookTo(baseRow, type == MoveType::CASTLE_LEFT ? 3 : 5);
+
+			clearPieceAt(rookFrom);
+			setPieceAt(rookTo,turn, Piece::ROOK());
+
+		}
+	} else if (move.isPromotion()) {
+		Piece promo = move.promotionPiece();
+		setPieceAt(toPos, turn, promo);
+	}
+
+	if (toPos == Position("a1") || fromPos == Position("a1")) {
+		setCanCastle(Turn::WHITE(), Side::LEFT, false);
+	}
+	if (toPos == Position("h1") || fromPos == Position("h1")) {
+		setCanCastle(Turn::WHITE(), Side::RIGHT, false);
+	}
+	if (toPos == Position("a8") || fromPos == Position("a8")) {
+		setCanCastle(Turn::BLACK(), Side::LEFT, false);
+	}
+	if (toPos == Position("h8") || fromPos == Position("h8")) {
+		setCanCastle(Turn::BLACK(), Side::RIGHT, false);
+	}
+
+	if (turn.isBlack()) {
+		setMoveNumber(getMoveNumber() + 1);
+	}
+	if (piece != Piece::PAWN() && targ == Piece::EMPTY()) {
+		setHalfMoveClock(getHalfMoveClock() + 1);
+	} else {
+		setHalfMoveClock(0);
+	}
+
+	setTurn(!turn);
+}
+
+void GameConfiguration::clean() {
+
+}
+
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
