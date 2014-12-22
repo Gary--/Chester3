@@ -88,33 +88,33 @@ void AttackMap::precompute() {
 	//maps.back().clearPatterns();
 	
 	FOR_TURN(turn) {
-		FOR_BIT(king, AttackFields::kingTargs(Game::getPieces(turn, Piece::KING()).ToPosition())) {
-			pats.patterns[turn.asIndex()][king.ToPosition().index()].add(Piece::KING());
+		FOR_POS(kingPos, AttackFields::kingTargs(Game::getPieces(turn, Piece::KING()).ToPosition())) {
+			pats.patterns[turn.asIndex()][kingPos.index()].add(Piece::KING());
 		}
 
-		FOR_BIT(knight, Game::getPieces(turn, Piece::KNIGHT())) {
-			FOR_BIT(targ, AttackFields::knightTargs(knight.ToPosition())) {
-				pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::KNIGHT());
+		FOR_POS(knightPos, Game::getPieces(turn, Piece::KNIGHT())) {
+			FOR_POS(targ, AttackFields::knightTargs(knightPos)) {
+				pats.patterns[turn.asIndex()][targ.index()].add(Piece::KNIGHT());
 			}
 		}
 
 		const BitBoard blockers = Game::getAllPieces();
 
-		FOR_BIT(bishop, Game::getPieces(turn, Piece::BISHOP())) {
-			FOR_BIT(targ, AttackFields::bishopTargs(bishop.ToPosition(), blockers)) {
-				pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::BISHOP());
+		FOR_POS(bishopPos, Game::getPieces(turn, Piece::BISHOP())) {
+			FOR_POS(targ, AttackFields::bishopTargs(bishopPos, blockers)) {
+				pats.patterns[turn.asIndex()][targ.index()].add(Piece::BISHOP());
 			}
 		}
 
-		FOR_BIT(rook, Game::getPieces(turn, Piece::ROOK())) {
-			FOR_BIT(targ, AttackFields::rookTargs(rook.ToPosition(), blockers)) {
-				pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::ROOK());
+		FOR_POS(rookPos, Game::getPieces(turn, Piece::ROOK())) {
+			FOR_POS(targ, AttackFields::rookTargs(rookPos, blockers)) {
+				pats.patterns[turn.asIndex()][targ.index()].add(Piece::ROOK());
 			}
 		}
 
-		FOR_BIT(queen, Game::getPieces(turn, Piece::QUEEN())) {
-			FOR_BIT(targ, AttackFields::queenTargs(queen.ToPosition(), blockers)) {
-				pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::QUEEN());
+		FOR_POS(queenPos, Game::getPieces(turn, Piece::QUEEN())) {
+			FOR_POS(targ, AttackFields::queenTargs(queenPos, blockers)) {
+				pats.patterns[turn.asIndex()][targ.index()].add(Piece::QUEEN());
 			}
 		}
 
@@ -123,12 +123,12 @@ void AttackMap::precompute() {
 		const BitBoard right = MP_forward.shiftRight();
 		const BitBoard both = left&right;
 
-		FOR_BIT(targ, (left | right) &~both) {
-			pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::PAWN());
+		FOR_POS(targ, (left | right) &~both) {
+			pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN());
 		}
 
-		FOR_BIT(targ, both) {
-			pats.patterns[turn.asIndex()][targ.ToPosition().index()].add(Piece::PAWN(),2);
+		FOR_POS(targ, both) {
+			pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN(), 2);
 		}
 	}
 }
