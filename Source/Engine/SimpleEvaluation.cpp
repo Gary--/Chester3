@@ -185,8 +185,8 @@ void SimpleEvaluation::synchronize() {
 		FOR_PIECE_ALL(piece) {
 			matScores[turn.asIndex()] += Game::getPieces(turn, piece).count() * pieceValue(piece);
 
-			FOR_BIT(bit, Game::getPieces(turn, piece)) {
-				posScores[turn.asIndex()] += getPieceSquare(piece, bit.ToPosition().perspective(turn));
+			FOR_POS(pos, Game::getPieces(turn, piece)) {
+				posScores[turn.asIndex()] += getPieceSquare(piece, pos.perspective(turn));
 			}
 		}
 	}

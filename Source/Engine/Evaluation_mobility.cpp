@@ -97,8 +97,7 @@ namespace {
 
 		MobilityScore res;
 
-		FOR_BIT(bishop, Game::getPieces(turn, Piece::BISHOP())) {
-			const Position pos = bishop.ToPosition();
+		FOR_POS(pos, Game::getPieces(turn, Piece::BISHOP())) {
 
 			// We are only stopped by their pieces and our pawns.
 			const BitBoard targsXRay = AttackFields::bishopTargs(pos, TP | MP);//only blocked by pawns
@@ -114,8 +113,7 @@ namespace {
 			// pinning
 			{
 				int pinScore = 0;
-				FOR_BIT(big, TBig&targsXRay) {
-					const Position bigPos = big.ToPosition();
+				FOR_POS(bigPos, TBig&targsXRay) {
 					const BitBoard blockers = AttackFields::blockingTargs(bigPos, pos) & ALL;
 
 					// One piece stopping us from taking that big piece
@@ -133,7 +131,7 @@ namespace {
 
 
 			// bad bishop
-			FOR_BIT(pawn, blockingPawns) {
+			FOR_POS(pawnPos, blockingPawns) {
 				//                                            .  P  N  B  R  Q  K  p  n  b  r  q  k
 				const uint8_t badBishopBlockerPenalty[13] = { 1, 4, 1, 1, 1, 1, 1, 4, 2, 2, 1, 1, 1 };//penalty based on piece in front of blocking pawn
 				const uint8_t badBishopPositionPenalty[64] = {
@@ -147,7 +145,7 @@ namespace {
 					0, 0, 0, 0, 0, 0, 0, 0,
 				};
 
-				const Position frontPos = pawn.ToPosition().shiftForward(turn);
+				const Position frontPos = pawnPos.shiftForward(turn);
 				const Piece frontPiece = Game::getPieceAt(frontPos); //what is blocking the pawn
 
 				int frontPieceIndex = frontPiece.asIndex();
@@ -189,8 +187,7 @@ namespace {
 
 
 		const BitBoard MR = Game::getPieces(turn, Piece::ROOK());
-		FOR_BIT(rook, MR) {
-			const Position pos = rook.ToPosition();
+		FOR_POS(pos, MR) {
 			const int row = pos.row();
 			const int col = pos.col();
 			const BitBoard colBits = BitBoard::colBits(col);
@@ -203,8 +200,7 @@ namespace {
 			// pinning
 			{
 				int pinScore = 0;
-				FOR_BIT(big, TBig&targsXRay) {
-					const Position bigPos = big.ToPosition();
+				FOR_POS(bigPos, TBig&targsXRay) {
 					const BitBoard blockers = AttackFields::blockingTargs(bigPos, pos) & ALL;
 
 					// One piece stopping us from taking that big piece

@@ -111,8 +111,8 @@ int Evaluation::pawnStructureScore(const Turn turn) {
 
 		const BitBoard sideBySide = (weakPawns.shiftForward(turn)&myPawnCoverage).shiftBackward(turn);
 		weakPawns ^= sideBySide;
-		FOR_BIT(pawn, sideBySide) {
-			res += formation_1[pawn.ToPosition().perspective(turn).index()];
+		FOR_POS(pos, sideBySide) {
+			res += formation_1[pos.perspective(turn).index()];
 		}
 		_ASSERTE(sideBySide == ((MP.shiftLeft()&MP) | (MP.shiftRight()&MP)));
 
@@ -121,12 +121,12 @@ int Evaluation::pawnStructureScore(const Turn turn) {
 
 		const BitBoard aBitAhead = (weakPawns.shiftBackward(turn)&myPawnCoverage).shiftForward(turn);
 		weakPawns ^= aBitAhead;
-		FOR_BIT(pawn, aBitAhead | directlyProtected) {
-			res += formation_2[pawn.ToPosition().perspective(turn).index()];
+		FOR_POS(pos, aBitAhead | directlyProtected) {
+			res += formation_2[pos.perspective(turn).index()];
 		}
 
-		FOR_BIT(pawn, weakPawns) {
-			const Position pos = pawn.ToPosition().perspective(turn);
+		FOR_POS(pos0, weakPawns) {
+			const Position pos = pos0.perspective(turn);
 			res -= weakpawn_1[pos.index()];
 			if ((BitBoard::colBits(pos.col()) & TP).isEmpty()) { // half open file
 				res -= weakpawn_2[pos.index()];
@@ -138,8 +138,7 @@ int Evaluation::pawnStructureScore(const Turn turn) {
 
 
 	// Pressure on unprotected pawns. Exclude pawns that attack their pawn
-	FOR_BIT(pawn, MP &~(myPawnCoverage | theirPawnCoverage)) {
-		const Position pos = pawn.ToPosition();
+	FOR_POS(pos, MP &~(myPawnCoverage | theirPawnCoverage)) {
 		const AttackPattern defenders = AttackMap::getAttackPattern(turn, pos);
 		const AttackPattern attackers = AttackMap::getAttackPattern(other, pos);
 
@@ -231,8 +230,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(const Turn turn) {
 	
 	const BitBoard MR = Game::getPieces(turn, Piece::ROOK());
 	const BitBoard MK = Game::getPieces(turn, Piece::KING());
-	FOR_BIT(pawn, res.passedPawns) {
-		const Position pos = pawn.ToPosition();
+	FOR_POS(pos, res.passedPawns) {
 		const BitBoard colBits = BitBoard::colBits(pos.col());
 
 		// Our rook is in the way of this passed pawn. HUGE penalty.
@@ -265,7 +263,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(const Turn turn) {
 		res.score += baseScore;
 
 		// connected with friendly pawn side by side or directly
-		if ((pawn&myPawnCoverage).isNotEmpty() || (pawn.shiftForward(turn)&myPawnCoverage).isNotEmpty()) {
+		if (myPawnCoverage.contains(pos) || myPawnCoverage.contains(pos.shiftForward(turn))) {
 			res.score += baseScore;
 		}
 

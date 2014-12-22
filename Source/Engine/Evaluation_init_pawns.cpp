@@ -13,8 +13,8 @@ void Evaluation::initPawns() {
 		FOR_POSITION_64(pos) {
 			BitBoard result = BitBoard::EMPTY();
 			const BitBoard posBit = pos.asSingletonBitboard();
-			FOR_BIT(bit, posBit | posBit.shiftLeft() | posBit.shiftRight()) {
-				result |= BitBoard::colBits(bit.ToPosition().col());
+			FOR_POS(leftRightPos, posBit | posBit.shiftLeft() | posBit.shiftRight()) {
+				result |= BitBoard::colBits(leftRightPos.col());
 			}
 			result &= pos.squaresForward(turn);
 			opposingPawnsArr[turn.asIndex()][pos.index()] = result;
