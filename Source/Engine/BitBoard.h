@@ -4,10 +4,11 @@
 #include "Position.h"
 #include "Chess.h"
 
-#define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY(); (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY(); BITS_COPY^=VAR)
-#define FOR_POS(POS_VAR,BITBOARD_VAR) for(const Position POS_VAR : (BITBOARD_VAR))
+#define FOR_BIT(BIT_VAR,BITBOARD_VAR) for(const BitBoard BIT_VAR : (BITBOARD_VAR).getBitBoardBitBoardIteratorGenerator())
+#define FOR_POS(POS_VAR,BITBOARD_VAR) for(const Position POS_VAR : (BITBOARD_VAR).getBitBoardPositionIteratorGenerator())
 
-class BitBoard_Position_Iterator;
+class BitBoard_Position_Iterator_Generator;
+class BitBoard_BitBoard_Iterator_Generator;
 class Position;
 // Represents a set of up to 64 Positions
 class BitBoard
@@ -45,9 +46,11 @@ public:
 	// Least significant bit. Returns a bit on the upper most row. If tied, left most.
 	BitBoard LSB() const;
 
+	// Iterator to singleton sub sets of this bitboard.
+	BitBoard_BitBoard_Iterator_Generator getBitBoardBitBoardIteratorGenerator() const;
+
 	// Iterator to Positions in the BitBoard;
-	BitBoard_Position_Iterator begin() const;
-	BitBoard_Position_Iterator end() const;
+	BitBoard_Position_Iterator_Generator getBitBoardPositionIteratorGenerator() const;
 
 	// Is the Position in the set represented by this BitBoard?
 	bool contains(Position position) const;

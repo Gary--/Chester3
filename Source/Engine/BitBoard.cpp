@@ -243,10 +243,12 @@ BitBoard BitBoard::random(){
 }
 
 
-BitBoard_Position_Iterator BitBoard::begin() const {
-	return BitBoard_Position_Iterator(LSB(), *this);
+// Iterator to singleton sub sets of this bitboard.
+BitBoard_BitBoard_Iterator_Generator BitBoard:: getBitBoardBitBoardIteratorGenerator() const {
+	return BitBoard_BitBoard_Iterator_Generator(*this);
 }
 
-BitBoard_Position_Iterator BitBoard::end() const {
-	return BitBoard_Position_Iterator(EMPTY(), EMPTY());
+// Iterator to Positions in the BitBoard;
+BitBoard_Position_Iterator_Generator BitBoard::getBitBoardPositionIteratorGenerator() const {
+	return BitBoard_Position_Iterator_Generator(*this);
 }
