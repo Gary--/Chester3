@@ -42,10 +42,10 @@ public:
 	BitBoard shiftBackward(Turn turn) const;
 
 	// Least significant bit
-	BitBoard const LSB();
+	BitBoard LSB() const;
 
 	// Is the Position in the set represented by this BitBoard?
-	bool  contains(Position position) const;
+	bool contains(Position position) const;
 
 	static BitBoard EMPTY();
 	static BitBoard FULL();

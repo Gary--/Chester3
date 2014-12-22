@@ -63,7 +63,7 @@ bool BitBoard::isNotEmpty() const {
 	return *this != EMPTY();
 }
 
-BitBoard const BitBoard::LSB(){
+BitBoard  BitBoard::LSB() const{
 #pragma warning( disable : 4146)
 	return BitBoard(value &-value);
 #pragma warning(default : 4146)
