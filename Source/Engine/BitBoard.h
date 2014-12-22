@@ -5,8 +5,9 @@
 #include "Chess.h"
 
 #define FOR_BIT(VAR,BITS) for(BitBoard BITS_COPY=(BITS),VAR=BitBoard::EMPTY(); (VAR=BITS_COPY.LSB())!=BitBoard::EMPTY(); BITS_COPY^=VAR)
+#define FOR_POS(POS_VAR,BITBOARD_VAR) for(const Position POS_VAR : (BITBOARD_VAR))
 
-
+class BitBoard_Position_Iterator;
 class Position;
 // Represents a set of up to 64 Positions
 class BitBoard
@@ -41,8 +42,12 @@ public:
 	BitBoard shiftForward(Turn turn) const;
 	BitBoard shiftBackward(Turn turn) const;
 
-	// Least significant bit
+	// Least significant bit. Returns a bit on the upper most row. If tied, left most.
 	BitBoard LSB() const;
+
+	// Iterator to Positions in the BitBoard;
+	BitBoard_Position_Iterator begin() const;
+	BitBoard_Position_Iterator end() const;
 
 	// Is the Position in the set represented by this BitBoard?
 	bool contains(Position position) const;
@@ -117,3 +122,4 @@ public:
 	static BitBoard random();
 };
 
+#include "BitBoard_Position_Iterator.h"

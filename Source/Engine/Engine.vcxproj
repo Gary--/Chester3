@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="AttackMap.h" />
+    <ClInclude Include="BitBoard_Position_Iterator.h" />
     <ClInclude Include="ConsoleMode.h" />
     <ClInclude Include="Evaluation.h" />
     <ClInclude Include="EvaluationManager.h" />
@@ -61,6 +62,7 @@
     <ClCompile Include="AttackFields__init.cpp" />
     <ClCompile Include="AttackFields_king_knight_pawn.cpp" />
     <ClCompile Include="BitBoard.cpp" />
+    <ClCompile Include="BitBoard_Position_Iterator.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="ConsoleMode.cpp" />

@@ -102,6 +102,9 @@
     <ClInclude Include="GameConfiguration_MoveIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BitBoard_Position_Iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -261,6 +264,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameConfiguration_MoveIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBoard_Position_Iterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

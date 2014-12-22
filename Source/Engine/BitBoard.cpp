@@ -3,7 +3,7 @@
 #include "Chess.h"
 #include "ChessAssert.h"
 #include "Position.h"
-
+#include "BitBoard_Position_Iterator.h"
 BitBoard::BitBoard():value(0){}
 BitBoard::BitBoard(uint64_t value) : value(value){}
 BitBoard::BitBoard(int r, int c)  {
@@ -240,4 +240,13 @@ BitBoard BitBoard::random(){
 		n += size;
 	}
 	return BitBoard(res);
+}
+
+
+BitBoard_Position_Iterator BitBoard::begin() const {
+	return BitBoard_Position_Iterator(LSB(), *this);
+}
+
+BitBoard_Position_Iterator BitBoard::end() const {
+	return BitBoard_Position_Iterator(EMPTY(), EMPTY());
 }
