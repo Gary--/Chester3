@@ -33,8 +33,7 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 	const BitBoard T = conf.getPlayerPieces(!turn);
 
 	FOR_PIECE(piece, Piece::KNIGHT(), Piece::KING()) {
-		FOR_BIT(bit, conf.getPieces(turn, piece)) {
-			const Position from = bit.ToPosition();
+		FOR_POS(from, conf.getPieces(turn, piece)) {
 
 			BitBoard tos;
 			switch (piece.asEnum()) {
@@ -60,8 +59,7 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 			}
 			tos &= ~M; // Don't allow self capture
 
-			FOR_BIT(toBit, tos) {
-				const Position to = toBit.ToPosition();
+			FOR_POS(to, tos) {
 				const Piece targ = conf.getPieceAt(to);
 				addMove(conf,Move(MoveType::REGULAR, from, to, piece, targ));
 			}
@@ -69,9 +67,7 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 	}
 	
 	const BitBoard MP = conf.getPieces(turn, Piece::PAWN());
-	FOR_BIT(bit, MP) {
-		const Position from = bit.ToPosition();
-
+	FOR_POS(from, MP) {
 		if (!ALL.contains(from.shiftForward(turn))) {
 			const Position to = from.shiftForward(turn);
 			addPawnMove(conf, Move(MoveType::REGULAR, from, to, Piece::PAWN(), Piece::EMPTY()));
@@ -89,8 +85,7 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 	}
 	if (conf.getEnpeasentColumn() != GameConfiguration::NO_ENPEASENT_COLUMN) {
 		const Position to = AttackFields::enpeasentTo(turn, conf.getEnpeasentColumn());
-		FOR_BIT(bit, MP & AttackFields::pawnTargs(to, !turn)) {
-			const Position from = bit.ToPosition();
+		FOR_POS(from, MP & AttackFields::pawnTargs(to, !turn)) {
 			addMove(conf,Move(MoveType::ENPEASENT, from, to, Piece::PAWN(), Piece::EMPTY()));
 		}
 	}
@@ -101,8 +96,8 @@ void GameConfiguration_MoveIterator_Generator::generateMoves(const GameConfigura
 			const BitBoard safe = AttackFields::castleSafeSquares(turn, side);
 
 			bool works = true;
-			FOR_BIT(bit, safe) {
-				if (conf.posAttackedBy(bit.ToPosition(), !turn)) {
+			FOR_POS(pos, safe) {
+				if (conf.posAttackedBy(pos, !turn)) {
 					works = false;
 				}
 			}
