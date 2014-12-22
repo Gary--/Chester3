@@ -5,7 +5,7 @@ void Game::configure(GameConfiguration config) {
 	if (!config.isValid()) {
 		throw std::invalid_argument("Invalid configuration: " + config.str());
 	}
-	
+	config.clean();
 
 	reset();
 
@@ -26,9 +26,6 @@ void Game::configure(GameConfiguration config) {
 	cur.check = posAttackedBy(getPieces(getTurn(), Piece::KING()).ToPosition(), !getTurn());
 
 	cur.hash = Game_Hash(config);
-	if (!canEnpeasent(getTurn(), cur.hash.getEnpeasent())) {
-		cur.hash.setEnpeasent(GameConfiguration::NO_ENPEASENT_COLUMN);
-	}
 
 
 	integrityCheck();
