@@ -49,6 +49,7 @@
     <ClInclude Include="Search_SearchResult.h" />
     <ClInclude Include="StaticExchange.h" />
     <ClInclude Include="Game_UndoData.h" />
+    <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI_search.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="Search_SearchResult.cpp" />
     <ClCompile Include="Search__main.cpp" />
     <ClCompile Include="Game_UndoData.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{304BB138-20B1-40BB-9420-02AF435AB391}</ProjectGuid>
