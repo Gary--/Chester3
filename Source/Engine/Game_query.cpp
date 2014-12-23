@@ -6,39 +6,7 @@ Turn Game::getTurn() {
 }
 
 BitBoard Game::getPieces(const Turn turn, const Piece piece) {
-	if (turn.isWhite()) {
-		switch (piece.asEnum()) {
-		case PieceEnum::PAWN:
-			return WP;
-		case PieceEnum::KNIGHT:
-			return WN;
-		case PieceEnum::BISHOP:
-			return WB;
-		case PieceEnum::ROOK:
-			return WR;
-		case PieceEnum::QUEEN:
-			return WQ;
-		case PieceEnum::KING:
-			return WK;
-		}
-	} else {
-		switch (piece.asEnum()) {
-		case PieceEnum::PAWN:
-			return BP;
-		case PieceEnum::KNIGHT:
-			return BN;
-		case PieceEnum::BISHOP:
-			return BB;
-		case PieceEnum::ROOK:
-			return BR;
-		case PieceEnum::QUEEN:
-			return BQ;
-		case PieceEnum::KING:
-			return BK;
-		}
-	}
-	_ASSERT(false);
-	return BitBoard::EMPTY();
+	return pieces[turn.asIndex()][piece.asIndex()];
 }
 
 
@@ -48,19 +16,15 @@ BitBoard Game::getAllPieces() {
 }
 
 BitBoard Game::getPlayerPieces(const Turn turn) {
-	if (turn.isWhite()) {
-		return WA;
-	} else {
-		return BA;
-	}
+	return playerPieces[turn.asIndex()];
 }
 
 Piece Game::getPieceAt(const Position pos) {
-	return pieces[pos.index()];
+	return pieceTypes[pos.index()];
 }
 
 Turn Game::getOwnerAt(const Position pos) {
-	return (pos.asSingletonBitboard() & WA).isEmpty() ? Turn::BLACK() : Turn::WHITE();
+	return getPlayerPieces(Turn::WHITE()).contains(pos) ? Turn::WHITE() : Turn::BLACK();
 }
 
 bool Game::getCanCastle(const Turn turn, const Side side) {

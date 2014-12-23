@@ -6,48 +6,11 @@ namespace {
 }
 
 BitBoard* Game::s(const Turn turn, const  Piece piece) {
-	
-	if (turn.isWhite()) {
-		switch (piece.asEnum()) {
-		case PieceEnum::EMPTY:
-			return &scratch;
-		case PieceEnum::PAWN:
-			return &WP;
-		case PieceEnum::KNIGHT:
-			return &WN;
-		case PieceEnum::BISHOP:
-			return &WB;
-		case PieceEnum::ROOK:
-			return &WR;
-		case PieceEnum::QUEEN:
-			return &WQ;
-		case PieceEnum::KING:
-			return &WK;
-		}
-	} else {
-		switch (piece.asEnum()) {
-		case PieceEnum::EMPTY:
-			return &scratch;
-		case PieceEnum::PAWN:
-			return &BP;
-		case PieceEnum::KNIGHT:
-			return &BN;
-		case PieceEnum::BISHOP:
-			return &BB;
-		case PieceEnum::ROOK:
-			return &BR;
-		case PieceEnum::QUEEN:
-			return &BQ;
-		case PieceEnum::KING:
-			return &BK;
-		}
-	}
-	_ASSERT(false);
-	return nullptr;
+	return &pieces[turn.asIndex()][piece.asIndex()];
 }
 
 BitBoard* Game::sp(const Turn turn) {
-	return turn.isWhite()? &WA : &BA;
+	return &playerPieces[turn.asIndex()];
 }
 
 void Game::toggleBit(const Turn turn, const  Position position, const  Piece piece) {
@@ -85,5 +48,5 @@ void Game::addPieceAt(const Turn turn, const Position position, const Piece piec
 
 
 void Game::setPieceAt(const Position position, const Piece piece) {
-	pieces[position.index()] = piece;
+	pieceTypes[position.index()] = piece;
 }

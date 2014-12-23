@@ -2,11 +2,10 @@
 #include "AttackFields.h"
 #include "Game_UndoData.h"
 
-Piece Game::pieces[64];
+Piece Game::pieceTypes[64];
 Turn Game::curTurn;
-BitBoard Game::WK, Game::WQ, Game::WR, Game::WB, Game::WN, Game::WP;
-BitBoard Game::BK, Game::BQ, Game::BR, Game::BB, Game::BN, Game::BP;
-BitBoard Game::WA, Game::BA;
+BitBoard Game::pieces[2][7];
+BitBoard Game::playerPieces[2];
 BitBoard Game::ALL;
 int Game::fullMoveCount=0;
 
@@ -40,14 +39,18 @@ void Game::reset() {
 	init();
 	curTurn = Turn::WHITE();
 
-	Game::WK = Game::WQ = Game::WR = Game::WB = Game::WN = Game::WP =
-		Game::BK = Game::BQ = Game::BR = Game::BB = Game::BN = Game::BP =
-		Game::WA = Game::BA =
-		Game::ALL = BitBoard::EMPTY();
+	FOR_TURN(turn) {
+		*sp(turn) = BitBoard::EMPTY();
+		FOR_PIECE_ALL(piece) {
+			*s(turn, piece) = BitBoard::EMPTY();
+		}
+	}
+		
+	Game::ALL = BitBoard::EMPTY();
 
 	fullMoveCount = 1;
 	FOR_POSITION_64(pos) {
-		pieces[pos.index()] = Piece::EMPTY();
+		pieceTypes[pos.index()] = Piece::EMPTY();
 	}
 
 

@@ -87,11 +87,11 @@ private:
 
 	// === FIELDS
 	static Turn curTurn;
-	static BitBoard WK, WQ, WR, WB, WN, WP;
-	static BitBoard BK, BQ, BR, BB, BN, BP;
-	static BitBoard WA, BA;
+
+	static BitBoard pieces[2][7];
+	static BitBoard playerPieces[2];
 	static BitBoard ALL;
-	static Piece pieces[64];
+	static Piece pieceTypes[64];
 
 	// Starts at 1. Incremented after Black's move.
 	static int fullMoveCount;
