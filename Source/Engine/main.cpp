@@ -1,8 +1,10 @@
 
 #include "ConsoleMode.h"
-
+#include "StrengthTest.h"
 using namespace std;
 
 int main() {
-	ConsoleMode::run();
+	StrengthTest::epdTest(cin,cout);
+
+	system("pause");
 }
