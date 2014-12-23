@@ -18,7 +18,7 @@ void GameConfiguration::init() {
 
 GameConfiguration::GameConfiguration() 
 {
-	init();
+
 	FOR_POSITION_64(pos) {
 		clearPieceAt(pos);
 	}
@@ -325,6 +325,7 @@ bool GameConfiguration::posAttackedByLOS(const Position position, const Turn tur
 }
 
 bool GameConfiguration::posAttackedBy(const Position position, const Turn turn) const{
+	init();
 	return posAttackedByJump(position, turn) || posAttackedByLOS(position, turn);
 }
 
@@ -335,6 +336,7 @@ bool GameConfiguration::kingIsThreatened(const Turn turn) const{
 }
 
 void GameConfiguration::makeMoveImpl(const Move move) {
+	init();
 	const Turn turn = getTurn();
 
 #pragma region Unpack move
@@ -401,6 +403,7 @@ void GameConfiguration::makeMoveImpl(const Move move) {
 }
 
 void GameConfiguration::makeMove(Move move) {
+	init();
 	makeMoveImpl(move);
 	clean();
 }
@@ -420,6 +423,7 @@ void GameConfiguration::clean() {
 }
 
 GameConfiguration_MoveIterator_Generator GameConfiguration::getMoves() const {
+	init();
 	return GameConfiguration_MoveIterator_Generator(*this);
 }
 
