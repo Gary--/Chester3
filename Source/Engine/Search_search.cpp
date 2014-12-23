@@ -36,6 +36,7 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 			Search_SearchResult result;
 			result.score = beta;
 			result.bestMove = bestMove;
+			result.nodeType = NodeType::FAIL_HIGH;
 			return result;
 		}
 	}
@@ -43,5 +44,6 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 	Search_SearchResult result;
 	result.score = bestScore;
 	result.bestMove = bestMove;
+	result.nodeType = bestScore <= alpha ? NodeType::FAIL_LOW : NodeType::PV;
 	return result;
 }
