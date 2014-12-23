@@ -1,6 +1,7 @@
 #include "ExtendedPositionDescription.h"
 #include <sstream>
-
+#include <vector>
+#include "StringUtils.h"
 using namespace std;
 
 ExtendedPositionDescription::ExtendedPositionDescription() {}
@@ -18,11 +19,29 @@ ExtendedPositionDescription::ExtendedPositionDescription(std::string epdString) 
 		FEN.pop_back();
 		gameConf = GameConfiguration(FEN);
 	}
-}
 
+	vector <string> items = StringUtils::split(StringUtils::getUnread(ss), ';');
+	for (auto item : items) {
+		processOperation(item);
+	}
+
+}
 
 ExtendedPositionDescription::~ExtendedPositionDescription() {}
 
 GameConfiguration ExtendedPositionDescription::getGameConfiguration() const {
 	return gameConf;
+}
+
+void ExtendedPositionDescription::processOperation(std::string str) {
+	istringstream ss(str);
+
+	string opcode;
+	ss >> opcode;
+
+	if (opcode == "bm") {
+		string moveStr;
+		ss >> moveStr;
+		bestMove = gameConf.getMoveEpdString(moveStr);
+	}
 }

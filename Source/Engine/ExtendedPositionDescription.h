@@ -14,12 +14,11 @@ public:
 
 	GameConfiguration getGameConfiguration() const;
 
-private:
+	Move bestMove;
 	GameConfiguration gameConf;
+private:
 
-	std::string id;
-	std::string bestMoveString;
 
-	std::vector<std::string> comments;
+	void processOperation(std::string str);
 };
 
