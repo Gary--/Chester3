@@ -1,6 +1,7 @@
 #include "Evaluation.h"
 #include "StaticExchange.h"
 #include "AttackMap.h"
+#include "AttackFields.h"
 
 namespace {
 	bool inited = false;
@@ -10,8 +11,9 @@ void Evaluation::init() {
 		return;
 	}
 	inited = true;
+	AttackFields::init();
 	StaticExchange::init();
-
+	
 	initPawns();
 }
 
