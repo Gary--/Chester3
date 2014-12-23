@@ -339,6 +339,10 @@ int StaticExchange::materialChange(Move move) {
 	return result;
 }
 
+int StaticExchange::PieceValue(Piece piece) {
+	return pieceValue(piece);
+}
+
 Piece AttackPattern::smallestAttackerImpl() const {
 	FOR_PIECE_NOT_BISHOP(piece) {
 		if (contains(piece)) {

@@ -15,9 +15,9 @@ public:
 
 	
 	static int materialChange(Move move);
+	static int PieceValue(Piece piece);
 private:
 	
 
 	static int attackCostImpl(Piece attacker, AttackPattern attackers, AttackPattern defenders);
 };
-

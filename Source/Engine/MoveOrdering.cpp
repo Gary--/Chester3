@@ -4,6 +4,7 @@
 #include "AttackMap.h"
 #include <iostream>
 #include "Search_Killers.h"
+#include "StaticExchange.h"
 using namespace std;
 
 OrderedMove::OrderedMove(Move move, int rating, OrderedMoveType type) :move(move), rating(rating), type(type) {}
@@ -48,7 +49,7 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	if (move.isTactical()) {
 		int see = AttackMap::SEE(move);
 		if (see > 0) {
-			rating = 50000 + see;
+			rating = 50000 + see * 100 - StaticExchange::PieceValue(move.getPiece());
 			type = OrderedMoveType::WINNING_CAPTURE;
 		} else if (see == 0) {
 			type =  OrderedMoveType::EVEN_CAPTURE;

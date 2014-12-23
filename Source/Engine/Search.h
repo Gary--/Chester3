@@ -30,6 +30,7 @@ private:
 
 	static Search_SearchResult nullMoveSearch(Search_Parameters params);
 
+
 	static void searchMakeMove(Move move);
 	static Move searchUndoMove();
 

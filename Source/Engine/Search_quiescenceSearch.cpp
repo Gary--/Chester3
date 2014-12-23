@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "EvaluationManager.h"
 #include <algorithm>
+#include "AttackMap.h"
 
 using namespace std;
 
@@ -53,6 +54,10 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 	Move bestMove = Move::INVALID();
 	auto movesToUse = Game::getCheck() ? Game::getAllMoves() : Game::getTacticalMoves();
 	for (Move move : movesToUse) {
+		if (!Game::getCheck() && AttackMap::SEE(move)<0) {
+			continue;
+		}
+
 		searchMakeMove(move);
 		Search_SearchResult moveResult = callQuiescenceSearch(p,bestScore);
 		searchUndoMove();
