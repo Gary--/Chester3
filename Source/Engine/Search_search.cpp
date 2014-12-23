@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "Game.h"
 #include <algorithm>
+#include "MoveOrdering.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
@@ -25,10 +26,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	}
 	
 	Move bestMove = Move::INVALID();
-	
 
-	for (const Move move : Game::getAllMoves()) {
-
+	MoveOrdering orderedMoves = MoveOrdering(p, Game::getAllMoves());
+	for (const OrderedMove orderedMove : orderedMoves) {
+		const Move move = orderedMove.move;
 		searchMakeMove(move);
 		const Search_SearchResult moveResult = callSearch(p,bestScore);
 		searchUndoMove();

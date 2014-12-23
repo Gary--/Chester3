@@ -2,7 +2,7 @@
 #include <vector>
 #include "Game.h"
 #include "AttackFields.h"
-
+#include "StaticExchange.h"
 using namespace std;
 
 namespace {
@@ -131,4 +131,11 @@ void AttackMap::precompute() {
 			pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN(), 2);
 		}
 	}
+}
+
+int AttackMap::SEE(Move move) {
+	const AttackPattern attackers = getAttackPattern(Game::getTurn(), move.getTo());
+	const AttackPattern defenders = getAttackPattern(!Game::getTurn(), move.getTo());
+
+	return StaticExchange::materialChange(move) - StaticExchange::attackCost(move.getPiece(), attackers, defenders);
 }

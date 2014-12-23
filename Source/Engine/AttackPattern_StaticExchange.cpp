@@ -328,6 +328,17 @@ int StaticExchange::attackCostMin(AttackPattern attackers, AttackPattern defende
 	return SEE_min[attackers.value][defenders.value];
 }
 
+int StaticExchange::materialChange(Move move) {
+	int result = pieceValue(move.getTarg());
+	
+	if (move.getType() == MoveType::ENPEASENT) {
+		result += pieceValue(Piece::PAWN());
+	} else if (move.isPromotion()) {
+		result += pieceValue(move.promotionPiece()) - pieceValue(Piece::PAWN());
+	}
+	return result;
+}
+
 Piece AttackPattern::smallestAttackerImpl() const {
 	FOR_PIECE_NOT_BISHOP(piece) {
 		if (contains(piece)) {
@@ -340,5 +351,7 @@ Piece AttackPattern::smallestAttackerImpl() const {
 Piece AttackPattern::getSmallestPiece() const {
 	return smallest[value];
 }
+
+
 
 #pragma endregion

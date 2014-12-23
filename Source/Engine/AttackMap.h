@@ -15,6 +15,8 @@ public:
 
 	// Control turn has on the position.
 	static AttackPattern getAttackPattern(Turn turn, Position position);
+
+	static int SEE(Move move);
 private:
 	static AttackPattern getAttackPatternImpl(Turn turn, Position position);
 };
