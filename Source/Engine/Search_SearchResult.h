@@ -4,7 +4,8 @@
 enum class NodeType : char {
 	PV,
 	FAIL_LOW,
-	FAIL_HIGH
+	FAIL_HIGH,
+	UNKNOWN,
 };
 
 // used internally within Search

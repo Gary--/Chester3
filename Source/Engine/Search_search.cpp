@@ -25,6 +25,13 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return callQuiescenceSearch(p, bestScore);
 	}
 	
+	//{
+	//	const Search_SearchResult nullMoveResult = nullMoveSearch(p);
+	//	if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
+	//		return nullMoveResult;
+	//	}
+	//}
+
 	Move bestMove = Move::INVALID();
 
 	MoveOrdering orderedMoves = MoveOrdering(p, Game::getAllMoves());

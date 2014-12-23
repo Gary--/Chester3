@@ -87,6 +87,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveOrdering.cpp" />
     <ClCompile Include="Search_misc.cpp" />
+    <ClCompile Include="Search_nullMoveSearch.cpp" />
     <ClCompile Include="Search_Parameters.cpp" />
     <ClCompile Include="Search_quiescenceSearch.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
