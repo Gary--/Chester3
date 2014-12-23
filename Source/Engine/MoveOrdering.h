@@ -36,6 +36,6 @@ public:
 private:
 	std::vector<OrderedMove> moves;
 
-	static OrderedMove order(Move move);
+	static OrderedMove order(Search_Parameters params, Move move);
 };
 

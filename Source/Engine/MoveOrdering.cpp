@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "AttackMap.h"
 #include <iostream>
+#include "Search_Killers.h"
 using namespace std;
 
 OrderedMove::OrderedMove(Move move, int rating, OrderedMoveType type) :move(move), rating(rating), type(type) {}
@@ -22,7 +23,7 @@ namespace {
 }
 MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGenerator gen) {
 	for (Move move : gen) {
-		moves.push_back(order(move));
+		moves.push_back(order(params, move));
 	}
 	sort(moves.begin(), moves.end());
 
@@ -40,7 +41,7 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 MoveOrdering::~MoveOrdering() {}
 
 
-OrderedMove MoveOrdering::order(Move move) {
+OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) {
 	int rating = 0;
 	OrderedMoveType type = OrderedMoveType::NONE;
 	
@@ -56,6 +57,9 @@ OrderedMove MoveOrdering::order(Move move) {
 			type = OrderedMoveType::LOSING_CAPTURE;
 			rating = 20000 + see;
 		}
+	} else if (Search_Killers::isKiller(params, move)) {
+		type = OrderedMoveType::KILLER;
+		rating = 25000;
 
 	}
 

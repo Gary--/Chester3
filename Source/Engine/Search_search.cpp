@@ -3,6 +3,7 @@
 #include "Game.h"
 #include <algorithm>
 #include "MoveOrdering.h"
+#include "Search_Killers.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
@@ -25,12 +26,12 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return callQuiescenceSearch(p, bestScore);
 	}
 	
-	//{
-	//	const Search_SearchResult nullMoveResult = nullMoveSearch(p);
-	//	if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
-	//		return nullMoveResult;
-	//	}
-	//}
+	{
+		const Search_SearchResult nullMoveResult = nullMoveSearch(p);
+		if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
+			return nullMoveResult;
+		}
+	}
 
 	Move bestMove = Move::INVALID();
 
@@ -50,6 +51,8 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		}
 
 		if (bestScore >= p.beta) {
+			Search_Killers::addKiller(p, move);
+
 			Search_SearchResult result;
 			result.score = p.beta;
 			result.bestMove = bestMove;
