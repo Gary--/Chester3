@@ -27,4 +27,6 @@ private:
 	static Move searchUndoMove();
 
 	static Search_SearchResult searchResult;
+
+	static Search_SearchResult gameOverScore();
 };

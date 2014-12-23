@@ -7,13 +7,7 @@ using namespace std;
 Search_SearchResult Search::search(const int depth, const int ply,const int alpha,const int beta) {
 
 	if (!Game::areMovesAvailable()) {
-		Search_SearchResult result;
-		if (Game::getCheck()) {// We got checkmated.
-			result.score = -Search_SearchResult::MATE_SCORE;
-		} else {// Stalemate.
-			result.score = 0;
-		}
-		return result;
+		return gameOverScore();
 	}
 
 	if (depth == 0) {

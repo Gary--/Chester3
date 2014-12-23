@@ -83,6 +83,7 @@
     <ClCompile Include="GameConfiguration_MoveIterator.cpp" />
     <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Search_misc.cpp" />
     <ClCompile Include="Search_quiescenceSearch.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
@@ -122,7 +123,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -135,7 +136,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
