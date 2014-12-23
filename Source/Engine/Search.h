@@ -3,7 +3,7 @@
 #include "AI_SearchResult.h"
 #include "GameConfiguration.h"
 #include "Search_SearchResult.h"
-
+#include "Search_Parameters.h"
 // The brains.
 // Configure Game to where you want and call startSearch.
 class Search {
@@ -20,8 +20,13 @@ public:
 private:
 	static void synchronize();
 
-	static Search_SearchResult search(int depth,int ply, int alpha, int beta);
-	static Search_SearchResult quiescenceSearch(int ply, int alpha, int beta);
+	// Called after already made move
+	static Search_SearchResult callSearch(Search_Parameters previousParams, int bestScore);
+
+	static Search_SearchResult search(Search_Parameters params);
+
+	static Search_SearchResult callQuiescenceSearch(Search_Parameters previousParams, int bestScore);
+	static Search_SearchResult quiescenceSearch(Search_Parameters params);
 
 	static void searchMakeMove(Move move);
 	static Move searchUndoMove();

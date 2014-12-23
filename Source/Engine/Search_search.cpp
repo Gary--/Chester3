@@ -4,24 +4,33 @@
 #include <algorithm>
 using namespace std;
 
-Search_SearchResult Search::search(const int depth, const int ply,const int alpha,const int beta) {
+Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
+	Search_Parameters newParams;
+	newParams.depth = previousParams.depth - 1;
+	newParams.ply = previousParams.ply + 1;
+	newParams.alpha = -previousParams.beta;
+	newParams.beta = -bestScore;
 
+	return search(newParams);
+}
+
+Search_SearchResult Search::search(const Search_Parameters p) {
+	int bestScore = p.alpha;
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
 	}
 
-	if (depth == 0) {
-		return quiescenceSearch(0, alpha, beta);
-
+	if (p.depth <= 0) {
+		return callQuiescenceSearch(p, bestScore);
 	}
 	
 	Move bestMove = Move::INVALID();
-	int bestScore = alpha;
+	
 
 	for (const Move move : Game::getAllMoves()) {
 
 		searchMakeMove(move);
-		const Search_SearchResult moveResult = search(depth - 1, ply + 1, -beta, -bestScore);
+		const Search_SearchResult moveResult = callSearch(p,bestScore);
 		searchUndoMove();
 
 		{
@@ -32,9 +41,9 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 			}
 		}
 
-		if (bestScore >= beta) {
+		if (bestScore >= p.beta) {
 			Search_SearchResult result;
-			result.score = beta;
+			result.score = p.beta;
 			result.bestMove = bestMove;
 			result.nodeType = NodeType::FAIL_HIGH;
 			return result;
@@ -44,6 +53,6 @@ Search_SearchResult Search::search(const int depth, const int ply,const int alph
 	Search_SearchResult result;
 	result.score = bestScore;
 	result.bestMove = bestMove;
-	result.nodeType = bestScore <= alpha ? NodeType::FAIL_LOW : NodeType::PV;
+	result.nodeType = bestScore <= p.alpha ? NodeType::FAIL_LOW : NodeType::PV;
 	return result;
 }

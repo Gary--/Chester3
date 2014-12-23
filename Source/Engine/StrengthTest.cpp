@@ -9,8 +9,9 @@ using namespace std;
 
 void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	string line;
+	cout << "=== Test started." << endl;
 	while (getline(cin, line)) {
-		cout << "===== " << line << endl;
+		//cout << "===== " << line << endl;
 		const ExtendedPositionDescription epd(line);
 		const GameConfiguration gameConf = epd.getGameConfiguration();
 
@@ -21,8 +22,7 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 
 		if (epd.bestMove == Move::INVALID()) {
 			cout << "Invalid best move." << endl;
-		} else {
-			cout << "Expected best move: " << epd.bestMove.str() << endl;
+			continue;
 		}
 
 		AI_SearchConfiguration searchConf;
@@ -32,6 +32,11 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		AI::startSearch();
 		AI::stopSearch();
 		auto result = AI::getSearchResult();
-		cout << result.bestMove.str() << endl;;
+
+		if (result.bestMove == epd.bestMove) {
+			cout << "Correct" << endl;
+		} else {
+			cout << "Incorrect" << endl;
+		}
 	}
 }

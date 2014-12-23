@@ -10,7 +10,10 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 	Search::synchronize();
 
 	searchResult = Search_SearchResult();
-	searchResult = search(conf.maxDepth, 0, -Search_SearchResult::MATE_SCORE, Search_SearchResult::MATE_SCORE);
+
+	Search_Parameters params;
+	params.depth = conf.maxDepth;
+	searchResult = search(params);
 }
 
 AI_SearchResult Search::getSearchResult() {

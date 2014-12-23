@@ -6,31 +6,30 @@
 
 using namespace std;
 
-//int Quiesce(int alpha, int beta) {
-//	int stand_pat = Evaluate();
-//	if (stand_pat >= beta)
-//		return beta;
-//	if (alpha < stand_pat)
-//		alpha = stand_pat;
-//
-//	until(every_capture_has_been_examined) {
-//		MakeCapture();
-//		score = -Quiesce(-beta, -alpha);
-//		TakeBackMove();
-//
-//		if (score >= beta)
-//			return beta;
-//		if (score > alpha)
-//			alpha = score;
-//	}
-//	return alpha;
-//}
 
 namespace {
 	const int maxQuiesceDepth = 6;
 }
 
-Search_SearchResult Search::quiescenceSearch(const int ply,const int alpha,const int beta) {
+Search_SearchResult Search::callQuiescenceSearch(const Search_Parameters previousParams,const int bestScore) {
+	Search_Parameters newParams;
+	newParams.depth = Search_Parameters::QUIESCE_DEPTH;
+
+
+	if (previousParams.isQuiesce()) {
+		newParams.alpha = -previousParams.beta;
+		newParams.beta = -bestScore;
+		newParams.ply = previousParams.ply + 1;
+	} else {
+		newParams.alpha = previousParams.alpha;
+		newParams.beta = previousParams.beta;
+		newParams.ply = 0;
+	}
+
+	return quiescenceSearch(newParams);
+}
+
+Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
 	}
@@ -39,13 +38,13 @@ Search_SearchResult Search::quiescenceSearch(const int ply,const int alpha,const
 	if (!Game::getCheck()) {
 		standPat = EvaluationManager::getScore().getOverall(Game::getTurn());
 	}
-	if (standPat >= beta) {
+	if (standPat >= p.beta) {
 		Search_SearchResult result;
-		result.score = beta;
+		result.score = p.beta;
 		result.nodeType = NodeType::FAIL_HIGH;
 		return result;
 	}
-	int bestScore = alpha;
+	int bestScore = p.alpha;
 	bestScore = max(bestScore, standPat);
 
 	// Make sure we have the evaluation saved.
@@ -55,7 +54,7 @@ Search_SearchResult Search::quiescenceSearch(const int ply,const int alpha,const
 	auto movesToUse = Game::getCheck() ? Game::getAllMoves() : Game::getTacticalMoves();
 	for (Move move : movesToUse) {
 		searchMakeMove(move);
-		Search_SearchResult moveResult = quiescenceSearch(ply + 1, -beta, -bestScore);
+		Search_SearchResult moveResult = callQuiescenceSearch(p,bestScore);
 		searchUndoMove();
 
 		if (-moveResult.score > bestScore) {
@@ -63,9 +62,9 @@ Search_SearchResult Search::quiescenceSearch(const int ply,const int alpha,const
 			bestMove = move;
 		}
 
-		if (bestScore >= beta) {
+		if (bestScore >= p.beta) {
 			Search_SearchResult result;
-			result.score = beta;
+			result.score = p.beta;
 			result.nodeType = NodeType::FAIL_HIGH;
 			result.bestMove = move;
 			return result;
@@ -75,6 +74,6 @@ Search_SearchResult Search::quiescenceSearch(const int ply,const int alpha,const
 	Search_SearchResult result;
 	result.score = bestScore;
 	result.bestMove = bestMove;
-	result.nodeType = bestScore <= alpha ? NodeType::FAIL_LOW : NodeType::PV;
+	result.nodeType = bestScore <= p.alpha ? NodeType::FAIL_LOW : NodeType::PV;
 	return result;
 }

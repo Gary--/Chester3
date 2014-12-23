@@ -111,6 +111,12 @@
     <ClInclude Include="StrengthTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MoveOrdering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Search_Parameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -282,6 +288,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveOrdering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Search_Parameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
