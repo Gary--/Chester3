@@ -1,7 +1,7 @@
 #include "EvaluationScore.h"
 #include "Evaluation.h"
 #include "SimpleEvaluation.h"
-
+#include "Game.h"
 
 EvaluationScore::EvaluationScore() :
 lateness(INVALID_SCORE),
@@ -32,7 +32,8 @@ EvaluationScore::EvaluationScore(bool _) :
 	blackPawns(Evaluation::pawns(Turn::BLACK())),
 	whiteMisc(Evaluation::misc(Turn::WHITE())),
 	blackMisc(Evaluation::misc(Turn::BLACK())),
-	_isValid(true)
+	_isValid(true),
+	check(Game::getCheck())
 {}
 
 EvaluationScore EvaluationScore::GetFromGameState() {
@@ -87,5 +88,9 @@ int EvaluationScore::getPawns(Turn turn) const {
 
 int EvaluationScore::getMisc(Turn turn) const {
 	return turn.isWhite() ? whiteMisc : blackMisc;
+}
+
+bool EvaluationScore::getCheck() const {
+	return check;
 }
 
