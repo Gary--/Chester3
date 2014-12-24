@@ -11,9 +11,13 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 
 	searchResult = Search_SearchResult();
 
-	Search_Parameters params;
-	params.depth = conf.maxDepth;
-	searchResult = search(params);
+
+	for (int depth = 1; depth < conf.maxDepth; ++depth) {
+		Search_Parameters params;
+		params.depth = depth;
+		searchResult = search(params);
+	}
+
 }
 
 AI_SearchResult Search::getSearchResult() {

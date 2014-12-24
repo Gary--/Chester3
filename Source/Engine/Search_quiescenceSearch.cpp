@@ -36,7 +36,7 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 	}
 
 	int standPat = -Search_SearchResult::MATE_SCORE;
-	if (!Game::getCheck()) {
+	if (!Game::getCheck()) { // need to check for hanging pieces
 		standPat = EvaluationManager::getScore().getOverall(Game::getTurn());
 	}
 	if (standPat >= p.beta) {

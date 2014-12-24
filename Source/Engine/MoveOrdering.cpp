@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Search_Killers.h"
 #include "StaticExchange.h"
+#include "Search_PV_Table.h"
 using namespace std;
 
 OrderedMove::OrderedMove(Move move, int rating, OrderedMoveType type) :move(move), rating(rating), type(type) {}
@@ -46,7 +47,12 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	int rating = 0;
 	OrderedMoveType type = OrderedMoveType::NONE;
 	
-	if (move.isTactical()) {
+	if (type == OrderedMoveType::NONE && Search_PV_Table::getPVMove(Game::getHash()) == move) {
+		type = OrderedMoveType::PV_MOVE;
+		rating = 60000;
+	}
+
+	if (type == OrderedMoveType::NONE && move.isTactical()) {
 		int see = AttackMap::SEE(move);
 		if (see > 0) {
 			rating = 50000 + see * 100 - StaticExchange::PieceValue(move.getPiece());
@@ -62,6 +68,29 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 		type = OrderedMoveType::KILLER;
 		rating = 25000;
 
+	}
+
+	if (type == OrderedMoveType::NONE) {
+		if (move.getPiece() == Piece::PAWN() && !move.isTactical()) {
+			const AttackPattern myDefenders = AttackMap::getAttackPattern(Game::getTurn(), move.getTo());
+			const AttackPattern theirAttackers = AttackMap::getAttackPattern(!Game::getTurn(), move.getTo());
+			if (StaticExchange::attackCostMin(theirAttackers, myDefenders) < StaticExchange::PieceValue(move.getPiece())) {
+				rating -= 30;
+			}
+		} else if (AttackMap::getAttackPattern(!Game::getTurn(),move.getTo()).getSmallestPiece() < move.getPiece()) {
+			rating -= 30;
+		}
+
+
+		{
+			const AttackPattern myDefenders = AttackMap::getAttackPattern(Game::getTurn(), move.getFrom());
+			const AttackPattern theirAttackers = AttackMap::getAttackPattern(!Game::getTurn(), move.getFrom());
+
+			if (StaticExchange::attackCostMin(theirAttackers, myDefenders) < StaticExchange::PieceValue(move.getPiece())) {
+				rating += 30;
+			}
+		}
+		
 	}
 
 	return OrderedMove(move, rating, OrderedMoveType::NONE);

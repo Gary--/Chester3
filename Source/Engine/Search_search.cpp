@@ -4,6 +4,8 @@
 #include <algorithm>
 #include "MoveOrdering.h"
 #include "Search_Killers.h"
+#include "AttackMap.h"
+#include "Search_PV_Table.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
@@ -35,6 +37,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 	Move bestMove = Move::INVALID();
 
+	AttackMap::precompute();
 	MoveOrdering orderedMoves = MoveOrdering(p, Game::getAllMoves());
 	for (const OrderedMove orderedMove : orderedMoves) {
 		const Move move = orderedMove.move;
@@ -65,5 +68,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	result.score = bestScore;
 	result.bestMove = bestMove;
 	result.nodeType = bestScore <= p.alpha ? NodeType::FAIL_LOW : NodeType::PV;
+
+	if (result.nodeType == NodeType::PV) {
+		Search_PV_Table::storePVMove(Game::getHash(), result.bestMove);
+	}
+
 	return result;
 }

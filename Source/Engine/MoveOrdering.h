@@ -3,7 +3,7 @@
 #include <vector>
 #include "Search_Parameters.h"
 
-enum class OrderedMoveType : char { BEST_MOVE, WINNING_CAPTURE, EVEN_CAPTURE, KILLER, LOSING_CAPTURE, NONE};
+enum class OrderedMoveType : char { PV_MOVE, BEST_MOVE, WINNING_CAPTURE, EVEN_CAPTURE, KILLER, LOSING_CAPTURE, NONE };
 
 struct OrderedMove {
 public:

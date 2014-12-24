@@ -41,6 +41,7 @@
     <ClInclude Include="Display.h" />
     <ClInclude Include="Search_Killers.h" />
     <ClInclude Include="Search_Parameters.h" />
+    <ClInclude Include="Search_PV_Table.h" />
     <ClInclude Include="SimpleEvaluation.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Search_misc.cpp" />
     <ClCompile Include="Search_nullMoveSearch.cpp" />
     <ClCompile Include="Search_Parameters.cpp" />
+    <ClCompile Include="Search_PV_Table.cpp" />
     <ClCompile Include="Search_quiescenceSearch.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />
