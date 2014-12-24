@@ -1,9 +1,20 @@
 #include "Search.h"
 #include "Game.h"
+
+namespace {
+	bool hasStuff(Turn turn) {//not just pawns left
+		return Game::getPlayerPieces(turn).count() > Game::getPieces(turn, Piece::PAWN()).count() + 1;
+	}
+}
+
 Search_SearchResult Search::nullMoveSearch(const Search_Parameters p) {
 	Search_SearchResult result;
 	
-	if (p.depth >= 3 &&! Game::getCheck()) {
+	if (p.depth >= 3 && 
+		!Game::getCheck() &&
+		hasStuff(Turn::WHITE()) &&
+		hasStuff(Turn::BLACK())
+		) {
 		Search_Parameters newParams;
 		newParams.alpha = -p.beta;
 		newParams.beta = -(p.beta - 1);
