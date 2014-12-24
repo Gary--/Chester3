@@ -6,6 +6,7 @@
 #include "Search_Killers.h"
 #include "AttackMap.h"
 #include "Search_PV_Table.h"
+#include "EvaluationManager.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
@@ -38,6 +39,8 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	Move bestMove = Move::INVALID();
 
 	AttackMap::precompute();
+	EvaluationManager::calcScoreCurrent();
+
 	MoveOrdering orderedMoves = MoveOrdering(p, Game::getAllMoves());
 	for (const OrderedMove orderedMove : orderedMoves) {
 		const Move move = orderedMove.move;

@@ -31,9 +31,30 @@ Search_SearchResult Search::callQuiescenceSearch(const Search_Parameters previou
 }
 
 Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
+	{
+		const auto prevScore = EvaluationManager::getScore(1);
+		const bool wasInCheck = prevScore.getCheck();
+		if (!wasInCheck && !Game::getCheck()) {
+			const Turn turn = !Game::getTurn();
+
+			// How much Lazy might underestimate our score
+			int margin = 50 + prevScore.getOverall(turn) - prevScore.getSimple(turn);
+
+			if (EvaluationManager::getSimpleScore(turn) + margin < -p.beta) {
+				Search_SearchResult result;
+				result.score = p.beta;
+				result.nodeType = NodeType::FAIL_HIGH;
+				return result;
+			}
+		}
+
+
+	}
+
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
 	}
+
 
 	int standPat = -Search_SearchResult::MATE_SCORE;
 	if (!Game::getCheck()) { // need to check for hanging pieces
@@ -51,6 +72,8 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 	// Make sure we have the evaluation saved.
 	EvaluationManager::calcScoreCurrent();
 
+
+
 	Move bestMove = Move::INVALID();
 	auto movesToUse = Game::getCheck() ? Game::getAllMoves() : Game::getTacticalMoves();
 	for (Move move : movesToUse) {
@@ -59,6 +82,8 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 		}
 
 		searchMakeMove(move);
+
+
 		Search_SearchResult moveResult = callQuiescenceSearch(p,bestScore);
 		searchUndoMove();
 
