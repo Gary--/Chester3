@@ -13,7 +13,7 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 
 	int total = 0, correct = 0;
 	while (getline(cin, line)) {
-		//cout << "===== " << line << endl;
+	
 		const ExtendedPositionDescription epd(line);
 		const GameConfiguration gameConf = epd.getGameConfiguration();
 
@@ -27,8 +27,10 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 			continue;
 		}
 
+		
+
 		AI_SearchConfiguration searchConf;
-		searchConf.maxDepth = 6;
+		searchConf.maxDepth = 7;
 		Game::configure(gameConf);
 		AI::configureSearch(searchConf);
 		AI::startSearch();
@@ -41,6 +43,9 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 			correct++;
 		} else {
 			cout << "Incorrect" << endl;
+			cout << line << endl;
+			cout << "Calculated Score: " << result.score << endl;
+			cout << result.bestMove.str() << ' ' << epd.bestMove.str() << endl;
 		}
 	}
 
