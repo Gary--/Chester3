@@ -7,6 +7,8 @@
 #include "AttackMap.h"
 #include "Search_PV_Table.h"
 #include "EvaluationManager.h"
+#include "Search_History.h"
+#include "Search_Transposition.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
@@ -21,8 +23,45 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 
 Search_SearchResult Search::search(const Search_Parameters p) {
 	int bestScore = p.alpha;
+	Move bestMove = Move::INVALID();
+
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
+	}
+
+	{
+		TTItem ttItem = Search_Transposition::getTransposition(p);
+		if (ttItem.depth >= p.depth && ttItem.type != NodeType::UNKNOWN) {
+			if (ttItem.type == NodeType::PV) {
+				Search_SearchResult result;
+				result.score = ttItem.score;
+				result.bestMove = ttItem.bestMove;
+				result.nodeType = NodeType::PV;
+				return result;
+			}
+
+			if (ttItem.type == NodeType::FAIL_HIGH) {
+				bestScore = max(bestScore, ttItem.score);
+				if (ttItem.score > p.alpha) {
+					bestMove = ttItem.bestMove;
+				}
+
+				if (ttItem.score > p.beta) {
+					Search_SearchResult result;
+					result.score = p.beta;
+					result.bestMove = ttItem.bestMove;
+					result.nodeType = NodeType::FAIL_HIGH;
+					return result;
+				}
+			}
+			
+			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score < p.alpha) {
+				Search_SearchResult result;
+				result.score = p.alpha;
+				result.nodeType = NodeType::FAIL_LOW;
+				return result;
+			}
+		}
 	}
 
 	if (p.depth <= 0) {
@@ -32,11 +71,11 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	{
 		const Search_SearchResult nullMoveResult = nullMoveSearch(p);
 		if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
-			return nullMoveResult;
+			return Search_Transposition::addTransposition(p, nullMoveResult);
 		}
 	}
 
-	Move bestMove = Move::INVALID();
+	
 
 	AttackMap::precompute();
 	EvaluationManager::calcScoreCurrent();
@@ -58,12 +97,14 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 		if (bestScore >= p.beta) {
 			Search_Killers::addKiller(p, move);
+			Search_History::addHistory(p, move);
 
 			Search_SearchResult result;
 			result.score = p.beta;
 			result.bestMove = bestMove;
 			result.nodeType = NodeType::FAIL_HIGH;
-			return result;
+
+			return Search_Transposition::addTransposition(p, result);
 		}
 	}
 
@@ -76,5 +117,5 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		Search_PV_Table::storePVMove(Game::getHash(), result.bestMove);
 	}
 
-	return result;
+	return Search_Transposition::addTransposition(p, result);
 }

@@ -6,6 +6,8 @@
 #include "Search_Killers.h"
 #include "StaticExchange.h"
 #include "Search_PV_Table.h"
+#include "Search_History.h"
+#include "Search_Transposition.h"
 using namespace std;
 
 OrderedMove::OrderedMove(Move move, int rating, OrderedMoveType type) :move(move), rating(rating), type(type) {}
@@ -52,6 +54,14 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 		rating = 60000;
 	}
 
+	if (type == OrderedMoveType::NONE) {
+		TTItem ttItem = Search_Transposition::getTransposition(params);
+		if (ttItem.type!= NodeType::UNKNOWN && move == ttItem.bestMove) {
+			rating = 59999;
+			type = OrderedMoveType::BEST_MOVE;
+		}
+	}
+
 	if (type == OrderedMoveType::NONE && move.isTactical()) {
 		int see = AttackMap::SEE(move);
 		if (see > 0) {
@@ -71,25 +81,8 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	}
 
 	if (type == OrderedMoveType::NONE) {
-		if (move.getPiece() == Piece::PAWN() && !move.isTactical()) {
-			const AttackPattern myDefenders = AttackMap::getAttackPattern(Game::getTurn(), move.getTo());
-			const AttackPattern theirAttackers = AttackMap::getAttackPattern(!Game::getTurn(), move.getTo());
-			if (StaticExchange::attackCostMin(theirAttackers, myDefenders) < StaticExchange::PieceValue(move.getPiece())) {
-				rating -= 30;
-			}
-		} else if (AttackMap::getAttackPattern(!Game::getTurn(),move.getTo()).getSmallestPiece() < move.getPiece()) {
-			rating -= 30;
-		}
+		rating += Search_History::getHistory(move);
 
-
-		{
-			const AttackPattern myDefenders = AttackMap::getAttackPattern(Game::getTurn(), move.getFrom());
-			const AttackPattern theirAttackers = AttackMap::getAttackPattern(!Game::getTurn(), move.getFrom());
-
-			if (StaticExchange::attackCostMin(theirAttackers, myDefenders) < StaticExchange::PieceValue(move.getPiece())) {
-				rating += 30;
-			}
-		}
 		
 	}
 

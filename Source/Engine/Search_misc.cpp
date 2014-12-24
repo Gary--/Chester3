@@ -8,5 +8,6 @@ Search_SearchResult Search::gameOverScore() {
 	} else {// Stalemate.
 		result.score = 0;
 	}
+	result.nodeType = NodeType::PV;
 	return result;
 }

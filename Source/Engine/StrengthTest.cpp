@@ -3,14 +3,14 @@
 #include "ExtendedPositionDescription.h"
 #include "AI.h"
 #include "Game.h"
-
+#include <ctime>
 using namespace std;
 
 
 void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	string line;
 	cout << "=== Test started." << endl;
-
+	clock_t start = clock();
 	int total = 0, correct = 0;
 	while (getline(cin, line)) {
 	
@@ -30,7 +30,7 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		
 
 		AI_SearchConfiguration searchConf;
-		searchConf.maxDepth = 7;
+		searchConf.maxDepth = 8;
 		Game::configure(gameConf);
 		AI::configureSearch(searchConf);
 		AI::startSearch();
@@ -45,9 +45,11 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 			cout << "Incorrect" << endl;
 			cout << line << endl;
 			cout << "Calculated Score: " << result.score << endl;
-			cout << result.bestMove.str() << ' ' << epd.bestMove.str() << endl;
+			cout << "Expected Move:" << epd.bestMove.str() << "     Move: " << result.bestMove.str() << endl;
 		}
 	}
 
 	cout << correct << '/' << total << endl;
+
+	cout << "Time: " << ((std::clock() - start) / (double)CLOCKS_PER_SEC) << endl;
 }

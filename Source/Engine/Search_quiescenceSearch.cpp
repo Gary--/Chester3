@@ -4,6 +4,7 @@
 #include "EvaluationManager.h"
 #include <algorithm>
 #include "AttackMap.h"
+#include "Search_Transposition.h"
 
 using namespace std;
 
@@ -31,6 +32,43 @@ Search_SearchResult Search::callQuiescenceSearch(const Search_Parameters previou
 }
 
 Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
+	int bestScore = p.alpha;
+	Move bestMove = Move::INVALID();
+	{
+		TTItem ttItem = Search_Transposition::getTransposition(p);
+		if (ttItem.depth >= p.depth && ttItem.type != NodeType::UNKNOWN) {
+			if (ttItem.type == NodeType::PV) {
+				Search_SearchResult result;
+				result.score = ttItem.score;
+				result.bestMove = ttItem.bestMove;
+				result.nodeType = NodeType::PV;
+				return result;
+			}
+
+			if (ttItem.type == NodeType::FAIL_HIGH) {
+				bestScore = max(bestScore, ttItem.score);
+				if (ttItem.score > p.alpha) {
+					bestMove = ttItem.bestMove;
+				}
+
+				if (ttItem.score > p.beta) {
+					Search_SearchResult result;
+					result.score = p.beta;
+					result.bestMove = ttItem.bestMove;
+					result.nodeType = NodeType::FAIL_HIGH;
+					return result;
+				}
+			}
+
+			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score < p.alpha) {
+				Search_SearchResult result;
+				result.score = p.alpha;
+				result.nodeType = NodeType::FAIL_LOW;
+				return result;
+			}
+		}
+	}
+
 	{
 		const auto prevScore = EvaluationManager::getScore(1);
 		const bool wasInCheck = prevScore.getCheck();
@@ -47,9 +85,9 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 				return result;
 			}
 		}
-
-
 	}
+
+
 
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
@@ -66,7 +104,7 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 		result.nodeType = NodeType::FAIL_HIGH;
 		return result;
 	}
-	int bestScore = p.alpha;
+	
 	bestScore = max(bestScore, standPat);
 
 	// Make sure we have the evaluation saved.
@@ -74,7 +112,6 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 
 
 
-	Move bestMove = Move::INVALID();
 	auto movesToUse = Game::getCheck() ? Game::getAllMoves() : Game::getTacticalMoves();
 	for (Move move : movesToUse) {
 		if (!Game::getCheck() && AttackMap::SEE(move)<0) {
