@@ -23,7 +23,7 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 	searchResult = Search_SearchResult();
 
 	int prevScore = 0;
-	for (int depth = 1; depth < conf.maxDepth; ++depth) {
+	for (int depth = 1; depth <= conf.maxDepth; ++depth) {
 		Search_Parameters params;
 		params.depth = depth;
 
