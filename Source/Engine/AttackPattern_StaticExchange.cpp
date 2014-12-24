@@ -272,8 +272,12 @@ int StaticExchange::attackCostImpl( Piece attacker, const  AttackPattern attacke
 	}
 
 	if (!attackers.isValid() || !defenders.isValid() ||
-		defenders.getCount() == 0 || !attackers.contains(attacker)) {
+		defenders.getCount() == 0) {
 		return 0;
+	}
+
+	if (!attackers.contains(attacker)) {
+		return 100;
 	}
 
 	if (attackers.getCount() == 1 && defenders.getCount() == 1) {
