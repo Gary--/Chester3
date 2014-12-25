@@ -1,3 +1,4 @@
+#pragma once
 #include "Move.h"
 #include "GameConfiguration.h"
 namespace MateFinder {
