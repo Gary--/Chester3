@@ -33,6 +33,13 @@ Search_SearchResult Search::callQuiescenceSearch(const Search_Parameters previou
 
 Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 	int bestScore = p.alpha;
+	if (p.ply > 0 && Game::getRepeatCount() > 1) {
+		Search_SearchResult result;
+		result.score = 0;
+		result.nodeType = NodeType::PV;
+		return result;
+	}
+
 	Move bestMove = Move::INVALID();
 	{
 		TTItem ttItem = Search_Transposition::getTransposition(p);
@@ -53,7 +60,7 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 
 				if (ttItem.score >= p.beta) {
 					Search_SearchResult result;
-					result.score = p.beta;
+					result.score = ttItem.score;
 					result.bestMove = ttItem.bestMove;
 					result.nodeType = NodeType::FAIL_HIGH;
 					return result;
@@ -62,7 +69,7 @@ Search_SearchResult Search::quiescenceSearch(const Search_Parameters p) {
 
 			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score <= p.alpha) {
 				Search_SearchResult result;
-				result.score = p.alpha;
+				result.score = ttItem.score;
 				result.nodeType = NodeType::FAIL_LOW;
 				return result;
 			}

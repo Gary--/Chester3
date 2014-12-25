@@ -29,6 +29,13 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return gameOverScore();
 	}
 
+	if (p.ply > 0 && Game::getRepeatCount() > 1) {
+		Search_SearchResult result;
+		result.score = 0;
+		result.nodeType = NodeType::PV;
+		return result;
+	}
+
 	{
 		TTItem ttItem = Search_Transposition::getTransposition(p);
 		if (ttItem.depth >= p.depth && ttItem.type != NodeType::UNKNOWN) {
@@ -48,7 +55,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 				if (ttItem.score >= p.beta) {
 					Search_SearchResult result;
-					result.score = p.beta;
+					result.score = ttItem.score;
 					result.bestMove = ttItem.bestMove;
 					result.nodeType = NodeType::FAIL_HIGH;
 					return result;
@@ -57,7 +64,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			
 			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score <= p.alpha) {
 				Search_SearchResult result;
-				result.score = p.alpha;
+				result.score = ttItem.score;
 				result.nodeType = NodeType::FAIL_LOW;
 				return result;
 			}
