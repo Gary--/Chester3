@@ -42,11 +42,11 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 			if (ttItem.type == NodeType::FAIL_HIGH) {
 				bestScore = max(bestScore, ttItem.score);
-				if (ttItem.score > p.alpha) {
+				if (ttItem.score >= p.alpha) {
 					bestMove = ttItem.bestMove;
 				}
 
-				if (ttItem.score > p.beta) {
+				if (ttItem.score >= p.beta) {
 					Search_SearchResult result;
 					result.score = p.beta;
 					result.bestMove = ttItem.bestMove;
@@ -55,7 +55,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				}
 			}
 			
-			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score < p.alpha) {
+			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score <= p.alpha) {
 				Search_SearchResult result;
 				result.score = p.alpha;
 				result.nodeType = NodeType::FAIL_LOW;
@@ -100,7 +100,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			Search_History::addHistory(p, move);
 
 			Search_SearchResult result;
-			result.score = p.beta;
+			result.score = bestScore;
 			result.bestMove = bestMove;
 			result.nodeType = NodeType::FAIL_HIGH;
 
