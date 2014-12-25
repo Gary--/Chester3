@@ -24,9 +24,11 @@ void Evaluation::synchronize() {
 }
 
 void Evaluation::notifyMove(const Move move, const  Turn turn) {
+	AttackMap::notifyMove( move,turn);
 	notifyMoveMaterial(move, turn);
 }
 
 void Evaluation::notifyUndoMove(const Move move, const  Turn turn) {
+	AttackMap::notifyUndoMove(move, turn);
 	notifyUndoMoveMaterial(move, turn);
 }
