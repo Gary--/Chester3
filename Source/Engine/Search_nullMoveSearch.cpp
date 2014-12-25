@@ -10,7 +10,7 @@ namespace {
 Search_SearchResult Search::nullMoveSearch(const Search_Parameters p) {
 	Search_SearchResult result;
 	
-	if (p.depth >= 3 && 
+	if (p.depth >= 4 && 
 		!Game::getCheck() &&
 		hasStuff(Turn::WHITE()) &&
 		hasStuff(Turn::BLACK())
@@ -19,7 +19,7 @@ Search_SearchResult Search::nullMoveSearch(const Search_Parameters p) {
 		newParams.alpha = -p.beta;
 		newParams.beta = -(p.beta - 1);
 		newParams.ply = p.ply + 1;
-		newParams.depth = p.depth - 2;
+		newParams.depth = p.depth - 3;
 
 		Search::searchMakeMove(Move::NULL_MOVE());
 		const Search_SearchResult nullMoveResult = search(newParams);
