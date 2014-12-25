@@ -74,7 +74,10 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 			type = OrderedMoveType::LOSING_CAPTURE;
 			rating = 20000 + see;
 		}
-	} else if (Search_Killers::isKiller(params, move)) {
+
+	} 
+
+	if (type == OrderedMoveType::NONE &&Search_Killers::isKiller(params, move)) {
 		type = OrderedMoveType::KILLER;
 		rating = 25000;
 
@@ -83,7 +86,7 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	if (type == OrderedMoveType::NONE) {
 		rating += Search_History::getHistory(move);
 
-		
+
 	}
 
 	return OrderedMove(move, rating, OrderedMoveType::NONE);
