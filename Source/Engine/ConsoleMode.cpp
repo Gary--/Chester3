@@ -5,18 +5,37 @@
 #include <string>
 #include <sstream>
 #include "AI.h"
+#include "EvaluationManager.h"
+
 
 using namespace std;
 
+
+
 void ConsoleMode::run() {
 	Game::configure(GameConfiguration::INITIAL);
-
+	Move move;
+	Turn me = Turn::WHITE();
 	while (Game::areMovesAvailable()) {
 		system("CLS");
-
+		cout << "Last Move: " << move.str() << endl;
 		Display::displayText();
 
-		Move move = computerMove();
+		EvaluationManager::synchronize();
+		auto eval = EvaluationManager::getScore();
+		cout << "Material: " << eval.getRelativeMaterial(me) << endl;
+		cout << "Mobility: " << eval.getRelativeMobility(me) << endl;
+		cout << "Pawns: " << eval.getPawns(me) << '/' << eval.getPawns(!me) << endl;
+		cout << "King: " << eval.getKingDanger(me) << '/' << eval.getKingDanger(!me) << endl;
+		cout << "Center: " << eval.getRelativeCenter(me) << endl;
+		cout << "Misc: " << eval.getMisc(me) << '/' << eval.getMisc(!me) << endl;
+
+		if (Game::getTurn() == me) {
+			move = computerMove();
+		} else {
+			move = humanMove();
+		}
+
 		Game::makeMove(move);
 	}
 }
@@ -55,7 +74,7 @@ Move ConsoleMode::humanMove() {
 
 Move ConsoleMode::computerMove() {
 	AI_SearchConfiguration conf;
-	conf.maxDepth = 3;
+	conf.maxDepth = 8;
 
 	AI::configureSearch(conf);
 	AI::startSearch();
