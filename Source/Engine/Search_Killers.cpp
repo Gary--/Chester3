@@ -18,7 +18,7 @@ void Search_Killers::addKiller(const Search_Parameters params,const Move move) {
 	}
 
 	// Insert, push out
-	for (int i = 0; i < nKillers - 1; ++i) {
+	for (int i = nKillers-2; i>=0 ; --i) {
 		killers[params.ply][i + 1] = killers[params.ply][i];
 	}
 	killers[params.ply][0] = move;
