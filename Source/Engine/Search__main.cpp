@@ -3,6 +3,8 @@
 #include "Game.h"
 #include <cstdint>
 #include <iostream>
+using namespace std;
+
 Search_SearchResult Search::searchResult;
 
 namespace {
@@ -51,6 +53,8 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 			searchResult = search(params);
 		}
 
+
+		cout << "Depth: " << depth << endl;
 		prevScore = searchResult.score;
 		
 	}
