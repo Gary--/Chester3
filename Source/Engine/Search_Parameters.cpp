@@ -11,5 +11,5 @@ Search_Parameters::Search_Parameters() {
 }
 
 bool Search_Parameters::isQuiesce() const {
-	return depth == QUIESCE_DEPTH;
+	return depth <= 0;
 }

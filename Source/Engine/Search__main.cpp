@@ -54,7 +54,7 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 		}
 
 
-		cout << "Depth: " << depth << endl;
+		//cout << "Depth: " << depth << endl;
 		prevScore = searchResult.score;
 		
 	}

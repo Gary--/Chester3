@@ -25,8 +25,6 @@ private:
 
 	static Search_SearchResult search(Search_Parameters params);
 
-	static Search_SearchResult callQuiescenceSearch(Search_Parameters previousParams, int bestScore);
-	static Search_SearchResult quiescenceSearch(Search_Parameters params);
 
 	static Search_SearchResult nullMoveSearch(Search_Parameters params);
 

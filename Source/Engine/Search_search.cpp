@@ -36,46 +36,50 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return result;
 	}
 
-	{
-		TTItem ttItem = Search_Transposition::getTransposition(p);
-		if (ttItem.depth >= p.depth && ttItem.type != NodeType::UNKNOWN) {
-			if (ttItem.type == NodeType::PV) {
-				Search_SearchResult result;
-				result.score = ttItem.score;
-				result.bestMove = ttItem.bestMove;
-				result.nodeType = NodeType::PV;
-				return result;
-			}
 
-			if (ttItem.type == NodeType::FAIL_HIGH) {
-				bestScore = max(bestScore, ttItem.score);
-				if (ttItem.score >= p.alpha) {
-					bestMove = ttItem.bestMove;
-				}
+	if (p.isQuiesce()){
 
-				if (ttItem.score >= p.beta) {
+		// Try a lazy standpat
+		{
+			const auto prevScore = EvaluationManager::getScore(1);
+			const bool wasInCheck = prevScore.getCheck();
+			if (!wasInCheck && !Game::getCheck()) {
+				const Turn turn = !Game::getTurn();
+
+				// How much Lazy might underestimate our score
+				int margin = 50 + prevScore.getOverall(turn) - prevScore.getSimple(turn);
+
+				if (EvaluationManager::getSimpleScore(turn) + margin < -p.beta) {
 					Search_SearchResult result;
-					result.score = ttItem.score;
-					result.bestMove = ttItem.bestMove;
+					result.score = p.beta;
 					result.nodeType = NodeType::FAIL_HIGH;
 					return result;
 				}
 			}
-			
-			if (ttItem.type == NodeType::FAIL_LOW && ttItem.score <= p.alpha) {
+		}
+
+		// Try a full eval standpat
+		{
+			int standPat = -Search_SearchResult::MATE_SCORE;
+			if (!Game::getCheck()) { // need to check for hanging pieces
+				AttackMap::precompute();
+				standPat = EvaluationManager::getScore().getOverall(Game::getTurn());
+			}
+			if (standPat >= p.beta) {
 				Search_SearchResult result;
-				result.score = ttItem.score;
-				result.nodeType = NodeType::FAIL_LOW;
+				result.score = p.beta;
+				result.nodeType = NodeType::FAIL_HIGH;
 				return result;
 			}
+
+			bestScore = max(bestScore, standPat);
+
 		}
+
 	}
 
-	if (p.depth <= 0) {
-		return callQuiescenceSearch(p, bestScore);
-	}
 	
-	{
+	if (!p.isQuiesce()){
 		const Search_SearchResult nullMoveResult = nullMoveSearch(p);
 		if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
 			return Search_Transposition::addTransposition(p, nullMoveResult);
@@ -87,9 +91,14 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	AttackMap::precompute();
 	EvaluationManager::calcScoreCurrent();
 
-	MoveOrdering orderedMoves = MoveOrdering(p, Game::getAllMoves());
+	MoveOrdering orderedMoves = MoveOrdering(p, (!p.isQuiesce() || Game::getCheck()) ? Game::getAllMoves() : Game::getTacticalMoves());
 	for (const OrderedMove orderedMove : orderedMoves) {
 		const Move move = orderedMove.move;
+		if (p.isQuiesce() && !Game::getCheck() && AttackMap::SEE(move) < 0) {
+			continue;
+		}
+
+
 		searchMakeMove(move);
 		const Search_SearchResult moveResult = callSearch(p,bestScore);
 		searchUndoMove();
@@ -103,15 +112,17 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		}
 
 		if (bestScore >= p.beta) {
-			Search_Killers::addKiller(p, move);
-			Search_History::addHistory(p, move);
+			if (!p.isQuiesce()) {
+				Search_Killers::addKiller(p, move);
+				Search_History::addHistory(p, move);
+			}
 
 			Search_SearchResult result;
 			result.score = bestScore;
 			result.bestMove = bestMove;
 			result.nodeType = NodeType::FAIL_HIGH;
 
-			return Search_Transposition::addTransposition(p, result);
+			return  result;
 		}
 	}
 
@@ -120,9 +131,6 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	result.bestMove = bestMove;
 	result.nodeType = bestScore <= p.alpha ? NodeType::FAIL_LOW : NodeType::PV;
 
-	if (result.nodeType == NodeType::PV) {
-		Search_PV_Table::storePVMove(Game::getHash(), result.bestMove);
-	}
 
-	return Search_Transposition::addTransposition(p, result);
+	return  result;
 }
