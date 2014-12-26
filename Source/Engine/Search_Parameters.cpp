@@ -4,8 +4,8 @@
 
 
 Search_Parameters::Search_Parameters() {
-	alpha = -Search_SearchResult::MATE_SCORE;
-	beta = Search_SearchResult::MATE_SCORE;
+	alpha = -(Search_SearchResult::MATE_SCORE +1);
+	beta = Search_SearchResult::MATE_SCORE +1;
 	ply = 0;
 	depth = 0;
 }
