@@ -40,6 +40,7 @@
     <ClInclude Include="Chess.h" />
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="Search_Counter.h" />
     <ClInclude Include="Search_History.h" />
     <ClInclude Include="Search_Killers.h" />
     <ClInclude Include="Search_Parameters.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveOrdering.cpp" />
     <ClCompile Include="PV_Node.cpp" />
+    <ClCompile Include="Search_Counter.cpp" />
     <ClCompile Include="Search_History.cpp" />
     <ClCompile Include="Search_Killers.cpp" />
     <ClCompile Include="Search_misc.cpp" />

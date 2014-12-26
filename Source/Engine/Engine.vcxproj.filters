@@ -129,6 +129,9 @@
     <ClInclude Include="PV_Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Search_Counter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -318,6 +321,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PV_Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Search_Counter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
