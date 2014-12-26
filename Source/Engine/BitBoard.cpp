@@ -117,9 +117,11 @@ Position  BitBoard::ToPosition() const
 	_ASSERTE(value == (value&-value));
 #pragma warning(default : 4146)
 
-	unsigned long index;
-	_BitScanReverse64(&index, value);
-	return Position(index);
+	return Position(__lzcnt64(value));
+	//unsigned long index;
+	//
+	//_BitScanReverse64(&index, value);
+	//return Position(index);
 }
 
 BitBoard BitBoard::mirror() const{
