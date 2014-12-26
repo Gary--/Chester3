@@ -11,7 +11,7 @@ class Position
 {
 
 private:
-	
+
 	uint8_t value;
 	void AssertValid() const;
 

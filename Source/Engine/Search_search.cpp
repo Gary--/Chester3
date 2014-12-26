@@ -5,34 +5,34 @@
 #include "MoveOrdering.h"
 #include "Search_Killers.h"
 #include "AttackMap.h"
-#include "Search_PV_Table.h"
 #include "EvaluationManager.h"
 #include "Search_History.h"
 #include "Search_Transposition.h"
 using namespace std;
 
-Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore) {
+Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore,bool isPv) {
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
 	newParams.ply = previousParams.ply + 1;
 	newParams.alpha = -previousParams.beta;
 	newParams.beta = -bestScore;
 
+	if (isPv && previousParams.pv.next) {
+		newParams.pv = *previousParams.pv.next;
+	}
+
 	return search(newParams);
 }
 
 Search_SearchResult Search::search(const Search_Parameters p) {
-	int bestScore = p.alpha;
-	Move bestMove = Move::INVALID();
-
+	Search_SearchResult result;
+	result.score = p.alpha;
 	if (!Game::areMovesAvailable()) {
 		return gameOverScore();
 	}
 
 	if (p.ply > 0 && Game::getRepeatCount() > 1) {
-		Search_SearchResult result;
 		result.score = 0;
-		result.nodeType = NodeType::PV;
 		return result;
 	}
 
@@ -50,9 +50,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				int margin = 50 + prevScore.getOverall(turn) - prevScore.getSimple(turn);
 
 				if (EvaluationManager::getSimpleScore(turn) + margin < -p.beta) {
-					Search_SearchResult result;
 					result.score = p.beta;
-					result.nodeType = NodeType::FAIL_HIGH;
 					return result;
 				}
 			}
@@ -66,13 +64,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				standPat = EvaluationManager::getScore().getOverall(Game::getTurn());
 			}
 			if (standPat >= p.beta) {
-				Search_SearchResult result;
 				result.score = p.beta;
-				result.nodeType = NodeType::FAIL_HIGH;
 				return result;
 			}
-
-			bestScore = max(bestScore, standPat);
+			result.score = max(result.score, standPat);
 
 		}
 
@@ -81,8 +76,8 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	
 	if (!p.isQuiesce()){
 		const Search_SearchResult nullMoveResult = nullMoveSearch(p);
-		if (nullMoveResult.nodeType == NodeType::FAIL_HIGH) {
-			return Search_Transposition::addTransposition(p, nullMoveResult);
+		if (nullMoveResult.score >= p.beta) {
+			return nullMoveResult;
 		}
 	}
 
@@ -92,7 +87,11 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	EvaluationManager::calcScoreCurrent();
 
 	MoveOrdering orderedMoves = MoveOrdering(p, (!p.isQuiesce() || Game::getCheck()) ? Game::getAllMoves() : Game::getTacticalMoves());
+
+	int i = -1;
 	for (const OrderedMove orderedMove : orderedMoves) {
+		i++;
+
 		const Move move = orderedMove.move;
 		if (p.isQuiesce() && !Game::getCheck() && AttackMap::SEE(move) < 0) {
 			continue;
@@ -100,37 +99,29 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 
 		searchMakeMove(move);
-		const Search_SearchResult moveResult = callSearch(p,bestScore);
+		const Search_SearchResult moveResult = callSearch(p,result.score,i==0);
 		searchUndoMove();
 
 		{
 			const int moveScore = -moveResult.score;
-			if (moveScore > bestScore) {
-				bestScore = moveScore;
-				bestMove = move;
+			if (moveScore > result.score) {
+				result.score = moveScore;
+				if (!p.isQuiesce()) {
+					result.pv = PV_Node(move, moveResult.pv);
+				}
 			}
 		}
 
-		if (bestScore >= p.beta) {
+		if (result.score >= p.beta) {
 			if (!p.isQuiesce()) {
 				Search_Killers::addKiller(p, move);
 				Search_History::addHistory(p, move);
 			}
 
-			Search_SearchResult result;
-			result.score = bestScore;
-			result.bestMove = bestMove;
-			result.nodeType = NodeType::FAIL_HIGH;
-
 			return  result;
 		}
 	}
 
-	Search_SearchResult result;
-	result.score = bestScore;
-	result.bestMove = bestMove;
-	result.nodeType = bestScore <= p.alpha ? NodeType::FAIL_LOW : NodeType::PV;
-
-
+	
 	return  result;
 }

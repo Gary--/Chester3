@@ -30,7 +30,7 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		
 
 		AI_SearchConfiguration searchConf;
-		searchConf.maxDepth = 8;
+		searchConf.maxDepth = 5;
 		Game::configure(gameConf);
 		AI::configureSearch(searchConf);
 		AI::startSearch();

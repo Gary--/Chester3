@@ -5,7 +5,6 @@
 #include <iostream>
 #include "Search_Killers.h"
 #include "StaticExchange.h"
-#include "Search_PV_Table.h"
 #include "Search_History.h"
 #include "Search_Transposition.h"
 using namespace std;
@@ -49,9 +48,10 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	int rating = 0;
 	OrderedMoveType type = OrderedMoveType::NONE;
 	
-	if (type == OrderedMoveType::NONE && Search_PV_Table::getPVMove(Game::getHash()) == move) {
+	if (type == OrderedMoveType::NONE && params.pv.move==move) {
 		type = OrderedMoveType::PV_MOVE;
 		rating = 60000;
+		//cout << "PV" << endl;
 	}
 
 	//if (type == OrderedMoveType::NONE) {
@@ -77,17 +77,17 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 
 	//} 
 
-	//if (type == OrderedMoveType::NONE &&Search_Killers::isKiller(params, move)) {
-	//	type = OrderedMoveType::KILLER;
-	//	rating = 25000;
+	if (type == OrderedMoveType::NONE &&Search_Killers::isKiller(params, move)) {
+		type = OrderedMoveType::KILLER;
+		rating = 25000;
 
-	//}
+	}
 
-	//if (type == OrderedMoveType::NONE) {
-	//	rating += Search_History::getHistory(move);
+	if (type == OrderedMoveType::NONE) {
+		rating += Search_History::getHistory(move);
 
 
-	//}
+	}
 
 	return OrderedMove(move, rating, OrderedMoveType::NONE);
 }

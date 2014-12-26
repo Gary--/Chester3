@@ -1,5 +1,6 @@
 #pragma once
 #include "Move.h"
+#include "PV_Node.h"
 
 enum class NodeType : char {
 	PV,
@@ -11,8 +12,7 @@ enum class NodeType : char {
 // used internally within Search
 struct Search_SearchResult {
 	int score;
-	Move bestMove;
-	NodeType nodeType;
+	PV_Node pv;
 	Search_SearchResult();
 
 	static const int MATE_SCORE = 100000;

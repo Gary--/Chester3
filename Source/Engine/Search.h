@@ -21,7 +21,7 @@ private:
 	static void synchronize();
 
 	// Called after already made move
-	static Search_SearchResult callSearch(Search_Parameters previousParams, int bestScore);
+	static Search_SearchResult callSearch(Search_Parameters previousParams, int bestScore, bool isPv);
 
 	static Search_SearchResult search(Search_Parameters params);
 

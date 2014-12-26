@@ -29,6 +29,7 @@
     <ClInclude Include="ExtendedPositionDescription.h" />
     <ClInclude Include="GameConfiguration_MoveIterator.h" />
     <ClInclude Include="MoveOrdering.h" />
+    <ClInclude Include="PV_Node.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
     <ClInclude Include="AI_SearchConfiguration.h" />
@@ -42,7 +43,6 @@
     <ClInclude Include="Search_History.h" />
     <ClInclude Include="Search_Killers.h" />
     <ClInclude Include="Search_Parameters.h" />
-    <ClInclude Include="Search_PV_Table.h" />
     <ClInclude Include="Search_Transposition.h" />
     <ClInclude Include="SimpleEvaluation.h" />
     <ClInclude Include="Game.h" />
@@ -90,12 +90,12 @@
     <ClCompile Include="Game_misc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveOrdering.cpp" />
+    <ClCompile Include="PV_Node.cpp" />
     <ClCompile Include="Search_History.cpp" />
     <ClCompile Include="Search_Killers.cpp" />
     <ClCompile Include="Search_misc.cpp" />
     <ClCompile Include="Search_nullMoveSearch.cpp" />
     <ClCompile Include="Search_Parameters.cpp" />
-    <ClCompile Include="Search_PV_Table.cpp" />
     <ClCompile Include="Search_Transposition.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />

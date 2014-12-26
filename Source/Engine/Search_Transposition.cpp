@@ -10,8 +10,6 @@ Search_SearchResult Search_Transposition::addTransposition(Search_Parameters par
 	item.depth = params.depth;
 	item.hash = hash;
 	item.score = result.score;
-	item.bestMove = result.bestMove;
-	item.type = result.nodeType;
 
 	TT[hash%TTSize] = item;
 

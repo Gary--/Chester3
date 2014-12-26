@@ -32,8 +32,7 @@ Search_SearchResult Search::nullMoveSearch(const Search_Parameters p) {
 		Search::searchUndoMove();
 
 		if (-nullMoveResult.score >= p.beta) {
-			result.nodeType = NodeType::FAIL_HIGH;
-			result.score = p.beta;
+			result.score = -nullMoveResult.score;
 		}
 	}
 

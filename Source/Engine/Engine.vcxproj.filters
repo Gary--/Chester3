@@ -120,13 +120,13 @@
     <ClInclude Include="Search_Killers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Search_PV_Table.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Search_History.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search_Transposition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PV_Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -311,13 +311,13 @@
     <ClCompile Include="Search_Killers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Search_PV_Table.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Search_History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_Transposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PV_Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
