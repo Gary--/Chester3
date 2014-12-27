@@ -4,6 +4,6 @@
 
 
 Search_SearchResult::Search_SearchResult() {
-	score = INT_MIN;
+	score = -(MATE_SCORE + 1);
 	pv = PV_Node();
 }

@@ -6,7 +6,13 @@ void Search_Counter::reset() {
 	quiesce = 0;
 	captures = 0;
 	goodCaptures = 0;
+	nullSearches = 0;
+	researches = 0;
 }
+
+int Search_Counter::researches=0;
+
+int Search_Counter::nullSearches=0;
 
 int Search_Counter::goodCaptures = 0;
 

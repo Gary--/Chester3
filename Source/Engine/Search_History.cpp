@@ -1,6 +1,7 @@
 #include "Search_History.h"
 #include "Game.h"
 #include <algorithm>
+#include "Search.h"
 
 using namespace std;
 int Search_History::history[2][7][64] = { 0 };
@@ -17,7 +18,7 @@ void Search_History::reset() {
 }
 
 void Search_History::addHistory(const Search_Parameters params,const Move goodMove) {
-	if (params.isQuiesce()) {
+	if (params.isQuiesce() || Search::nNullsMade>0) {
 		return;
 	}
 	

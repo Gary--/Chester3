@@ -8,14 +8,15 @@
 #include "EvaluationManager.h"
 #include "Search_History.h"
 #include "Search_Transposition.h"
+#include "Search_Counter.h"
 using namespace std;
 
-Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int bestScore,bool isPv) {
+Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,bool isPv) {
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
 	newParams.ply = previousParams.ply + 1;
-	newParams.alpha = -previousParams.beta;
-	newParams.beta = -bestScore;
+	newParams.alpha = alpha;
+	newParams.beta = beta;
 
 	if (isPv && previousParams.pv.next) {
 		newParams.pv = *previousParams.pv.next;
@@ -49,7 +50,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				// How much Lazy might underestimate our score
 				int margin = 50 + prevScore.getOverall(turn) - prevScore.getSimple(turn);
 
-				if (EvaluationManager::getSimpleScore(turn) + margin < -p.beta) {
+				if (EvaluationManager::getSimpleScore(turn) + margin <= -p.beta) {
 					result.score = p.beta;
 					return result;
 				}
@@ -63,11 +64,11 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				AttackMap::precompute();
 				standPat = EvaluationManager::getScore().getOverall(Game::getTurn());
 			}
-			if (standPat >= p.beta) {
-				result.score = p.beta;
+			result.score = max(result.score, standPat);
+			if (result.score >= p.beta) {
 				return result;
 			}
-			result.score = max(result.score, standPat);
+			
 
 		}
 
@@ -96,11 +97,26 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		if (p.isQuiesce() && !Game::getCheck() && AttackMap::SEE(move) < 0) {
 			continue;
 		}
+		if (p.isQuiesce() && !Game::getCheck() && move.isPromotion() && move.promotionPiece() != Piece::QUEEN()) {
+			continue;
+		}
 
+		const bool useNullWindow = i > 0 && !p.isQuiesce();
 
+		Search_SearchResult moveResult;
+
+		// Initial search
 		searchMakeMove(move);
-		const Search_SearchResult moveResult = callSearch(p,result.score,i==0);
+		moveResult = callSearch(p, useNullWindow ? -result.score-1 : -p.beta, -result.score, i == 0);
 		searchUndoMove();
+		Search_Counter::nullSearches += useNullWindow;
+		// Re-search
+		if (useNullWindow && (-moveResult.score > result.score) && (-moveResult.score < p.beta)) {
+			Search_Counter::researches++;
+			searchMakeMove(move);
+			moveResult = callSearch(p, -p.beta, moveResult.score, i == 0);
+			searchUndoMove();
+		}
 
 		{
 			const int moveScore = -moveResult.score;
@@ -120,6 +136,8 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 			return  result;
 		}
+
+		
 	}
 
 	

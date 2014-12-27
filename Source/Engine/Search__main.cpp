@@ -6,7 +6,7 @@
 using namespace std;
 
 Search_SearchResult Search::searchResult;
-
+int Search::nNullsMade = 0;
 namespace {
 	const int windows[2] = { 50, 200};
 
@@ -39,7 +39,7 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 				params.beta = bound(prevResult.score, +1, betaLvl);
 				//cout << params.alpha << ' ' << params.beta << endl;
 				searchResult = search(params);
-
+				//cout << "Score: " << searchResult.score << endl;
 				if (searchResult.score >= params.beta) {
 					betaLvl++;
 				} else if (searchResult.score <= params.alpha) {
@@ -51,19 +51,23 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 			}
 
 		} else {
+			//cout << params.alpha << ' ' << params.beta << endl;
 			searchResult = search(params);
+			//cout << "Score: " << searchResult.score << endl;
 		}
+		
+		//cout << "Depth: " << depth << "   Score: " << searchResult.score << endl;
+		//for (PV_Node* x = &searchResult.pv; x; x = x = x->next.get()) {
+		//	cout << x->move.str() << ' ';
+		//}
+		//cout << endl;
 
 		if (searchResult.score <= params.alpha || searchResult.score >= params.beta) {
 			cout << "NOT PV:!!" << endl;
 			system("pause");
 		}
 		prevResult = searchResult;
-		//cout << "Depth: " << depth << "   Score: " << searchResult.score << endl;
-		//for (PV_Node* x = &searchResult.pv; x; x = x = x->next.get()) {
-		//	cout << x->move.str() << ' ';
-		//}
-		//cout << endl;
+
 
 		
 	}

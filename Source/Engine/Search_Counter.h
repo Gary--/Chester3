@@ -8,5 +8,7 @@ public:
 	static int quiesce;
 	static int captures;
 	static int goodCaptures;
+	static int nullSearches;
+	static int researches;
 };
 

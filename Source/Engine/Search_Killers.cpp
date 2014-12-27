@@ -1,12 +1,13 @@
 #include "Search_Killers.h"
 #include <algorithm>
+#include "Search.h"
 using namespace std;
 
 
 Move Search_Killers::killers[Search_Parameters::MAX_NORMAL_PLY][Search_Killers::nKillers];
 
 void Search_Killers::addKiller(const Search_Parameters params,const Move move) {
-	if (move.isTactical() || params.isQuiesce()) {
+	if (move.isTactical() || params.isQuiesce() || Search::nNullsMade>0) {
 		return;
 	}
 

@@ -72,7 +72,6 @@ namespace {
 		case PieceEnum::KING:
 			return 50;
 		default:
-			_ASSERTE(false);
 			return 0;
 		}
 	}

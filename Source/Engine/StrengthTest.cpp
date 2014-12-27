@@ -4,6 +4,7 @@
 #include "AI.h"
 #include "Game.h"
 #include <ctime>
+#include "Search_Counter.h"
 using namespace std;
 
 
@@ -30,7 +31,7 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		
 
 		AI_SearchConfiguration searchConf;
-		searchConf.maxDepth = 5;
+		searchConf.maxDepth = 8;
 		Game::configure(gameConf);
 		AI::configureSearch(searchConf);
 		AI::startSearch();
@@ -52,4 +53,5 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	cout << correct << '/' << total << endl;
 
 	cout << "Time: " << ((std::clock() - start) / (double)CLOCKS_PER_SEC) << endl;
+	cout << "Nulls: " << Search_Counter::researches << ' ' << Search_Counter::nullSearches << endl;
 }

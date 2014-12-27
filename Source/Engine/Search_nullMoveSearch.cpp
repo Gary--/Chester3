@@ -31,9 +31,9 @@ Search_SearchResult Search::nullMoveSearch(const Search_Parameters p) {
 		const Search_SearchResult nullMoveResult = search(newParams);
 		Search::searchUndoMove();
 
-		if (-nullMoveResult.score >= p.beta) {
-			result.score = -nullMoveResult.score;
-		}
+
+		result.score = -nullMoveResult.score;
+		
 	}
 
 	return result;

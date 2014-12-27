@@ -62,20 +62,20 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	//	}
 	//}
 
-	//if (type == OrderedMoveType::NONE && move.isTactical()) {
-	//	int see = AttackMap::SEE(move);
-	//	if (see > 0) {
-	//		rating = 50000 + see * 100 - StaticExchange::PieceValue(move.getPiece());
-	//		type = OrderedMoveType::WINNING_CAPTURE;
-	//	} else if (see == 0) {
-	//		type =  OrderedMoveType::EVEN_CAPTURE;
-	//		rating = 30000 + see;
-	//	} else {
-	//		type = OrderedMoveType::LOSING_CAPTURE;
-	//		rating = 20000 + see;
-	//	}
+	if (type == OrderedMoveType::NONE && move.isTactical()) {
+		int see = AttackMap::SEE(move);
+		if (see > 0) {
+			rating = 50000 + see * 100 - StaticExchange::PieceValue(move.getPiece());
+			type = OrderedMoveType::WINNING_CAPTURE;
+		} else if (see == 0) {
+			type = OrderedMoveType::EVEN_CAPTURE;
+			rating = 30000 + see;
+		} else {
+			type = OrderedMoveType::LOSING_CAPTURE;
+			rating = 20000 + see;
+		}
 
-	//} 
+	}
 
 	if (type == OrderedMoveType::NONE &&Search_Killers::isKiller(params, move)) {
 		type = OrderedMoveType::KILLER;
