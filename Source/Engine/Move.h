@@ -43,7 +43,7 @@ public:
 	Piece getPiece() const;
 	Piece getTarg() const;
 
-	Move operator=(const Move& other);
+	Move operator=(const Move other);
 	bool operator==(const Move other) const;
 	bool operator!=(const Move other) const;
 

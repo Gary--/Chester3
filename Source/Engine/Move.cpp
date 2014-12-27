@@ -76,7 +76,7 @@ MoveType promoType(const Piece piece) {
 
 }
 
-Move Move::operator=(const Move& other){
+Move Move::operator=(const Move other) {
 	value = other.value;
 	return *this;
 }
