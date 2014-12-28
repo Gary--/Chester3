@@ -50,7 +50,7 @@ namespace {
 
 	Danger calcDanger(const Turn turn) {
 		const Turn other = !turn;
-		const Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
+		const Position kingPos = Game::getKingPosition(turn);
 		const BitBoard kingSquare = AttackFields::kingTargs(kingPos) | Game::getPieces(turn, Piece::KING());
 
 		const BitBoard patternZone = kingSquare.shiftForward(turn) &~kingSquare;

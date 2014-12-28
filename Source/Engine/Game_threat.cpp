@@ -20,7 +20,7 @@ bool Game::posAttackedBy(const Position position, const Turn turn) {
 
 BitBoard Game::attackedByJump(const Turn turn) {
 	BitBoard res = BitBoard::EMPTY();
-	res |= AttackFields::kingTargs(getPieces(turn, Piece::KING()).ToPosition());
+	res |= AttackFields::kingTargs(getKingPosition(turn));
 
 	res |= AttackFields::pawnTargs(getPieces(turn, Piece::PAWN()), turn);
 

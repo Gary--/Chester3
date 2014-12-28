@@ -7,7 +7,7 @@ bool Game::isDefinitelyAMoveAvailable() {
 		return false;
 	}
 	
-	const Position kingPos = getPieces(getTurn(), Piece::KING()).ToPosition();
+	const Position kingPos = getKingPosition(getTurn());
 	const BitBoard kingSees = AttackFields::queenTargs(kingPos, ALL);
 
 	{

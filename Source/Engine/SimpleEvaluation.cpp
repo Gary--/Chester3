@@ -168,7 +168,7 @@ int SimpleEvaluation::material(const Turn turn) {
 int SimpleEvaluation::position(const Turn turn) {
 	const double earliness = materialLeft(!turn);
 
-	const Position kingPos = Game::getPieces(turn, Piece::KING()).ToPosition();
+	const Position kingPos = Game::getKingPosition(turn);
 #pragma warning (disable: 4244)//Double to int
 	int kingPosValue = earliness*kingEarlygame[kingPos.perspective(turn).index()] +
 		(1 - earliness)*kingLateGame[kingPos.perspective(turn).index()];

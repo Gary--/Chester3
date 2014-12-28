@@ -88,7 +88,7 @@ void AttackMap::precompute() {
 	//maps.back().clearPatterns();
 	
 	FOR_TURN(turn) {
-		FOR_POS(kingPos, AttackFields::kingTargs(Game::getPieces(turn, Piece::KING()).ToPosition())) {
+		FOR_POS(kingPos, AttackFields::kingTargs(Game::getKingPosition(turn))) {
 			pats.patterns[turn.asIndex()][kingPos.index()].add(Piece::KING());
 		}
 

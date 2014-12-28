@@ -105,7 +105,7 @@ void Game::makeMove(const Move move) {
 		}
 
 
-		_ASSERTE(!posAttackedBy(getPieces(curTurn, Piece::KING()).ToPosition(), !curTurn));
+		_ASSERTE(!posAttackedBy(getKingPos(curTurn), !curTurn));
 
 		{ // Check detection
 			const BitBoard theirKingBit = getPieces(!curTurn, Piece::KING());

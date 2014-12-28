@@ -218,7 +218,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(const Turn turn) {
 	const BitBoard MP = Game::getPieces(turn, Piece::PAWN());
 	const BitBoard TP = Game::getPieces(other, Piece::PAWN());
 	const BitBoard myPawnCoverage = AttackFields::pawnTargs(MP, turn);
-	const Position theirKingPos = Game::getPieces(other, Piece::KING()).ToPosition();
+	const Position theirKingPos = Game::getKingPosition(other);
 
 	// Identify passed pawns.
 	FOR_BIT(pawn, MP) {

@@ -22,7 +22,6 @@ void Game::generateMovesImpl(bool tacticalOnly) {
 	const BitBoard TB = getPieces(!curTurn, Piece::BISHOP()) | getPieces(!curTurn, Piece::QUEEN());
 	const BitBoard TN = getPieces(!curTurn, Piece::KNIGHT());
 	const BitBoard TP = getPieces(!curTurn, Piece::PAWN());
-	const Position theirKingPos = getPieces(!curTurn, Piece::KING()).ToPosition();
 
 	const BitBoard kingRing = AttackFields::kingTargs(kingPos);
 #pragma endregion

@@ -11,7 +11,7 @@ bool Game::canEnpeasent(const Turn turn,const int column) {
 
 	const BitBoard enpeasentFrom = fromMid.shiftLeft() | fromMid.shiftRight();
 	FOR_BIT(pawn, getPieces(turn, Piece::PAWN()) & enpeasentFrom) {
-		const Position theirKingPos = getPieces(turn, Piece::KING()).ToPosition();
+		const Position theirKingPos = getKingPosition(turn);
 		const BitBoard newBlockers = getAllPieces() ^ pawn^capturedBit^
 			AttackFields::enpeasentTo(turn, column).asSingletonBitboard();
 		const BitBoard diagProblems = (getPieces(other, Piece::QUEEN()) | getPieces(other, Piece::BISHOP()))&
