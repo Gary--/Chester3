@@ -27,6 +27,11 @@ Turn Game::getOwnerAt(const Position pos) {
 	return getPlayerPieces(Turn::WHITE()).contains(pos) ? Turn::WHITE() : Turn::BLACK();
 }
 
+Position Game::getKingPosition(const Turn turn) {
+	return getPieces(turn, Piece::KING()).ToPosition();
+}
+
+
 bool Game::getCanCastle(const Turn turn, const Side side) {
 	return cur.hash.getCanCastle(turn, side);
 }

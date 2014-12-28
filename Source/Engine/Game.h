@@ -37,6 +37,8 @@ public:
 	// The owner at the given position. Unspecified if getPieceAt(position)==Piece::EMPTY()
 	static Turn getOwnerAt(Position position);
 
+	static Position getKingPosition(Turn turn);
+
 	// Does turn have castling rights?
 	static bool getCanCastle(Turn turn, Side side);
 
@@ -149,4 +151,5 @@ private:
 	Game();
 	~Game();
 };
+
 
