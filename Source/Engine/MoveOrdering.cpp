@@ -30,7 +30,8 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 	n = 0;
 	for (Move move : gen) {
 		n++;
-		moves.push_back(order(params, move));
+		OrderedMove orderedMove = order(params, move);
+		moves.push_back(orderedMove);
 	}
 	sort(moves.end() - n, moves.end());
 }
