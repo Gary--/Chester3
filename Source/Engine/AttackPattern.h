@@ -66,8 +66,13 @@ public:
 	// Example: "3:NQ"
 	std::string str() const;
 
-	// ONLY CALLED BY INIT
+	// ONLY CALLED BY INIT and DEBUG
 	int getPieceCount(Piece piece) const;
+
+	// 1 << pieceBitLocation(piece) is the bitmask for the piece
+	static int pieceBitLocation(Piece piece);
+
+
 
 private:
 	bool isValid() const;

@@ -3,10 +3,13 @@
 #include "Game.h"
 #include "AttackFields.h"
 #include "StaticExchange.h"
+#include "AttackPattern.h"
+#include <iostream>
 using namespace std;
 
 namespace {
 	struct AttackMapSaved {
+	public:
 		AttackPattern patterns[2][64];
 		bool precomputed;
 
@@ -14,15 +17,57 @@ namespace {
 			precomputed = false;
 		}
 
-		void clearPatterns() {
-			memset(patterns, 0, 128 * sizeof(AttackPattern));
+		void add(const Turn turn,const Piece piece,const BitBoard cover) {
+			FOR_8(r) {
+				uint64_t coverRowBits = (cover.asInt64() >> (8 * r)) & 0xFFULL;
+
+				if (coverRowBits) {
+					const uint64_t rowMask = rows[coverRowBits];
+
+					uint64_t* rowPtr = reinterpret_cast <uint64_t*>(&patterns[turn.asIndex()][8 * r]);
+					*rowPtr |= rowMask << AttackPattern::pieceBitLocation(piece);
+					*rowPtr += rowMask;
+				}
+				
+			}
+
+			
 		}
+
+		static void init() {
+			if (inited) {
+				return;
+			}
+			inited = true;
+
+			for (uint8_t x = 0;; x++) {
+				for (int col = 0; col < 8;++col)
+				{
+					if (x & (1 << col)) {
+						rows[x] |= ((uint64_t)1 << (col * 8));
+					}
+				}
+
+				if (x == 255) {
+					break;
+				}
+			}
+		}
+	private:
+		static bool inited;
+
+		// bit n of i is on <==> bit 8*n of rows[i] is on.
+		static uint64_t rows[256];
 	};
+	uint64_t AttackMapSaved::rows[256] = { 0 };
+	bool AttackMapSaved::inited = false;
 
 	vector<AttackMapSaved> maps;
 }
 
 void AttackMap::synchronize() {
+	AttackMapSaved::init();
+
 	maps.clear();
 	maps.push_back(AttackMapSaved());
 }
@@ -88,48 +133,55 @@ void AttackMap::precompute() {
 	//maps.back().clearPatterns();
 	
 	FOR_TURN(turn) {
-		FOR_POS(kingPos, AttackFields::kingTargs(Game::getKingPosition(turn))) {
-			pats.patterns[turn.asIndex()][kingPos.index()].add(Piece::KING());
-		}
+		//FOR_POS(kingPos, AttackFields::kingTargs(Game::getKingPosition(turn))) {
+		//	pats.patterns[turn.asIndex()][kingPos.index()].add(Piece::KING());
+		//}
+		pats.add(turn, Piece::KING(), AttackFields::kingTargs(Game::getKingPosition(turn)));
 
 		FOR_POS(knightPos, Game::getPieces(turn, Piece::KNIGHT())) {
-			FOR_POS(targ, AttackFields::knightTargs(knightPos)) {
-				pats.patterns[turn.asIndex()][targ.index()].add(Piece::KNIGHT());
-			}
+			pats.add(turn, Piece::KNIGHT(), AttackFields::knightTargs(knightPos));
+			//FOR_POS(targ, AttackFields::knightTargs(knightPos)) {
+			//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::KNIGHT());
+			//}
 		}
 
 		const BitBoard blockers = Game::getAllPieces();
 
 		FOR_POS(bishopPos, Game::getPieces(turn, Piece::BISHOP())) {
-			FOR_POS(targ, AttackFields::bishopTargs(bishopPos, blockers)) {
-				pats.patterns[turn.asIndex()][targ.index()].add(Piece::BISHOP());
-			}
+			pats.add(turn, Piece::BISHOP(), AttackFields::bishopTargs(bishopPos, blockers));
+			//FOR_POS(targ, AttackFields::bishopTargs(bishopPos, blockers)) {
+			//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::BISHOP());
+			//}
 		}
 
 		FOR_POS(rookPos, Game::getPieces(turn, Piece::ROOK())) {
-			FOR_POS(targ, AttackFields::rookTargs(rookPos, blockers)) {
-				pats.patterns[turn.asIndex()][targ.index()].add(Piece::ROOK());
-			}
+			pats.add(turn, Piece::ROOK(), AttackFields::rookTargs(rookPos, blockers));
+			//FOR_POS(targ, AttackFields::rookTargs(rookPos, blockers)) {
+			//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::ROOK());
+			//}
 		}
 
 		FOR_POS(queenPos, Game::getPieces(turn, Piece::QUEEN())) {
-			FOR_POS(targ, AttackFields::queenTargs(queenPos, blockers)) {
-				pats.patterns[turn.asIndex()][targ.index()].add(Piece::QUEEN());
-			}
+			pats.add(turn, Piece::QUEEN(), AttackFields::queenTargs(queenPos, blockers));
+			//FOR_POS(targ, AttackFields::queenTargs(queenPos, blockers)) {
+			//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::QUEEN());
+			//}
 		}
 
 		const BitBoard MP_forward = Game::getPieces(turn, Piece::PAWN()).shiftForward(turn);
 		const BitBoard left = MP_forward.shiftLeft();
 		const BitBoard right = MP_forward.shiftRight();
-		const BitBoard both = left&right;
+		pats.add(turn, Piece::PAWN(), left);
+		pats.add(turn, Piece::PAWN(), right);
+		//const BitBoard both = left&right;
 
-		FOR_POS(targ, (left | right) &~both) {
-			pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN());
-		}
+		//FOR_POS(targ, (left | right) &~both) {
+		//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN());
+		//}
 
-		FOR_POS(targ, both) {
-			pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN(), 2);
-		}
+		//FOR_POS(targ, both) {
+		//	pats.patterns[turn.asIndex()][targ.index()].add(Piece::PAWN(), 2);
+		//}
 	}
 }
 

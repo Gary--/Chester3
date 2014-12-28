@@ -359,6 +359,10 @@ Piece AttackPattern::getSmallestPiece() const {
 	return smallest[value];
 }
 
+int AttackPattern::pieceBitLocation(Piece piece) {
+	return ind(piece) + 2;
+}
+
 
 
 #pragma endregion
