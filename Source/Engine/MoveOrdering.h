@@ -12,9 +12,19 @@ public:
 	OrderedMoveType type;
 
 	OrderedMove(Move move, int rating, OrderedMoveType type);
-
-	
 private:
+};
+
+class OrderedMoveIterator {
+public:
+	OrderedMove operator*() const;
+	void operator++();
+	bool operator!=(const OrderedMoveIterator& other) const;
+
+private:
+	int i;
+	explicit OrderedMoveIterator(int i);
+	friend class MoveOrdering;
 };
 
 bool operator<(const OrderedMove& a, const OrderedMove& b);
@@ -23,19 +33,21 @@ class MoveOrdering {
 public:
 	// Construct only when Game state is matching the generator.
 	MoveOrdering(Search_Parameters params, GameMoveIteratorGenerator gen);
-	explicit MoveOrdering(Search_Parameters params);
 
-	std::vector<OrderedMove>::const_iterator begin() const;
-	std::vector<OrderedMove>::const_iterator end() const;
+	OrderedMoveIterator begin() const;
+	OrderedMoveIterator end() const;
 	
-
+	void dispose();
 
 	MoveOrdering();
 	~MoveOrdering();
 
 private:
-	std::vector<OrderedMove> moves;
+	friend class OrderedMoveIterator;
 
+	// How many moves this is.
+	int n;
+	static std::vector<OrderedMove> moves;
 	static OrderedMove order(Search_Parameters params, Move move);
 };
 

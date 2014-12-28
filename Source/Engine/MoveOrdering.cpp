@@ -18,30 +18,29 @@ bool operator<(const OrderedMove& a, const OrderedMove& b) {
 
 
 // ============= MOVE ORDERING
-MoveOrdering::MoveOrdering() {}
+
+std::vector<OrderedMove> MoveOrdering::moves;
 
 
-namespace {
-	
+MoveOrdering::MoveOrdering() {
+	n = 0;
 }
+
 MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGenerator gen) {
+	n = 0;
 	for (Move move : gen) {
+		n++;
 		moves.push_back(order(params, move));
 	}
-	sort(moves.begin(), moves.end());
-
-	//cout << "===" << endl;
-	//cout << Game::getFEN() << endl;
-	//for (auto move : moves) {
-	//	cout << move.move.str() << ' ' << move.rating << endl;
-
-
-	//}
-	//system("pause");
+	sort(moves.end() - n, moves.end());
 }
 
 
 MoveOrdering::~MoveOrdering() {}
+
+void MoveOrdering::dispose() {
+	moves._Pop_back_n(n);
+}
 
 
 OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) {
@@ -92,13 +91,31 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 	return OrderedMove(move, rating, OrderedMoveType::NONE);
 }
 
-std::vector<OrderedMove>::const_iterator MoveOrdering::begin() const {
-	return moves.begin();
+OrderedMoveIterator MoveOrdering::begin() const {
+	return OrderedMoveIterator((int)moves.size() - n);
 }
 
-std::vector<OrderedMove>::const_iterator MoveOrdering::end() const {
-	return moves.end();
+OrderedMoveIterator MoveOrdering::end() const {
+	return OrderedMoveIterator((int)moves.size());
 }
 
+
+
+// ==== Iterator
+
+OrderedMoveIterator::OrderedMoveIterator(int i) : i(i) {}
+
+
+OrderedMove OrderedMoveIterator::operator*() const {
+	return MoveOrdering::moves[i];
+}
+
+void OrderedMoveIterator::operator++() {
+	i++;
+}
+
+bool OrderedMoveIterator::operator!=(const OrderedMoveIterator& other) const {
+	return i != other.i;
+}
 
 

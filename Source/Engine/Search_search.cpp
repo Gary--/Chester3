@@ -134,12 +134,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				Search_History::addHistory(p, move);
 			}
 
-			return  result;
+			break;
 		}
-
-		
 	}
-
+	orderedMoves.dispose();
 	
 	return  result;
 }
