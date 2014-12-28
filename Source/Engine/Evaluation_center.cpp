@@ -34,9 +34,7 @@ namespace {
 
 		return Controller::NEUTRAL;
 	}
-}
 
-int Evaluation::center() {
 	const uint8_t squareValue[64] = {
 		0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0,
@@ -47,8 +45,12 @@ int Evaluation::center() {
 		0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0,
 	};
+}
 
-	const BitBoard range(0x00007E7E7E7E0000ULL);
+int Evaluation::center() {
+
+
+	const BitBoard range(0x00007E7E7E7E0000ULL);//None zero Sqrs in squareValue
 	if (Game::getPieces(Turn::WHITE(), Piece::PAWN()).count() < 4 ||
 		Game::getPieces(Turn::BLACK(), Piece::PAWN()).count() < 4) {
 		return 0;

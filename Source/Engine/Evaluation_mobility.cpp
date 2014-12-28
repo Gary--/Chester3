@@ -35,19 +35,20 @@ namespace {
 	};
 
 
-
+	const int knightOutpostValue[64] = {
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 10, 15, 20, 20, 15, 10, 0,
+		0, 8, 12, 15, 15, 12, 8, 0,
+		0, 5, 8, 10, 10, 8, 5, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	};
+	const int knightMinMobilePenalty[9] = { 26, 10, 5, 0, 0, 0, 0, 0, 0 };
 	MobilityScore knightMobilityScore(const Turn turn) {
-		const int knightOutpostValue[64] = {
-			0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0,
-			0,10,15,20,20,15,10, 0,
-			0, 8,12,15,15,12, 8, 0,
-			0, 5, 8,10,10, 8, 5, 0,
-			0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0,
-		};
-		const int knightMinMobilePenalty[9] = { 26, 10, 5, 0, 0, 0, 0, 0, 0 };
+
+		
 		const BitBoard twoPointKnightSqrs = BitBoard(0x007E424242427E00ULL);
 		const BitBoard fourPointKnightSqrs = BitBoard(0x00003C3C3C3C0000ULL);
 
@@ -81,6 +82,20 @@ namespace {
 		return res;
 	}
 
+	const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+	//                                            .  P  N  B  R  Q  K  p  n  b  r  q  k
+	const uint8_t badBishopBlockerPenalty[13] = { 1, 4, 1, 1, 1, 1, 1, 4, 2, 2, 1, 1, 1 };//penalty based on piece in front of blocking pawn
+	const uint8_t badBishopPositionPenalty[64] = {
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 0, 0, 0,
+		0, 0, 1, 2, 2, 1, 0, 0,
+		0, 1, 2, 2, 2, 2, 1, 0,
+		0, 2, 2, 2, 2, 2, 2, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	};
 	MobilityScore bishopMobilityScore(const Turn turn) {
 		const Turn other = !turn;
 
@@ -106,7 +121,6 @@ namespace {
 
 			res.relative += ctrl.count();
 			{ // minimum mobility
-				const int bishopMinMobilePenalty[] = { 24, 24, 16, 12, 9, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 				res.exact -= bishopMinMobilePenalty[ctrl.count()];
 			}
 
@@ -132,18 +146,7 @@ namespace {
 
 			// bad bishop
 			FOR_POS(pawnPos, blockingPawns) {
-				//                                            .  P  N  B  R  Q  K  p  n  b  r  q  k
-				const uint8_t badBishopBlockerPenalty[13] = { 1, 4, 1, 1, 1, 1, 1, 4, 2, 2, 1, 1, 1 };//penalty based on piece in front of blocking pawn
-				const uint8_t badBishopPositionPenalty[64] = {
-					0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 1, 1, 0, 0, 0,
-					0, 0, 1, 2, 2, 1, 0, 0,
-					0, 1, 2, 2, 2, 2, 1, 0,
-					0, 2, 2, 2, 2, 2, 2, 0,
-					0, 0, 0, 0, 0, 0, 0, 0,
-				};
+
 
 				const Position frontPos = pawnPos.shiftForward(turn);
 				const Piece frontPiece = Game::getPieceAt(frontPos); //what is blocking the pawn
@@ -161,16 +164,17 @@ namespace {
 		return res;
 	}
 
+
+	const int rookConnectedValue[64] = {
+		15, 15, 15, 15, 15, 15, 15, 15,
+		25, 25, 25, 25, 25, 25, 25, 25,
+		4, 4, 6, 10, 10, 6, 4, 4,
+		0, 0, 2, 3, 3, 2, 0, 0,
+		0, 0, 2, 3, 3, 2, 0, 0,
+		0, 0, 2, 3, 3, 2, 0, 0,
+		0, 0, 2, 3, 3, 2, 0, 0,
+		0, 0, 2, 3, 3, 2, 0, 0, };
 	MobilityScore rookMobilityScore(const Turn turn) {
-		const int rookConnectedValue[64] = {
-			15, 15, 15, 15, 15, 15, 15, 15,
-			25, 25, 25, 25, 25, 25, 25, 25,
-			4, 4, 6, 10, 10, 6, 4, 4,
-			0, 0, 2, 3, 3, 2, 0, 0,
-			0, 0, 2, 3, 3, 2, 0, 0,
-			0, 0, 2, 3, 3, 2, 0, 0,
-			0, 0, 2, 3, 3, 2, 0, 0,
-			0, 0, 2, 3, 3, 2, 0, 0, };
 
 		const Turn other = !turn;
 
