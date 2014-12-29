@@ -10,6 +10,15 @@ Search_SearchResult Search_Transposition::addTransposition(Search_Parameters par
 	item.depth = params.depth;
 	item.hash = hash;
 	item.score = result.score;
+	item.bestMove = result.pv.move;
+	
+	if (item.score >= params.beta) {
+		item.type = TT_Entry_Type::LOWER_BOUND;
+	} else if (item.score <= params.alpha) {
+		item.type = TT_Entry_Type::UPPER_BOUND;
+	} else {
+		item.type = TT_Entry_Type::EXACT;
+	}
 
 	TT[hash%TTSize] = item;
 
@@ -19,7 +28,7 @@ Search_SearchResult Search_Transposition::addTransposition(Search_Parameters par
 TTItem Search_Transposition::getTransposition(Search_Parameters params) {
 	TTItem result = TT[Game::getHash()%TTSize];
 	if (result.hash != Game::getHash()) {
-		result.type = NodeType::UNKNOWN;
+		result.type = TT_Entry_Type::INVALID;
 	}
 
 	return result;

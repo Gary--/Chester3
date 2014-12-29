@@ -3,13 +3,14 @@
 #include "Search_SearchResult.h"
 #include "Search_Parameters.h"
 
+enum class TT_Entry_Type : char {EXACT, LOWER_BOUND,UPPER_BOUND, INVALID};
+
 struct TTItem {
 	uint64_t hash;
 	int score;
 	Move bestMove;
 	char depth;
-	NodeType type;
-
+	TT_Entry_Type type;
 };
 
 class Search_Transposition {

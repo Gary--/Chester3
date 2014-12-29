@@ -2,12 +2,6 @@
 #include "Move.h"
 #include "PV_Node.h"
 
-enum class NodeType : char {
-	PV,
-	FAIL_LOW,
-	FAIL_HIGH,
-	UNKNOWN,
-};
 
 // used internally within Search
 struct Search_SearchResult {
