@@ -9,9 +9,8 @@ void Search::synchronize() {
 
 
 void Search::searchMakeMove(const Move move) {
-	if (move == Move::NULL_MOVE()) {
-		nNullsMade++;
-	}
+	nNullsMade += move == Move::NULL_MOVE();
+	nChecks += Game::getCheck();
 
 	EvaluationManager::notifyMove(move, Game::getTurn());
 	Game::makeMove(move);
@@ -19,10 +18,11 @@ void Search::searchMakeMove(const Move move) {
 
 Move Search::searchUndoMove() {
 	const Move move = Game::undoMove();
-	if (move == Move::NULL_MOVE()) {
-		nNullsMade--;
-	}
-
 	EvaluationManager::notifyUndoMove(move, Game::getTurn());
+
+
+	nChecks -= Game::getCheck();
+	nNullsMade -= move == Move::NULL_MOVE();
+
 	return move;
 }

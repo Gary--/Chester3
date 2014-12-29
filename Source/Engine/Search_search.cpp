@@ -18,6 +18,11 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	newParams.alpha = alpha;
 	newParams.beta = beta;
 
+	// Check extension
+	if (EvaluationManager::getScore(1).getCheck() && nChecks>1) {
+		newParams.depth++;
+	}
+
 	if (isPv && previousParams.pv.next) {
 		newParams.pv = *previousParams.pv.next;
 	}

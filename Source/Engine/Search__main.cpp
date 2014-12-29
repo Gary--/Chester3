@@ -7,6 +7,8 @@ using namespace std;
 
 Search_SearchResult Search::searchResult;
 int Search::nNullsMade = 0;
+int Search::nChecks = 0;
+
 namespace {
 	const int windows[2] = { 50, 200};
 

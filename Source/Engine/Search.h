@@ -24,7 +24,7 @@ private:
 	static Search_SearchResult callSearch(Search_Parameters previousParams, int alpha, int beta, bool isPv);
 
 	static Search_SearchResult search(Search_Parameters params);
-
+	static int nChecks;
 
 	static Search_SearchResult nullMoveSearch(Search_Parameters params);
 
@@ -36,4 +36,6 @@ private:
 
 	static Search_SearchResult gameOverScore();
 };
+
+
 
