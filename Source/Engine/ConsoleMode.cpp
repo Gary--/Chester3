@@ -17,7 +17,7 @@ void ConsoleMode::run() {
 	Move move;
 	Turn me = Turn::WHITE();
 	while (Game::areMovesAvailable()) {
-		system("CLS");
+		
 		cout << "Last Move: " << move.str() << endl;
 		Display::displayText();
 
@@ -30,12 +30,16 @@ void ConsoleMode::run() {
 		cout << "Center: " << eval.getRelativeCenter(me) << endl;
 		cout << "Misc: " << eval.getMisc(me) << '/' << eval.getMisc(!me) << endl;
 
+		//system("CLS");
+		cout << endl << endl << endl << "===========" << endl;
 		if (Game::getTurn() == me) {
-			move = computerMove();
+			auto aiRes = computerMove();
+			cout << "Score: " << aiRes.score << endl;
+			move = aiRes.bestMove;
 		} else {
 			move = humanMove();
 		}
-
+		
 		Game::makeMove(move);
 	}
 }
@@ -72,7 +76,7 @@ Move ConsoleMode::humanMove() {
 	}
 }
 
-Move ConsoleMode::computerMove() {
+AI_SearchResult ConsoleMode::computerMove() {
 	AI_SearchConfiguration conf;
 	conf.maxDepth = 8;
 
@@ -81,6 +85,6 @@ Move ConsoleMode::computerMove() {
 
 	AI::stopSearch();
 
-	return AI::getSearchResult().bestMove;
+	return AI::getSearchResult();
 }
 
