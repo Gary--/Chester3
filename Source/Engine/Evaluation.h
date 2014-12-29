@@ -61,4 +61,5 @@ private:
 	};
 	static PassedPawnResult passedPawnEvaluation(Turn turn);
 
+	static int castlingRights(Turn turn);
 };

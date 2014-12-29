@@ -1,5 +1,6 @@
 #include "Evaluation.h"
 #include "Game.h"
+#include "AttackFields.h"
 
 namespace {
 	int bishopPairScore(const Turn turn) {
@@ -21,12 +22,28 @@ namespace {
 		}
 		return res;
 	}
+
+
+
+
+	
+}
+
+int Evaluation:: castlingRights(const Turn turn) {
+	if (Game::getCanCastle(turn, Side::LEFT) && (Game::getCanCastle(turn, Side::RIGHT))) {
+		return (int)(15 * (1-lateness()));
+	}
+	if (Game::getCanCastle(turn, Side::LEFT) || (Game::getCanCastle(turn, Side::RIGHT))) {
+		return (int)(10 * (1 - lateness()));
+	}
+
+	return 0;
 }
 
 int Evaluation::misc(Turn turn) {
 	int res = 0;
 	res += bishopPairScore(turn);
-
+	res += castlingRights(turn);
 	return res;
 }
 
