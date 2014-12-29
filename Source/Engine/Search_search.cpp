@@ -19,7 +19,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	newParams.beta = beta;
 
 	// Check extension
-	if (EvaluationManager::getScore(1).getCheck() && nChecks>1) {
+	if (!previousParams.isQuiesce() && EvaluationManager::getScore(1).getCheck() && nChecks>1) {
 		newParams.depth++;
 	}
 
@@ -144,5 +144,6 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	}
 	orderedMoves.dispose();
 	
+	result.adjustForMateScore();
 	return  result;
 }

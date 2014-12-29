@@ -36,7 +36,7 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 		//cout << "Depth: " << depth << endl;
 		int alphaLvl = 0, betaLvl = 0;
 		if (depth > 1) {
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0;; ++i) {
 				params.alpha = bound(prevResult.score, -1, alphaLvl);
 				params.beta = bound(prevResult.score, +1, betaLvl);
 				//cout << params.alpha << ' ' << params.beta << endl;
@@ -50,6 +50,10 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 					break;
 				}
 
+				if (i >= 4) {
+					cout << "??? Somethin is wrong." << endl;
+					system("pause");
+				}
 			}
 
 		} else {
