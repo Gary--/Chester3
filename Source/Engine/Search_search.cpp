@@ -48,9 +48,9 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				const Turn turn = !Game::getTurn();
 
 				// How much Lazy might underestimate our score
-				int margin = 50 + prevScore.getOverall(turn) - prevScore.getSimple(turn);
+				int margin = 50 + prevScore.getOverall(turn) - prevScore.getRelativeSimple(turn);
 
-				if (EvaluationManager::getSimpleScore(turn) + margin <= -p.beta) {
+				if (EvaluationManager::getRelativeSimpleScore(turn) + margin <= -p.beta) {
 					result.score = p.beta;
 					return result;
 				}

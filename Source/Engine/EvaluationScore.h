@@ -15,14 +15,28 @@ struct EvaluationScore {
 	int getOverall(Turn perspective) const; // Sum of all the scores
 	double getLateness() const;// Portion of material remaining
 
-	// Methods marked relative means only 1 score is actually stored internally. Turn is just perspective
-	int getSimple(Turn turn) const; // The simple evaluation
+	// Lazy evaluation using only static material and piece-square
+	int getRelativeSimple(Turn perspective) const; // The simple evaluation
+
+	// Material score adjusted for lateness
 	int getRelativeMaterial(Turn perspective) const;
-	int getKingDanger(Turn turn) const;// Positive if turn's king is in danger
+
+	// Positive if turn's king is in danger
+	int getKingDanger(Turn turn) const;
+
+	// Control of the center squares
 	int getRelativeCenter(Turn perspective) const;
+
+	// Mobility of knights, bishops, rooks
 	int getRelativeMobility(Turn perspective) const;
+
+	// Pawn formation/structure, passed pawns
 	int getPawns(Turn turn) const;
+
+	// Misc
 	int getMisc(Turn turn) const;
+
+	// Is the turn playing in check?
 	bool getCheck() const;
 private:
 	EvaluationScore(bool _);

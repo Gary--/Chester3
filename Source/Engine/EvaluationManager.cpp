@@ -42,6 +42,6 @@ void EvaluationManager::calcScoreCurrent() {
 	}
 }
 
-int EvaluationManager::getSimpleScore(Turn turn) {
+int EvaluationManager::getRelativeSimpleScore(Turn turn) {
 	return SimpleEvaluation::all(turn) - SimpleEvaluation::all(!turn);
 }

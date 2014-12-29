@@ -62,8 +62,8 @@ double EvaluationScore::getLateness() const {
 	return lateness;
 }
 
-int EvaluationScore::getSimple(Turn turn) const {
-	return turn.isWhite() ? whiteSimple : blackSimple;
+int EvaluationScore::getRelativeSimple(Turn turn) const {
+	return turn.isWhite() ? (whiteSimple - blackSimple) : (blackSimple - whiteSimple);
 }
 
 int EvaluationScore::getRelativeMaterial(Turn perspective) const {
