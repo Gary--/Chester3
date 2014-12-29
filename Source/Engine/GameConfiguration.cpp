@@ -1,7 +1,7 @@
 #include "GameConfiguration.h"
 #include <sstream>
 #include "AttackFields.h"
-
+#include <regex>
 using namespace std;
 
 namespace {
@@ -436,68 +436,49 @@ Move GameConfiguration::getMoveUciString(std::string uciString) {
 	return Move::INVALID();
 }
 
-Move GameConfiguration::getMoveEpdString(std::string s) {
-	{
-		string toRemove("x+#-");
-		string ns;
-		for (char c : s) {
-			if (toRemove.find(c) == string::npos) {
-				ns += c;
-			}
-		}
-		s = ns;
+Move GameConfiguration::getMoveEpdString(const std::string s) {
+	const regex e("^(O-O-O|O-O)|([QKRBN]?)([abcdefgh]?)([12345678]?)(x?)([abcdefgh])([12345678])([QKRBN]?)(\\+|\\#)?$");
+
+	smatch match;
+	regex_match(s, match, e);
+
+	if (match.empty()) {
+		return Move::INVALID();
 	}
-	if (s == "OOO" || s == "OO") {
+
+	int i = 1;
+	
+	const string s_castle = match[i++];//(O-O-O|O-O)
+	const char c_piece = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([QKRBN]?)
+	const char c_colFrom = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([abcdefgh]?)
+	const char c_rowFrom = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([12345678]?)
+	i++;// (x?)
+	const char c_colTo = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([abcdefgh])
+	const char c_rowTo = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([12345678])
+	const char c_promoPiece = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([QKRBN]?)
+	i++;// (\+|\#)?
+
+
+	if (s_castle.size()) {
 		for (Move move : getMoves()) {
-			if ((s == "OOO" && move.getType() == MoveType::CASTLE_LEFT) ||
-				(s == "OO" && move.getType() == MoveType::CASTLE_RIGHT)) {
+			if ((s_castle == "O-O-O" && move.getType() == MoveType::CASTLE_LEFT) ||
+				(s_castle == "O-O" && move.getType() == MoveType::CASTLE_RIGHT)) {
 				return move;
 			}
-
 		}
 
 		return Move::INVALID();
 	}
 
-	if (s.size() < 2) {
-		return Move::INVALID();
-	}
+	const int any = -1;
+	const Piece piece = c_piece ? Piece::fromChar(c_piece) : Piece::PAWN();
+	const int colFrom = ('a' <= c_colFrom && c_colFrom <= 'h') ? c_colFrom - 'a' : any;
+	const int rowFrom = ('1' <= c_rowFrom && c_rowFrom <= '8') ? '8' - c_rowFrom : any;
+	const int colTo = c_colTo - 'a';
+	const int rowTo = '8' - c_rowTo;
+	const Position to(rowTo, colTo);
 
-	Piece promo = Piece::fromChar(s.back());
-	if (promo != Piece::INVALID()) {
-		s = s.substr(0, s.size() - 2);
-	}
-
-	if (s.size() < 2) {
-		return Move::INVALID();
-	}
-
-	Piece piece = Piece::fromChar(s[0]);
-	if (piece == Piece::INVALID()) {
-		piece = Piece::PAWN();
-	} else {
-		s = s.substr(1);
-	}
-
-
-
-	if (s.size() < 2) {
-		return Move::INVALID();
-	}
-
-	Position to(s.substr(s.size() - 2));
-	s = s.substr(0, s.size() - 2);
-
-	int row = -1, col = -1;
-	for (char c : s) {
-		if ('a' <= c && c <= 'h') {
-			col = c - 'a';
-		}
-
-		if ('1' <= c && c <= '8') {
-			row = '8' - c;
-		}
-	}
+	const Piece promo = c_promoPiece ? Piece::fromChar(c_promoPiece) : Piece::INVALID();
 
 	int numMatching = 0;
 	Move result = Move::INVALID();
@@ -505,17 +486,99 @@ Move GameConfiguration::getMoveEpdString(std::string s) {
 		if (move.getPiece() == piece &&
 			move.getTo() == to &&
 			(!move.isPromotion() || move.promotionPiece() == promo) &&
-			(row == -1 || move.getFrom().row() == row) &&
-			(col == -1 || move.getFrom().col() == col)) {
+			(rowFrom == any || move.getFrom().row() == rowFrom) &&
+			(colFrom == any || move.getFrom().col() == colFrom)) {
 			result = move;
 			numMatching++;
 		}
 	}
+
+	// String is ambiguous.
 	if (numMatching > 1) {
 		return Move::INVALID();
 	}
 
 	return result;
+	//{
+	//	string toRemove("x+#-");
+	//	string ns;
+	//	for (char c : s) {
+	//		if (toRemove.find(c) == string::npos) {
+	//			ns += c;
+	//		}
+	//	}
+	//	s = ns;
+	//}
+	//if (s == "OOO" || s == "OO") {
+	//	for (Move move : getMoves()) {
+	//		if ((s == "OOO" && move.getType() == MoveType::CASTLE_LEFT) ||
+	//			(s == "OO" && move.getType() == MoveType::CASTLE_RIGHT)) {
+	//			return move;
+	//		}
+
+	//	}
+
+	//	return Move::INVALID();
+	//}
+
+	//if (s.size() < 2) {
+	//	return Move::INVALID();
+	//}
+
+	//Piece promo = Piece::fromChar(s.back());
+	//if (promo != Piece::INVALID()) {
+	//	s = s.substr(0, s.size() - 2);
+	//}
+
+	//if (s.size() < 2) {
+	//	return Move::INVALID();
+	//}
+
+	//Piece piece = Piece::INVALID();
+	//
+	//if (s.size() > 2) {
+	//	piece = Piece::fromChar(s[0]);
+	//	s = s.substr(1);
+	//}
+	//if (piece == Piece::INVALID()) {
+	//	piece == Piece::PAWN();
+	//}
+
+	//if (s.size() < 2) {
+	//	return Move::INVALID();
+	//}
+
+	//Position to(s.substr(s.size() - 2));
+	//s = s.substr(0, s.size() - 2);
+
+	//int row = -1, col = -1;
+	//for (char c : s) {
+	//	if ('a' <= c && c <= 'h') {
+	//		col = c - 'a';
+	//	}
+
+	//	if ('1' <= c && c <= '8') {
+	//		row = '8' - c;
+	//	}
+	//}
+
+	//int numMatching = 0;
+	//Move result = Move::INVALID();
+	//for (Move move : getMoves()) {
+	//	if (move.getPiece() == piece &&
+	//		move.getTo() == to &&
+	//		(!move.isPromotion() || move.promotionPiece() == promo) &&
+	//		(row == -1 || move.getFrom().row() == row) &&
+	//		(col == -1 || move.getFrom().col() == col)) {
+	//		result = move;
+	//		numMatching++;
+	//	}
+	//}
+	//if (numMatching > 1) {
+	//	return Move::INVALID();
+	//}
+
+	//return result;
 }
 
 const GameConfiguration GameConfiguration::INITIAL = GameConfiguration("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

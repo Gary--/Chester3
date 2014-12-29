@@ -41,7 +41,9 @@ void ExtendedPositionDescription::processOperation(std::string str) {
 
 	if (opcode == "bm") {
 		string moveStr;
-		ss >> moveStr;
-		bestMove = gameConf.getMoveEpdString(moveStr);
+		while (ss >> moveStr) {
+			Move move = gameConf.getMoveEpdString(moveStr);
+			bestMoves.push_back(move);
+		}
 	}
 }

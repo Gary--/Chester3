@@ -5,6 +5,7 @@
 #include "Game.h"
 #include <ctime>
 #include "Search_Counter.h"
+#include <algorithm>
 using namespace std;
 
 
@@ -23,11 +24,6 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 			continue;
 		}
 
-		if (epd.bestMove == Move::INVALID()) {
-			cout << "Invalid best move." << endl;
-			continue;
-		}
-
 		
 
 		AI_SearchConfiguration searchConf;
@@ -39,14 +35,18 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		auto result = AI::getSearchResult();
 
 		total++;
-		if (result.bestMove == epd.bestMove) {
+		if (std::find(epd.bestMoves.begin(),epd.bestMoves.end(),result.bestMove)!=epd.bestMoves.end() ) {
 			cout << "Correct" << endl;
 			correct++;
 		} else {
 			cout << "Incorrect" << endl;
 			cout << line << endl;
-			cout << "Calculated Score: " << result.score << endl;
-			cout << "Expected Move:" << epd.bestMove.str() << "     Move: " << result.bestMove.str() << endl;
+			cout << "Calculated Score: " << result.score << "  Computed move: " << result.bestMove.str() << endl;
+			cout << "Expected Move:  ";
+			for (Move bestMove : epd.bestMoves) {
+				cout << bestMove.str() << ", ";
+			}
+			cout << endl;
 		}
 	}
 

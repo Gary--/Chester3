@@ -14,7 +14,7 @@ public:
 
 	GameConfiguration getGameConfiguration() const;
 
-	Move bestMove;
+	std::vector<Move> bestMoves;
 	GameConfiguration gameConf;
 private:
 

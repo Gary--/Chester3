@@ -21,8 +21,8 @@ public:
 		string epdString = "1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - bm Qd1+; id \"BK.01\";";
 		ExtendedPositionDescription epd(epdString);
 
-		Assert::AreNotEqual(epd.bestMove, Move::INVALID());
-		Assert::AreEqual(epd.gameConf.getMoveEpdString("Qd1+"), epd.bestMove);
+		Assert::AreEqual(1, (int)epd.bestMoves.size());
+		Assert::AreEqual(epd.gameConf.getMoveEpdString("Qd1+"), epd.bestMoves[0]);
 	}
 
 	};
