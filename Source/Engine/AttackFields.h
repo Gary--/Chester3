@@ -51,6 +51,9 @@ public:
 	// If a pawn is here, it can move forward 2 squares.
 	static BitBoard pawnJumpZone(Turn turn);
 
+	// The non-pawn pieces start here.
+	static BitBoard backRow(Turn turn);
+
 	// Where are pawn moves to when making an EP
 	static Position enpeasentTo(Turn turn, int enpeasentColumn);
 

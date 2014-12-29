@@ -46,26 +46,26 @@ void AttackFields::initKingKnightPawn() {
 
 }
 
-BitBoard AttackFields::kingTargs(Position position) {
+BitBoard AttackFields::kingTargs(const Position position) {
 	return kingTargsArr[position.index()];
 }
 
-BitBoard AttackFields::knightTargs(Position position) {
+BitBoard AttackFields::knightTargs(const Position position) {
 	return knightTargsArr[position.index()];
 }
 
-BitBoard AttackFields::pawnTargs(Position position,Turn turn ) {
+BitBoard AttackFields::pawnTargs(const Position position, const Turn turn) {
 #pragma warning(disable : 4800)
 	return pawnTargsArr[turn.asIndex()][position.index()];
 #pragma warning(default : 4800)
 }
 
-BitBoard AttackFields::pawnTargs(BitBoard pawns, Turn turn) {
+BitBoard AttackFields::pawnTargs(const BitBoard pawns, const Turn turn) {
 	BitBoard forward = pawns.shiftForward(turn);
 	return forward.shiftLeft() | forward.shiftRight();
 }
 
-BitBoard AttackFields::knightTargs(BitBoard knights) {
+BitBoard AttackFields::knightTargs(const BitBoard knights) {
 	BitBoard beside = knights.shiftLeft() | knights.shiftRight();
 	BitBoard beside2 = knights.shiftLeft().shiftLeft() | knights.shiftRight().shiftRight();
 
@@ -74,18 +74,22 @@ BitBoard AttackFields::knightTargs(BitBoard knights) {
 }
 
 // If a pawn moves from here, it will be promoted
-BitBoard AttackFields::pawnPromoZone(Turn turn) {
+BitBoard AttackFields::pawnPromoZone(const Turn turn) {
 	return BitBoard::rowBits(turn.isWhite() ? 1 : 6);
 }
 
 // If a pawn is here, it can move forward 2 squares.
-BitBoard AttackFields::pawnJumpZone(Turn turn) {
+BitBoard AttackFields::pawnJumpZone(const Turn turn) {
 	return pawnPromoZone(!turn);
 }
 
-Position AttackFields::enpeasentTo(Turn turn, int enpeasentColumn) {
+BitBoard AttackFields::backRow(const Turn turn) {
+	return turn.isWhite() ? BitBoard::rowBits(7) : BitBoard::rowBits(0);
+}
+
+Position AttackFields::enpeasentTo(const Turn turn, const  int enpeasentColumn) {
 	return Position(turn.isWhite() ? 2 : 5, enpeasentColumn);
 }
-Position AttackFields::enpeasentCaptured(Turn turn, int enpeasentColumn) {
+Position AttackFields::enpeasentCaptured(const Turn turn, const  int enpeasentColumn) {
 	return Position(turn.isWhite() ? 3 : 4, enpeasentColumn);
 }
