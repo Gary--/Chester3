@@ -7,6 +7,7 @@
 #include "StaticExchange.h"
 #include "Search_History.h"
 #include "Search_Transposition.h"
+#include "Search.h"
 using namespace std;
 
 OrderedMove::OrderedMove(Move move, int rating, OrderedMoveType type) :move(move), rating(rating), type(type) {}
@@ -37,11 +38,31 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 		}
 	}
 
+
+
+	bool isGoodMove = TTbestMove!=Move::INVALID();
 	for (Move move : gen) {
 		n++;
 		OrderedMove orderedMove = order(params, TTbestMove, move);
 		moves.push_back(orderedMove);
+
+		isGoodMove |= orderedMove.type >= OrderedMoveType::WINNING_CAPTURE;
 	}
+
+	if (!isGoodMove && params.depth>2) {
+		moves._Pop_back_n(n);
+
+		Search_Parameters reduced = params;
+		reduced.depth -= 2;
+		Search::search(reduced);
+
+		for (Move move : gen) {
+			OrderedMove orderedMove = order(params, TTbestMove, move);
+			moves.push_back(orderedMove);
+		}
+	}
+	
+
 	sort(moves.end() - n, moves.end());
 }
 

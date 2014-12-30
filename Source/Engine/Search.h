@@ -18,6 +18,8 @@ public:
 	static int nNullsMade;
 
 private:
+	friend class MoveOrdering;
+
 	static void synchronize();
 
 	// Called after already made move
