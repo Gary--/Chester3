@@ -44,7 +44,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	}
 
 
-	{
+	if (Game::getRepeatCount()==1) {
 		TTItem ttRes = Search_Transposition::getTransposition(p);
 		if (ttRes.depth >= p.depth) {
 			if (ttRes.type == TT_Entry_Type::LOWER_BOUND || ttRes.type == TT_Entry_Type::EXACT) {
