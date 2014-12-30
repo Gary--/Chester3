@@ -10,6 +10,9 @@
 #include "Search_Transposition.h"
 #include "Search_Counter.h"
 #include "Evaluation.h"
+#include <stdlib.h>
+#include "StaticExchange.h"
+#include "AttackFields.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,bool isPv) {
@@ -93,7 +96,40 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			
 		} while (0);
 
-			// Try a full eval standpat
+		// Do we want to try quiesce at all?
+		if (p.isQuiesce() && !Game::getCheck() &&!wasInCheck) {
+			const Turn turn = Game::getTurn();
+			AttackMap::precompute();
+			const int curFullScore = EvaluationManager::getScore().getOverall(turn);
+			if (curFullScore - 900 >= p.beta) {
+				result.score = p.beta;
+				return result;
+			}
+
+			int margin = 300;
+			int maxHangingVal = -1;
+			for (Move move : Game::getTacticalMoves()) {
+				maxHangingVal = max(maxHangingVal, 100*StaticExchange::materialChange(move));
+			}
+			margin += maxHangingVal;
+
+			const BitBoard theirPromoZone = AttackFields::pawnPromoZone(!turn);
+			const BitBoard TP = Game::getPieces(!turn, Piece::PAWN());
+			const BitBoard ALL = Game::getAllPieces();
+			const BitBoard theirPromotablePawns = (TP&theirPromoZone).shiftForward(!turn)&~ALL;
+			if (theirPromotablePawns.isNotEmpty()) {
+				margin += 600;
+			}
+
+			
+			if (curFullScore + margin < p.alpha) {
+				return result;
+			}
+
+
+		}
+
+		// Try a full eval standpat
 		if (p.isQuiesce()) {
 			int standPat = -Search_SearchResult::MATE_SCORE;
 			if (!Game::getCheck()) { // need to check for hanging pieces
@@ -104,25 +140,20 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			if (result.score >= p.beta) {
 				return result;
 			}
-
-
-		
 		}
 
 	}
 
-	
+
+	AttackMap::precompute();
+	EvaluationManager::calcScoreCurrent();
+
 	if (!p.isQuiesce()){
 		const Search_SearchResult nullMoveResult = nullMoveSearch(p);
 		if (nullMoveResult.score >= p.beta) {
 			return nullMoveResult;
 		}
 	}
-
-	
-
-	AttackMap::precompute();
-	EvaluationManager::calcScoreCurrent();
 
 	MoveOrdering orderedMoves = MoveOrdering(p, (!p.isQuiesce() || Game::getCheck()) ? Game::getAllMoves() : Game::getTacticalMoves());
 

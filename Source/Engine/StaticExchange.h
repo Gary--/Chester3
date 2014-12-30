@@ -13,8 +13,10 @@ public:
 	// that can attack it.
 	static int attackCostMin(AttackPattern attackers, AttackPattern defenders);
 
-	
+	// In Pawns
 	static int materialChange(Move move);
+
+	// In Pawns
 	static int PieceValue(Piece piece);
 private:
 	

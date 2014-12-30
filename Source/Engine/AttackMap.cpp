@@ -116,7 +116,7 @@ AttackPattern AttackMap::getAttackPatternImpl(const Turn turn, const  Position p
 }
 
 void AttackMap::precompute() {
-	if (savedHash == Game::getHash()) {
+	if (savedHash == Game::getHash() || savedHash == ~Game::getHash()) {
 		return;
 	}
 	savedHash = Game::getHash();

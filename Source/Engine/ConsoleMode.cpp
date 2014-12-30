@@ -13,7 +13,7 @@ using namespace std;
 
 
 void ConsoleMode::run() {
-	Game::configure(GameConfiguration::INITIAL);
+	Game::configure(GameConfiguration("rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -"));
 	Move move;
 	Turn me = Turn::WHITE();
 	while (Game::areMovesAvailable()) {
@@ -78,7 +78,7 @@ Move ConsoleMode::humanMove() {
 
 AI_SearchResult ConsoleMode::computerMove() {
 	AI_SearchConfiguration conf;
-	conf.maxDepth = 8;
+	conf.maxDepth = 9;
 
 	AI::configureSearch(conf);
 	AI::startSearch();
