@@ -74,7 +74,9 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 		}
 		prevResult = searchResult;
 
-
+		if (searchResult.isMateScore()) {
+			break;
+		}
 		
 	}
 
