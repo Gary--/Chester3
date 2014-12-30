@@ -27,6 +27,7 @@ private:
 
 	static Search_SearchResult search(Search_Parameters params);
 	static int nChecks;
+	static int reduction1;
 
 	static Search_SearchResult nullMoveSearch(Search_Parameters params);
 

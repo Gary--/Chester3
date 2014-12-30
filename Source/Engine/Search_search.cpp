@@ -15,23 +15,48 @@
 #include "AttackFields.h"
 using namespace std;
 
+
+
+namespace {
+	int reduction1_margin[] = { 0, 0, 0, 500, 500, 700, 700, 900,
+		900, 1500 };
+}
+
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,bool isPv) {
+	const Move move = Game::getPreviousMove();
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
 	newParams.ply = previousParams.ply + 1;
 	newParams.alpha = alpha;
 	newParams.beta = beta;
 
+	if (isPv && previousParams.pv.next) {
+		newParams.pv = *previousParams.pv.next;
+	}
+
 	// Check extension
 	if (!previousParams.isQuiesce() && EvaluationManager::getScore(1).getCheck() && nChecks>1) {
 		newParams.depth++;
 	}
 
-	if (isPv && previousParams.pv.next) {
-		newParams.pv = *previousParams.pv.next;
+	bool doReduction1 = false;
+	if (!reduction1 && !newParams.isQuiesce() && !move.isTactical() && !Game::getCheck()) {
+		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
+		const Turn turn = !Game::getTurn();
+		if (-newParams.beta >  EvaluationManager::getRelativeSimpleScore(turn) + margin) {
+			doReduction1 = true;
+			newParams.depth--;
+		}
 	}
 
-	return search(newParams);
+	const auto result = search(newParams);
+
+
+	if (doReduction1) {
+		reduction1 = false;
+	}
+
+	return result;
 }
 
 Search_SearchResult Search::search(const Search_Parameters p) {
