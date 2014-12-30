@@ -46,21 +46,21 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 		OrderedMove orderedMove = order(params, TTbestMove, move);
 		moves.push_back(orderedMove);
 
-		isGoodMove |= orderedMove.type >= OrderedMoveType::WINNING_CAPTURE;
+		isGoodMove |= orderedMove.type <= OrderedMoveType::WINNING_CAPTURE;
 	}
 
-	//if (!isGoodMove && params.depth>2) {
-	//	moves._Pop_back_n(n);
+	if (!isGoodMove && params.depth>2) {
+		moves._Pop_back_n(n);
 
-	//	Search_Parameters reduced = params;
-	//	reduced.depth -= 2;
-	//	Search::search(reduced);
+		Search_Parameters reduced = params;
+		reduced.depth -= 2;
+		TTbestMove = Search::search(reduced).pv.move;
 
-	//	for (Move move : gen) {
-	//		OrderedMove orderedMove = order(params, TTbestMove, move);
-	//		moves.push_back(orderedMove);
-	//	}
-	//}
+		for (Move move : gen) {
+			OrderedMove orderedMove = order(params, TTbestMove, move);
+			moves.push_back(orderedMove);
+		}
+	}
 	
 
 	sort(moves.end() - n, moves.end());
