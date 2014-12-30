@@ -87,7 +87,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			const int curLazy = EvaluationManager::getRelativeSimpleScore(turn);
 			const int minEstScore = curLazy + margin;
 			if (minEstScore <= -p.beta) {
-				result.score = p.wasQuiesce() ? p.beta : curLazy;
+				result.score = p.beta;
 				return result;
 			}
 			
