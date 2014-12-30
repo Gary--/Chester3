@@ -48,6 +48,6 @@ private:
 	// How many moves this is.
 	int n;
 	static std::vector<OrderedMove> moves;
-	static OrderedMove order(Search_Parameters params, Move move);
+	static OrderedMove order(Search_Parameters params, Move TTbestMove, Move move);
 };
 

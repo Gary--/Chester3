@@ -28,9 +28,18 @@ MoveOrdering::MoveOrdering() {
 
 MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGenerator gen) {
 	n = 0;
+
+	Move TTbestMove = Move::INVALID();
+	{
+		TTItem ttItem = Search_Transposition::getTransposition(params);
+		if (ttItem.type != TT_Entry_Type::INVALID) {
+			TTbestMove = ttItem.bestMove;
+		}
+	}
+
 	for (Move move : gen) {
 		n++;
-		OrderedMove orderedMove = order(params, move);
+		OrderedMove orderedMove = order(params, TTbestMove, move);
 		moves.push_back(orderedMove);
 	}
 	sort(moves.end() - n, moves.end());
@@ -44,7 +53,7 @@ void MoveOrdering::dispose() {
 }
 
 
-OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) {
+OrderedMove MoveOrdering::order(Search_Parameters params, Move TTbestMove,Move move) {
 	int rating = 0;
 	OrderedMoveType type = OrderedMoveType::NONE;
 	
@@ -54,13 +63,10 @@ OrderedMove MoveOrdering::order(const Search_Parameters params,const Move move) 
 		//cout << "PV" << endl;
 	}
 
-	//if (type == OrderedMoveType::NONE) {
-	//	TTItem ttItem = Search_Transposition::getTransposition(params);
-	//	if (ttItem.type!= NodeType::UNKNOWN && move == ttItem.bestMove) {
-	//		rating = 59999;
-	//		type = OrderedMoveType::BEST_MOVE;
-	//	}
-	//}
+	if (type == OrderedMoveType::NONE && TTbestMove==move) {
+		type = OrderedMoveType::BEST_MOVE;
+		rating = 59999;
+	}
 
 	if (type == OrderedMoveType::NONE && move.isTactical()) {
 		int see = AttackMap::SEE(move);

@@ -43,6 +43,31 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	}
 
 
+	{
+		TTItem ttRes = Search_Transposition::getTransposition(p);
+		if (ttRes.depth >= p.depth) {
+			if (ttRes.type == TT_Entry_Type::LOWER_BOUND || ttRes.type == TT_Entry_Type::EXACT) {
+				result.score = max(result.score, ttRes.score);
+				result.pv.move = ttRes.bestMove;
+			}
+
+			if (ttRes.type == TT_Entry_Type::EXACT && p.beta > p.alpha+1) {
+				return result;
+			}
+
+			if (ttRes.type == TT_Entry_Type::UPPER_BOUND && ttRes.score <= p.alpha) {
+				return result;
+			}
+
+			if (result.score >= p.beta) {
+				return result;
+			}
+		}
+	}
+
+
+
+
 	if (p.isQuiesce()){
 
 		// Try a lazy standpat
@@ -119,7 +144,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		if (useNullWindow && (-moveResult.score > result.score) && (-moveResult.score < p.beta)) {
 			Search_Counter::researches++;
 			searchMakeMove(move);
-			moveResult = callSearch(p, -p.beta, moveResult.score, i == 0);
+			moveResult = callSearch(p, -p.beta, -result.score, i == 0);
 			searchUndoMove();
 		}
 
@@ -145,5 +170,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	orderedMoves.dispose();
 	
 	result.adjustForMateScore();
+
+	if (!p.isQuiesce()) {
+		Search_Transposition::addTransposition(p, result);
+	}
+	
 	return  result;
 }
