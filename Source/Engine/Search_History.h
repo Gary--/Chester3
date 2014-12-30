@@ -10,7 +10,7 @@ public:
 	static int getHistory(Move move);
 
 private:
-	static void halve();
+	static void halve(Turn turn);
 
 	const static int MAX_HISTORY = 2000;
 	static int history[2][7][64];

@@ -39,7 +39,7 @@ void Search_History::addHistory(const Search_Parameters params,const Move goodMo
 	}
 
 	if (needHalve) {
-		halve();
+		halve(Game::getTurn());
 	}
 }
 
@@ -47,13 +47,14 @@ int Search_History::getHistory(const Move move) {
 	return history[Game::getTurn().asIndex()][move.getPiece().asIndex()][move.getTo().index()];
 }
 
-void Search_History::halve() {
-	FOR_TURN(turn) {
-		FOR_PIECE_ALL(piece) {
-			FOR_POSITION_64(pos) {
-				history[turn.asIndex()][piece.asIndex()][pos.index()] /= 2;
-			}
+void Search_History::halve(const Turn turn)
+{
+
+	FOR_PIECE_ALL(piece) {
+		FOR_POSITION_64(pos) {
+			history[turn.asIndex()][piece.asIndex()][pos.index()] /= 2;
 		}
 	}
+	
 }
 
