@@ -9,8 +9,9 @@ struct Search_SearchResult {
 	PV_Node pv;
 	Search_SearchResult();
 	
-	static const int MATE_SCORE = 100000;
+	static const int MATE_SCORE = 1000000;
 
 	// If we have a mate score, reduce it by 1. This will make faster mates more favourable.
 	void adjustForMateScore();
+	bool isMateScore() const;
 };

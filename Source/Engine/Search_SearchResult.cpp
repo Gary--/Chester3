@@ -9,7 +9,11 @@ Search_SearchResult::Search_SearchResult() {
 }
 
 void Search_SearchResult::adjustForMateScore() {
-	if (score > MATE_SCORE - 10000) {
+	if (score > MATE_SCORE - 100000) {
 		score--;
 	}
+}
+
+bool Search_SearchResult::isMateScore() const {
+	return score > MATE_SCORE - 100000 || score < -MATE_SCORE + 100000;
 }
