@@ -13,3 +13,7 @@ Search_Parameters::Search_Parameters() {
 bool Search_Parameters::isQuiesce() const {
 	return depth <= 0;
 }
+
+bool Search_Parameters::wasQuiesce() const {
+	return depth < 0;
+}

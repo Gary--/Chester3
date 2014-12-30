@@ -6,7 +6,7 @@ class Search_Parameters {
 public:
 	Search_Parameters();
 	bool isQuiesce() const;
-
+	bool wasQuiesce() const;
 	int alpha, beta;
 	int ply;
 
