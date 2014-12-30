@@ -9,6 +9,7 @@
 #include "Search_History.h"
 #include "Search_Transposition.h"
 #include "Search_Counter.h"
+#include "Evaluation.h"
 using namespace std;
 
 Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,bool isPv) {
@@ -68,27 +69,32 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 
 
-	if (p.isQuiesce()){
+	if (p.ply > 0){
+		const auto prevScore = EvaluationManager::getScore(1);
+		const bool wasInCheck = prevScore.getCheck();
 
-		// Try a lazy standpat
-		{
-			const auto prevScore = EvaluationManager::getScore(1);
-			const bool wasInCheck = prevScore.getCheck();
-			if (!wasInCheck && !Game::getCheck()) {
-				const Turn turn = !Game::getTurn();
 
-				// How much Lazy might underestimate our score
-				int margin = 50 + prevScore.getOverall(turn) - prevScore.getRelativeSimple(turn);
-
-				if (EvaluationManager::getRelativeSimpleScore(turn) + margin <= -p.beta) {
-					result.score = p.beta;
-					return result;
-				}
+		if (p.depth <= 1 && !wasInCheck && !Game::getCheck()) do {
+			if (!p.wasQuiesce() && Game::getPreviousMove().isTactical()) {
+				break;
 			}
-		}
 
-		// Try a full eval standpat
-		{
+			const Turn turn = !Game::getTurn();
+			
+			const int marginBase = p.wasQuiesce() ? 50 : (int)(p.isQuiesce() ? 300 + 200*Evaluation::lateness() : 500);
+			const int margin = marginBase + prevScore.getOverall(turn) - prevScore.getRelativeSimple(turn);
+
+			const int curLazy = EvaluationManager::getRelativeSimpleScore(turn);
+			const int minEstScore = curLazy + margin;
+			if (minEstScore <= -p.beta) {
+				result.score = p.wasQuiesce() ? p.beta : curLazy;
+				return result;
+			}
+			
+		} while (0);
+
+			// Try a full eval standpat
+		if (p.isQuiesce()) {
 			int standPat = -Search_SearchResult::MATE_SCORE;
 			if (!Game::getCheck()) { // need to check for hanging pieces
 				AttackMap::precompute();
@@ -98,8 +104,9 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			if (result.score >= p.beta) {
 				return result;
 			}
-			
 
+
+		
 		}
 
 	}
