@@ -53,5 +53,6 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	cout << correct << '/' << total << endl;
 
 	cout << "Time: " << ((std::clock() - start) / (double)CLOCKS_PER_SEC) << endl;
-	cout << "Nulls: " << Search_Counter::researches << ' ' << Search_Counter::nullSearches << endl;
+	cout << "Counts: " << Search_Counter::full << ' ' << Search_Counter::quiesce << endl;
+
 }

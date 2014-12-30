@@ -35,6 +35,12 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 }
 
 Search_SearchResult Search::search(const Search_Parameters p) {
+	if (p.isQuiesce()) {
+		Search_Counter::quiesce++;
+	} else {
+		Search_Counter::full++;
+	}
+
 	Search_SearchResult result;
 	result.score = p.alpha;
 	if (!Game::areMovesAvailable()) {
