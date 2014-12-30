@@ -60,6 +60,9 @@ public:
 	// How many times this position has occurred. 1 if first time.
 	static int getRepeatCount();
 
+	// The previous move made. Move::INVALID() if none.
+	static Move getPreviousMove();
+
 	// Get the move matching the given string. Example: e1e2, e7e8q (promotion)
 	static Move getMoveUciString(std::string uciString);
 

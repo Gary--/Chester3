@@ -30,6 +30,13 @@ void Game::addPawnMove(const Move move) {
 	}
 }
 
+Move Game::getPreviousMove() {
+	if (undoDatas.size()) {
+		return undoDatas.back().move;
+	}
+	return Move::INVALID();
+}
+
 bool Game::areMovesAvailable() {
 	if (cur.numMovesStored >0) {
 		return true;
