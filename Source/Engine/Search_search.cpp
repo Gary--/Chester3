@@ -79,6 +79,11 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 }
 
 Search_SearchResult Search::search(const Search_Parameters p) {
+	if (shouldStopSearch()) {
+		return Search_SearchResult();
+	}
+
+
 	if (p.isQuiesce()) {
 		Search_Counter::quiesce++;
 	} else {

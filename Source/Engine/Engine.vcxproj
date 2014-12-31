@@ -98,6 +98,7 @@
     <ClCompile Include="Search_misc.cpp" />
     <ClCompile Include="Search_nullMoveSearch.cpp" />
     <ClCompile Include="Search_Parameters.cpp" />
+    <ClCompile Include="Search_threading.cpp" />
     <ClCompile Include="Search_Transposition.cpp" />
     <ClCompile Include="SimpleEvaluation.cpp" />
     <ClCompile Include="GameConfiguration.cpp" />

@@ -9,6 +9,8 @@ Search_SearchResult Search::searchResult;
 int Search::nNullsMade = 0;
 int Search::nChecks = 0;
 int Search::reduction1 = 0;
+std::atomic<bool> Search::exitSignal = false;
+bool Search::canExit = false;
 namespace {
 	const int windows[2] = { 50, 200};
 
@@ -21,7 +23,9 @@ namespace {
 	}
 
 }
-void Search::startSearch(const AI_SearchConfiguration conf){
+void Search::startSearchImpl(const AI_SearchConfiguration conf){
+	canExit = false;
+
 	Search::synchronize();
 
 	searchResult = Search_SearchResult();
@@ -44,13 +48,21 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 			params.alpha = bound(prevResult.score, -1, alphaLvl);
 			params.beta = bound(prevResult.score, +1, betaLvl);
 			
-			searchResult = search(params);
-			
+			const Search_SearchResult newResult = search(params);
+
+
+			if (exitSignal) { // The search may have been cut off by the exit signal. Don't use the result.
+				break;
+			}
+			searchResult = newResult;
+
 			if (searchResult.score >= params.beta) {
 				betaLvl++;
 			} else if (searchResult.score <= params.alpha) {
 				alphaLvl++;
 			} else {
+				// We have a PV.
+				canExit = true;
 				break;
 			}
 

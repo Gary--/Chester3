@@ -2,7 +2,7 @@
 #include "Search.h"
 
 void AI::startSearch() {
-	Search::startSearch(searchConfiguration);
+	Search::startSearchImpl(searchConfiguration);
 }
 
 void AI::stopSearch() {
