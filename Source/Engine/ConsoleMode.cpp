@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "AI.h"
 #include "EvaluationManager.h"
 
 
@@ -35,7 +34,7 @@ void ConsoleMode::run() {
 		if (Game::getTurn() == me) {
 			auto aiRes = computerMove();
 			cout << "Score: " << aiRes.score << endl;
-			move = aiRes.bestMove;
+			//move = aiRes.bestMove;
 		} else {
 			move = humanMove();
 		}
@@ -76,15 +75,20 @@ Move ConsoleMode::humanMove() {
 	}
 }
 
-AI_SearchResult ConsoleMode::computerMove() {
-	AI_SearchConfiguration conf;
-	conf.maxDepth = 9;
-
-	AI::configureSearch(conf);
-	AI::startSearch();
-
-	AI::stopSearch();
-
-	return AI::getSearchResult();
+Search_SearchResult ConsoleMode::computerMove() {
+	
+	return Search_SearchResult();
 }
 
+//AI_SearchResult ConsoleMode::computerMove() {
+//	Search_Configuration conf;
+//	conf.maxDepth = 9;
+//
+//	AI::configureSearch(conf);
+//	AI::startSearch();
+//
+//	AI::stopSearch();
+//
+//	return AI::getSearchResult();
+//}
+//

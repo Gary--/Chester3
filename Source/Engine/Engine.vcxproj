@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AI.h" />
     <ClInclude Include="AttackMap.h" />
     <ClInclude Include="BitBoard_Position_Iterator.h" />
     <ClInclude Include="ConsoleMode.h" />
@@ -32,14 +31,14 @@
     <ClInclude Include="PV_Node.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="MateFinder.h" />
-    <ClInclude Include="AI_SearchConfiguration.h" />
-    <ClInclude Include="AI_SearchResult.h" />
     <ClInclude Include="AttackPattern.h" />
     <ClInclude Include="AttackFields.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Chess.h" />
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="SearchThread.h" />
+    <ClInclude Include="Search_Configuration.h" />
     <ClInclude Include="Search_Counter.h" />
     <ClInclude Include="Search_History.h" />
     <ClInclude Include="Search_Killers.h" />
@@ -60,9 +59,6 @@
     <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AI_search.cpp" />
-    <ClCompile Include="AI_search_configuration.cpp" />
-    <ClCompile Include="AI__main.cpp" />
     <ClCompile Include="AttackMap.cpp" />
     <ClCompile Include="AttackPattern_StaticExchange.cpp" />
     <ClCompile Include="AttackFields_bishop_rook.cpp" />
@@ -92,6 +88,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveOrdering.cpp" />
     <ClCompile Include="PV_Node.cpp" />
+    <ClCompile Include="SearchThread.cpp" />
+    <ClCompile Include="Search_Configuration.cpp" />
     <ClCompile Include="Search_Counter.cpp" />
     <ClCompile Include="Search_History.cpp" />
     <ClCompile Include="Search_Killers.cpp" />

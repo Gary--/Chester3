@@ -1,6 +1,7 @@
 #pragma once
 #include "Move.h"
-#include "AI_SearchResult.h"
+#include "Search_SearchResult.h"
+
 // Interactive console session.
 class ConsoleMode {
 public:
@@ -10,5 +11,5 @@ public:
 private:
 
 	static Move humanMove();
-	static AI_SearchResult computerMove();
+	static Search_SearchResult computerMove();
 };

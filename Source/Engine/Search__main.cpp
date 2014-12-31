@@ -23,7 +23,7 @@ namespace {
 	}
 
 }
-void Search::startSearchImpl(const AI_SearchConfiguration conf){
+void Search::startSearchImpl(const Search_Configuration conf){
 	canExit = false;
 
 	Search::synchronize();
@@ -88,10 +88,6 @@ void Search::startSearchImpl(const AI_SearchConfiguration conf){
 
 }
 
-AI_SearchResult Search::getSearchResult() {
-	AI_SearchResult result;
-	result.score = searchResult.score;
-	result.bestMove = searchResult.pv.move;
-
-	return result;
+Search_SearchResult Search::getSearchResult() {
+	return searchResult;
 }

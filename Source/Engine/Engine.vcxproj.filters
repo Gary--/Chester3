@@ -33,19 +33,10 @@
     <ClInclude Include="Move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MateFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_SearchResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_SearchConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search_SearchResult.h">
@@ -132,6 +123,12 @@
     <ClInclude Include="Search_Counter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Search_Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -179,9 +176,6 @@
     <ClCompile Include="MateFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AI_search_configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Search__main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -192,9 +186,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_SearchResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AI__main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AttackFields__init.cpp">
@@ -278,9 +269,6 @@
     <ClCompile Include="ConsoleMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AI_search.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -327,6 +315,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_threading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Search_Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
