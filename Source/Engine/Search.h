@@ -23,7 +23,7 @@ private:
 	static void synchronize();
 
 	// Called after already made move
-	static Search_SearchResult callSearch(Search_Parameters previousParams, int alpha, int beta, bool isPv);
+	static Search_SearchResult callSearch(Search_Parameters previousParams, int alpha, int beta, int moveNum);
 
 	static Search_SearchResult search(Search_Parameters params);
 	static int nChecks;

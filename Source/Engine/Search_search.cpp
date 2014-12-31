@@ -20,17 +20,25 @@ using namespace std;
 namespace {
 	int reduction1_margin[] = { 0, 0, 0, 500, 500, 700, 700, 900,
 		900, 1500 };
+
+	const int fullPlys = 4;
+	const int ReductionLimit = 3;
 }
 
-Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,bool isPv) {
+
+
+Search_SearchResult Search::callSearch(const Search_Parameters previousParams,const int alpha,const int beta,int moveNum) {
 	const Move move = Game::getPreviousMove();
+	const EvaluationScore prevScore = EvaluationManager::getScore(1);
+	const bool wasInCheck = prevScore.getCheck();
+
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
 	newParams.ply = previousParams.ply + 1;
 	newParams.alpha = alpha;
 	newParams.beta = beta;
 
-	if (isPv && previousParams.pv.next) {
+	if (moveNum==0 && previousParams.pv.next) {
 		newParams.pv = *previousParams.pv.next;
 	}
 
@@ -39,14 +47,25 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 		newParams.depth++;
 	}
 
+	bool reduced = false;
+
+	// Material disadvantage reduction
 	bool doReduction1 = false;
-	if (!reduction1 && !newParams.isQuiesce() && !move.isTactical() && !Game::getCheck()) {
+	bool possibleReduction = !move.isTactical() && !Game::getCheck() && !wasInCheck;
+	if (!reduced && !reduction1 && !newParams.isQuiesce() && possibleReduction) {
 		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
 		const Turn turn = !Game::getTurn();
 		if (-newParams.beta >  EvaluationManager::getRelativeSimpleScore(turn) + margin) {
-			doReduction1 = true;
+			doReduction1 = reduced = true;
+
 			newParams.depth--;
 		}
+	}
+
+	// Late move reductions
+	if (!reduced && moveNum >= fullPlys && newParams.depth >= ReductionLimit && possibleReduction && beta==alpha+1) {
+		newParams.depth--;
+		reduced = true;
 	}
 
 	const auto result = search(newParams);
@@ -206,7 +225,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 		// Initial search
 		searchMakeMove(move);
-		moveResult = callSearch(p, useNullWindow ? -result.score-1 : -p.beta, -result.score, i == 0);
+		moveResult = callSearch(p, useNullWindow ? -result.score-1 : -p.beta, -result.score, i );
 		searchUndoMove();
 		Search_Counter::nullSearches += useNullWindow;
 		// Re-search
