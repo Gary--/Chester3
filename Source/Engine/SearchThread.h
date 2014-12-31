@@ -7,29 +7,32 @@
 // Do not run more than one at once.
 class SearchThread {
 public:
-	SearchThread(Search_Configuration conf);
+
+	// Call this when the board has been set to where you want to search from.
+	static void configure(Search_Configuration conf);
 
 	// Asynchronously start. The timer will start at this point.
-	void start();
-
-	// Handle to the worker thread. Wait on this.
-	const HANDLE getHandle() const;
+	static void start();
 
 	// Asynchrounously stop the search early.
-	void stopAsync();
+	static void stopAsync();
 
 
 	// Use this if you don't want to handle the HANDLEs :P .
-	void waitForFinish();
+	static void waitForFinish();
 
 	// Call only after getHandle() has signalled.
-	Search_SearchResult getSearchResult() const;
+	static Search_SearchResult getSearchResult();
 
 	SearchThread();
 	~SearchThread();
 
 private:
-	HANDLE workerHandle;
-	HANDLE timerHandle;
+	static Search_SearchResult searchResult;
+	static Search_Configuration conf;
+	static HANDLE workerHandle;
+	static HANDLE timerHandle;
+
+	static unsigned __stdcall callSearch(void*);
 };
 

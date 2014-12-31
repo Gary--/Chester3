@@ -8,6 +8,7 @@
 #include "Search_Configuration.h"
 #include "Search.h"
 #include <windows.h>
+#include "SearchThread.h"
 
 using namespace std;
 
@@ -25,28 +26,24 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	
 		const ExtendedPositionDescription epd(line);
 		const GameConfiguration gameConf = epd.getGameConfiguration();
-
 		if (!gameConf.isValid()) {
 			cout << "Bad Game configuration." << gameConf.str() << endl;
 			continue;
 		}
+		Game::configure(gameConf);
 
 		
 		
 		Search_Configuration searchConf;
-		searchConf.maxDepth = 10;
-		Game::configure(gameConf);
+		searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
+		searchConf.maxTimeMs = 1000;
+		//searchConf.maxDepth = Search_Configuration::SEARCH_TIME_INF;
 
-		{
-			HANDLE searchThreatHandle = Search::getSearchHandle(searchConf);
-			HANDLE timerHandle  = CreateWaitableTimer(NULL, TRUE, NULL);
+		SearchThread::configure(searchConf);
+		SearchThread::start();
+		SearchThread::waitForFinish();
 
-
-			ResumeThread(searchThreatHandle);
-			WaitForSingleObject(searchThreatHandle, INFINITE);
-		}
-
-		auto result = Search::getSearchResult();
+		const auto result = SearchThread::getSearchResult();
 
 
 		const Move moveComputedBestMove = result.pv.move;

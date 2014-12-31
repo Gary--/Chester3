@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-Search_SearchResult Search::searchResult;
+
 int Search::nNullsMade = 0;
 int Search::nChecks = 0;
 int Search::reduction1 = 0;
@@ -23,12 +23,10 @@ namespace {
 	}
 
 }
-void Search::startSearchImpl(const Search_Configuration conf){
+Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 	canExit = false;
 
-	Search::synchronize();
-
-	searchResult = Search_SearchResult();
+	Search_SearchResult searchResult;
 
 	
 	Search_SearchResult prevResult;
@@ -54,14 +52,14 @@ void Search::startSearchImpl(const Search_Configuration conf){
 			if (exitSignal) { // The search may have been cut off by the exit signal. Don't use the result.
 				break;
 			}
-			searchResult = newResult;
-
-			if (searchResult.score >= params.beta) {
+			
+			if (newResult.score >= params.beta) {
 				betaLvl++;
-			} else if (searchResult.score <= params.alpha) {
+			} else if (newResult.score <= params.alpha) {
 				alphaLvl++;
 			} else {
 				// We have a PV.
+				searchResult = newResult;
 				canExit = true;
 				break;
 			}
@@ -85,9 +83,6 @@ void Search::startSearchImpl(const Search_Configuration conf){
 		
 	}
 
-
-}
-
-Search_SearchResult Search::getSearchResult() {
 	return searchResult;
 }
+
