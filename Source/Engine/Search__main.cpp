@@ -33,40 +33,33 @@ void Search::startSearch(const AI_SearchConfiguration conf){
 		params.depth = depth;
 		params.pv = prevResult.pv;
 
-		//cout << "Depth: " << depth << endl;
 		int alphaLvl = 0, betaLvl = 0;
-		if (depth > 1) {
-			for (int i = 0;; ++i) {
-				params.alpha = bound(prevResult.score, -1, alphaLvl);
-				params.beta = bound(prevResult.score, +1, betaLvl);
-				//cout << params.alpha << ' ' << params.beta << endl;
-				searchResult = search(params);
-				//cout << "Score: " << searchResult.score << endl;
-				if (searchResult.score >= params.beta) {
-					betaLvl++;
-				} else if (searchResult.score <= params.alpha) {
-					alphaLvl++;
-				} else {
-					break;
-				}
 
-				if (i >= 4) {
-					cout << "??? Somethin is wrong." << endl;
-					system("pause");
-				}
+		// Open the window completely for first depth
+		if (depth <= 1) {
+			alphaLvl = betaLvl = 2;
+		}
+
+		for (int i = 0;; ++i) {
+			params.alpha = bound(prevResult.score, -1, alphaLvl);
+			params.beta = bound(prevResult.score, +1, betaLvl);
+			
+			searchResult = search(params);
+			
+			if (searchResult.score >= params.beta) {
+				betaLvl++;
+			} else if (searchResult.score <= params.alpha) {
+				alphaLvl++;
+			} else {
+				break;
 			}
 
-		} else {
-			//cout << params.alpha << ' ' << params.beta << endl;
-			searchResult = search(params);
-			//cout << "Score: " << searchResult.score << endl;
+			if (i >= 4) {
+				cout << "??? Somethin is wrong." << endl;
+				system("pause");
+			}
 		}
-		
-		//cout << "Depth: " << depth << "   Score: " << searchResult.score << endl;
-		//for (PV_Node* x = &searchResult.pv; x; x = x = x->next.get()) {
-		//	cout << x->move.str() << ' ';
-		//}
-		//cout << endl;
+
 
 		if (searchResult.score <= params.alpha || searchResult.score >= params.beta) {
 			cout << "NOT PV:!!" << endl;
