@@ -35,6 +35,7 @@ void UCI::run() {
 			//searchConf.maxDepth = Search_Configuration::SEARCH_TIME_INF;
 
 			SearchThread::setSearchConfiguration(searchConf);
+			
 			SearchThread::start();
 		}
 
@@ -70,7 +71,10 @@ void UCI::ouputBestMove() {
 	// pv
 	cout << "pv ";
 	for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
-		cout << pv->move.str() << ' ';
+		if (pv->move != Move::INVALID()) {
+			cout << pv->move.str() << ' ';
+		}
+		
 	}
 
 	cout << endl;
