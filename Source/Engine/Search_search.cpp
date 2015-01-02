@@ -105,20 +105,19 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	if (Game::getRepeatCount()==1) {
 		TTItem ttRes = Search_Transposition::getTransposition(p);
 		if (ttRes.depth >= p.depth) {
-			if (ttRes.type == TT_Entry_Type::LOWER_BOUND || ttRes.type == TT_Entry_Type::EXACT) {
-				result.score = max(result.score, ttRes.score);
+			if (ttRes.type == TT_Entry_Type::LOWER_BOUND && ttRes.score >= p.beta) {
+				result.score = ttRes.score;
 				result.pv.move = ttRes.bestMove;
+				return result;
 			}
 
 			if (ttRes.type == TT_Entry_Type::EXACT && p.beta > p.alpha+1) {
+				result.score = ttRes.score;
+				result.pv.move = ttRes.bestMove;
 				return result;
 			}
 
 			if (ttRes.type == TT_Entry_Type::UPPER_BOUND && ttRes.score <= p.alpha) {
-				return result;
-			}
-
-			if (result.score >= p.beta) {
 				return result;
 			}
 		}
