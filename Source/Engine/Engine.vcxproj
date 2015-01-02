@@ -59,6 +59,7 @@
     <ClInclude Include="StrengthTest.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="UCI.h" />
+    <ClInclude Include="UciGoCommand.h" />
     <ClInclude Include="UCISearchThreadCallBack.h" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,7 @@
     <ClCompile Include="StrengthTest.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="UCI.cpp" />
+    <ClCompile Include="UciGoCommand.cpp" />
     <ClCompile Include="UCISearchThreadCallBack.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -138,6 +138,9 @@
     <ClInclude Include="UCISearchThreadCallBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UciGoCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -339,6 +342,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UCISearchThreadCallBack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UciGoCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Evaluation_mating.cpp">
