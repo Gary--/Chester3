@@ -52,7 +52,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	// Material disadvantage reduction
 	bool doReduction1 = false;
 	bool possibleReduction = !move.isTactical() && !Game::getCheck() && !wasInCheck;
-	if (!reduced && !reduction1 && !newParams.isQuiesce() && possibleReduction) {
+	if (!reduced && !reduction1 && !newParams.isQuiesce() && possibleReduction && newParams.depth > 2) {
 		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
 		const Turn turn = !Game::getTurn();
 		if (-newParams.beta >  EvaluationManager::getRelativeSimpleScore(turn) + margin) {
@@ -111,13 +111,14 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				return result;
 			}
 
-			if (ttRes.type == TT_Entry_Type::EXACT && p.beta > p.alpha+1) {
+			if (ttRes.type == TT_Entry_Type::EXACT && p.beta == p.alpha+1) {
 				result.score = ttRes.score;
 				result.pv.move = ttRes.bestMove;
 				return result;
 			}
 
 			if (ttRes.type == TT_Entry_Type::UPPER_BOUND && ttRes.score <= p.alpha) {
+				result.score = ttRes.score;
 				return result;
 			}
 		}
@@ -177,6 +178,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 
 			
 			if (curFullScore + margin < p.alpha) {
+				result.score = p.alpha;
 				return result;
 			}
 
@@ -236,7 +238,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		if (useNullWindow && (-moveResult.score > result.score) && (-moveResult.score < p.beta)) {
 			Search_Counter::researches++;
 			searchMakeMove(move);
-			moveResult = callSearch(p, -p.beta, -result.score, i == 0);
+			moveResult = callSearch(p, -p.beta, -result.score, i );
 			searchUndoMove();
 		}
 
@@ -270,6 +272,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	if (!p.isQuiesce()) {
 		Search_Transposition::addTransposition(p, result);
 	}
+
 	
 	return  result;
 }
