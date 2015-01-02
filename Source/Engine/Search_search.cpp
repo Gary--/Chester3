@@ -262,6 +262,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 	}
 	orderedMoves.dispose();
 	
+	if (shouldStopSearch()) {
+		return Search_SearchResult();
+	}
+
 	result.adjustForMateScore();
 
 	if (!p.isQuiesce()) {

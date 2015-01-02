@@ -27,3 +27,7 @@ string StringUtils::getUnread(std::istringstream& ss) {
 	return ss.str().substr(ss.tellg());
 }
 
+bool StringUtils::startsWith(const std::string& str, const std::string& prefix) {
+	return str.substr(0, prefix.size()) == prefix;
+}
+

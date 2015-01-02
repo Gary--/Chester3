@@ -38,6 +38,7 @@
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="SearchThread.h" />
+    <ClInclude Include="SearchThreadCallBack.h" />
     <ClInclude Include="Search_Configuration.h" />
     <ClInclude Include="Search_Counter.h" />
     <ClInclude Include="Search_History.h" />
@@ -57,6 +58,8 @@
     <ClInclude Include="Game_UndoData.h" />
     <ClInclude Include="StrengthTest.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="UCI.h" />
+    <ClInclude Include="UCISearchThreadCallBack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackMap.cpp" />
@@ -89,6 +92,7 @@
     <ClCompile Include="MoveOrdering.cpp" />
     <ClCompile Include="PV_Node.cpp" />
     <ClCompile Include="SearchThread.cpp" />
+    <ClCompile Include="SearchThreadCallBack.cpp" />
     <ClCompile Include="Search_Configuration.cpp" />
     <ClCompile Include="Search_Counter.cpp" />
     <ClCompile Include="Search_History.cpp" />
@@ -123,6 +127,8 @@
     <ClCompile Include="Game_UndoData.cpp" />
     <ClCompile Include="StrengthTest.cpp" />
     <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="UCI.cpp" />
+    <ClCompile Include="UCISearchThreadCallBack.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{304BB138-20B1-40BB-9420-02AF435AB391}</ProjectGuid>
@@ -149,7 +155,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -171,7 +177,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>Chester</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>Chester</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

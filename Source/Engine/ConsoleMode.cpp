@@ -5,7 +5,8 @@
 #include <string>
 #include <sstream>
 #include "EvaluationManager.h"
-
+#include "UCISearchThreadCallBack.h"
+#include "SearchThread.h"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ void ConsoleMode::run() {
 		if (Game::getTurn() == me) {
 			auto aiRes = computerMove();
 			cout << "Score: " << aiRes.score << endl;
-			//move = aiRes.bestMove;
+			move = aiRes.pv.move;
 		} else {
 			move = humanMove();
 		}
@@ -75,20 +76,15 @@ Move ConsoleMode::humanMove() {
 	}
 }
 
+
 Search_SearchResult ConsoleMode::computerMove() {
-	
-	return Search_SearchResult();
+	Search_Configuration searchConf;
+	searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
+	searchConf.maxTimeMs = 2000;
+	SearchThread::start();
+	SearchThread::waitForFinish();
+
+
+	return SearchThread::getSearchResult();
 }
 
-//AI_SearchResult ConsoleMode::computerMove() {
-//	Search_Configuration conf;
-//	conf.maxDepth = 9;
-//
-//	AI::configureSearch(conf);
-//	AI::startSearch();
-//
-//	AI::stopSearch();
-//
-//	return AI::getSearchResult();
-//}
-//

@@ -2,14 +2,19 @@
 #include "Search_Configuration.h"
 #include <wtypes.h>
 #include "Search_SearchResult.h"
+#include "SearchThreadCallBack.h"
+#include <atomic>
+
 
 // A search terminated by the depth limit or time limit.
 // Do not run more than one at once.
 class SearchThread {
 public:
+	// Do not use this if search is running
+	static void setSearchConfiguration(Search_Configuration conf);
 
-	// Call this when the board has been set to where you want to search from.
-	static void configure(Search_Configuration conf);
+	// Do not use this if search is running
+	static void setCallBack(SearchThreadCallBack* callBackPtr);
 
 	// Asynchronously start. The timer will start at this point.
 	static void start();
@@ -18,21 +23,32 @@ public:
 	static void stopAsync();
 
 
-	// Use this if you don't want to handle the HANDLEs :P .
+	// Wait for the worker thread to exit.
 	static void waitForFinish();
 
 	// Call only after getHandle() has signalled.
 	static Search_SearchResult getSearchResult();
 
-	SearchThread();
-	~SearchThread();
+	// Call after 
 
 private:
 	static Search_SearchResult searchResult;
-	static Search_Configuration conf;
-	static HANDLE workerHandle;
-	static HANDLE timerHandle;
 
-	static unsigned __stdcall callSearch(void*);
+	// The worker thread. Thread termination limited by search depth, time, and endSearchEvent
+	static HANDLE workerHandle;
+	static SearchThreadCallBack* callBack;
+	static Search_Configuration conf;
+
+	static unsigned __stdcall callSearch(void* param);
+	static unsigned __stdcall callSearchWithTimeLimit(void* param);
+
+	// If the search time was infinite, worker handle thread waits for this event too
+	static HANDLE endSearchEvent;
+
+	static std::atomic<bool> stopRequested;
+
+	static SearchTerminationCondition condition;
+
+	static unsigned __stdcall makeCallBack(void* param);
 };
 

@@ -2,63 +2,133 @@
 #include "Search.h"
 #include <stdio.h>
 #include <process.h>
+#include <windows.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <iostream>
 
-HANDLE SearchThread::timerHandle;
-HANDLE SearchThread::workerHandle;
+using namespace std;
 
+HANDLE SearchThread::endSearchEvent;
 Search_Configuration SearchThread::conf;
+SearchThreadCallBack* SearchThread::callBack;
+HANDLE SearchThread::workerHandle;
 Search_SearchResult SearchThread::searchResult;
+std::atomic<bool> SearchThread::stopRequested;
+SearchTerminationCondition SearchThread::condition;
 
 
-void SearchThread::configure(Search_Configuration conf) {
-	SearchThread::conf = conf;
-	Search::prepareSearch();
-}
 
 unsigned __stdcall SearchThread::callSearch(void* param) {
+	const Search_Configuration conf = *(Search_Configuration*)param;
 	searchResult = Search::startSearch(conf);
-
 	return 0;
 }
 
-void SearchThread::start() {
-	workerHandle = (HANDLE)_beginthreadex(NULL, // security
-										   0,             // stack size
+
+unsigned __stdcall SearchThread::callSearchWithTimeLimit(void* param) {
+	Search_Configuration conf = *(Search_Configuration*) param;
+	const int time = conf.maxTimeMs;
+	bool isForeverSearch = time == Search_Configuration::SEARCH_TIME_INF;
+
+	endSearchEvent = CreateEvent(
+		NULL,               // default security attributes
+		TRUE,               // manual-reset event
+		!isForeverSearch,              // If searching forever, set as non-signaled
+		NULL  // object name
+		);
+	
+	HANDLE searchHandle = (HANDLE)_beginthreadex(NULL, // security
+										   0,            // stack size
 										   callSearch,// entry-point-function
-										   NULL,           // arg list holding the "this" pointer
+										   param,           // arg list holding the "this" pointer
 										   CREATE_SUSPENDED, // so we can later call ResumeThread()
 										   NULL// thread ID
 										   );
 
+	ResumeThread(searchHandle);
 
-	{
-		timerHandle = CreateWaitableTimer(NULL, TRUE, NULL);
-		LARGE_INTEGER liDueTime;
-		liDueTime.QuadPart = -10000LL * conf.maxTimeMs;
-		if (!SetWaitableTimer(timerHandle, &liDueTime, 0, NULL, NULL, 0)) {
-			printf("SetWaitableTimer failed (%d)\n", GetLastError());
-		}
+	const bool timeLimitExceeded = WAIT_OBJECT_0 != WaitForSingleObject(searchHandle, isForeverSearch ? INFINITE : time);
+
+
+	Search::signalStop();
+	WaitForSingleObject(searchHandle, INFINITE);
+
+	WaitForSingleObject(endSearchEvent, INFINITE);
+
+
+	if (timeLimitExceeded) {
+		condition = SearchTerminationCondition::TIME_EXCEEDED;
+	} else if (stopRequested) {
+		condition = SearchTerminationCondition::STOP_REQUESTED;
+	} else {
+		condition = SearchTerminationCondition::DEPTH_REACHED;
 	}
 
-	ResumeThread(workerHandle);
+	if (callBack) {
+		HANDLE callbackHandle = (HANDLE)_beginthreadex(NULL, // security
+													 0,            // stack size
+													 makeCallBack,// entry-point-function
+													 param,           // arg list holding the "this" pointer
+													 CREATE_SUSPENDED, // so we can later call ResumeThread()
+													 NULL// thread ID
+													 );
 
+		ResumeThread(callbackHandle);
+	}
+
+	return 0;
+}
+
+
+
+
+
+void SearchThread::start() {
+	condition = SearchTerminationCondition::INVALID;
+	stopRequested = false;
+	Search::prepareSearch();
+	workerHandle = (HANDLE)_beginthreadex(NULL, // security
+										  0,             // stack size
+										  callSearchWithTimeLimit,// entry-point-function
+										  &conf,           // arg list holding the "this" pointer
+										  CREATE_SUSPENDED, // so we can later call ResumeThread()
+										  NULL// thread ID
+										  );
+	ResumeThread(workerHandle);
 
 }
 
 void SearchThread::stopAsync() {
+	stopRequested = true;
+	SetEvent(endSearchEvent);
 	Search::signalStop();
+	
 }
 
 void SearchThread::waitForFinish() {
-	HANDLE handles[2] = { workerHandle, timerHandle };
-	WaitForMultipleObjects(_countof(handles), handles, false, INFINITE);
-
-	stopAsync();
 	WaitForSingleObject(workerHandle, INFINITE);
 }
 
 Search_SearchResult SearchThread::getSearchResult() {
 	return searchResult;
+}
+
+void SearchThread::setCallBack(SearchThreadCallBack* callBackPtr) {
+	callBack = callBackPtr;
+}
+
+void SearchThread::setSearchConfiguration(Search_Configuration conf) {
+	SearchThread::conf = conf;
+}
+
+unsigned __stdcall SearchThread::makeCallBack(void* param) {
+
+	//TODO lock callback
+	if (callBack) {
+		callBack->stCallbackFunction(condition);
+	}
+	return 0;
 }
 
 

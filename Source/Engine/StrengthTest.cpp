@@ -9,6 +9,7 @@
 #include "Search.h"
 #include <windows.h>
 #include "SearchThread.h"
+#include "UCISearchThreadCallBack.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 	cout << "=== Test started." << endl;
 	clock_t start = clock();
 	int total = 0, correct = 0;
+
+	SearchThread::setCallBack(nullptr);
 	while (getline(cin, line)) {
 	
 		const ExtendedPositionDescription epd(line);
@@ -35,11 +38,10 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		
 		
 		Search_Configuration searchConf;
-		searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
+		searchConf.maxDepth =  Search_Configuration::MAX_DEPTH_INF;
 		searchConf.maxTimeMs = 1000;
-		//searchConf.maxDepth = Search_Configuration::SEARCH_TIME_INF;
 
-		SearchThread::configure(searchConf);
+		SearchThread::setSearchConfiguration(searchConf);
 		SearchThread::start();
 		SearchThread::waitForFinish();
 
