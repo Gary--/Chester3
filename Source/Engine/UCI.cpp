@@ -31,7 +31,7 @@ void UCI::run() {
 		if (StringUtils::startsWith(line, "go")) {
 			Search_Configuration searchConf;
 			searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
-			searchConf.maxTimeMs = 2000;
+			searchConf.maxTimeMs = 3000;
 			//searchConf.maxDepth = Search_Configuration::SEARCH_TIME_INF;
 
 			SearchThread::setSearchConfiguration(searchConf);
@@ -57,7 +57,24 @@ void UCI::ouputBestMove() {
 	stopSearchThread();
 
 	const auto result = SearchThread::getSearchResult();
-	cout << "info score cp " << result.score << endl;
+	cout << "info ";
+
+	// Score
+	if (result.isMateScore()) {
+		cout << "score mate " << result.mateInN();
+	} else {
+		cout << "score cp " << result.score;
+	}
+	cout << ' ';
+
+	// pv
+	cout << "pv ";
+	for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
+		cout << pv->move.str() << ' ';
+	}
+
+	cout << endl;
+
 	cout << "bestmove " << result.pv.move.str() << endl;
 }
 
@@ -100,7 +117,7 @@ void UCI::position(const std::string& line) {
 	while (cin >> moveStr) {
 		const Move move = Game::getGameConfiguration().getMoveUciString(moveStr);
 		if (move == Move::INVALID()) {
-			cout << "INVALID MOVE" << endl;
+			cout << "INVALID MOVE: " << move.str() << endl;
 		}
 
 		Game::makeMove(move);

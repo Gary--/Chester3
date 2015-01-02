@@ -14,4 +14,7 @@ struct Search_SearchResult {
 	// If we have a mate score, reduce it by 1. This will make faster mates more favourable.
 	void adjustForMateScore();
 	bool isMateScore() const;
+
+	// Only valid if isMateScore(). In moves, not plies. Positive for turn player mating.
+	int mateInN() const;
 };

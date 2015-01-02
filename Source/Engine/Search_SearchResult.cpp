@@ -17,3 +17,15 @@ void Search_SearchResult::adjustForMateScore() {
 bool Search_SearchResult::isMateScore() const {
 	return score > MATE_SCORE - 100000 || score < -MATE_SCORE + 100000;
 }
+
+int Search_SearchResult::mateInN() const {
+	if (!isMateScore()) {
+		return 0;
+	}
+
+	if (score > 0) {
+		return MATE_SCORE - score;
+	} else {
+		return  -MATE_SCORE - score;
+	}
+}
