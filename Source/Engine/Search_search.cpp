@@ -32,6 +32,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	const EvaluationScore prevScore = EvaluationManager::getScore(1);
 	const bool wasInCheck = prevScore.getCheck();
 	bool isPseudoMate = Evaluation::mating(Turn::WHITE()) != 0;
+	const Turn turn = !Game::getTurn();
 
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
@@ -39,6 +40,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	newParams.alpha = alpha;
 	newParams.beta = beta;
 
+	bool extended = false;
 	if (moveNum==0 && previousParams.pv.next) {
 		newParams.pv = *previousParams.pv.next;
 	}
@@ -46,20 +48,41 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	// Check extension
 	if (!previousParams.isQuiesce() && EvaluationManager::getScore(1).getCheck() && nChecks>1) {
 		newParams.depth++;
+		extended = true;
 	}
 
 	bool reduced = false;
 
 	// Material disadvantage reduction
 	bool doReduction1 = false;
-	bool possibleReduction = !move.isTactical() && !Game::getCheck() && !wasInCheck && moveNum != 0 && !isPseudoMate;
-	if (Search_History::getHistory(move) > 0) {
-		possibleReduction = false;
-	}
+	bool possibleReduction = 
+		!newParams.isQuiesce() &&
+		!move.isTactical() &&
+		!Game::getCheck() &&
+		!wasInCheck &&
+		moveNum != 0 &&
+		!isPseudoMate &&
+		!extended;
 
-	if (!reduced && !reduction1 && !newParams.isQuiesce() && possibleReduction && newParams.depth > 2) {
+
+	if (possibleReduction) do {
+		int prevPressure = prevScore.getKingDanger(!turn);
+		if (Search_History::getHistory(move) > 0) {
+			possibleReduction = false;
+			break;
+		}
+
+		// Increasing pressure on their king
+		if (EvaluationManager::getScore().getKingDanger(!turn) > prevPressure) {
+			possibleReduction = false;
+		}
+
+	} while (false);
+
+
+	if (!reduced && !reduction1 && possibleReduction && newParams.depth > 2) {
 		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
-		const Turn turn = !Game::getTurn();
+		
 		if (-newParams.beta >  EvaluationManager::getRelativeSimpleScore(turn) + margin) {
 			doReduction1 = reduced = true;
 
