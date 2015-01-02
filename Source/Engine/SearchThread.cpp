@@ -9,7 +9,7 @@
 
 using namespace std;
 
-HANDLE SearchThread::endSearchEvent;
+HANDLE SearchThread::endSearchAllowedEvent;
 Search_Configuration SearchThread::conf;
 SearchThreadCallBack* SearchThread::callBack;
 HANDLE SearchThread::workerHandle;
@@ -31,13 +31,7 @@ unsigned __stdcall SearchThread::callSearchWithTimeLimit(void* param) {
 	const int time = conf.maxTimeMs;
 	bool isForeverSearch = time == Search_Configuration::SEARCH_TIME_INF;
 
-	endSearchEvent = CreateEvent(
-		NULL,               // default security attributes
-		TRUE,               // manual-reset event
-		!isForeverSearch,              // If searching forever, set as non-signaled
-		NULL  // object name
-		);
-	
+
 	HANDLE searchHandle = (HANDLE)_beginthreadex(NULL, // security
 										   0,            // stack size
 										   callSearch,// entry-point-function
@@ -54,7 +48,7 @@ unsigned __stdcall SearchThread::callSearchWithTimeLimit(void* param) {
 	Search::signalStop();
 	WaitForSingleObject(searchHandle, INFINITE);
 
-	WaitForSingleObject(endSearchEvent, INFINITE);
+	WaitForSingleObject(endSearchAllowedEvent, INFINITE);
 
 
 	if (timeLimitExceeded) {
@@ -88,6 +82,17 @@ void SearchThread::start() {
 	condition = SearchTerminationCondition::INVALID;
 	stopRequested = false;
 	Search::prepareSearch();
+
+	const int time = conf.maxTimeMs;
+	bool isForeverSearch = time == Search_Configuration::SEARCH_TIME_INF;
+	endSearchAllowedEvent = CreateEvent(
+		NULL,               // default security attributes
+		TRUE,               // manual-reset event
+		!isForeverSearch,              // If searching forever, set as non-signaled
+		NULL  // object name
+		);
+
+
 	workerHandle = (HANDLE)_beginthreadex(NULL, // security
 										  0,             // stack size
 										  callSearchWithTimeLimit,// entry-point-function
@@ -99,11 +104,17 @@ void SearchThread::start() {
 
 }
 
+
+void SearchThread::allowStop() {
+	SetEvent(endSearchAllowedEvent);
+}
+
+
+
 void SearchThread::stopAsync() {
 	stopRequested = true;
-	SetEvent(endSearchEvent);
 	Search::signalStop();
-	
+	allowStop();
 }
 
 void SearchThread::waitForFinish() {
@@ -130,7 +141,6 @@ unsigned __stdcall SearchThread::makeCallBack(void* param) {
 	}
 	return 0;
 }
-
 
 
 

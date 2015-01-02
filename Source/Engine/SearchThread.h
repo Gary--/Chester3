@@ -22,6 +22,8 @@ public:
 	// Asynchrounously stop the search early.
 	static void stopAsync();
 
+	// Call this to indicate the engine can exit from INFINITE. stopAsync calls this
+	static void allowStop();
 
 	// Wait for the worker thread to exit.
 	static void waitForFinish();
@@ -43,7 +45,7 @@ private:
 	static unsigned __stdcall callSearchWithTimeLimit(void* param);
 
 	// If the search time was infinite, worker handle thread waits for this event too
-	static HANDLE endSearchEvent;
+	static HANDLE endSearchAllowedEvent;
 
 	static std::atomic<bool> stopRequested;
 

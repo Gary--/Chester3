@@ -38,11 +38,12 @@ void StrengthTest::epdTest(std::istream& cin, std::ostream& cout) {
 		
 		
 		Search_Configuration searchConf;
-		searchConf.maxDepth =  Search_Configuration::MAX_DEPTH_INF;
-		searchConf.maxTimeMs = 1000;
+		searchConf.maxDepth =  8;
+		searchConf.maxTimeMs = Search_Configuration::SEARCH_TIME_INF;
 
 		SearchThread::setSearchConfiguration(searchConf);
 		SearchThread::start();
+		SearchThread::allowStop();
 		SearchThread::waitForFinish();
 
 		const auto result = SearchThread::getSearchResult();
