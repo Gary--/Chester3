@@ -11,12 +11,14 @@ struct TTItem {
 	Move bestMove;
 	char depth;
 	TT_Entry_Type type;
+
+	TTItem();
 };
 
 class Search_Transposition {
 public:
 	// Returns what was passed to it for easy coding
-	static Search_SearchResult addTransposition(Search_Parameters params, Search_SearchResult result);
+	static void addTransposition(Search_Parameters params, Search_SearchResult result);
 	static TTItem getTransposition(Search_Parameters params);
 
 private:

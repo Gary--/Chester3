@@ -3,8 +3,9 @@
 
 TTItem Search_Transposition::TT[TTSize];
 
-Search_SearchResult Search_Transposition::addTransposition(Search_Parameters params, Search_SearchResult result) {
+void Search_Transposition::addTransposition(Search_Parameters params, Search_SearchResult result) {
 	uint64_t hash = Game::getHash();
+
 
 	TTItem item;
 	item.depth = params.depth;
@@ -20,9 +21,19 @@ Search_SearchResult Search_Transposition::addTransposition(Search_Parameters par
 		item.type = TT_Entry_Type::EXACT;
 	}
 
-	TT[hash%TTSize] = item;
+	// Avoid replacing entries that are strictly more useful
+	const TTItem cur = TT[Game::getHash() % TTSize];
+	if (cur.hash == hash &&
+		cur.depth >= item.depth &&
+		(item.type == cur.type || cur.type == TT_Entry_Type::EXACT)
+		) {
+		return;
+	}
+		
+	
 
-	return result;
+
+	TT[hash%TTSize] = item;
 }
 
 TTItem Search_Transposition::getTransposition(Search_Parameters params) {
@@ -35,3 +46,11 @@ TTItem Search_Transposition::getTransposition(Search_Parameters params) {
 }
 
 
+
+TTItem::TTItem() {
+	hash = 0;
+	score = 0;
+	bestMove = Move::INVALID();
+	depth = -100;
+	type = TT_Entry_Type::INVALID;
+}
