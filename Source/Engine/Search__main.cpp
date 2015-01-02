@@ -49,7 +49,7 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 			const Search_SearchResult newResult = search(params);
 
 
-			if (exitSignal) { // The search may have been cut off by the exit signal. Don't use the result.
+			if (shouldStopSearch()) { // The search may have been cut off by the exit signal. Don't use the result.
 				break;
 			}
 			
@@ -69,6 +69,9 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 				system("pause");
 			}
 		}
+		if (shouldStopSearch()) {
+			break;
+		}
 
 
 		if (searchResult.score <= params.alpha || searchResult.score >= params.beta) {
@@ -77,6 +80,42 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 		}
 		prevResult = searchResult;
 
+		
+		cout << "info depth " << depth << ' ';
+
+		{
+			auto result = prevResult;
+			cout << "pv ";
+			for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
+				if (pv->move != Move::INVALID()) {
+					cout << pv->move.str() << ' ';
+				}
+
+			}
+		}
+		cout << endl;
+		//{
+		//	cout << "info ";
+		//	auto result = searchResult;
+		//	// Score
+		//	if (result.isMateScore()) {
+		//		cout << "score mate " << result.mateInN();
+		//	} else {
+		//		cout << "score cp " << result.score;
+		//	}
+		//	cout << ' ';
+
+		//	cout << "depth " << depth << ' ';
+
+		//	// pv
+		//	cout << "pv ";
+		//	for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
+		//		if (pv->move != Move::INVALID()) {
+		//			cout << pv->move.str() << ' ';
+		//		}
+
+		//	}
+		//}
 		if (searchResult.isMateScore()) {
 			break;
 		}
