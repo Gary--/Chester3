@@ -18,6 +18,9 @@ public:
 	static int misc(Turn turn);
 	static int materialBalance(); // [turn's mat - other's mat] and adjustments
 
+	// Used to help with basic checkmates. If this is non-zero, ingore other evaluation!
+	static int mating(Turn perspective);
+
 	static void synchronize();
 	static void notifyMove(Move move, Turn turn);
 	static void notifyUndoMove(Move move, Turn turn);
