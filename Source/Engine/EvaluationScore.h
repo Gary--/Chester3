@@ -18,6 +18,8 @@ struct EvaluationScore {
 	// Lazy evaluation using only static material and piece-square
 	int getRelativeSimple(Turn perspective) const; // The simple evaluation
 
+	int getRelativeMate(Turn perspective) const;
+
 	// Material score adjusted for lateness
 	int getRelativeMaterial(Turn perspective) const;
 
@@ -46,6 +48,9 @@ private:
 	int whiteSimple, blackSimple;
 
 	bool check;
+
+	int relativeMate;
+
 	int relativeMobility;
 	int relativeMaterial;
 	int whiteKingDanger, blackKingDanger;

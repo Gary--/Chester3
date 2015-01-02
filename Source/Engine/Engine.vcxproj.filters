@@ -341,5 +341,8 @@
     <ClCompile Include="UCISearchThreadCallBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Evaluation_mating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

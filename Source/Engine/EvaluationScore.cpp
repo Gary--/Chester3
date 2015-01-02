@@ -4,37 +4,45 @@
 #include "Game.h"
 
 EvaluationScore::EvaluationScore() :
-lateness(INVALID_SCORE),
-whiteSimple(INVALID_SCORE),
-blackSimple(INVALID_SCORE),
-relativeMobility(INVALID_SCORE),
-relativeMaterial(INVALID_SCORE),
-whiteKingDanger(INVALID_SCORE),
-blackKingDanger(INVALID_SCORE),
-relativeCenter(INVALID_SCORE),
-whitePawns(INVALID_SCORE),
-blackPawns(INVALID_SCORE),
+lateness(0),
+whiteSimple(0),
+blackSimple(0),
+relativeMobility(0),
+relativeMaterial(0),
+whiteKingDanger(0),
+blackKingDanger(0),
+relativeCenter(0),
+whitePawns(0),
+blackPawns(0),
 whiteMisc(0),
 blackMisc(0),
+relativeMate(0),
 _isValid(false)
 {}
 
-EvaluationScore::EvaluationScore(bool _) :
-	lateness(Evaluation::lateness()),
-	whiteSimple(SimpleEvaluation::all(Turn::WHITE())),
-	blackSimple(SimpleEvaluation::all(Turn::BLACK())),
-	relativeMobility(Evaluation::mobility()),
-	relativeMaterial(Evaluation::materialBalance()),
-	whiteKingDanger(Evaluation::kingDanger(Turn::WHITE())),
-	blackKingDanger(Evaluation::kingDanger(Turn::BLACK())),
-	relativeCenter(Evaluation::center()),
-	whitePawns(Evaluation::pawns(Turn::WHITE())),
-	blackPawns(Evaluation::pawns(Turn::BLACK())),
-	whiteMisc(Evaluation::misc(Turn::WHITE())),
-	blackMisc(Evaluation::misc(Turn::BLACK())),
-	_isValid(true),
-	check(Game::getCheck())
-{}
+EvaluationScore::EvaluationScore(bool _) : EvaluationScore()
+{
+	_isValid = true;
+	check = Game::getCheck();
+	whiteSimple = SimpleEvaluation::all(Turn::WHITE());
+	blackSimple = SimpleEvaluation::all(Turn::BLACK());
+
+	relativeMate = Evaluation::mating(Turn::WHITE());
+	lateness = Evaluation::lateness();
+
+	if (relativeMate == 0) {
+		relativeMobility = Evaluation::mobility();
+		relativeMaterial = Evaluation::materialBalance();
+		whiteKingDanger = Evaluation::kingDanger(Turn::WHITE());
+		blackKingDanger = Evaluation::kingDanger(Turn::BLACK());
+		relativeCenter = Evaluation::center();
+		whitePawns = Evaluation::pawns(Turn::WHITE());
+		blackPawns = Evaluation::pawns(Turn::BLACK());
+		whiteMisc = Evaluation::misc(Turn::WHITE());
+		blackMisc = Evaluation::misc(Turn::BLACK());
+	}
+
+}
 
 EvaluationScore EvaluationScore::GetFromGameState() {
 	return EvaluationScore(true);
@@ -50,6 +58,7 @@ bool EvaluationScore::isValid() const {
 
 int EvaluationScore::getOverall(Turn perspective) const {
 	return
+		getRelativeMate(perspective) +
 		getRelativeMaterial(perspective) +
 		-getKingDanger(perspective) + getKingDanger(!perspective) +
 		getRelativeCenter(perspective) +
@@ -92,5 +101,9 @@ int EvaluationScore::getMisc(Turn turn) const {
 
 bool EvaluationScore::getCheck() const {
 	return check;
+}
+
+int EvaluationScore::getRelativeMate(Turn perspective) const {
+	return perspective.isWhite() ? relativeMate : -relativeMobility;
 }
 

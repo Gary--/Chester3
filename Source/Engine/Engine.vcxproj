@@ -82,6 +82,7 @@
     <ClCompile Include="Evaluation_init_pawns.cpp" />
     <ClCompile Include="Evaluation_kingDanger.cpp" />
     <ClCompile Include="Evaluation_material.cpp" />
+    <ClCompile Include="Evaluation_mating.cpp" />
     <ClCompile Include="Evaluation_mobility.cpp" />
     <ClCompile Include="Evaluation_pawns.cpp" />
     <ClCompile Include="Evaluation__main.cpp" />
