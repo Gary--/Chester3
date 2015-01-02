@@ -120,6 +120,9 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 			break;
 		}
 		
+		if (searchResult.isPseudoMateScore() && depth > 8) {
+			break;
+		}
 	}
 
 	return searchResult;

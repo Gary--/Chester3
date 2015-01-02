@@ -67,7 +67,7 @@ int Position::diag() const {
 	return col() + row();
 }
 
-int Position::taxiDistance(const Position other) const {
+int Position::absoluteDistance(const Position other) const {
 	return max(abs(col() - other.col()), abs(row() - other.row()));
 }
 

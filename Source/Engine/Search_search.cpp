@@ -31,6 +31,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 	const Move move = Game::getPreviousMove();
 	const EvaluationScore prevScore = EvaluationManager::getScore(1);
 	const bool wasInCheck = prevScore.getCheck();
+	bool isPseudoMate = Evaluation::mating(Turn::WHITE()) != 0;
 
 	Search_Parameters newParams;
 	newParams.depth = previousParams.depth - 1;
@@ -51,7 +52,11 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 
 	// Material disadvantage reduction
 	bool doReduction1 = false;
-	bool possibleReduction = !move.isTactical() && !Game::getCheck() && !wasInCheck;
+	bool possibleReduction = !move.isTactical() && !Game::getCheck() && !wasInCheck && moveNum != 0 && !isPseudoMate;
+	if (Search_History::getHistory(move) > 0) {
+		possibleReduction = false;
+	}
+
 	if (!reduced && !reduction1 && !newParams.isQuiesce() && possibleReduction && newParams.depth > 2) {
 		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
 		const Turn turn = !Game::getTurn();
@@ -83,12 +88,20 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return Search_SearchResult();
 	}
 
+	// Are we in a mate that we know how to do?
+
 
 	if (p.isQuiesce()) {
 		Search_Counter::quiesce++;
 	} else {
 		Search_Counter::full++;
 	}
+
+
+	const int pseudoMateScore = Evaluation::mating(Game::getTurn());
+	const bool isPseudoMate = pseudoMateScore != 0;
+	const bool isOurPseudoMate = pseudoMateScore > 0;
+
 
 	Search_SearchResult result;
 	result.score = p.alpha;
@@ -101,6 +114,10 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		return result;
 	}
 
+	if (p.isQuiesce() && isOurPseudoMate) {
+		result.score = pseudoMateScore;
+		return result;
+	}
 
 	if (Game::getRepeatCount()==1) {
 		TTItem ttRes = Search_Transposition::getTransposition(p);
@@ -132,7 +149,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		const bool wasInCheck = prevScore.getCheck();
 
 
-		if (p.depth <= 1 && !wasInCheck && !Game::getCheck()) do {
+		if (p.depth <= 1 && !wasInCheck && !Game::getCheck() && !isPseudoMate) do {
 			if (!p.wasQuiesce() && Game::getPreviousMove().isTactical()) {
 				break;
 			}
@@ -152,7 +169,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		} while (0);
 
 		// Do we want to try quiesce at all?
-		if (p.isQuiesce() && !Game::getCheck() &&!wasInCheck) {
+		if (p.isQuiesce() && !Game::getCheck() && !wasInCheck && !isPseudoMate) {
 			const Turn turn = Game::getTurn();
 			AttackMap::precompute();
 			const int curFullScore = EvaluationManager::getScore().getOverall(turn);
@@ -186,7 +203,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		}
 
 		// Try a full eval standpat
-		if (p.isQuiesce()) {
+		if (p.isQuiesce() && !isPseudoMate) {
 			int standPat = -Search_SearchResult::MATE_SCORE;
 			if (!Game::getCheck()) { // need to check for hanging pieces
 				AttackMap::precompute();
@@ -197,7 +214,6 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				return result;
 			}
 		}
-
 	}
 
 
@@ -211,7 +227,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		}
 	}
 
-	MoveOrdering orderedMoves = MoveOrdering(p, (!p.isQuiesce() || Game::getCheck()) ? Game::getAllMoves() : Game::getTacticalMoves());
+	MoveOrdering orderedMoves = MoveOrdering(p, (!p.isQuiesce() || Game::getCheck() || isPseudoMate) ? Game::getAllMoves() : Game::getTacticalMoves());
 
 	int i = -1;
 	for (const OrderedMove orderedMove : orderedMoves) {

@@ -29,3 +29,7 @@ int Search_SearchResult::mateInN() const {
 		return  -MATE_SCORE - score;
 	}
 }
+
+bool Search_SearchResult::isPseudoMateScore() const {
+	return abs(score) > PSEUDO_MATE_SCORE;
+}

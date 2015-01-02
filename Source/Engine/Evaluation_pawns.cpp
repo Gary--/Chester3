@@ -251,7 +251,7 @@ Evaluation::PassedPawnResult Evaluation::passedPawnEvaluation(const Turn turn) {
 		}
 
 		// Enemy king distance
-		const int distanceToTheirKing = theirKingPos.taxiDistance(pos);
+		const int distanceToTheirKing = theirKingPos.absoluteDistance(pos);
 		res.score += (int)(lateness()* distanceToTheirKing *enemyKingDistValue[pos.perspective(turn).index()]);
 		
 
