@@ -31,7 +31,7 @@ void UCI::run() {
 		if (StringUtils::startsWith(line, "go")) {
 			Search_Configuration searchConf;
 			searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
-			searchConf.maxTimeMs = 3000;
+			searchConf.maxTimeMs = 4000;
 			//searchConf.maxDepth = Search_Configuration::SEARCH_TIME_INF;
 
 			SearchThread::setSearchConfiguration(searchConf);
@@ -49,7 +49,7 @@ void UCI::run() {
 }
 
 void UCI::identify() {
-	cout << "id name Chester 1.0" << endl;
+	cout << "id name TheChester 0.0" << endl;
 	cout << "id author Gary Z" << endl;
 	cout << "uciok" << endl;
 }

@@ -22,8 +22,8 @@ public:
 	static TTItem getTransposition(Search_Parameters params);
 
 private:
-
-	const static int TTSize = 1000000;
+	const static int tableSizeMb = 128;
+	const static int TTSize = tableSizeMb * 1000000 / sizeof(TTItem);
 	static TTItem TT[TTSize];
 };
 
