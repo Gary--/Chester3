@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="AttackMap.h" />
     <ClInclude Include="BitBoard_Position_Iterator.h" />
-    <ClInclude Include="ConsoleMode.h" />
     <ClInclude Include="Evaluation.h" />
     <ClInclude Include="EvaluationManager.h" />
     <ClInclude Include="EvaluationScore.h" />
@@ -37,8 +36,6 @@
     <ClInclude Include="Chess.h" />
     <ClInclude Include="ChessAssert.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="SearchThread.h" />
-    <ClInclude Include="SearchThreadCallBack.h" />
     <ClInclude Include="Search_Configuration.h" />
     <ClInclude Include="Search_Counter.h" />
     <ClInclude Include="Search_History.h" />
@@ -56,11 +53,7 @@
     <ClInclude Include="Search_SearchResult.h" />
     <ClInclude Include="StaticExchange.h" />
     <ClInclude Include="Game_UndoData.h" />
-    <ClInclude Include="StrengthTest.h" />
     <ClInclude Include="StringUtils.h" />
-    <ClInclude Include="UCI.h" />
-    <ClInclude Include="UciGoCommand.h" />
-    <ClInclude Include="UCISearchThreadCallBack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackMap.cpp" />
@@ -74,7 +67,6 @@
     <ClCompile Include="BitBoard_Position_Iterator.cpp" />
     <ClCompile Include="ChessAssert.cpp" />
     <ClCompile Include="Chess.cpp" />
-    <ClCompile Include="ConsoleMode.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Evaluate_misc.cpp" />
     <ClCompile Include="EvaluationManager.cpp" />
@@ -93,8 +85,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveOrdering.cpp" />
     <ClCompile Include="PV_Node.cpp" />
-    <ClCompile Include="SearchThread.cpp" />
-    <ClCompile Include="SearchThreadCallBack.cpp" />
     <ClCompile Include="Search_Configuration.cpp" />
     <ClCompile Include="Search_Counter.cpp" />
     <ClCompile Include="Search_History.cpp" />
@@ -127,11 +117,7 @@
     <ClCompile Include="Search_SearchResult.cpp" />
     <ClCompile Include="Search__main.cpp" />
     <ClCompile Include="Game_UndoData.cpp" />
-    <ClCompile Include="StrengthTest.cpp" />
     <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="UCI.cpp" />
-    <ClCompile Include="UciGoCommand.cpp" />
-    <ClCompile Include="UCISearchThreadCallBack.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{304BB138-20B1-40BB-9420-02AF435AB391}</ProjectGuid>

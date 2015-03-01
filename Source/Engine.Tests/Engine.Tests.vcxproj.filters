@@ -50,9 +50,6 @@
     <ClCompile Include="A_Move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F_Search_Basic_BestMove.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="A_AttackMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -84,9 +84,6 @@
     <ClInclude Include="EvaluationScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConsoleMode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ExtendedPositionDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -97,9 +94,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StrengthTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveOrdering.h">
@@ -124,21 +118,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search_Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SearchThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UCI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SearchThreadCallBack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UCISearchThreadCallBack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UciGoCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -278,9 +257,6 @@
     <ClCompile Include="EvaluationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleMode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -294,9 +270,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StrengthTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_misc.cpp">
@@ -330,21 +303,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search_Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SearchThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UCI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SearchThreadCallBack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UCISearchThreadCallBack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UciGoCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Evaluation_mating.cpp">

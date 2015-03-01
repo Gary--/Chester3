@@ -66,7 +66,6 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 
 			if (i >= 4) {
 				cout << "??? Somethin is wrong." << endl;
-				system("pause");
 			}
 		}
 		if (shouldStopSearch()) {
@@ -76,7 +75,6 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 
 		if (searchResult.score <= params.alpha || searchResult.score >= params.beta) {
 			cout << "NOT PV:!!" << endl;
-			system("pause");
 		}
 		prevResult = searchResult;
 

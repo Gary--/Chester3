@@ -264,7 +264,6 @@
     <ClCompile Include="A_Game_make_move.cpp" />
     <ClCompile Include="A_Game_setup.cpp" />
     <ClCompile Include="A_Move.cpp" />
-    <ClCompile Include="F_Search_Basic_BestMove.cpp" />
     <ClCompile Include="A_StaticExchange.cpp" />
     <ClCompile Include="A_SimpleEvaluation.cpp" />
   </ItemGroup>
