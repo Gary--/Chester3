@@ -333,12 +333,12 @@ namespace EngineTests
 
 		TEST_METHOD(Position_taxiDistance) {
 			FOR_POSITION_64(pos0) {
-				Assert::AreEqual(0, pos0.taxiDistance(pos0));
+				Assert::AreEqual(0, pos0.absoluteDistance(pos0));
 				FOR_POSITION_64(pos1) {
 					int dx = std::abs(pos0.col() - pos1.col());
 					int dy = std::abs(pos0.row() - pos1.row());
 
-					Assert::AreEqual(std::max(dx,dy), pos0.taxiDistance(pos1));
+					Assert::AreEqual(std::max(dx, dy), pos0.absoluteDistance(pos1));
 				}
 			}
 		}
