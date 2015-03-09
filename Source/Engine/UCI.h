@@ -22,7 +22,9 @@ private:
 	static Search_Configuration conf;
 	static Search_SearchResult result;
 
-	
+	static void populateConf(const std::string& line);
+	static void go(const std::string& line);
+	static int decideSearchTime();
 
 	// Signal a stop after givne milliseconds
 	static void setStopSearchDelay(int ms);
@@ -31,8 +33,7 @@ private:
 	static std::mutex mtx;
 	static std::thread searchThread;
 	static std::atomic<int> searchCount;
-	static std::atomic<bool> canStopSearch;
-	static std::atomic<bool> doReporting;
+
 	
 };
 

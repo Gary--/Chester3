@@ -79,33 +79,10 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 		prevResult = searchResult;
 
 		
-		cout << "info depth " << depth << ' ';
+		//cout << "info depth " << depth << ' ';
 
-		{
-			auto result = prevResult;
-			cout << "pv ";
-			for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
-				if (pv->move != Move::INVALID()) {
-					cout << pv->move.str() << ' ';
-				}
-
-			}
-		}
-		cout << endl;
 		//{
-		//	cout << "info ";
-		//	auto result = searchResult;
-		//	// Score
-		//	if (result.isMateScore()) {
-		//		cout << "score mate " << result.mateInN();
-		//	} else {
-		//		cout << "score cp " << result.score;
-		//	}
-		//	cout << ' ';
-
-		//	cout << "depth " << depth << ' ';
-
-		//	// pv
+		//	auto result = prevResult;
 		//	cout << "pv ";
 		//	for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
 		//		if (pv->move != Move::INVALID()) {
@@ -114,6 +91,30 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 
 		//	}
 		//}
+		//cout << endl;
+		{
+			cout << "info ";
+			auto result = searchResult;
+			// Score
+			if (result.isMateScore()) {
+				cout << "score mate " << result.mateInN();
+			} else {
+				cout << "score cp " << result.score;
+			}
+			cout << ' ';
+
+			cout << "depth " << depth << ' ';
+
+			// pv
+			cout << "pv ";
+			for (auto* pv = &result.pv; pv; pv = pv->next.get()) {
+				if (pv->move != Move::INVALID()) {
+					cout << pv->move.str() << ' ';
+				}
+
+			}
+			cout << endl;
+		}
 		if (searchResult.isMateScore()) {
 			break;
 		}

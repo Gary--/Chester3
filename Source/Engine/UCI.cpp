@@ -13,8 +13,6 @@ using namespace std;
 std::thread UCI::searchThread;
 std::atomic<int> UCI::searchCount = 0;
 std::mutex UCI::mtx;
-std::atomic<bool> UCI::canStopSearch = true;
-std::atomic<bool> UCI::doReporting = true;
 Search_SearchResult UCI::result;
 
 Search_Configuration UCI::conf;
@@ -24,6 +22,7 @@ void UCI::identify() {
 	cout << "id name TheChester 0.0" << endl;
 	cout << "id author Gary Z" << endl;
 	cout << "uciok" << endl;
+	cout << "option name Ponder type check default true" << endl;
 }
 
 void UCI::run() {
@@ -32,6 +31,7 @@ void UCI::run() {
 	string line;
 	while (getline(cin, line)) {
 		if (line == "quit") {
+			stopSearch();
 			return;
 		}
 		if (line == "isready") {
@@ -46,9 +46,17 @@ void UCI::run() {
 		}
 
 		if (StringUtils::startsWith(line, "go")) {
-			conf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
-			conf.maxTimeMs = 1000;
-			startSearch();
+			go(line);
+			continue;
+		}
+
+
+		if (line == "stop") {
+			stopSearch();
+		}
+
+		if (line == "ponderhit") {
+			setStopSearchDelay(decideSearchTime());
 		}
 	}
 }
@@ -110,13 +118,10 @@ void UCI::searchStopper(int ms,int count) {
 }
 
 void UCI::stopSearch() {
-	mtx.lock();
 	Search::signalStop();
 	if (searchThread.joinable()) {
 		searchThread.join();
 	}
-
-	mtx.unlock();
 }
 
 void UCI::searchEntry() {
@@ -146,7 +151,11 @@ void UCI::searchEntry() {
 
 	cout << endl;
 
-	cout << "bestmove " << result.pv.move.str() << endl;
+	cout << "bestmove " << result.pv.move.str();
+	if (result.pv.next) {
+		cout << " ponder " << result.pv.next->move.str();
+	}
+	cout << endl;
 
 	mtx.unlock();
 }
@@ -157,9 +166,68 @@ void UCI::startSearch() {
 	mtx.lock();
 	searchCount++;
 	Search::prepareSearch();
+
+
 	searchThread = thread(searchEntry);
-	setStopSearchDelay(conf.maxTimeMs);
+
+	if (conf.maxTimeMs != Search_Configuration::SEARCH_TIME_INF) {
+		setStopSearchDelay(conf.maxTimeMs);
+	}
+	
 
 	mtx.unlock();
+}
+
+void UCI::go(const std::string& line) {
+	populateConf(line);
+
+	if (!conf.ponder) {
+		conf.maxTimeMs = decideSearchTime();
+	}
+
+	startSearch();
+}
+
+void UCI::populateConf(const std::string& line) {
+	conf = Search_Configuration();
+
+	istringstream cin(line);
+	string opt;
+	cin >> opt;//go
+
+	while (cin >> opt) {
+		if (opt == "depth") {
+			cin >> conf.maxDepth;
+		}
+		if (opt == "infinite") {
+			conf.infinite = true;
+			conf.maxTimeMs = Search_Configuration::SEARCH_TIME_INF;
+		}
+		if (opt == "movetime") {
+			cin >> conf.maxTimeMs;
+		}
+		if (opt == "btime") {
+			cin >> conf.btime;
+		}
+		if (opt == "wtime") {
+			cin >> conf.wtime;
+		}
+		if (opt == "winc") {
+			cin >> conf.winc;
+		}
+		if (opt == "binc") {
+			cin >> conf.binc;
+		}
+		if (opt == "ponder") {
+			conf.ponder = true;
+			conf.infinite = true;
+			conf.maxTimeMs = Search_Configuration::SEARCH_TIME_INF;
+		}
+	}
+}
+
+int UCI::decideSearchTime() {
+
+	return 2000;
 }
 
