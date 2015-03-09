@@ -54,6 +54,7 @@
     <ClInclude Include="StaticExchange.h" />
     <ClInclude Include="Game_UndoData.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="UCI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackMap.cpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="Search__main.cpp" />
     <ClCompile Include="Game_UndoData.cpp" />
     <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="UCI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{304BB138-20B1-40BB-9420-02AF435AB391}</ProjectGuid>
@@ -144,7 +146,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>

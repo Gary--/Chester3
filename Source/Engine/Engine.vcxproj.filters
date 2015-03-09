@@ -120,6 +120,9 @@
     <ClInclude Include="Search_Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UCI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitBoard.cpp">
@@ -306,6 +309,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Evaluation_mating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UCI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
