@@ -4,6 +4,7 @@
 #include <thread>
 #include <atomic>
 #include "Search_SearchResult.h"
+#include <condition_variable>
 class UCI {
 public:
 	static void run();
@@ -31,9 +32,10 @@ private:
 	static void searchStopper(int ms,int count);
 
 	static std::mutex mtx;
+	static std::condition_variable cv;
 	static std::thread searchThread;
 	static std::atomic<int> searchCount;
-
+	static std::atomic<bool> canExitSearch;//false if pondering or infinite
 	
 };
 

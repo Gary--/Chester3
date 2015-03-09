@@ -14,8 +14,10 @@ std::thread UCI::searchThread;
 std::atomic<int> UCI::searchCount = 0;
 std::mutex UCI::mtx;
 Search_SearchResult UCI::result;
-
+std::atomic<bool> UCI::canExitSearch = true;
 Search_Configuration UCI::conf;
+
+std::condition_variable UCI::cv;
 
 
 void UCI::identify() {
@@ -33,6 +35,9 @@ void UCI::run() {
 		if (line == "quit") {
 			stopSearch();
 			return;
+		}
+		if (line == "ucinewgame") {
+			stopSearch();
 		}
 		if (line == "isready") {
 			cout << "readyok" << endl;
@@ -56,7 +61,9 @@ void UCI::run() {
 		}
 
 		if (line == "ponderhit") {
-			setStopSearchDelay(decideSearchTime());
+			if (!conf.infinite) {
+				setStopSearchDelay(decideSearchTime());
+			}
 		}
 	}
 }
@@ -118,19 +125,24 @@ void UCI::searchStopper(int ms,int count) {
 }
 
 void UCI::stopSearch() {
+	canExitSearch = true;
+	
+
 	Search::signalStop();
+	cv.notify_all();
 	if (searchThread.joinable()) {
 		searchThread.join();
 	}
 }
 
 void UCI::searchEntry() {
-	Search_Configuration searchConf;
-	searchConf.maxDepth = Search_Configuration::MAX_DEPTH_INF;
-	searchConf.maxTimeMs = 2000;
-	result = Search::startSearch(searchConf);
+	result = Search::startSearch(conf);
+	
+	unique_lock<mutex> lock(mtx);
 
-	mtx.lock();
+	if (!canExitSearch) {
+		cv.wait(lock);
+	}
 
 	// Score
 	if (result.isMateScore()) {
@@ -152,12 +164,11 @@ void UCI::searchEntry() {
 	cout << endl;
 
 	cout << "bestmove " << result.pv.move.str();
-	if (result.pv.next) {
+	if (result.pv.next && result.pv.next->move != Move::INVALID()) {
 		cout << " ponder " << result.pv.next->move.str();
 	}
+	
 	cout << endl;
-
-	mtx.unlock();
 }
 
 void UCI::startSearch() {
@@ -180,10 +191,17 @@ void UCI::startSearch() {
 
 void UCI::go(const std::string& line) {
 	populateConf(line);
+	canExitSearch = true;
 
-	if (!conf.ponder) {
+
+
+	if (conf.ponder || conf.infinite) {
+		canExitSearch = false;
+	} else {
 		conf.maxTimeMs = decideSearchTime();
 	}
+
+
 
 	startSearch();
 }
@@ -220,7 +238,6 @@ void UCI::populateConf(const std::string& line) {
 		}
 		if (opt == "ponder") {
 			conf.ponder = true;
-			conf.infinite = true;
 			conf.maxTimeMs = Search_Configuration::SEARCH_TIME_INF;
 		}
 	}
