@@ -33,8 +33,8 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 	Move TTbestMove = Move::INVALID();
 	{
 		TTItem ttItem = Search_Transposition::getTransposition(params);
-		if (ttItem.type != TT_Entry_Type::INVALID) {
-			TTbestMove = ttItem.bestMove;
+		if (ttItem.getType() != TT_Entry_Type::INVALID) {
+			TTbestMove = ttItem.getMove();
 		}
 	}
 
