@@ -25,6 +25,8 @@ struct Move
 
 public:
 	Move(MoveType type,Position from, Position to, Piece piece, Piece targ);
+	explicit Move(uint32_t value);
+
 
 	static Move NULL_MOVE();
 	static Move INVALID();
@@ -36,6 +38,7 @@ public:
 	Move();
 	~Move();
 
+	uint32_t asInt32() const;
 
 	MoveType getType() const;
 	Position getFrom() const;
@@ -49,9 +52,8 @@ public:
 
 	std::string str() const;
 private:
-	/*MoveType type;
-	Position from, to;
-	Piece piece, targ;*/
+	
+	// The right 22 bits are used.
 	uint32_t value;
 };
 

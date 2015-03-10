@@ -13,27 +13,37 @@ Move::~Move()
 
 //  Least to most significant
 //  4 bits for type
-//  7 bits for from
-//  7 bits for to
+//  6 bits for from
+//  6 bits for to
 //  3 bits for piece
 //  3 bits for targ
+
+namespace{
+	const int typeShift = 0;
+	const int fromShift = 4;
+	const int toShift = 10;
+	const int pieceShift = 16;
+	const int targShift = 19;
+}
+
 Move::Move(const MoveType type, const Position from, const Position to, const Piece piece, const  Piece targ) :
 value(
-(uint32_t)type |
-(uint32_t)from.index() << 4 |
-(uint32_t)to.index() << 11 |
-(uint32_t)(piece.asIndex()) << 18 |
-(uint32_t)(targ.asIndex()) << 21
+(uint32_t)type << typeShift |
+(uint32_t)from.index() << fromShift |
+(uint32_t)to.index() << toShift |
+(uint32_t)(piece.asIndex()) << pieceShift |
+(uint32_t)(targ.asIndex()) << targShift
 )
-
 {}
 
+Move::Move(uint32_t value) : value(value) {}
+
 Move Move::INVALID() {
-	return Move(MoveType::INVALID, Position(), Position(), Piece::EMPTY(), Piece::EMPTY());
+	return Move(MoveType::INVALID, Position(0), Position(0), Piece::EMPTY(), Piece::EMPTY());
 }
 
 Move Move::NULL_MOVE(){
-	return Move(MoveType::NULL_MOVE, Position(), Position(), Piece::EMPTY(), Piece::EMPTY());
+	return Move(MoveType::NULL_MOVE, Position(0), Position(0), Piece::EMPTY(), Piece::EMPTY());
 }
 
 
@@ -41,16 +51,16 @@ MoveType Move::getType() const {
 	return (MoveType)(0xF & value);
 }
 Position Move::getFrom() const {
-	return Position((value >> 4) & 0x3F);
+	return Position((value >> fromShift) & 0x3F);
 }
 Position Move::getTo() const {
-	return Position((value >> 11) & 0x3F);
+	return Position((value >> toShift) & 0x3F);
 }
 Piece Move::getPiece() const {
-	return (Piece)((value >> 18) & 0x7);
+	return (Piece)((value >> pieceShift) & 0x7);
 }
 Piece Move::getTarg() const {
-	return (Piece)((value >> 21) & 0x7);
+	return (Piece)((value >> targShift) & 0x7);
 }
 
 bool Move::isCapture() const {
@@ -102,4 +112,8 @@ std::string Move::str() const {
 		result += promotionPiece().asChar(Turn::BLACK());
 	}
 	return result;
+}
+
+uint32_t Move::asInt32() const {
+	return value;
 }

@@ -10,6 +10,13 @@ namespace EngineTests {
 	TEST_CLASS(A_Move) {
 public:
 
+	TEST_METHOD(Construct_From_Value_uint32) {
+		Move a((uint32_t)(-1));
+		Assert::AreEqual(a.asInt32(), (uint32_t)(-1));
+
+		Assert::AreEqual(Move(45345).asInt32(), (uint32_t)45345);
+	}
+
 	TEST_METHOD(Getters) {
 		Move move(MoveType::REGULAR, Position(11), Position(12), Piece::KING(), Piece::PAWN());
 		Assert::AreEqual((uint8_t)MoveType::REGULAR, (uint8_t)move.getType());
