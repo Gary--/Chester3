@@ -8,5 +8,6 @@ public:
 	static bool isKiller(Search_Parameters params, Move move);
 private:
 	static const int nKillers = 2;
-	static Move killers[Search_Parameters::MAX_NORMAL_PLY][nKillers];
+	static const int maxKillerDepth = 20;
+	static Move killers[maxKillerDepth][nKillers];
 };

@@ -4,13 +4,15 @@
 using namespace std;
 
 
-Move Search_Killers::killers[Search_Parameters::MAX_NORMAL_PLY][Search_Killers::nKillers];
+Move Search_Killers::killers[Search_Killers::maxKillerDepth][Search_Killers::nKillers];
 
 void Search_Killers::addKiller(const Search_Parameters params,const Move move) {
 	if (move.isTactical() || params.isQuiesce() || Search::nNullsMade>0) {
 		return;
 	}
-
+	if (params.ply >= maxKillerDepth) {
+		return;
+	}
 	// Duplicate..
 	for (int i = 0; i < nKillers; ++i) {
 		if (killers[params.ply][i] == move) {
