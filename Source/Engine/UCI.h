@@ -13,6 +13,7 @@ private:
 	// Commands
 	static void identify();
 	static void position(const std::string& line);
+	static void setOption(const std::string& line);
 
 	static void stopSearch();
 	static void startSearch();
@@ -36,6 +37,8 @@ private:
 	static std::thread searchThread;
 	static std::atomic<int> searchCount;
 	static std::atomic<bool> canExitSearch;//false if pondering or infinite
+
+	static int searchTimeRequestMs;
 	
 };
 

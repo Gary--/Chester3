@@ -19,12 +19,16 @@ Search_Configuration UCI::conf;
 
 std::condition_variable UCI::cv;
 
+int UCI::searchTimeRequestMs = 2000;
+
 
 void UCI::identify() {
 	cout << "id name TheChester 0.0" << endl;
 	cout << "id author Gary Z" << endl;
-	cout << "uciok" << endl;
+	
 	cout << "option name Ponder type check default true" << endl;
+	cout << "option name SearchTime type spin default 2 min 1 max 999" << endl;
+	cout << "uciok" << endl;
 }
 
 void UCI::run() {
@@ -58,6 +62,10 @@ void UCI::run() {
 
 		if (line == "stop") {
 			stopSearch();
+		}
+
+		if (StringUtils::startsWith(line, "setoption ")) {
+			setOption(line);
 		}
 
 		if (line == "ponderhit") {
@@ -245,6 +253,22 @@ void UCI::populateConf(const std::string& line) {
 
 int UCI::decideSearchTime() {
 
-	return 2000;
+	return searchTimeRequestMs;
+}
+
+void UCI::setOption(const std::string& line) {
+	istringstream cin(line);
+	string name, scratch;
+
+	cin >> scratch;// "setoption
+	cin >> scratch;// "name"
+	cin >> name;// actual name
+	cin >> scratch; // "value"
+
+	if (name == "SearchTime") {
+		int timeS;
+		cin >> timeS;
+		searchTimeRequestMs = timeS * 1000;
+	}
 }
 
