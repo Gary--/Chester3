@@ -94,7 +94,7 @@ BitBoard BitBoard::EDGE_SQUARES() {
 std::string BitBoard::str() const
 {
 	std::string res;
-	
+
 	FOR_8(r){
 		FOR_8(c){
 			res += this->contains(Position(r, c)) ? '1' : '0';
@@ -116,15 +116,23 @@ Position  BitBoard::ToPosition() const
 	_ASSERTE(value != 0);
 	_ASSERTE(value == (value&-value));
 #pragma warning(default : 4146)
-
+#ifdef _MSC_BUILD
 	unsigned long index;
-	
+
 	_BitScanReverse64(&index, value);
 	return Position(index);
+#else
+        return Position(__builtin_ctzll(value));
+
+#endif
 }
 
 BitBoard BitBoard::mirror() const{
+#ifdef _MSC_BUILD
 	return BitBoard(_byteswap_uint64(value));
+#else
+        return BitBoard(__builtin_bswap64(value));
+#endif
 }
 
 BitBoard BitBoard::perspective(const Turn turn) const {
@@ -163,7 +171,11 @@ BitBoard BitBoard::shiftBackward(const Turn turn) const {
 
 int BitBoard::count() const
 {
+#ifdef _MSC_BUILD
 	return (int)__popcnt64(value);
+#else
+        return (int)__builtin_popcountll(value);
+#endif
 }
 
 

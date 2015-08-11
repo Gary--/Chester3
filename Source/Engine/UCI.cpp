@@ -2,19 +2,20 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <windows.h> 
+//#include <windows.h>
 #include "StringUtils.h"
 #include "Game.h"
 #include "Search.h"
 #include "Search_Configuration.h"
+#include <chrono>
 
 using namespace std;
 
 std::thread UCI::searchThread;
-std::atomic<int> UCI::searchCount = 0;
+volatile int UCI::searchCount = 0;
 std::mutex UCI::mtx;
 Search_SearchResult UCI::result;
-std::atomic<bool> UCI::canExitSearch = true;
+volatile bool UCI::canExitSearch = true;
 Search_Configuration UCI::conf;
 
 std::condition_variable UCI::cv;
@@ -25,7 +26,7 @@ int UCI::searchTimeRequestMs = 2000;
 void UCI::identify() {
 	cout << "id name TheChester 0.0" << endl;
 	cout << "id author Gary Z" << endl;
-	
+
 	cout << "option name Ponder type check default true" << endl;
 	cout << "option name SearchTime type spin default 2 min 1 max 999" << endl;
 	cout << "uciok" << endl;
@@ -123,7 +124,7 @@ void UCI::setStopSearchDelay(int ms) {
 }
 
 void UCI::searchStopper(int ms,int count) {
-	Sleep(ms);
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 	mtx.lock();
 	if (count == searchCount) {
 		Search::signalStop();
@@ -134,7 +135,7 @@ void UCI::searchStopper(int ms,int count) {
 
 void UCI::stopSearch() {
 	canExitSearch = true;
-	
+
 
 	Search::signalStop();
 	cv.notify_all();
@@ -145,7 +146,7 @@ void UCI::stopSearch() {
 
 void UCI::searchEntry() {
 	result = Search::startSearch(conf);
-	
+
 	unique_lock<mutex> lock(mtx);
 
 	if (!canExitSearch) {
@@ -175,7 +176,7 @@ void UCI::searchEntry() {
 	if (result.pv.next && result.pv.next->move != Move::INVALID()) {
 		cout << " ponder " << result.pv.next->move.str();
 	}
-	
+
 	cout << endl;
 }
 
@@ -192,7 +193,7 @@ void UCI::startSearch() {
 	if (conf.maxTimeMs != Search_Configuration::SEARCH_TIME_INF) {
 		setStopSearchDelay(conf.maxTimeMs);
 	}
-	
+
 
 	mtx.unlock();
 }

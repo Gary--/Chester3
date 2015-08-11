@@ -15,7 +15,11 @@
 #include "AttackFields.h"
 using namespace std;
 
-
+template <typename T, std::size_t N>
+constexpr std::size_t countof(T const (&)[N]) noexcept
+{
+return N;
+}
 
 namespace {
 	int reduction1_margin[] = { 0, 0, 0, 500, 500, 700, 700, 900,
@@ -55,7 +59,7 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 
 	// Material disadvantage reduction
 	bool doReduction1 = false;
-	bool possibleReduction = 
+	bool possibleReduction =
 		!newParams.isQuiesce() &&
 		!move.isTactical() &&
 		!Game::getCheck() &&
@@ -81,8 +85,8 @@ Search_SearchResult Search::callSearch(const Search_Parameters previousParams,co
 
 
 	if (!reduced && !reduction1 && possibleReduction && newParams.depth > 2) {
-		const int margin = newParams.depth < _countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[_countof(reduction1_margin) - 1];
-		
+		const int margin = newParams.depth < countof(reduction1_margin) ? reduction1_margin[newParams.depth] : reduction1_margin[countof(reduction1_margin) - 1];
+
 		if (-newParams.beta >  EvaluationManager::getRelativeSimpleScore(turn) + margin) {
 			doReduction1 = reduced = true;
 
@@ -178,7 +182,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 			}
 
 			const Turn turn = !Game::getTurn();
-			
+
 			const int marginBase = p.wasQuiesce() ? 50 : (int)(p.isQuiesce() ? 300 + 200*Evaluation::lateness() : 500);
 			const int margin = marginBase + prevScore.getOverall(turn) - prevScore.getRelativeSimple(turn);
 
@@ -188,7 +192,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				result.score = p.beta;
 				return result;
 			}
-			
+
 		} while (0);
 
 		// Do we want to try quiesce at all?
@@ -216,7 +220,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 				margin += 600;
 			}
 
-			
+
 			if (curFullScore + margin < p.alpha) {
 				result.score = p.alpha;
 				return result;
@@ -301,7 +305,7 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		}
 	}
 	orderedMoves.dispose();
-	
+
 	if (shouldStopSearch()) {
 		return Search_SearchResult();
 	}
@@ -312,6 +316,6 @@ Search_SearchResult Search::search(const Search_Parameters p) {
 		Search_Transposition::addTransposition(p, result);
 	}
 
-	
+
 	return  result;
 }

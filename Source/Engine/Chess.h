@@ -2,6 +2,10 @@
 #include <cstdint>
 #include <string>
 
+#ifndef _ASSERTE
+  #define _ASSERTE(x) x
+#endif
+
 #define FOR_8(x) for (int x = 0; x < 8;++x)
 #define FOR_64(x) for (int x = 0; x < 64;++x)
 

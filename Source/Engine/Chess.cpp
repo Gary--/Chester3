@@ -1,5 +1,4 @@
 #include "Chess.h"
-#include <crtdbg.h>
 #include <iostream>
 
 
@@ -57,7 +56,7 @@ char Piece::asChar(const Turn turn) const {
 	case PieceEnum::EMPTY: return '.'; break;
 
 	default:
-		_ASSERT(false);
+		//_ASSERT(false);
 		break;
 	}
 
@@ -149,7 +148,7 @@ std::string Piece::str() const {
 	case PieceEnum::INVALID:
 		return "INVALID";
 	default:
-		_ASSERTE(false);
+		//_ASSERTE(false);
 		return "ERROR";
 	}
 }

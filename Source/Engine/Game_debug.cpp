@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <crtdbg.h>
 #include <iostream>
 #include "Game_Hash.h"
 #include "Game_UndoData.h"
@@ -10,7 +9,7 @@ void Game::integrityCheck() {
 #ifdef _DEBUG
 
 
-	
+
 	FOR_TURN(turn) {
 		BitBoard turnAll = BitBoard::EMPTY();
 		FOR_PIECE_ALL(piece) {
@@ -40,7 +39,7 @@ void Game::integrityCheck() {
 		}
 	}
 
-	
+
 	_ASSERTE(cur.hash.toInt64() == Game_Hash(Game::getGameConfiguration()).toInt64());
 
 #endif

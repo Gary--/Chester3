@@ -1,6 +1,5 @@
 #include "Position.h"
 #include "ChessAssert.h"
-#include <crtdbg.h>
 #include <sstream>
 #include <algorithm>
 using namespace std;
@@ -29,7 +28,7 @@ Position(7-(value[1] - '1'), value[0] - 'a')
 Position::Position(const std::string& value) :
 Position(value.c_str()){}
 
-Position::~Position() 
+Position::~Position()
 {
 }
 

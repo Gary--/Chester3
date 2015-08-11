@@ -6,7 +6,11 @@
 #include <algorithm>
 
 using namespace std;
-
+template <typename T, std::size_t N>
+constexpr std::size_t countof(T const (&)[N]) noexcept
+{
+return N;
+}
 namespace {
 	int patternScore(const AttackPattern pat) {
 		const uint8_t patternValueTable[32] = {
@@ -114,17 +118,17 @@ int Evaluation::kingDanger(const Turn turn) {
 	if (Game::getPieces(other, Piece::QUEEN()).isEmpty() || getLightPieces(other).isEmpty()) {
 		return 0;
 	}
-	
+
 
 	Danger danger = calcDanger(turn);
 
 
-	const int scaling[] = { 0, 2, 3, 6, 12, 18, 25, 37, 50, 75,100, 125, 
-		150, 175, 200, 225, 250, 275, 300, 325,350, 375, 400, 
+	const int scaling[] = { 0, 2, 3, 6, 12, 18, 25, 37, 50, 75,100, 125,
+		150, 175, 200, 225, 250, 275, 300, 325,350, 375, 400,
 		425, 450, 475, 500, 525, 550, 575,600  };
 
 	danger.count += patternScore(danger.pattern);
-	danger.count = min(danger.count,(int)_countof(scaling)-1);
+	danger.count = min(danger.count,(int)countof(scaling)-1);
 	return scaling[danger.count];
 }
 

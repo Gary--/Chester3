@@ -50,7 +50,9 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 	}
 
 	if (!isGoodMove && params.depth>2) {
-		moves._Pop_back_n(n);
+                for (int i=0;i<n;++i){
+                  moves.pop_back();
+                }
 
 		Search_Parameters reduced = params;
 		reduced.depth -= 2;
@@ -61,7 +63,7 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 			moves.push_back(orderedMove);
 		}
 	}
-	
+
 
 	sort(moves.end() - n, moves.end());
 }
@@ -70,14 +72,17 @@ MoveOrdering::MoveOrdering(const Search_Parameters params, GameMoveIteratorGener
 MoveOrdering::~MoveOrdering() {}
 
 void MoveOrdering::dispose() {
-	moves._Pop_back_n(n);
+
+                for (int i=0;i<n;++i){
+                  moves.pop_back();
+                }
 }
 
 
 OrderedMove MoveOrdering::order(Search_Parameters params, Move TTbestMove,Move move) {
 	int rating = 0;
 	OrderedMoveType type = OrderedMoveType::NONE;
-	
+
 	if (type == OrderedMoveType::NONE && params.pv.move==move) {
 		type = OrderedMoveType::PV_MOVE;
 		rating = 60000;

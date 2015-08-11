@@ -2,7 +2,6 @@
 #include "Search_Configuration.h"
 #include <mutex>
 #include <thread>
-#include <atomic>
 #include "Search_SearchResult.h"
 #include <condition_variable>
 class UCI {
@@ -18,7 +17,7 @@ private:
 	static void stopSearch();
 	static void startSearch();
 	static void searchEntry();
-	
+
 	static void allowStop();
 
 	static Search_Configuration conf;
@@ -35,10 +34,10 @@ private:
 	static std::mutex mtx;
 	static std::condition_variable cv;
 	static std::thread searchThread;
-	static std::atomic<int> searchCount;
-	static std::atomic<bool> canExitSearch;//false if pondering or infinite
+	static volatile int searchCount;
+	static volatile bool canExitSearch;//false if pondering or infinite
 
 	static int searchTimeRequestMs;
-	
+
 };
 

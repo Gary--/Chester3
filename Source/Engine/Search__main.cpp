@@ -9,7 +9,7 @@ using namespace std;
 int Search::nNullsMade = 0;
 int Search::nChecks = 0;
 int Search::reduction1 = 0;
-std::atomic<bool> Search::exitSignal = false;
+volatile bool Search::exitSignal = false;
 bool Search::canExit = false;
 namespace {
 	const int windows[2] = { 50, 200};
@@ -28,7 +28,7 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 
 	Search_SearchResult searchResult;
 
-	
+
 	Search_SearchResult prevResult;
 	for (int depth = 1; depth <= conf.maxDepth; ++depth) {
 		Search_Parameters params;
@@ -45,14 +45,14 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 		for (int i = 0;; ++i) {
 			params.alpha = bound(prevResult.score, -1, alphaLvl);
 			params.beta = bound(prevResult.score, +1, betaLvl);
-			
+
 			const Search_SearchResult newResult = search(params);
 
 
 			if (shouldStopSearch()) { // The search may have been cut off by the exit signal. Don't use the result.
 				break;
 			}
-			
+
 			if (newResult.score >= params.beta) {
 				betaLvl++;
 			} else if (newResult.score <= params.alpha) {
@@ -78,7 +78,7 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 		}
 		prevResult = searchResult;
 
-		
+
 		//cout << "info depth " << depth << ' ';
 
 		//{
@@ -118,7 +118,7 @@ Search_SearchResult Search::startSearch(const Search_Configuration conf) {
 		if (searchResult.isMateScore()) {
 			break;
 		}
-		
+
 		if (searchResult.isPseudoMateScore() && depth > 8) {
 			break;
 		}

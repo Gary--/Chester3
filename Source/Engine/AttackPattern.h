@@ -30,7 +30,7 @@
 
 #define FOR_PIECE_NOT_BISHOP(x) for (Piece x = Piece::PAWN(); x <= Piece::KING(); x = Piece(x.asIndex()  + (x == Piece::KNIGHT() ? 2 : 1)))
 
-__declspec(align(1)) class AttackPattern {
+class AttackPattern {
 public:
 	AttackPattern();
 	// Example: "3:NQ"

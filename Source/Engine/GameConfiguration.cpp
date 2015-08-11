@@ -2,6 +2,7 @@
 #include <sstream>
 #include "AttackFields.h"
 #include <regex>
+#include <string>
 using namespace std;
 
 namespace {
@@ -16,7 +17,7 @@ void GameConfiguration::init() {
 	AttackFields::init();// Needed for move generation and validation
 }
 
-GameConfiguration::GameConfiguration() 
+GameConfiguration::GameConfiguration()
 {
 
 	FOR_POSITION_64(pos) {
@@ -82,12 +83,12 @@ GameConfiguration::GameConfiguration(const std::string ForsythEdwardsNotation)
 		setPieceAt(Position(r, c), Turn::fromChar(ch), Piece::fromChar(ch));
 		c++;
 	}
-	
+
 	//turn
 	string turn;
 	ss >> turn;
 	setTurn(turn == "w" ? Turn::WHITE(): Turn::BLACK());
-	
+
 
 	//castling
 	string castling;
@@ -105,7 +106,7 @@ GameConfiguration::GameConfiguration(const std::string ForsythEdwardsNotation)
 			}
 		}
 	}
-	
+
 	//enpeasnet
 	string enpeasent;
 	ss >> enpeasent;
@@ -447,7 +448,7 @@ Move GameConfiguration::getMoveEpdString(const std::string s) {
 	}
 
 	int i = 1;
-	
+
 	const string s_castle = match[i++];//(O-O-O|O-O)
 	const char c_piece = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([QKRBN]?)
 	const char c_colFrom = match[i].length() ? match[i].str()[0] : '\0'; i++;// ([abcdefgh]?)

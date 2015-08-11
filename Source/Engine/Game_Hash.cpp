@@ -10,7 +10,7 @@ namespace {
 	uint64_t enpeasentZorbist[9] = { 0 };
 	uint64_t castleZorbist[2][2] = { 0 };
 
-	uint64_t random() {
+	uint64_t Random() {
 		return BitBoard::random().asInt64();
 	}
 
@@ -26,18 +26,18 @@ void Game_Hash::init() {
 	inited = true;
 
 	for (int i = 0; i < 8; ++i) {
-		enpeasentZorbist[i] = random();
+		enpeasentZorbist[i] = Random();
 	}
 	for (int i = 0; i < 2; ++i) {
 		for (int j = 0; j < 2; ++j) {
-			castleZorbist[i][j] = random();
+			castleZorbist[i][j] = Random();
 		}
 	}
 
 	for (int i = 0; i < 2; ++i) {
 		for (int j = 1; j < 7; ++j) {//empty is left as 0
 			for (int k = 0; k < 64; ++k) {
-				zorbist[i][j][k] = random();
+				zorbist[i][j][k] = Random();
 			}
 		}
 	}

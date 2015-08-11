@@ -5,6 +5,8 @@
 #include "StaticExchange.h"
 #include "AttackPattern.h"
 #include <iostream>
+#include <cstring>
+
 using namespace std;
 
 namespace {
@@ -55,7 +57,7 @@ namespace {
 		}
 	}
 
-	
+
 }
 
 void AttackMap::synchronize() {

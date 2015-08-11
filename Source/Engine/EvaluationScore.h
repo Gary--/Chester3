@@ -1,6 +1,7 @@
 #pragma once
 #include "Chess.h"
 #include <cstdint>
+#include <climits>
 // Scores for a full evaluation of one position. Read only.
 struct EvaluationScore {
 	const static int INVALID_SCORE = INT_MIN+2;

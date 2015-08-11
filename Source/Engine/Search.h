@@ -3,21 +3,18 @@
 #include "GameConfiguration.h"
 #include "Search_SearchResult.h"
 #include "Search_Parameters.h"
-#include <atomic>
-#include <wtypes.h>
-
 
 // The brains.
 // Configure Game to where you want and call startSearch.
 class Search {
 public:
-	// Call this before 
+	// Call this before
 	static void prepareSearch();
-	
+
 
 	// Asynchronously tell the search thread to exit ASAP.
 	static void signalStop();
-	
+
 	// How many null moves have been made.
 	static int nNullsMade;
 
@@ -30,7 +27,7 @@ private:
 
 
 
-	static std::atomic<bool> exitSignal;
+	static volatile bool exitSignal;
 
 	// Have we done a minimum amount of work needed for exit? IE have a best move of some depth?
 	static bool canExit;
@@ -38,7 +35,7 @@ private:
 	// The search method will poll this to see if it should continue to search.
 	static bool shouldStopSearch();
 
-	
+
 	// Synchronize everything with Game.
 	static void synchronize();
 
@@ -51,7 +48,7 @@ private:
 
 	static Search_SearchResult nullMoveSearch(Search_Parameters params);
 
-	
+
 	static void searchMakeMove(Move move);
 	static Move searchUndoMove();
 
